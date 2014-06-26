@@ -4,6 +4,7 @@
 //Albert Volschenk - 12054519
 
 //This is the main activity for the Smart Door Application
+
 package za.co.zebrav.smartdoor;
 
 import android.app.Activity;
