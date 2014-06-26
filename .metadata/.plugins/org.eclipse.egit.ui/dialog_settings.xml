@@ -11,16 +11,16 @@
 		<item value="eduanb &lt;bekker.eduan@gmail.com&gt;"/>
 	</list>
 	<section name="org.eclipse.egit.ui.internal.push.PushResultDialog.dialogBounds">
-		<item value="650" key="DIALOG_WIDTH"/>
+		<item value="670" key="DIALOG_WIDTH"/>
 		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
-		<item value="455" key="DIALOG_HEIGHT"/>
+		<item value="475" key="DIALOG_HEIGHT"/>
 		<item value="605" key="DIALOG_X_ORIGIN"/>
 		<item value="239" key="DIALOG_Y_ORIGIN"/>
 	</section>
 	<section name="org.eclipse.egit.ui.COMMIT_DIALOG_SECTION">
-		<item value="606" key="DIALOG_WIDTH"/>
+		<item value="613" key="DIALOG_WIDTH"/>
 		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
-		<item value="637" key="DIALOG_HEIGHT"/>
+		<item value="673" key="DIALOG_HEIGHT"/>
 		<item value="617" key="DIALOG_X_ORIGIN"/>
 		<item value="104" key="DIALOG_Y_ORIGIN"/>
 	</section>
