@@ -1,7 +1,7 @@
 //Authors:
 //Eduan Bekker
 //Zuhnja Riekert
-//Albert Volschenk 
+//Albert Volschenk
 package za.co.zebrav.smartdoor;
 
 import android.app.Activity;
