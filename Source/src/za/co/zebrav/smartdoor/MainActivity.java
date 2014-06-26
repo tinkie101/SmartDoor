@@ -1,11 +1,9 @@
 //Authors:
-//ZEBRA-V
 //Eduan Bekker - 12214834
 //Zuhnja Riekert - 12040593
 //Albert Volschenk - 12054519
 
 //This is the main activity for the Smart Door Application
-
 package za.co.zebrav.smartdoor;
 
 import android.app.Activity;
