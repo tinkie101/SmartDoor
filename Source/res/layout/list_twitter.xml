@@ -9,7 +9,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher"
+        android:contentDescription="@string/ProfileImage" />
 
     <TextView
         android:id="@+id/textView1"
