@@ -15,7 +15,6 @@ public class MainActivity extends Activity
 {
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -25,6 +24,10 @@ public class MainActivity extends Activity
 		setContentView(R.layout.activity_main);
 	}
 	
+	/*
+	 * On click button handler.
+	 * Go to the TwitterActivity.
+	 */
 	public void gotoTwitter(View v)
 	{
 		Intent intent = new Intent(this, TwitterActivity.class);

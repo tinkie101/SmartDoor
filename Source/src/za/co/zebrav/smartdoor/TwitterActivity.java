@@ -29,12 +29,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 public class TwitterActivity extends ListActivity
 {
 	private static final String LOG_TAG_TWITTER_ACTIVITY = "TwitterActivity";
+	
+	//Change this to each device's twitter user name
 	private String screenName = "tinkie_101";
 	private ListActivity activityContext;
 
@@ -44,10 +47,27 @@ public class TwitterActivity extends ListActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_twitter);
 		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		activityContext = this;
 		downloadTweets();
 	}
-
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		if (item.getItemId() == android.R.id.home)
+		{
+			finish();
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	/*
+	 * The following code is taken from: https://github.com/Rockncoder/TwitterTutorial
+	 * A few minor changes was made from the above repository.
+	 */
+	
 	// download twitter timeline after first checking to see if there is a
 	// network connection
 	public void downloadTweets()
@@ -66,16 +86,14 @@ public class TwitterActivity extends ListActivity
 		}
 	}
 	
-	/*
-	 * The following code is taken from: https://github.com/Rockncoder/TwitterTutorial
-	 * A few minor changes was made from the above repository.
-	 */
 	private class TwitterHandler extends AsyncTask<String, Void, String>
 	{
 		private static final String LOG_TAG_TWITTER_HANDLER = "TwitterHandler";
 
+		//Change these keys to be each device's twitter keys. 
 		final static String API_KEY = "qcGzp08qWLEZom1x7dxCG5qu0";
 		final static String API_SECRET = "ly810vDH1S16Ttw0mpk4ZBYQvLEF9gEO16KSqy9lBqhwRf5XRo";
+		
 		final static String TwitterTokenURL = "https://api.twitter.com/oauth2/token";
 		final static String TwitterStreamURL = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=";
 
@@ -97,11 +115,10 @@ public class TwitterActivity extends ListActivity
 			Twitter twits = jsonToTwitter(result);
 
 			// lets write the results to the console as well
-			// Remove this?
-			for (Tweet tweet : twits)
-			{
-				Log.i(LOG_TAG_TWITTER_HANDLER, tweet.getText());
-			}
+			// for (Tweet tweet : twits)
+			// {
+			// Log.i(LOG_TAG_TWITTER_HANDLER, tweet.getText());
+			// }
 
 			// send the tweets to the adapter for rendering
 			// Check this context value, maybe it should be TwitterActivity.class?
@@ -224,7 +241,7 @@ public class TwitterActivity extends ListActivity
 					// Step 3: Authenticate API requests with bearer token
 					HttpGet httpGet = new HttpGet(TwitterStreamURL + screenName);
 
-					// construct a normal HTTPS request and include an Authorization
+					// construct a normal HTTPS request and include an Authorisation
 					// header with the value of Bearer <>
 					httpGet.setHeader("Authorization", "Bearer " + auth.access_token);
 					httpGet.setHeader("Content-Type", "application/json");
