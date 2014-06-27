@@ -5,5 +5,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="goto_twitter">Go to the Twitter feed</string>
     <string name="title_activity_twitter">TwitterActivity</string>
+    <string name="placeholder">example</string>
 
 </resources>

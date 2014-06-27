@@ -1,6 +1,7 @@
 package za.co.zebrav.smartdoor.twitter;
 
 import com.google.gson.annotations.SerializedName;
+
 /*
  * The following code is taken from: https://github.com/Rockncoder/TwitterTutorial
  * A few minor changes was made from the above repository.

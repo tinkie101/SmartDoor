@@ -1,10 +1,14 @@
 package za.co.zebrav.smartdoor;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -21,8 +25,10 @@ import com.google.gson.Gson;
 import za.co.zebrav.smartdoor.twitter.Authenticated;
 import za.co.zebrav.smartdoor.twitter.Tweet;
 import za.co.zebrav.smartdoor.twitter.Twitter;
+import za.co.zebrav.smartdoor.twitter.TwitterArrayAdapter;
 import android.app.ListActivity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -36,8 +42,8 @@ import android.widget.Toast;
 public class TwitterActivity extends ListActivity
 {
 	private static final String LOG_TAG_TWITTER_ACTIVITY = "TwitterActivity";
-	
-	//Change this to each device's twitter user name
+
+	// Change this to each device's twitter user name
 	private String screenName = "tinkie_101";
 	private ListActivity activityContext;
 
@@ -46,13 +52,13 @@ public class TwitterActivity extends ListActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_twitter);
-		
+
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
 		activityContext = this;
 		downloadTweets();
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -62,12 +68,13 @@ public class TwitterActivity extends ListActivity
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/*
-	 * The following code is taken from: https://github.com/Rockncoder/TwitterTutorial
-	 * A few minor changes was made from the above repository.
+	 * The following code is taken from:
+	 * https://github.com/Rockncoder/TwitterTutorial A few minor changes was
+	 * made from the above repository.
 	 */
-	
+
 	// download twitter timeline after first checking to see if there is a
 	// network connection
 	public void downloadTweets()
@@ -81,22 +88,23 @@ public class TwitterActivity extends ListActivity
 		}
 		else
 		{
-			Toast.makeText(this, "No network connection available.", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "No network connection available.",
+					Toast.LENGTH_LONG).show();
 			Log.i(LOG_TAG_TWITTER_ACTIVITY, "No network connection available.");
 		}
 	}
-	
+
 	private class TwitterHandler extends AsyncTask<String, Void, String>
 	{
-		private static final String LOG_TAG_TWITTER_HANDLER = "TwitterHandler";
-
-		//Change these keys to be each device's twitter keys. 
+		// Change these keys to be each device's twitter keys.
 		final static String API_KEY = "qcGzp08qWLEZom1x7dxCG5qu0";
 		final static String API_SECRET = "ly810vDH1S16Ttw0mpk4ZBYQvLEF9gEO16KSqy9lBqhwRf5XRo";
-		
+
 		final static String TwitterTokenURL = "https://api.twitter.com/oauth2/token";
 		final static String TwitterStreamURL = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=";
-
+		
+		private ArrayAdapter<Tweet> adapter;
+		
 		@Override
 		protected String doInBackground(String... screenNames)
 		{
@@ -106,12 +114,7 @@ public class TwitterActivity extends ListActivity
 			{
 				result = getTwitterStream(screenNames[0]);
 			}
-			return result;
-		}
-
-		@Override
-		protected void onPostExecute(String result)
-		{
+			
 			Twitter twits = jsonToTwitter(result);
 
 			// lets write the results to the console as well
@@ -121,11 +124,54 @@ public class TwitterActivity extends ListActivity
 			// }
 
 			// send the tweets to the adapter for rendering
-			// Check this context value, maybe it should be TwitterActivity.class?
-			ArrayAdapter<Tweet> adapter = new ArrayAdapter<Tweet>(activityContext, android.R.layout.simple_list_item_1, twits);
+			// Check this context value, maybe it should be
+			// TwitterActivity.class?
+			
+			ArrayList<Drawable> drawableProfileImage = new ArrayList<Drawable>();
+			ArrayList<String> userID = new ArrayList<String>();
+			for (Tweet tweet : twits)
+			{
+				try
+				{
+					if(!userID.contains(tweet.getUser().getScreenName()))
+					{
+						String imageURL = tweet.getUser().getProfileImageUrl();
+						
+						imageURL = imageURL.replace(imageURL.substring(imageURL.lastIndexOf('/')+1), "splash.jpg");
+//						"https://pbs.twimg.com/profile_images/1218269958/splash.jpg"
+						URL url = new URL(imageURL);
+						InputStream content = (InputStream) url.openStream();
+						Drawable d = Drawable.createFromStream(content, "src");
+						drawableProfileImage.add(d);
+						userID.add(tweet.getUser().getScreenName());
+					}
+					else
+					{
+						drawableProfileImage.add(drawableProfileImage.get(userID.indexOf(tweet.getUser().getScreenName())));
+					}
+
+				}
+				catch (MalformedURLException e)
+				{
+				}
+				catch(IOException e)
+				{				
+				}
+				
+			}
+			
+			
+			adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter, twits, drawableProfileImage);
+			
+			return result;
+		}
+		
+		@Override
+		protected void onPostExecute(String result)
+		{
 			setListAdapter(adapter);
 		}
-
+		
 		private Twitter jsonToTwitter(String result)
 		{
 			Twitter twits = null;
@@ -169,7 +215,8 @@ public class TwitterActivity extends ListActivity
 			try
 			{
 
-				DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
+				DefaultHttpClient httpClient = new DefaultHttpClient(
+						new BasicHttpParams());
 				HttpResponse response = httpClient.execute(request);
 				int statusCode = response.getStatusLine().getStatusCode();
 				String reason = response.getStatusLine().getReasonPhrase();
@@ -216,20 +263,21 @@ public class TwitterActivity extends ListActivity
 				String urlApiKey = URLEncoder.encode(API_KEY, "UTF-8");
 				String urlApiSecret = URLEncoder.encode(API_SECRET, "UTF-8");
 
-				// Concatenate the encoded consumer key, a colon character, and the
+				// Concatenate the encoded consumer key, a colon character, and
+				// the
 				// encoded consumer secret
 				String combined = urlApiKey + ":" + urlApiSecret;
-
 				// Base64 encode the string
-				String base64Encoded = Base64.encodeToString(combined.getBytes(),
-						Base64.NO_WRAP);
+				String base64Encoded = Base64.encodeToString(
+						combined.getBytes(), Base64.NO_WRAP);
 
 				// Step 2: Obtain a bearer token
 				HttpPost httpPost = new HttpPost(TwitterTokenURL);
 				httpPost.setHeader("Authorization", "Basic " + base64Encoded);
 				httpPost.setHeader("Content-Type",
 						"application/x-www-form-urlencoded;charset=UTF-8");
-				httpPost.setEntity(new StringEntity("grant_type=client_credentials"));
+				httpPost.setEntity(new StringEntity(
+						"grant_type=client_credentials"));
 				String rawAuthorization = getResponseBody(httpPost);
 				Authenticated auth = jsonToAuthenticated(rawAuthorization);
 
@@ -241,12 +289,16 @@ public class TwitterActivity extends ListActivity
 					// Step 3: Authenticate API requests with bearer token
 					HttpGet httpGet = new HttpGet(TwitterStreamURL + screenName);
 
-					// construct a normal HTTPS request and include an Authorisation
+					// construct a normal HTTPS request and include an
+					// Authorisation
 					// header with the value of Bearer <>
-					httpGet.setHeader("Authorization", "Bearer " + auth.access_token);
+					httpGet.setHeader("Authorization", "Bearer "
+							+ auth.access_token);
 					httpGet.setHeader("Content-Type", "application/json");
 					// update the results with the body of the response
 					results = getResponseBody(httpGet);
+
+					// Log.d(LOG_TAG_TWITTER_HANDLER, results);
 				}
 			}
 			catch (UnsupportedEncodingException ex)
