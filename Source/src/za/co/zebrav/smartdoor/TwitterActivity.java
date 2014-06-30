@@ -46,6 +46,7 @@ public class TwitterActivity extends ListActivity
 	// Change this to each device's twitter user name
 	private String screenName = "tinkie_101";
 	private ListActivity activityContext;
+	private TwitterHandler twitterHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -56,6 +57,12 @@ public class TwitterActivity extends ListActivity
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		activityContext = this;
+
+		// TODO: Get this from somewhere else
+		String API_KEY = "qcGzp08qWLEZom1x7dxCG5qu0";
+		String API_SECRET = "ly810vDH1S16Ttw0mpk4ZBYQvLEF9gEO16KSqy9lBqhwRf5XRo";
+
+		twitterHandler = new TwitterHandler(API_KEY, API_SECRET);
 		downloadTweets();
 	}
 
@@ -84,10 +91,14 @@ public class TwitterActivity extends ListActivity
 
 		if (networkInfo != null && networkInfo.isConnected())
 		{
-			new TwitterHandler().execute(screenName);
+			// execute the doInBackground() function
+			twitterHandler.execute(screenName);
 		}
 		else
 		{
+			// Log, and let the user know that there isn't any network
+			// connections
+			// can change this to whatever notification works best
 			Toast.makeText(this, "No network connection available.",
 					Toast.LENGTH_LONG).show();
 			Log.i(LOG_TAG_TWITTER_ACTIVITY, "No network connection available.");
@@ -96,15 +107,26 @@ public class TwitterActivity extends ListActivity
 
 	private class TwitterHandler extends AsyncTask<String, Void, String>
 	{
-		// Change these keys to be each device's twitter keys.
-		final static String API_KEY = "qcGzp08qWLEZom1x7dxCG5qu0";
-		final static String API_SECRET = "ly810vDH1S16Ttw0mpk4ZBYQvLEF9gEO16KSqy9lBqhwRf5XRo";
+		// each individual device's twitter key and secret.
+		private String API_KEY;
+		private String API_SECRET;
 
 		final static String TwitterTokenURL = "https://api.twitter.com/oauth2/token";
 		final static String TwitterStreamURL = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=";
-		
-		private ArrayAdapter<Tweet> adapter;
-		
+
+		private ArrayAdapter<Tweet> adapter = null;
+		private ArrayList<Drawable> drawableProfileImage = null;
+		private ArrayList<String> userID = null;
+
+		public TwitterHandler(String API_KEY, String API_SECRET)
+		{
+			this.API_KEY = API_KEY;
+			this.API_SECRET = API_SECRET;
+
+			drawableProfileImage = new ArrayList<Drawable>();
+			userID = new ArrayList<String>();
+		}
+
 		@Override
 		protected String doInBackground(String... screenNames)
 		{
@@ -114,31 +136,22 @@ public class TwitterActivity extends ListActivity
 			{
 				result = getTwitterStream(screenNames[0]);
 			}
-			
+
 			Twitter twits = jsonToTwitter(result);
 
-			// lets write the results to the console as well
-			// for (Tweet tweet : twits)
-			// {
-			// Log.i(LOG_TAG_TWITTER_HANDLER, tweet.getText());
-			// }
-
-			// send the tweets to the adapter for rendering
-			// Check this context value, maybe it should be
-			// TwitterActivity.class?
-			
-			ArrayList<Drawable> drawableProfileImage = new ArrayList<Drawable>();
-			ArrayList<String> userID = new ArrayList<String>();
+			// Store a list of already retrieved profile images to reduce
+			// network cost
 			for (Tweet tweet : twits)
 			{
 				try
 				{
-					if(!userID.contains(tweet.getUser().getScreenName()))
+					if (!userID.contains(tweet.getUser().getScreenName()))
 					{
 						String imageURL = tweet.getUser().getProfileImageUrl();
+
+						imageURL = imageURL.replace(imageURL.substring(imageURL
+								.lastIndexOf('/') + 1), "splash.jpg");
 						
-						imageURL = imageURL.replace(imageURL.substring(imageURL.lastIndexOf('/')+1), "splash.jpg");
-//						"https://pbs.twimg.com/profile_images/1218269958/splash.jpg"
 						URL url = new URL(imageURL);
 						InputStream content = (InputStream) url.openStream();
 						Drawable d = Drawable.createFromStream(content, "src");
@@ -147,31 +160,33 @@ public class TwitterActivity extends ListActivity
 					}
 					else
 					{
-						drawableProfileImage.add(drawableProfileImage.get(userID.indexOf(tweet.getUser().getScreenName())));
+						drawableProfileImage.add(drawableProfileImage
+								.get(userID.indexOf(tweet.getUser()
+										.getScreenName())));
 					}
 
 				}
 				catch (MalformedURLException e)
 				{
 				}
-				catch(IOException e)
-				{				
+				catch (IOException e)
+				{
 				}
-				
+
 			}
-			
-			
-			adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter, twits, drawableProfileImage);
-			
+
+			adapter = new TwitterArrayAdapter(activityContext,
+					R.layout.list_twitter, twits, drawableProfileImage);
+
 			return result;
 		}
-		
+
 		@Override
 		protected void onPostExecute(String result)
 		{
 			setListAdapter(adapter);
 		}
-		
+
 		private Twitter jsonToTwitter(String result)
 		{
 			Twitter twits = null;
@@ -298,7 +313,7 @@ public class TwitterActivity extends ListActivity
 					// update the results with the body of the response
 					results = getResponseBody(httpGet);
 
-					// Log.d(LOG_TAG_TWITTER_HANDLER, results);
+//					Log.d(LOG_TAG_TWITTER_ACTIVITY, results);
 				}
 			}
 			catch (UnsupportedEncodingException ex)

@@ -25,8 +25,8 @@ public class TwitterArrayAdapter extends ArrayAdapter<Tweet>
 
 	private ArrayList<Drawable> drawableProfileImage;
 
-	public TwitterArrayAdapter(Context context, int resource,
-			List<Tweet> objects, ArrayList<Drawable> drawableProfileImage)
+	public TwitterArrayAdapter(Context context, int resource, List<Tweet> objects,
+				ArrayList<Drawable> drawableProfileImage)
 	{
 		super(context, resource, objects);
 		this.context = context;
@@ -42,30 +42,47 @@ public class TwitterArrayAdapter extends ArrayAdapter<Tweet>
 		final Tweet tweet = objects.get(position);
 
 		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+					.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		View view = inflater.inflate(resource, null);
 
-		ImageView image = (ImageView) view.findViewById(R.id.imageView1);
+		ImageView image = (ImageView) view.findViewById(R.id.twitterUserImage);
 
+		// Test if image isn't out of bounds or null in the array list
 		try
 		{
 			if (drawableProfileImage.size() > position
-					&& drawableProfileImage.get(position) != null)
+						&& drawableProfileImage.get(position) != null)
 				image.setImageDrawable(drawableProfileImage.get(position));
 		}
 		catch (NullPointerException e)
 		{
-
+			// Log.d(LOG_TAG_TWITTER_ARRAY_ADAPTER, e.toString());
 		}
 		catch (IndexOutOfBoundsException e)
 		{
-			Log.d(LOG_TAG_TWITTER_ARRAY_ADAPTER, e.toString());
+			// Log.d(LOG_TAG_TWITTER_ARRAY_ADAPTER, e.toString());
 		}
 
-		TextView screenName = (TextView) view.findViewById(R.id.textView1);
-		screenName.setText(tweet.getUser().getScreenName());
+		TextView screenName = (TextView) view.findViewById(R.id.twitterUserHandle);
+		screenName.setText("@" + tweet.getUser().getScreenName());
 
-		TextView text = (TextView) view.findViewById(R.id.textView2);
+		TextView dateText = (TextView) view.findViewById(R.id.twitterPostDateTime);
+
+		String date = tweet.getDateCreated();
+
+		if (date.contains("+"))
+		{
+			// Use \\+ to escape the special character (working with regular
+			// expression?)
+			String dateString[] = date.split("\\+");
+
+			dateString[1] = dateString[1].substring(dateString[1].indexOf(' ') + 1);
+			dateText.setText(dateString[0] + dateString[1]);
+		}
+		else
+			dateText.setText(date);
+
+		TextView text = (TextView) view.findViewById(R.id.twitterUserText);
 		text.setText(tweet.getText());
 
 		return view;

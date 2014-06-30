@@ -3,23 +3,23 @@
     android:layout_height="fill_parent" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/twitterUserImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_launcher"
-        android:contentDescription="@string/ProfileImage" />
+        android:contentDescription="@string/UserImage" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/twitterUserHandle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/imageView1"
+        android:layout_toRightOf="@+id/twitterUserImage"
         android:minEms="@android:color/holo_blue_light"
         android:text="@string/placeholder"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -28,14 +28,24 @@
         android:textStyle="italic" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/twitterUserText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/twitterUserHandle"
         android:layout_marginLeft="11dp"
         android:layout_marginRight="10dp"
-        android:layout_toRightOf="@+id/imageView1"
+        android:layout_toRightOf="@+id/twitterUserImage"
         android:text="@string/placeholder"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/twitterPostDateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@+id/twitterUserHandle"
+        android:layout_alignBaseline="@+id/twitterUserHandle"
+        android:text="@string/placeholder"
+        android:textColor="@android:color/darker_gray" />
 
 </RelativeLayout>
