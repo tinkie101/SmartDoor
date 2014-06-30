@@ -3,9 +3,13 @@ package za.co.zebrav.smartdoor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
+import android.hardware.Camera.Face;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -40,12 +44,15 @@ public class CameraActivity extends Activity
 		checkFrontCamera(context);
 		// Create an instance of Camera
 		mCamera = getFrontCameraInstance();
-
+		mCamera.setFaceDetectionListener(new FDL());
 		// Create our Preview view and set it as the content of our activity.
 		mPreview = new CameraPreview(this, mCamera);
 		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
 		preview.addView(mPreview);
+		
 	}
+
+
 
 	/**
 	 * Releases the camera for the OS when the activity closes.
@@ -104,6 +111,7 @@ public class CameraActivity extends Activity
 		{
 			// attempt to get a Camera instance
 			c = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
+			//c = Camera.open(CameraInfo.CAMERA_FACING_BACK);
 
 		} catch (Exception e)
 		{
@@ -114,6 +122,7 @@ public class CameraActivity extends Activity
 		}
 		return c; // returns null if camera is unavailable
 	}
+
 	/**
 	 * helper function to release the camera
 	 */
@@ -123,6 +132,29 @@ public class CameraActivity extends Activity
 		{
 			mCamera.release(); // release the camera for other applications
 			mCamera = null;
+		}
+	}
+
+	private class FDL implements Camera.FaceDetectionListener
+	{
+
+		@Override
+		public void onFaceDetection(Face[] faces, Camera camera)
+		{
+			if (faces.length > 0)
+			{	
+				//Face has been detected.
+				//Draw a rectangle around the face
+				
+//				Paint myPaint = new Paint();
+//				myPaint.setColor(Color.rgb(0, 0, 0));
+//				myPaint.setStrokeWidth(10);
+//				c.drawRect(100, 100, 200, 200, myPaint);
+				
+				Log.d("FaceDetection", "face detected: " + faces.length
+						+ " Face 1 Location X: " + faces[0].rect.centerX()
+						+ "Y: " + faces[0].rect.centerY());
+			}
 		}
 	}
 }
