@@ -36,17 +36,6 @@ public class CameraActivity extends Activity
 		// Make the action bar an back button
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		context = this;
-
-	}
-
-	/**
-	 * Creates the camera each time the activity starts
-	 * 
-	 * @see android.app.Activity#onStart()
-	 */
-	@Override
-	protected void onStart()
-	{
 		// check that the hardware does indeed have a camera
 		checkFrontCamera(context);
 		// Create an instance of Camera
@@ -56,19 +45,18 @@ public class CameraActivity extends Activity
 		mPreview = new CameraPreview(this, mCamera);
 		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
 		preview.addView(mPreview);
-		super.onStart();
 	}
 
 	/**
 	 * Releases the camera for the OS when the activity closes.
 	 * 
-	 * @see android.app.Activity#onStop()
+	 * @see android.app.Activity#onPause()
 	 */
 	@Override
-	protected void onStop()
+	protected void onPause()
 	{
-		mCamera.release();
-		super.onStop();
+		super.onPause();
+		releaseCamera();
 	}
 
 	/**
@@ -115,8 +103,8 @@ public class CameraActivity extends Activity
 		try
 		{
 			// attempt to get a Camera instance
-			c = Camera.open(CameraInfo.CAMERA_FACING_FRONT); 
-			
+			c = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
+
 		} catch (Exception e)
 		{
 			Toast t = Toast.makeText(context, "Camera in use",
@@ -125,5 +113,16 @@ public class CameraActivity extends Activity
 			System.exit(0);
 		}
 		return c; // returns null if camera is unavailable
+	}
+	/**
+	 * helper function to release the camera
+	 */
+	private void releaseCamera()
+	{
+		if (mCamera != null)
+		{
+			mCamera.release(); // release the camera for other applications
+			mCamera = null;
+		}
 	}
 }
