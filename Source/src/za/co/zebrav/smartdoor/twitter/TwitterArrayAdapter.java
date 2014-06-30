@@ -15,17 +15,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class TwitterArrayAdapter extends ArrayAdapter<Tweet>
+public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 {
 
 	private static final String LOG_TAG_TWITTER_ARRAY_ADAPTER = "TwitterArrayAdapter";
 	private Context context;
-	private List<Tweet> objects;
+	private List<twitter4j.Status> objects;
 	private int resource;
 
 	private ArrayList<Drawable> drawableProfileImage;
 
-	public TwitterArrayAdapter(Context context, int resource, List<Tweet> objects,
+	public TwitterArrayAdapter(Context context, int resource, List<twitter4j.Status> objects,
 				ArrayList<Drawable> drawableProfileImage)
 	{
 		super(context, resource, objects);
@@ -39,7 +39,7 @@ public class TwitterArrayAdapter extends ArrayAdapter<Tweet>
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		final Tweet tweet = objects.get(position);
+		final twitter4j.Status tweet = objects.get(position);
 
 		LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -68,7 +68,7 @@ public class TwitterArrayAdapter extends ArrayAdapter<Tweet>
 
 		TextView dateText = (TextView) view.findViewById(R.id.twitterPostDateTime);
 
-		String date = tweet.getDateCreated();
+		String date = tweet.getCreatedAt().toGMTString();
 
 		if (date.contains("+"))
 		{

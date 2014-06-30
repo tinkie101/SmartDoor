@@ -4,13 +4,13 @@
 
     <ImageView
         android:id="@+id/twitterUserImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_launcher"
-        android:contentDescription="@string/UserImage" />
+        android:layout_marginLeft="10dp"
+        android:contentDescription="@string/UserImage"
+        android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/twitterUserHandle"
@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
         android:layout_toRightOf="@+id/twitterUserHandle"
+        android:layout_above="@+id/twitterUserText"
         android:layout_alignBaseline="@+id/twitterUserHandle"
         android:text="@string/placeholder"
         android:textColor="@android:color/darker_gray" />
