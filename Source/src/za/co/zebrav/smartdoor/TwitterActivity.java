@@ -77,6 +77,14 @@ public class TwitterActivity extends ListActivity
 
 			Log.d(LOG_TAG_TWITTER_ACTIVITY, "execute");
 			twitterHandler.execute();
+			
+//			while(true)
+//			{
+//				while(!(twitterHandler.getStatus() == AsyncTask.Status.FINISHED))
+//				{
+//				}
+//				twitterHandler.execute();
+//			}
 		}
 		else
 		{
