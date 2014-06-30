@@ -13,11 +13,15 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import za.co.zebrav.smartdoor.twitter.TwitterArrayAdapter;
 import android.app.ListActivity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class TwitterActivity extends ListActivity
 {
@@ -46,7 +50,7 @@ public class TwitterActivity extends ListActivity
 					.setOAuthAccessToken(ACCESS_TOKEN).setOAuthAccessTokenSecret(TOKEN_SECRET);
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
-		new getTwitter().execute("test");
+		getTweets();
 	}
 
 	@Override
@@ -58,20 +62,40 @@ public class TwitterActivity extends ListActivity
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	private void getTweets()
+	{
+		ConnectivityManager connectionManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connectionManager.getActiveNetworkInfo();
 
-	private class getTwitter extends AsyncTask<String, Void, List<twitter4j.Status>>
+		if (networkInfo != null && networkInfo.isConnected())
+		{
+			// execute the doInBackground() function
+			new TwitterHandler().execute();
+		}
+		else
+		{
+			// Log, and let the user know that there isn't any network
+			// connections, can change this to whatever notification works best
+			Toast.makeText(this, "No network connection available.",
+					Toast.LENGTH_LONG).show();
+			Log.i(LOG_TAG_TWITTER_ACTIVITY, "No network connection available.");
+		}
+	}
+	
+	private class TwitterHandler extends AsyncTask<Void, Void, List<twitter4j.Status>>
 	{
 		private TwitterArrayAdapter adapter;
 
 		@Override
-		protected List<twitter4j.Status> doInBackground(String... params)
+		protected List<twitter4j.Status> doInBackground(Void... params)
 		{
 			try
 			{
 				List<twitter4j.Status> tweets = twitter.getMentionsTimeline();
 				// List<twitter4j.Status> tweets = twitter.getUserTimeline();
 
-				// Store a list of already retrieved profile images to reduce
+				// Store a list of already retrieved profile images to reduce the
 				// network cost
 				ArrayList<Drawable> drawableProfileImage = new ArrayList<Drawable>();
 				ArrayList<String> userID = new ArrayList<String>();
@@ -81,8 +105,7 @@ public class TwitterActivity extends ListActivity
 					{
 						if (!userID.contains(tweet.getUser().getScreenName()))
 						{
-							String imageURL = tweet.getUser().getBiggerProfileImageURL();
-
+							String imageURL = tweet.getUser().getOriginalProfileImageURL();
 							// Log.d(LOG_TAG_TWITTER_ACTIVITY, imageURL);
 
 							URL url = new URL(imageURL);
@@ -113,8 +136,7 @@ public class TwitterActivity extends ListActivity
 			}
 			catch (TwitterException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(LOG_TAG_TWITTER_ACTIVITY, "Twitter Error", e);
 			}
 			return null;
 		}
