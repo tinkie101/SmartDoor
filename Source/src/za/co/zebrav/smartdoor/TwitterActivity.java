@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import twitter4j.Paging;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -50,6 +51,7 @@ public class TwitterActivity extends ListActivity
 					.setOAuthAccessToken(ACCESS_TOKEN).setOAuthAccessTokenSecret(TOKEN_SECRET);
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
+
 		getTweets();
 	}
 
@@ -62,7 +64,7 @@ public class TwitterActivity extends ListActivity
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void getTweets()
 	{
 		ConnectivityManager connectionManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -71,39 +73,65 @@ public class TwitterActivity extends ListActivity
 		if (networkInfo != null && networkInfo.isConnected())
 		{
 			// execute the doInBackground() function
-			new TwitterHandler().execute();
+			TwitterHandler twitterHandler = new TwitterHandler();
+
+			Log.d(LOG_TAG_TWITTER_ACTIVITY, "execute");
+			twitterHandler.execute();
 		}
 		else
 		{
 			// Log, and let the user know that there isn't any network
 			// connections, can change this to whatever notification works best
-			Toast.makeText(this, "No network connection available.",
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "No network connection available.", Toast.LENGTH_LONG).show();
 			Log.i(LOG_TAG_TWITTER_ACTIVITY, "No network connection available.");
 		}
 	}
-	
+
 	private class TwitterHandler extends AsyncTask<Void, Void, List<twitter4j.Status>>
 	{
 		private TwitterArrayAdapter adapter;
+		private ArrayList<Drawable> drawableProfileImage;
+		private ArrayList<Long> userID;
+		private long sinceID;
+
+		public TwitterHandler()
+		{
+			drawableProfileImage = new ArrayList<Drawable>();
+			userID = new ArrayList<Long>();
+			sinceID = -1;
+			adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter, new ArrayList<twitter4j.Status>(),
+						drawableProfileImage, userID);
+
+			setListAdapter(adapter);
+		}
 
 		@Override
 		protected List<twitter4j.Status> doInBackground(Void... params)
 		{
 			try
 			{
-				List<twitter4j.Status> tweets = twitter.getMentionsTimeline();
-				// List<twitter4j.Status> tweets = twitter.getUserTimeline();
+				List<twitter4j.Status> tweets;
+				if (sinceID == -1)
+				{
+					tweets = twitter.getUserTimeline();
+				}
+				else
+				{
+					Paging paging = new Paging(1, 20).sinceId(sinceID);
+					// List<twitter4j.Status> tweets = twitter.getMentionsTimeline(paging);
+					// List<twitter4j.Status> tweets = twitter.getMentionsTimeline();
+					tweets = twitter.getUserTimeline(paging);
+				}
+				sinceID = tweets.get(0).getId();
 
 				// Store a list of already retrieved profile images to reduce the
 				// network cost
-				ArrayList<Drawable> drawableProfileImage = new ArrayList<Drawable>();
-				ArrayList<String> userID = new ArrayList<String>();
 				for (twitter4j.Status tweet : tweets)
 				{
+
 					try
 					{
-						if (!userID.contains(tweet.getUser().getScreenName()))
+						if (!userID.contains(tweet.getUser().getId()))
 						{
 							String imageURL = tweet.getUser().getOriginalProfileImageURL();
 							// Log.d(LOG_TAG_TWITTER_ACTIVITY, imageURL);
@@ -112,12 +140,7 @@ public class TwitterActivity extends ListActivity
 							InputStream content = (InputStream) url.openStream();
 							Drawable d = Drawable.createFromStream(content, "src");
 							drawableProfileImage.add(d);
-							userID.add(tweet.getUser().getScreenName());
-						}
-						else
-						{
-							drawableProfileImage.add(drawableProfileImage.get(userID.indexOf(tweet
-										.getUser().getScreenName())));
+							userID.add(tweet.getUser().getId());
 						}
 
 					}
@@ -129,8 +152,10 @@ public class TwitterActivity extends ListActivity
 					}
 
 				}
-				adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter, tweets,
-							drawableProfileImage);
+//
+//				adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter, tweets,
+//							drawableProfileImage, userID);
+				
 
 				return tweets;
 			}
@@ -144,7 +169,7 @@ public class TwitterActivity extends ListActivity
 		@Override
 		protected void onPostExecute(List<twitter4j.Status> result)
 		{
-			setListAdapter(adapter);
+			adapter.addTweetsToTop(result);
 		}
 	}
 }

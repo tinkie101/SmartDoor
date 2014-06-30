@@ -24,9 +24,10 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 	private int resource;
 
 	private ArrayList<Drawable> drawableProfileImage;
+	private ArrayList<Long> userID;
 
 	public TwitterArrayAdapter(Context context, int resource, List<twitter4j.Status> objects,
-				ArrayList<Drawable> drawableProfileImage)
+				ArrayList<Drawable> drawableProfileImage, ArrayList<Long> userID)
 	{
 		super(context, resource, objects);
 		this.context = context;
@@ -34,12 +35,13 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 		this.resource = resource;
 
 		this.drawableProfileImage = drawableProfileImage;
+		this.userID = userID;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		final twitter4j.Status tweet = objects.get(position);
+		twitter4j.Status tweet = objects.get(position);
 
 		LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -50,9 +52,12 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 		// Test if image isn't out of bounds or null in the array list
 		try
 		{
-			if (drawableProfileImage.size() > position
-						&& drawableProfileImage.get(position) != null)
-				image.setImageDrawable(drawableProfileImage.get(position));
+			Log.d(LOG_TAG_TWITTER_ARRAY_ADAPTER, Long.toString(tweet.getId()));
+			int imagePosition = userID.indexOf(tweet.getUser().getId());
+			if (imagePosition != -1)
+			{
+				image.setImageDrawable(drawableProfileImage.get(imagePosition));
+			}
 		}
 		catch (NullPointerException e)
 		{
@@ -86,5 +91,17 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 		text.setText(tweet.getText());
 
 		return view;
+	}
+	
+	public void addTweetToTop()
+	{
+		objects.add(0, objects.get(0));
+		notifyDataSetChanged();
+	}
+	
+	public void addTweetsToTop(List<twitter4j.Status> newTweets)
+	{
+		objects.addAll(0, newTweets);
+		notifyDataSetChanged();
 	}
 }
