@@ -3,5 +3,10 @@
 
     <string name="app_name">Smart Door</string>
     <string name="hello_world">Hello world!</string>
+    <string name="goto_twitter">Go to the Twitter feed</string>
+    <string name="title_activity_twitter">TwitterActivity</string>
+    <string name="placeholder">example</string>
+    <string name="UserImage">User\'s Profile Image</string>
+    <string name="Refresh">Refresh</string>
 
 </resources>
