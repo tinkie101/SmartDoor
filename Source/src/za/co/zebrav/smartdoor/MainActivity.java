@@ -1,5 +1,4 @@
 //Authors:
-//ZEBRA-V
 //Eduan Bekker - 12214834
 //Zuhnja Riekert - 12040593
 //Albert Volschenk - 12054519
