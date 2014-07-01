@@ -11,12 +11,23 @@
         android:text="@string/hello_world" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/button_goto_twitter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView1"
         android:text="@string/goto_twitter" 
         android:onClick="gotoTwitter"/>
+    
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="57dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:text="Camera" 
+        android:onClick="gotoCamera"
+        />
 
 </RelativeLayout>
