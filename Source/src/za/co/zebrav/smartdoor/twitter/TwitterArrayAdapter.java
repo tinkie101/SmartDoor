@@ -101,7 +101,18 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 	
 	public void addTweetsToTop(List<twitter4j.Status> newTweets)
 	{
-		objects.addAll(0, newTweets);
+		if(newTweets != null)
+		{
+			objects.addAll(0, newTweets);
+			notifyDataSetChanged();
+		}
+	}
+	
+	public void clearData()
+	{
+		objects.clear();
+		drawableProfileImage.clear();
+		userID.clear();
 		notifyDataSetChanged();
 	}
 }

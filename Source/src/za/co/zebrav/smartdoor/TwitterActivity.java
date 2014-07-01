@@ -21,6 +21,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -29,6 +30,13 @@ public class TwitterActivity extends ListActivity
 	private static final String LOG_TAG_TWITTER_ACTIVITY = "TwitterActivity";
 	private ListActivity activityContext;
 	Twitter twitter;
+
+	private TwitterArrayAdapter adapter;
+	private ArrayList<Drawable> drawableProfileImage;
+	private ArrayList<Long> userID;
+	private long sinceUserTimelineID;
+	private long sinceMentionsTimelineID;
+	private boolean disableRefresh;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -52,17 +60,61 @@ public class TwitterActivity extends ListActivity
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
 
+		drawableProfileImage = new ArrayList<Drawable>();
+		userID = new ArrayList<Long>();
+		sinceUserTimelineID = -1;
+		sinceMentionsTimelineID = -1;
+
+		adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter,
+					new ArrayList<twitter4j.Status>(), drawableProfileImage, userID);
+
+		setListAdapter(adapter);
+
+		disableRefresh = false;
+
 		getTweets();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getMenuInflater().inflate(R.menu.twitter, menu);
+		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		if (item.getItemId() == android.R.id.home)
+		switch (item.getItemId())
 		{
-			finish();
+			case android.R.id.home:
+				finish();
+				break;
+
+			case R.id.action_refresh_tweets:
+				drawableProfileImage.clear();
+				userID.clear();
+				sinceUserTimelineID = -1;
+				sinceMentionsTimelineID = -1;
+				adapter.clearData();
+				
+				getTweets();
+				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+		MenuItem item = menu.findItem(R.id.action_refresh_tweets);
+
+		if (disableRefresh)
+			item.setEnabled(false);
+		else
+			item.setEnabled(true);
+
+		return true;
 	}
 
 	private void getTweets()
@@ -72,19 +124,23 @@ public class TwitterActivity extends ListActivity
 
 		if (networkInfo != null && networkInfo.isConnected())
 		{
-			// execute the doInBackground() function
-			TwitterHandler twitterHandler = new TwitterHandler();
-
 			Log.d(LOG_TAG_TWITTER_ACTIVITY, "execute");
-			twitterHandler.execute();
-			
-//			while(true)
-//			{
-//				while(!(twitterHandler.getStatus() == AsyncTask.Status.FINISHED))
-//				{
-//				}
-//				twitterHandler.execute();
-//			}
+
+			// MenuItem item = (MenuItem) findViewById(R.id.action_refresh_tweets);
+			// item.setEnabled(false);
+
+			disableRefresh = true;
+			invalidateOptionsMenu();
+			Toast.makeText(this, "Refreshing Tweets", Toast.LENGTH_LONG).show();
+			new TwitterHandler().execute();
+
+			// while(true)
+			// {
+			// while(!(twitterHandler.getStatus() == AsyncTask.Status.FINISHED))
+			// {
+			// }
+			// twitterHandler.execute();
+			// }
 		}
 		else
 		{
@@ -97,40 +153,55 @@ public class TwitterActivity extends ListActivity
 
 	private class TwitterHandler extends AsyncTask<Void, Void, List<twitter4j.Status>>
 	{
-		private TwitterArrayAdapter adapter;
-		private ArrayList<Drawable> drawableProfileImage;
-		private ArrayList<Long> userID;
-		private long sinceID;
-
-		public TwitterHandler()
-		{
-			drawableProfileImage = new ArrayList<Drawable>();
-			userID = new ArrayList<Long>();
-			sinceID = -1;
-			adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter, new ArrayList<twitter4j.Status>(),
-						drawableProfileImage, userID);
-
-			setListAdapter(adapter);
-		}
 
 		@Override
 		protected List<twitter4j.Status> doInBackground(Void... params)
 		{
 			try
 			{
-				List<twitter4j.Status> tweets;
-				if (sinceID == -1)
+				List<twitter4j.Status> userTimeline;
+				List<twitter4j.Status> mentionsTimeline;
+
+				// Only get new Tweets
+				if (sinceUserTimelineID == -1)
 				{
-					tweets = twitter.getUserTimeline();
+					userTimeline = twitter.getUserTimeline();
 				}
 				else
 				{
-					Paging paging = new Paging(1, 20).sinceId(sinceID);
-					// List<twitter4j.Status> tweets = twitter.getMentionsTimeline(paging);
-					// List<twitter4j.Status> tweets = twitter.getMentionsTimeline();
-					tweets = twitter.getUserTimeline(paging);
+					Paging paging = new Paging(1, 20).sinceId(sinceUserTimelineID);
+					userTimeline = twitter.getUserTimeline(paging);
 				}
-				sinceID = tweets.get(0).getId();
+
+				if (sinceMentionsTimelineID == -1)
+				{
+					mentionsTimeline = twitter.getMentionsTimeline();
+				}
+				else
+				{
+					Paging paging = new Paging(1, 20).sinceId(sinceMentionsTimelineID);
+					mentionsTimeline = twitter.getMentionsTimeline(paging);
+				}
+
+				if (userTimeline.size() > 0)
+					sinceUserTimelineID = userTimeline.get(0).getId();
+
+				if (mentionsTimeline.size() > 0)
+					sinceMentionsTimelineID = mentionsTimeline.get(0).getId();
+
+				List<twitter4j.Status> tweets = new ArrayList<twitter4j.Status>(userTimeline);
+
+				for (twitter4j.Status tweet : mentionsTimeline)
+				{
+					for (int i = 0; i < tweets.size(); i++)
+					{
+						if (tweets.get(i).getCreatedAt().compareTo(tweet.getCreatedAt()) < 0)
+						{
+							tweets.add(i, tweet);
+							break;
+						}
+					}
+				}
 
 				// Store a list of already retrieved profile images to reduce the
 				// network cost
@@ -160,10 +231,9 @@ public class TwitterActivity extends ListActivity
 					}
 
 				}
-//
-//				adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter, tweets,
-//							drawableProfileImage, userID);
-				
+				//
+				// adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter, tweets,
+				// drawableProfileImage, userID);
 
 				return tweets;
 			}
@@ -178,6 +248,11 @@ public class TwitterActivity extends ListActivity
 		protected void onPostExecute(List<twitter4j.Status> result)
 		{
 			adapter.addTweetsToTop(result);
+
+			disableRefresh = false;
+			invalidateOptionsMenu();
+
+			Toast.makeText(activityContext, "Refreshing Complete", Toast.LENGTH_LONG).show();
 		}
 	}
 }
