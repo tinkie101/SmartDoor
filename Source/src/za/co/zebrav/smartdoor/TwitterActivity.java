@@ -25,6 +25,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.Toast;
 
 /**
@@ -56,7 +57,7 @@ public class TwitterActivity extends ListActivity
 	private int maxImageCount = 50;
 	private int maxTweetCount = 50;
 	// Auto-update time
-	final int updateTime = 20000;
+	final int updateTime = 61000;
 
 	/**
 	 * 
@@ -94,6 +95,7 @@ public class TwitterActivity extends ListActivity
 		// Initialise the ArrayAdapter for the ListView
 		adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter,
 					new ArrayList<twitter4j.Status>(), drawableProfileImage, userID);
+
 		setListAdapter(adapter);
 
 		gettingTweets = new AtomicInteger(1);
@@ -230,7 +232,7 @@ public class TwitterActivity extends ListActivity
 			disableRefresh = true;
 			invalidateOptionsMenu();
 
-			Toast.makeText(this, "Refreshing Tweets", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Updating Tweets", Toast.LENGTH_LONG).show();
 			new TwitterHandler().execute();
 		}
 		else
@@ -307,10 +309,10 @@ public class TwitterActivity extends ListActivity
 					{
 						if (i == tweets.size())
 						{
-							//List is empty or we reached the end of the list, so add normally
+							// List is empty or we reached the end of the list, so add normally
 							Log.d(LOG_TAG_TWITTER_ACTIVITY, "Added: " + tweet.getId());
 							tweets.add(tweet);
-							break;	
+							break;
 						}
 						else if (tweets.get(i).getCreatedAt().compareTo(tweet.getCreatedAt()) < 0)
 						{
@@ -376,8 +378,8 @@ public class TwitterActivity extends ListActivity
 				// Save some space
 				drawableProfileImage.trimToSize();
 				userID.trimToSize();
-				
-				//Only save the newest tweets (don't let the tweet list get to long)
+
+				// Only save the newest tweets (don't let the tweet list get to long)
 				while (tweets.size() > maxTweetCount)
 				{
 					int i = tweets.size() - 1;
@@ -401,13 +403,24 @@ public class TwitterActivity extends ListActivity
 		@Override
 		protected void onPostExecute(List<twitter4j.Status> result)
 		{
-			adapter.addTweetsToTop(result);
+			if (result != null && result.size() > 0)
+			{
+				adapter.addTweetsToTop(result);
+
+				ListView lv = (ListView) findViewById(android.R.id.list);
+				lv.smoothScrollToPosition(0);
+
+				Toast.makeText(activityContext, "Update Complete", Toast.LENGTH_LONG).show();
+			}
+			else
+			{
+				Toast.makeText(activityContext, "No new Tweets", Toast.LENGTH_LONG).show();
+			}
 
 			disableRefresh = false;
 			invalidateOptionsMenu();
 
-			Toast.makeText(activityContext, "Updating Complete", Toast.LENGTH_LONG).show();
-			Log.d(LOG_TAG_TWITTER_ACTIVITY, "Updating Complete");
+			Log.d(LOG_TAG_TWITTER_ACTIVITY, "Update Complete");
 
 			if (!gettingTweets.compareAndSet(1, 0))
 			{

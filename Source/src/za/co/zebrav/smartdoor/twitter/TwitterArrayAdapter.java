@@ -81,22 +81,12 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 		// Set the text to display the date on which the tweet was created.
 		TextView dateText = (TextView) view.findViewById(R.id.twitterPostDateTime);
 
-		// TODO remove the depricated toGMTString()
-		String date = tweet.getCreatedAt().toGMTString();
+		String date = tweet.getCreatedAt().toString();
 
-		if (date.contains("+"))
-		{
-			// Use \\+ to escape the special character (working with regular
-			// expression?)
-			String dateString[] = date.split("\\+");
+		String dateString[] = date.split(" ");
 
-			dateString[1] = dateString[1].substring(dateString[1].indexOf(' ') + 1);
-			dateText.setText(dateString[0] + dateString[1]);
-		}
-		else
-		{
-			dateText.setText(date);
-		}
+		dateText.setText(dateString[0] + " " + dateString[1] + " " + dateString[2] + " "
+					+ dateString[3] + " " + dateString[5]);
 
 		// Display the actual text of the tweet
 		TextView text = (TextView) view.findViewById(R.id.twitterUserText);
@@ -119,6 +109,8 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 	/**
 	 * Adds a list of new tweets to the top of the list, then refreshes the list view to display the
 	 * new data
+	 * ListView lv = (ListView) findViewById(android.R.id.list);
+	 * lv.smoothScrollToPosition(0);
 	 * 
 	 * @param newTweets
 	 */
