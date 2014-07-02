@@ -15,6 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author tinkie101
+ * 
+ */
 public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 {
 
@@ -26,6 +31,15 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 	private ArrayList<Drawable> drawableProfileImage;
 	private ArrayList<Long> userID;
 
+	/**
+	 * Constructor for the ArrayAdapter
+	 * 
+	 * @param context
+	 * @param resource
+	 * @param objects
+	 * @param drawableProfileImage
+	 * @param userID
+	 */
 	public TwitterArrayAdapter(Context context, int resource, List<twitter4j.Status> objects,
 				ArrayList<Drawable> drawableProfileImage, ArrayList<Long> userID)
 	{
@@ -38,6 +52,10 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 		this.userID = userID;
 	}
 
+	/**
+	 * Updates the ListView's items.
+	 * 
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
@@ -49,30 +67,21 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 
 		ImageView image = (ImageView) view.findViewById(R.id.twitterUserImage);
 
-		// Test if image isn't out of bounds or null in the array list
-		try
+		// Get the user's profile image, if it doesn't exists then leave it as the defualt image
+		int imagePosition = userID.indexOf(tweet.getUser().getId());
+		if (imagePosition != -1)
 		{
-			Log.d(LOG_TAG_TWITTER_ARRAY_ADAPTER, Long.toString(tweet.getId()));
-			int imagePosition = userID.indexOf(tweet.getUser().getId());
-			if (imagePosition != -1)
-			{
-				image.setImageDrawable(drawableProfileImage.get(imagePosition));
-			}
-		}
-		catch (NullPointerException e)
-		{
-			// Log.d(LOG_TAG_TWITTER_ARRAY_ADAPTER, e.toString());
-		}
-		catch (IndexOutOfBoundsException e)
-		{
-			// Log.d(LOG_TAG_TWITTER_ARRAY_ADAPTER, e.toString());
+			image.setImageDrawable(drawableProfileImage.get(imagePosition));
 		}
 
+		// Set the text to display the user's twitter handle
 		TextView screenName = (TextView) view.findViewById(R.id.twitterUserHandle);
 		screenName.setText("@" + tweet.getUser().getScreenName());
 
+		// Set the text to display the date on which the tweet was created.
 		TextView dateText = (TextView) view.findViewById(R.id.twitterPostDateTime);
 
+		// TODO remove the depricated toGMTString()
 		String date = tweet.getCreatedAt().toGMTString();
 
 		if (date.contains("+"))
@@ -85,31 +94,49 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 			dateText.setText(dateString[0] + dateString[1]);
 		}
 		else
+		{
 			dateText.setText(date);
+		}
 
+		// Display the actual text of the tweet
 		TextView text = (TextView) view.findViewById(R.id.twitterUserText);
 		text.setText(tweet.getText());
 
 		return view;
 	}
-	
-	public void addTweetToTop()
+
+	/**
+	 * Adds a new tweet to the top of the list, then refreshes the list view to display the new data
+	 * 
+	 * @param tweet
+	 */
+	public void addTweetToTop(twitter4j.Status tweet)
 	{
-		objects.add(0, objects.get(0));
+		objects.add(0, tweet);
 		notifyDataSetChanged();
 	}
-	
+
+	/**
+	 * Adds a list of new tweets to the top of the list, then refreshes the list view to display the
+	 * new data
+	 * 
+	 * @param newTweets
+	 */
 	public void addTweetsToTop(List<twitter4j.Status> newTweets)
 	{
-		if(newTweets != null)
+		if (newTweets != null)
 		{
 			objects.addAll(0, newTweets);
 			notifyDataSetChanged();
 		}
 	}
-	
+
+	/**
+	 * Clear all the data.
+	 */
 	public void clearData()
 	{
+		Log.d(LOG_TAG_TWITTER_ARRAY_ADAPTER, "Cleared Data");
 		objects.clear();
 		drawableProfileImage.clear();
 		userID.clear();
