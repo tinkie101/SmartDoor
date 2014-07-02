@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import twitter4j.Paging;
 import twitter4j.Twitter;
@@ -20,6 +21,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,12 +44,19 @@ public class TwitterActivity extends ListActivity
 	private long sinceUserTimelineID;
 	private long sinceMentionsTimelineID;
 	private boolean disableRefresh;
+	private Thread updateThread;
+	private Handler updateThreadHandler = new Handler();
+
+	private AtomicInteger gettingTweets;
 
 	// TODO
 	// We get 2 lists with a maximum size of 20.
 	// Worst case is we have 40 different images.
 	// Add 10 to have a small cache of previous images
 	private int maxImageCount = 50;
+	private int maxTweetCount = 50;
+	// Auto-update time
+	final int updateTime = 20000;
 
 	/**
 	 * 
@@ -87,8 +96,55 @@ public class TwitterActivity extends ListActivity
 					new ArrayList<twitter4j.Status>(), drawableProfileImage, userID);
 		setListAdapter(adapter);
 
+		gettingTweets = new AtomicInteger(1);
 		// Get the tweets
 		getTweets();
+
+		// Create thread that automatically checks for updates
+		updateThread = new Thread()
+		{
+			public void run()
+			{
+				// wait for the specified update time
+				updateThreadHandler.postDelayed(this, updateTime);
+
+				// Update tweets if we aren't already doing it.
+				if (gettingTweets.compareAndSet(0, 1))
+				{
+					getTweets();
+				}
+				else
+				{
+					Log.d(LOG_TAG_TWITTER_ACTIVITY, "Already refreshing tweets!");
+				}
+			}
+		};
+
+	}
+
+	/**
+	 * Called when the activity is resumed.
+	 */
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+
+		// Restart the auto update
+		updateThreadHandler.removeCallbacks(updateThread);
+		updateThreadHandler.postDelayed(updateThread, updateTime);
+	}
+
+	/**
+	 * Called when the activity is paused
+	 */
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+
+		// Stop the auto update thread
+		updateThreadHandler.removeCallbacks(updateThread);
 	}
 
 	/**
@@ -119,20 +175,26 @@ public class TwitterActivity extends ListActivity
 
 			// Clear all the data and get a completely new list of tweets.
 			case R.id.action_refresh_tweets:
-				drawableProfileImage.clear();
-				userID.clear();
-				sinceUserTimelineID = -1;
-				sinceMentionsTimelineID = -1;
-				adapter.clearData();
-
-				getTweets();
+				if (gettingTweets.compareAndSet(0, 1))
+				{
+					drawableProfileImage.clear();
+					userID.clear();
+					sinceUserTimelineID = -1;
+					sinceMentionsTimelineID = -1;
+					adapter.clearData();
+					getTweets();
+				}
+				else
+				{
+					Log.d(LOG_TAG_TWITTER_ACTIVITY, "Already refreshing tweets!");
+				}
 				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	/**
-	 * Changes the Refresh buttons Enabled state to prevent users from refreshing while we are
+	 * Changes the Refresh button's Enabled state to prevent users from refreshing while we are
 	 * already getting new tweets
 	 * 
 	 * @param menu
@@ -157,27 +219,19 @@ public class TwitterActivity extends ListActivity
 	 */
 	private void getTweets()
 	{
+		Log.d(LOG_TAG_TWITTER_ACTIVITY, "Updating tweets");
+
 		ConnectivityManager connectionManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connectionManager.getActiveNetworkInfo();
 
 		if (networkInfo != null && networkInfo.isConnected())
 		{
-			Log.d(LOG_TAG_TWITTER_ACTIVITY, "execute");
-
-			// Disable the refresh button, we are already getting the tweets.
+			// Disable the refresh button, we are already refreshing the tweets.
 			disableRefresh = true;
 			invalidateOptionsMenu();
 
 			Toast.makeText(this, "Refreshing Tweets", Toast.LENGTH_LONG).show();
 			new TwitterHandler().execute();
-
-			// while(true)
-			// {
-			// while(!(twitterHandler.getStatus() == AsyncTask.Status.FINISHED))
-			// {
-			// }
-			// twitterHandler.execute();
-			// }
 		}
 		else
 		{
@@ -186,6 +240,11 @@ public class TwitterActivity extends ListActivity
 			// Can change this to whatever notification works best
 			Toast.makeText(this, "No network connection available.", Toast.LENGTH_LONG).show();
 			Log.i(LOG_TAG_TWITTER_ACTIVITY, "No network connection available.");
+
+			if (!gettingTweets.compareAndSet(1, 0))
+			{
+				Log.e(LOG_TAG_TWITTER_ACTIVITY, "Thread Error!");
+			}
 		}
 	}
 
@@ -236,15 +295,26 @@ public class TwitterActivity extends ListActivity
 				if (mentionsTimeline.size() > 0)
 					sinceMentionsTimelineID = mentionsTimeline.get(0).getId();
 
+				Log.d(LOG_TAG_TWITTER_ACTIVITY, sinceMentionsTimelineID + ":" + sinceUserTimelineID);
+
 				// Add both timelines into one.
 				// Sort from most recent to least recently posted tweet.
 				List<twitter4j.Status> tweets = new ArrayList<twitter4j.Status>(userTimeline);
 				for (twitter4j.Status tweet : mentionsTimeline)
 				{
-					for (int i = 0; i < tweets.size(); i++)
+					Log.d(LOG_TAG_TWITTER_ACTIVITY, "comparing: " + tweet.getId());
+					for (int i = 0; i <= tweets.size(); i++)
 					{
-						if (tweets.get(i).getCreatedAt().compareTo(tweet.getCreatedAt()) < 0)
+						if (i == tweets.size())
 						{
+							//List is empty or we reached the end of the list, so add normally
+							Log.d(LOG_TAG_TWITTER_ACTIVITY, "Added: " + tweet.getId());
+							tweets.add(tweet);
+							break;	
+						}
+						else if (tweets.get(i).getCreatedAt().compareTo(tweet.getCreatedAt()) < 0)
+						{
+							Log.d(LOG_TAG_TWITTER_ACTIVITY, "Added: " + tweet.getId() + " to: " + i);
 							tweets.add(i, tweet);
 							break;
 						}
@@ -265,7 +335,6 @@ public class TwitterActivity extends ListActivity
 						{
 							// Get the profile image
 							String imageURL = tweet.getUser().getOriginalProfileImageURL();
-							Log.d(LOG_TAG_TWITTER_ACTIVITY, imageURL);
 							URL url = new URL(imageURL);
 							InputStream content = (InputStream) url.openStream();
 							Drawable d = Drawable.createFromStream(content, "src");
@@ -304,19 +373,21 @@ public class TwitterActivity extends ListActivity
 					drawableProfileImage.remove(i);
 				}
 
-				Log.d(LOG_TAG_TWITTER_ACTIVITY, userID.toString());
-
 				// Save some space
 				drawableProfileImage.trimToSize();
 				userID.trimToSize();
+				
+				//Only save the newest tweets (don't let the tweet list get to long)
+				while (tweets.size() > maxTweetCount)
+				{
+					int i = tweets.size() - 1;
+					tweets.remove(i);
+				}
 
 				return tweets;
 			}
 			catch (TwitterException e)
 			{
-				Toast.makeText(activityContext,
-							"The Twitter Birdy Died! (To many requests in a short time?)",
-							Toast.LENGTH_LONG).show();
 				Log.d(LOG_TAG_TWITTER_ACTIVITY, "Twitter Error: " + e.toString());
 			}
 			return null;
@@ -335,7 +406,13 @@ public class TwitterActivity extends ListActivity
 			disableRefresh = false;
 			invalidateOptionsMenu();
 
-			Toast.makeText(activityContext, "Refreshing Complete", Toast.LENGTH_LONG).show();
+			Toast.makeText(activityContext, "Updating Complete", Toast.LENGTH_LONG).show();
+			Log.d(LOG_TAG_TWITTER_ACTIVITY, "Updating Complete");
+
+			if (!gettingTweets.compareAndSet(1, 0))
+			{
+				Log.e(LOG_TAG_TWITTER_ACTIVITY, "Thread Error!");
+			}
 		}
 	}
 }
