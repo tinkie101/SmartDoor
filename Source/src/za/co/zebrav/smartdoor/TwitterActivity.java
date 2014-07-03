@@ -42,6 +42,8 @@ public class TwitterActivity extends ListActivity
 	private TwitterArrayAdapter adapter;
 	private ArrayList<Drawable> drawableProfileImage;
 	private ArrayList<Long> userID;
+	private ArrayList<String> userProfileImageURL;
+
 	private long sinceUserTimelineID;
 	private long sinceMentionsTimelineID;
 	private boolean disableRefresh;
@@ -89,6 +91,7 @@ public class TwitterActivity extends ListActivity
 		// Initialise the lists and sinceId's
 		drawableProfileImage = new ArrayList<Drawable>();
 		userID = new ArrayList<Long>();
+		userProfileImageURL = new ArrayList<String>();
 		sinceUserTimelineID = -1;
 		sinceMentionsTimelineID = -1;
 
@@ -181,6 +184,7 @@ public class TwitterActivity extends ListActivity
 				{
 					drawableProfileImage.clear();
 					userID.clear();
+					userProfileImageURL.clear();
 					sinceUserTimelineID = -1;
 					sinceMentionsTimelineID = -1;
 					adapter.clearData();
@@ -332,25 +336,47 @@ public class TwitterActivity extends ListActivity
 				{
 					try
 					{
+						// Get the profile image
+						String imageURL = tweet.getUser().getOriginalProfileImageURL();
+						URL url;
+						InputStream content;
+						Drawable drawable;
+
 						int indexOf = userID.indexOf(tweet.getUser().getId());
 						if (indexOf == -1)
 						{
-							// Get the profile image
-							String imageURL = tweet.getUser().getOriginalProfileImageURL();
-							URL url = new URL(imageURL);
-							InputStream content = (InputStream) url.openStream();
-							Drawable d = Drawable.createFromStream(content, "src");
+							url = new URL(imageURL);
+							content = (InputStream) url.openStream();
+							drawable = Drawable.createFromStream(content, "src");
 
 							// Add the image to the front of the list.
-							drawableProfileImage.add(0, d);
+							drawableProfileImage.add(0, drawable);
+							userProfileImageURL.add(0, imageURL);
+
+							// Add user to the front of the list
 							userID.add(0, tweet.getUser().getId());
 						}
 						else
 						{
-							// Move the image to the front of the list.
-							Drawable tempDrawable = drawableProfileImage.get(indexOf);
+							// Check if there is a new profile image
+							if (!userProfileImageURL.contains(imageURL))
+							{
+								url = new URL(imageURL);
+								content = (InputStream) url.openStream();
+								drawable = Drawable.createFromStream(content, "src");
+							}
+							else
+							{
+								// Move the image to the front of the list.
+								drawable = drawableProfileImage.get(indexOf);
+								imageURL = userProfileImageURL.get(indexOf);
+							}
+
 							drawableProfileImage.remove(indexOf);
-							drawableProfileImage.add(0, tempDrawable);
+							drawableProfileImage.add(0, drawable);
+
+							userProfileImageURL.remove(indexOf);
+							userProfileImageURL.add(0, imageURL);
 
 							long tempID = userID.get(indexOf);
 							userID.remove(indexOf);
@@ -373,11 +399,13 @@ public class TwitterActivity extends ListActivity
 					int i = userID.size() - 1;
 					userID.remove(i);
 					drawableProfileImage.remove(i);
+					userProfileImageURL.remove(i);
 				}
 
 				// Save some space
 				drawableProfileImage.trimToSize();
 				userID.trimToSize();
+				userProfileImageURL.trimToSize();
 
 				// Only save the newest tweets (don't let the tweet list get to long)
 				while (tweets.size() > maxTweetCount)
