@@ -21,19 +21,11 @@
         		android:layout_weight="10" >
 
                 <Button
-                    android:id="@+id/button1"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tts"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="57dp"
-                    android:onClick="gotoCamera"
-                    android:text="Camera" />
-
-                <Button
-                    android:id="@+id/button_goto_twitter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="gotoTwitter"
-                    android:text="@string/goto_twitter" />
+                    android:layout_weight="10"
+                    android:text="Go to Text-to-speech" />
 
             </RelativeLayout>
 
@@ -42,6 +34,15 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="10"
                 android:background="#5FFF" >
+
+                <Button
+                    android:id="@+id/button_goto_twitter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:onClick="gotoTwitter"
+                    android:text="@string/goto_twitter" />
 
             </RelativeLayout>
 
@@ -55,6 +56,15 @@
         android:layout_marginLeft="17dp"
         android:layout_weight="10"
         android:background="#5FFF" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:onClick="gotoCamera"
+            android:text="Camera" />
 
     </RelativeLayout>
 
