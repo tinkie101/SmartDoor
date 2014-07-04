@@ -10,18 +10,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends Activity
 {
-	/*
-	 * (non-Javadoc)
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
-	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		Button ttsButton = (Button) findViewById(R.id.tts);
+		
 	}
 	
 	/*
@@ -33,7 +33,10 @@ public class MainActivity extends Activity
 		Intent intent = new Intent(this, TwitterActivity.class);
 		startActivity(intent);
 	}
-	
+	/*
+	 * On click button handler.
+	 * Go to the CameraActivity.
+	 */
 	public void gotoCamera(View v)
 	{
 		Intent intent = new Intent(this, CameraActivity.class);
