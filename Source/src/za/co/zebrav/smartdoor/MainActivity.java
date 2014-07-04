@@ -19,9 +19,16 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		Button ttsButton = (Button) findViewById(R.id.tts);
-		
+	}
+	
+	/*
+	 * On click button handler.
+	 * Go to the TwitterActivity.
+	 */
+	public void gotoTextToSpeech(View v)
+	{
+		Intent intent = new Intent(this, TextToSpeechActivity.class);
+		startActivity(intent);
 	}
 	
 	/*
