@@ -33,7 +33,7 @@ public final class R {
         public static final int activity_twitter=0x7f030001;
         public static final int camera_layout=0x7f030002;
         public static final int list_twitter=0x7f030003;
-        public static final int text2speech=0x7f030004;
+        public static final int texttospeech=0x7f030004;
     }
     public static final class menu {
         public static final int twitter=0x7f060000;

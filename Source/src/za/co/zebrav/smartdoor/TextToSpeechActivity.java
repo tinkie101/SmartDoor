@@ -9,7 +9,7 @@ public class TextToSpeechActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.text2speech);
+		setContentView(R.layout.texttospeech);
 	}
 
 }
