@@ -45,6 +45,7 @@
         android:layout_alignBaseline="@+id/twitterUserHandle"
         android:layout_marginLeft="2dp"
         android:layout_toRightOf="@+id/twitterUserHandle"
+        android:singleLine="true"
         android:text="@string/placeholder"
         android:textColor="@android:color/darker_gray" />
 

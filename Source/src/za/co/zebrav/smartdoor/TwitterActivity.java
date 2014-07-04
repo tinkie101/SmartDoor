@@ -37,19 +37,18 @@ public class TwitterActivity extends ListActivity
 {
 	private static final String LOG_TAG_TWITTER_ACTIVITY = "TwitterActivity";
 	private ListActivity activityContext;
-	Twitter twitter;
+	private Twitter twitter;
 
 	private TwitterArrayAdapter adapter;
 	private ArrayList<Drawable> drawableProfileImage;
 	private ArrayList<Long> userID;
 	private ArrayList<String> userProfileImageURL;
-
 	private long sinceUserTimelineID;
 	private long sinceMentionsTimelineID;
+
 	private boolean disableRefresh;
 	private Thread updateThread;
 	private Handler updateThreadHandler = new Handler();
-
 	private AtomicInteger gettingTweets;
 
 	// TODO
@@ -57,8 +56,11 @@ public class TwitterActivity extends ListActivity
 	// Worst case is we have 40 different images.
 	// Add 10 to have a small cache of previous images
 	private int maxImageCount = 50;
+
+	// The maximum number of Tweets to display
 	private int maxTweetCount = 50;
-	// Auto-update time
+
+	// Auto-update time delay
 	final int updateTime = 61000;
 
 	/**
@@ -84,7 +86,7 @@ public class TwitterActivity extends ListActivity
 		// Set the authority settings for the Twitter API
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true).setOAuthConsumerKey(API_KEY).setOAuthConsumerSecret(API_SECRET)
-					.setOAuthAccessToken(ACCESS_TOKEN).setOAuthAccessTokenSecret(TOKEN_SECRET);
+							.setOAuthAccessToken(ACCESS_TOKEN).setOAuthAccessTokenSecret(TOKEN_SECRET);
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
 
@@ -96,16 +98,18 @@ public class TwitterActivity extends ListActivity
 		sinceMentionsTimelineID = -1;
 
 		// Initialise the ArrayAdapter for the ListView
-		adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter,
-					new ArrayList<twitter4j.Status>(), drawableProfileImage, userID);
+		adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter, new ArrayList<twitter4j.Status>(),
+							drawableProfileImage, userID);
 
 		setListAdapter(adapter);
 
+		// Set the atomic integer to handle threads
 		gettingTweets = new AtomicInteger(1);
+
 		// Get the tweets
 		getTweets();
 
-		// Create thread that automatically checks for updates
+		// Create a thread that automatically checks for updates
 		updateThread = new Thread()
 		{
 			public void run()
@@ -114,6 +118,7 @@ public class TwitterActivity extends ListActivity
 				updateThreadHandler.postDelayed(this, updateTime);
 
 				// Update tweets if we aren't already doing it.
+				// If gettingTweets is 0 then set 1 1 and get tweets, else do nothing
 				if (gettingTweets.compareAndSet(0, 1))
 				{
 					getTweets();
@@ -180,6 +185,7 @@ public class TwitterActivity extends ListActivity
 
 			// Clear all the data and get a completely new list of tweets.
 			case R.id.action_refresh_tweets:
+				// Only if we aren't updating already
 				if (gettingTweets.compareAndSet(0, 1))
 				{
 					drawableProfileImage.clear();
@@ -249,11 +255,18 @@ public class TwitterActivity extends ListActivity
 
 			if (!gettingTweets.compareAndSet(1, 0))
 			{
+				// This should never happen, if we got here it means the gettingTweets should be 1
+				// If it isn't 1 then something went terribly wrong
 				Log.e(LOG_TAG_TWITTER_ACTIVITY, "Thread Error!");
 			}
 		}
 	}
 
+	/**
+	 * 
+	 * @author tinkie101
+	 * 
+	 */
 	private class TwitterHandler extends AsyncTask<Void, Void, List<twitter4j.Status>>
 	{
 		/**
@@ -264,7 +277,8 @@ public class TwitterActivity extends ListActivity
 		 * big.
 		 * 
 		 * @param params
-		 * @return
+		 *            We don't have any input values, thus Void
+		 * @return the list of tweets received.
 		 */
 		@Override
 		protected List<twitter4j.Status> doInBackground(Void... params)
@@ -320,6 +334,7 @@ public class TwitterActivity extends ListActivity
 						}
 						else if (tweets.get(i).getCreatedAt().compareTo(tweet.getCreatedAt()) < 0)
 						{
+							// Add the tweet in its correct position (sort by date)
 							Log.d(LOG_TAG_TWITTER_ACTIVITY, "Added: " + tweet.getId() + " to: " + i);
 							tweets.add(i, tweet);
 							break;
@@ -328,7 +343,8 @@ public class TwitterActivity extends ListActivity
 				}
 
 				// Store a list of already retrieved profile images to reduce the network cost
-				// Add the images to the front of the list. So that the last image is one that isn't
+				// Add the images to the front of the list. So that the last image in the list is
+				// one that isn't
 				// used a lot.
 				// If the list gets to big, delete the least frequently used images (at the back of
 				// the list)
@@ -336,7 +352,6 @@ public class TwitterActivity extends ListActivity
 				{
 					try
 					{
-						// Get the profile image
 						String imageURL = tweet.getUser().getOriginalProfileImageURL();
 						URL url;
 						InputStream content;
@@ -345,6 +360,7 @@ public class TwitterActivity extends ListActivity
 						int indexOf = userID.indexOf(tweet.getUser().getId());
 						if (indexOf == -1)
 						{
+							// Get the users profile image
 							url = new URL(imageURL);
 							content = (InputStream) url.openStream();
 							drawable = Drawable.createFromStream(content, "src");
@@ -361,17 +377,19 @@ public class TwitterActivity extends ListActivity
 							// Check if there is a new profile image
 							if (!userProfileImageURL.contains(imageURL))
 							{
+								// Get new profile image
 								url = new URL(imageURL);
 								content = (InputStream) url.openStream();
 								drawable = Drawable.createFromStream(content, "src");
 							}
 							else
 							{
-								// Move the image to the front of the list.
+								// Get old image, so we can move it to the front of the list
 								drawable = drawableProfileImage.get(indexOf);
 								imageURL = userProfileImageURL.get(indexOf);
 							}
 
+							// Move the image to the front of the list.
 							drawableProfileImage.remove(indexOf);
 							drawableProfileImage.add(0, drawable);
 
@@ -402,17 +420,17 @@ public class TwitterActivity extends ListActivity
 					userProfileImageURL.remove(i);
 				}
 
-				// Save some space
-				drawableProfileImage.trimToSize();
-				userID.trimToSize();
-				userProfileImageURL.trimToSize();
-
 				// Only save the newest tweets (don't let the tweet list get to long)
 				while (tweets.size() > maxTweetCount)
 				{
 					int i = tweets.size() - 1;
 					tweets.remove(i);
 				}
+
+				// Save some space
+				drawableProfileImage.trimToSize();
+				userID.trimToSize();
+				userProfileImageURL.trimToSize();
 
 				return tweets;
 			}
@@ -427,17 +445,21 @@ public class TwitterActivity extends ListActivity
 		 * Add the new tweets to the top of the list and re-enable the refresh button.
 		 * 
 		 * @param result
+		 *            The list of tweets received from the doInBackground() function
 		 */
 		@Override
 		protected void onPostExecute(List<twitter4j.Status> result)
 		{
+			// If there is new tweets to add
 			if (result != null && result.size() > 0)
 			{
+				// Add to the top of the list, and scroll the list view to the top position
 				adapter.addTweetsToTop(result);
 
 				ListView lv = (ListView) findViewById(android.R.id.list);
 				lv.smoothScrollToPosition(0);
 
+				// Let the user know that the update is complete
 				Toast.makeText(activityContext, "Update Complete", Toast.LENGTH_LONG).show();
 			}
 			else
@@ -445,6 +467,7 @@ public class TwitterActivity extends ListActivity
 				Toast.makeText(activityContext, "No new Tweets", Toast.LENGTH_LONG).show();
 			}
 
+			// Enable the refresh button
 			disableRefresh = false;
 			invalidateOptionsMenu();
 
@@ -452,6 +475,7 @@ public class TwitterActivity extends ListActivity
 
 			if (!gettingTweets.compareAndSet(1, 0))
 			{
+				// This should never happen, if we got here then there was a terrible mistake
 				Log.e(LOG_TAG_TWITTER_ACTIVITY, "Thread Error!");
 			}
 		}

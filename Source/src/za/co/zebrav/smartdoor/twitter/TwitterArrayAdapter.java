@@ -35,13 +35,18 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 	 * Constructor for the ArrayAdapter
 	 * 
 	 * @param context
+	 *            The context of the Activity we are working with
 	 * @param resource
+	 *            The layout used by the ListView
 	 * @param objects
+	 *            The list of tweets
 	 * @param drawableProfileImage
+	 *            The list of profile images
 	 * @param userID
+	 *            The list of user ID's that tweeted a tweet
 	 */
 	public TwitterArrayAdapter(Context context, int resource, List<twitter4j.Status> objects,
-				ArrayList<Drawable> drawableProfileImage, ArrayList<Long> userID)
+						ArrayList<Drawable> drawableProfileImage, ArrayList<Long> userID)
 	{
 		super(context, resource, objects);
 		this.context = context;
@@ -54,23 +59,23 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 
 	/**
 	 * Updates the ListView's items.
-	 * 
+	 * Returns the view object to display
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
+		// Get the tweet in the object list based on the position of the view's postion
 		twitter4j.Status tweet = objects.get(position);
 
-		LayoutInflater inflater = (LayoutInflater) context
-					.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+		// Get the view
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		View view = inflater.inflate(resource, null);
-
-		ImageView image = (ImageView) view.findViewById(R.id.twitterUserImage);
 
 		// Get the user's profile image, if it doesn't exists then leave it as the defualt image
 		int imagePosition = userID.indexOf(tweet.getUser().getId());
 		if (imagePosition != -1)
 		{
+			ImageView image = (ImageView) view.findViewById(R.id.twitterUserImage);
 			image.setImageDrawable(drawableProfileImage.get(imagePosition));
 		}
 
@@ -83,10 +88,10 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 
 		String date = tweet.getCreatedAt().toString();
 
+		// Remove the unwanted parts
 		String dateString[] = date.split(" ");
-
-		dateText.setText(dateString[0] + " " + dateString[1] + " " + dateString[2] + " "
-					+ dateString[3] + " " + dateString[5]);
+		dateText.setText(dateString[0] + " " + dateString[1] + " " + dateString[2] + " " + dateString[3] + " "
+							+ dateString[5]);
 
 		// Display the actual text of the tweet
 		TextView text = (TextView) view.findViewById(R.id.twitterUserText);
@@ -99,6 +104,7 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 	 * Adds a new tweet to the top of the list, then refreshes the list view to display the new data
 	 * 
 	 * @param tweet
+	 *            The tweet that needs to be added
 	 */
 	public void addTweetToTop(twitter4j.Status tweet)
 	{
@@ -113,6 +119,7 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 	 * lv.smoothScrollToPosition(0);
 	 * 
 	 * @param newTweets
+	 *            The list of new tweets to add
 	 */
 	public void addTweetsToTop(List<twitter4j.Status> newTweets)
 	{
