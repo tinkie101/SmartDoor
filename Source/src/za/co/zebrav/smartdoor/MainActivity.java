@@ -40,6 +40,17 @@ public class MainActivity extends Activity
 		Intent intent = new Intent(this, TwitterActivity.class);
 		startActivity(intent);
 	}
+	
+	/*
+	 * On click button handler.
+	 * Go to the SpeechToText.
+	 */
+	public void gotoSpeechToText(View v)
+	{
+		Intent intent = new Intent(this, SpeechToTextActivity.class);
+		startActivity(intent);
+	}
+	
 	/*
 	 * On click button handler.
 	 * Go to the CameraActivity.

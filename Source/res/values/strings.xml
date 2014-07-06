@@ -8,5 +8,7 @@
     <string name="placeholder">example</string>
     <string name="UserImage">User\'s Profile Image</string>
     <string name="Refresh">Refresh</string>
+    <string name="SpeechToText">Speech to Text</string>
+    <string name="title_activity_speech_to_text">SpeechToTextActivity</string>
 
 </resources>

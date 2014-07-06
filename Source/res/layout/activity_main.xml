@@ -13,6 +13,7 @@
         android:layout_weight="10" >
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -25,8 +26,16 @@
                 android:onClick="gotoTextToSpeech"
                 android:text="Go to Text-to-speech" />
 
-        </LinearLayout>
+            <Button
+                android:id="@+id/button_speech_to_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="10"
+                android:text="@string/SpeechToText" 
+                android:onClick="gotoSpeechToText"/>
 
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
