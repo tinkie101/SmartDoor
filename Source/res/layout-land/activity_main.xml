@@ -15,22 +15,26 @@
             android:id="@+id/buttonLinear"
             android:layout_width="fill_parent"
             android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:orientation="vertical" >
 
             <Button
                 android:id="@+id/tts"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="gotoTextToSpeech"
                 android:text="Go to Text-to-speech" />
-        </LinearLayout>
 
-        <fragment
-            android:id="@+id/twitterFragment"
-            android:name="za.co.zebrav.smartdoor.TwitterFragment"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@+id/buttonLinear" />
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:onClick="gotoCamera"
+                android:text="Camera" />
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -40,14 +44,11 @@
         android:layout_weight="10"
         android:background="#5FFF" >
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:onClick="gotoCamera"
-            android:text="Camera" />
+        <fragment
+            android:id="@+id/twitterFragment"
+            android:name="za.co.zebrav.smartdoor.TwitterFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
     </RelativeLayout>
 
 </LinearLayout>
