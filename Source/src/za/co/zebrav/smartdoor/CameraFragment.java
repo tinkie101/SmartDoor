@@ -1,6 +1,6 @@
 package za.co.zebrav.smartdoor;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
@@ -8,11 +8,12 @@ import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Face;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import android.widget.FrameLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class CameraActivity extends Activity
+public class CameraFragment extends Fragment
 {
 	/**
 	 * Stores the camera instance for the class
@@ -34,20 +35,26 @@ public class CameraActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.camera_layout);
-		// Make the action bar an back button
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		context = this;
+
+		context = getActivity().getBaseContext();
 		// check that the hardware does indeed have a camera
 		checkFrontCamera(context);
 		// Create an instance of Camera
 		mCamera = getFrontCameraInstance();
 		mCamera.setFaceDetectionListener(new FDL());
 		// Create our Preview view and set it as the content of our activity.
-		mPreview = new CameraPreview(this, mCamera);
-		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-		preview.addView(mPreview);
+		mPreview = new CameraPreview(context, mCamera);
 
+	}
+
+	/**
+	 * Sets the whole preview to a CameraPreview
+	 */
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState)
+	{
+		return mPreview;
 	}
 
 	/**
@@ -56,25 +63,10 @@ public class CameraActivity extends Activity
 	 * @see android.app.Activity#onPause()
 	 */
 	@Override
-	protected void onPause()
+	public void onPause()
 	{
 		super.onPause();
 		releaseCamera();
-	}
-
-	/**
-	 * Check if up button is pressed and finishes the activity
-	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		if (item.getItemId() == android.R.id.home)
-		{
-			finish();
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	/**
@@ -82,15 +74,15 @@ public class CameraActivity extends Activity
 	 */
 	private boolean checkFrontCamera(Context context)
 	{
-		if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT))
+		if (context.getPackageManager().hasSystemFeature(
+				PackageManager.FEATURE_CAMERA_FRONT))
 		{
 			// this device has a camera
 			return true;
-		}
-		else
+		} else
 		{
-			Toast t = Toast
-						.makeText(context, "No front-facing camera on device", Toast.LENGTH_LONG);
+			Toast t = Toast.makeText(context,
+					"No front-facing camera on device", Toast.LENGTH_LONG);
 			t.show();
 			System.exit(0);
 			return false;
@@ -109,10 +101,10 @@ public class CameraActivity extends Activity
 			c = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
 			// c = Camera.open(CameraInfo.CAMERA_FACING_BACK);
 
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
-			Toast t = Toast.makeText(context, "Camera in use", Toast.LENGTH_LONG);
+			Toast t = Toast.makeText(context, "Camera in use",
+					Toast.LENGTH_LONG);
 			t.show();
 			System.exit(0);
 		}
@@ -147,8 +139,9 @@ public class CameraActivity extends Activity
 				// myPaint.setStrokeWidth(10);
 				// c.drawRect(100, 100, 200, 200, myPaint);
 
-				Log.d("FaceDetection", "face detected: " + faces.length + " Face 1 Location X: "
-							+ faces[0].rect.centerX() + "Y: " + faces[0].rect.centerY());
+				Log.d("FaceDetection", "face detected: " + faces.length
+						+ " Face 1 Location X: " + faces[0].rect.centerX()
+						+ "Y: " + faces[0].rect.centerY());
 			}
 		}
 	}

@@ -29,14 +29,4 @@ public class MainActivity extends FragmentActivity
 		Intent intent = new Intent(this, TextToSpeechActivity.class);
 		startActivity(intent);
 	}
-
-	/*
-	 * On click button handler.
-	 * Go to the CameraActivity.
-	 */
-	public void gotoCamera(View v)
-	{
-		Intent intent = new Intent(this, CameraActivity.class);
-		startActivity(intent);
-	}
 }

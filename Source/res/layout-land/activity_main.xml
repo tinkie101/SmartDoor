@@ -27,13 +27,12 @@
                 android:onClick="gotoTextToSpeech"
                 android:text="Go to Text-to-speech" />
 
-            <Button
-                android:id="@+id/button1"
+            <fragment
+                android:id="@+id/cameraFragment"
+                android:name="za.co.zebrav.smartdoor.CameraFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:onClick="gotoCamera"
-                android:text="Camera" />
+                android:layout_height="match_parent" />
+
         </LinearLayout>
     </RelativeLayout>
 
