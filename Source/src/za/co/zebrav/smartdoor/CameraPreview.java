@@ -7,7 +7,6 @@ import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 /** A basic Camera preview class */
 public class CameraPreview extends SurfaceView implements

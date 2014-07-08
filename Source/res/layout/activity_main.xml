@@ -7,27 +7,19 @@
     android:orientation="vertical"
     tools:context="${packageName}.${activityClass}" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="10" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <Button
-                android:id="@+id/tts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="10"
-                android:onClick="gotoTextToSpeech"
-                android:text="Go to Text-to-speech" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
+        <Button
+            android:id="@+id/tts"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="10"
+            android:onClick="gotoTextToSpeech"
+            android:text="Go to Text-to-speech" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -43,25 +35,15 @@
             android:layout_alignParentTop="true"
             android:onClick="gotoCamera"
             android:text="Camera" />
-
     </RelativeLayout>
 
-    <RelativeLayout
+    <fragment
+        android:id="@+id/twitterFragment"
+        android:name="za.co.zebrav.smartdoor.TwitterFragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="17dp"
         android:layout_weight="10"
-        android:background="#5FFF" >
-
-        <Button
-            android:id="@+id/button_goto_twitter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:onClick="gotoTwitter"
-            android:text="@string/goto_twitter" />
-
-    </RelativeLayout>
+        android:orientation="horizontal" />
 
 </LinearLayout>

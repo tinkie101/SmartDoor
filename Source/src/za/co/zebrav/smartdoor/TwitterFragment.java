@@ -14,7 +14,6 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import za.co.zebrav.smartdoor.twitter.TwitterArrayAdapter;
-import android.app.ListActivity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -22,9 +21,12 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,10 +35,10 @@ import android.widget.Toast;
  * @author tinkie101
  * 
  */
-public class TwitterActivity extends ListActivity
+public class TwitterFragment extends ListFragment
 {
-	private static final String LOG_TAG_TWITTER_ACTIVITY = "TwitterActivity";
-	private ListActivity activityContext;
+	private static final String LOG_TAG_TWITTER_FRAGMENT = "TwitterFragment";
+	private FragmentActivity fragmentContext;
 	private Twitter twitter;
 
 	private TwitterArrayAdapter adapter;
@@ -46,7 +48,8 @@ public class TwitterActivity extends ListActivity
 	private long sinceUserTimelineID;
 	private long sinceMentionsTimelineID;
 
-	private boolean disableRefresh;
+	private TwitterHandler twitterHandler;
+
 	private Thread updateThread;
 	private Handler updateThreadHandler = new Handler();
 	private AtomicInteger gettingTweets;
@@ -63,19 +66,31 @@ public class TwitterActivity extends ListActivity
 	// Auto-update time delay
 	final int updateTime = 61000;
 
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
+		return inflater.inflate(R.layout.fragment_twitter, container, false);
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+
+		if (twitterHandler != null)
+			twitterHandler.cancel(true);
+	}
+
 	/**
 	 * 
 	 * @param savedInstanceState
 	 */
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	public void onStart()
 	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_twitter);
+		super.onStart();
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		activityContext = this;
-		disableRefresh = false;
+		fragmentContext = (FragmentActivity) getActivity();
 
 		// TODO: Get this from somewhere else
 		String API_KEY = "qcGzp08qWLEZom1x7dxCG5qu0";
@@ -98,7 +113,7 @@ public class TwitterActivity extends ListActivity
 		sinceMentionsTimelineID = -1;
 
 		// Initialise the ArrayAdapter for the ListView
-		adapter = new TwitterArrayAdapter(activityContext, R.layout.list_twitter, new ArrayList<twitter4j.Status>(),
+		adapter = new TwitterArrayAdapter(fragmentContext, R.layout.list_twitter, new ArrayList<twitter4j.Status>(),
 							drawableProfileImage, userID);
 
 		setListAdapter(adapter);
@@ -125,7 +140,7 @@ public class TwitterActivity extends ListActivity
 				}
 				else
 				{
-					Log.d(LOG_TAG_TWITTER_ACTIVITY, "Already refreshing tweets!");
+					Log.d(LOG_TAG_TWITTER_FRAGMENT, "Already refreshing tweets!");
 				}
 			}
 		};
@@ -136,7 +151,7 @@ public class TwitterActivity extends ListActivity
 	 * Called when the activity is resumed.
 	 */
 	@Override
-	protected void onResume()
+	public void onResume()
 	{
 		super.onResume();
 
@@ -149,7 +164,7 @@ public class TwitterActivity extends ListActivity
 	 * Called when the activity is paused
 	 */
 	@Override
-	protected void onPause()
+	public void onPause()
 	{
 		super.onPause();
 
@@ -158,106 +173,36 @@ public class TwitterActivity extends ListActivity
 	}
 
 	/**
-	 * 
-	 * @param menu
-	 * @return
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		getMenuInflater().inflate(R.menu.twitter, menu);
-		return true;
-	}
-
-	/**
-	 * 
-	 * @param item
-	 * @return
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-			case android.R.id.home:
-				finish();
-				break;
-
-			// Clear all the data and get a completely new list of tweets.
-			case R.id.action_refresh_tweets:
-				// Only if we aren't updating already
-				if (gettingTweets.compareAndSet(0, 1))
-				{
-					drawableProfileImage.clear();
-					userID.clear();
-					userProfileImageURL.clear();
-					sinceUserTimelineID = -1;
-					sinceMentionsTimelineID = -1;
-					adapter.clearData();
-					getTweets();
-				}
-				else
-				{
-					Log.d(LOG_TAG_TWITTER_ACTIVITY, "Already refreshing tweets!");
-				}
-				break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	/**
-	 * Changes the Refresh button's Enabled state to prevent users from refreshing while we are
-	 * already getting new tweets
-	 * 
-	 * @param menu
-	 * @return
-	 */
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu)
-	{
-		MenuItem item = menu.findItem(R.id.action_refresh_tweets);
-
-		if (disableRefresh)
-			item.setEnabled(false);
-		else
-			item.setEnabled(true);
-
-		return true;
-	}
-
-	/**
 	 * Test for network connectivity.
 	 * Execute the TwitterHandler to get the tweets.
 	 */
 	private void getTweets()
 	{
-		Log.d(LOG_TAG_TWITTER_ACTIVITY, "Updating tweets");
+		Log.d(LOG_TAG_TWITTER_FRAGMENT, "Updating tweets");
 
-		ConnectivityManager connectionManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectionManager = (ConnectivityManager) fragmentContext
+							.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connectionManager.getActiveNetworkInfo();
 
 		if (networkInfo != null && networkInfo.isConnected())
 		{
-			// Disable the refresh button, we are already refreshing the tweets.
-			disableRefresh = true;
-			invalidateOptionsMenu();
-
-			Toast.makeText(this, "Updating Tweets", Toast.LENGTH_LONG).show();
-			new TwitterHandler().execute();
+			Toast.makeText(fragmentContext, "Updating Tweets", Toast.LENGTH_LONG).show();
+			twitterHandler = new TwitterHandler();
+			twitterHandler.execute();
 		}
 		else
 		{
 			// Log, and let the user know that there isn't any network
 			// connections.
 			// Can change this to whatever notification works best
-			Toast.makeText(this, "No network connection available.", Toast.LENGTH_LONG).show();
-			Log.i(LOG_TAG_TWITTER_ACTIVITY, "No network connection available.");
+			Toast.makeText(fragmentContext, "No network connection available.", Toast.LENGTH_LONG).show();
+			Log.i(LOG_TAG_TWITTER_FRAGMENT, "No network connection available.");
 
 			if (!gettingTweets.compareAndSet(1, 0))
 			{
 				// This should never happen, if we got here it means the gettingTweets should be 1
 				// If it isn't 1 then something went terribly wrong
-				Log.e(LOG_TAG_TWITTER_ACTIVITY, "Thread Error!");
+				Log.e(LOG_TAG_TWITTER_FRAGMENT, "Thread Error!");
 			}
 		}
 	}
@@ -315,27 +260,27 @@ public class TwitterActivity extends ListActivity
 				if (mentionsTimeline.size() > 0)
 					sinceMentionsTimelineID = mentionsTimeline.get(0).getId();
 
-				Log.d(LOG_TAG_TWITTER_ACTIVITY, sinceMentionsTimelineID + ":" + sinceUserTimelineID);
+				Log.d(LOG_TAG_TWITTER_FRAGMENT, sinceMentionsTimelineID + ":" + sinceUserTimelineID);
 
 				// Add both timelines into one.
 				// Sort from most recent to least recently posted tweet.
 				List<twitter4j.Status> tweets = new ArrayList<twitter4j.Status>(userTimeline);
 				for (twitter4j.Status tweet : mentionsTimeline)
 				{
-					Log.d(LOG_TAG_TWITTER_ACTIVITY, "comparing: " + tweet.getId());
+					Log.d(LOG_TAG_TWITTER_FRAGMENT, "comparing: " + tweet.getId());
 					for (int i = 0; i <= tweets.size(); i++)
 					{
 						if (i == tweets.size())
 						{
 							// List is empty or we reached the end of the list, so add normally
-							Log.d(LOG_TAG_TWITTER_ACTIVITY, "Added: " + tweet.getId());
+							Log.d(LOG_TAG_TWITTER_FRAGMENT, "Added: " + tweet.getId());
 							tweets.add(tweet);
 							break;
 						}
 						else if (tweets.get(i).getCreatedAt().compareTo(tweet.getCreatedAt()) < 0)
 						{
 							// Add the tweet in its correct position (sort by date)
-							Log.d(LOG_TAG_TWITTER_ACTIVITY, "Added: " + tweet.getId() + " to: " + i);
+							Log.d(LOG_TAG_TWITTER_FRAGMENT, "Added: " + tweet.getId() + " to: " + i);
 							tweets.add(i, tweet);
 							break;
 						}
@@ -436,7 +381,7 @@ public class TwitterActivity extends ListActivity
 			}
 			catch (TwitterException e)
 			{
-				Log.d(LOG_TAG_TWITTER_ACTIVITY, "Twitter Error: " + e.toString());
+				Log.d(LOG_TAG_TWITTER_FRAGMENT, "Twitter Error: " + e.toString());
 			}
 			return null;
 		}
@@ -456,27 +401,23 @@ public class TwitterActivity extends ListActivity
 				// Add to the top of the list, and scroll the list view to the top position
 				adapter.addTweetsToTop(result);
 
-				ListView lv = (ListView) findViewById(android.R.id.list);
+				ListView lv = (ListView) getView().findViewById(android.R.id.list);
 				lv.smoothScrollToPosition(0);
 
 				// Let the user know that the update is complete
-				Toast.makeText(activityContext, "Update Complete", Toast.LENGTH_LONG).show();
+				Toast.makeText(fragmentContext, "Update Complete", Toast.LENGTH_LONG).show();
 			}
 			else
 			{
-				Toast.makeText(activityContext, "No new Tweets", Toast.LENGTH_LONG).show();
+				Toast.makeText(fragmentContext, "No new Tweets", Toast.LENGTH_LONG).show();
 			}
 
-			// Enable the refresh button
-			disableRefresh = false;
-			invalidateOptionsMenu();
-
-			Log.d(LOG_TAG_TWITTER_ACTIVITY, "Update Complete");
+			Log.d(LOG_TAG_TWITTER_FRAGMENT, "Update Complete");
 
 			if (!gettingTweets.compareAndSet(1, 0))
 			{
 				// This should never happen, if we got here then there was a terrible mistake
-				Log.e(LOG_TAG_TWITTER_ACTIVITY, "Thread Error!");
+				Log.e(LOG_TAG_TWITTER_FRAGMENT, "Thread Error!");
 			}
 		}
 	}

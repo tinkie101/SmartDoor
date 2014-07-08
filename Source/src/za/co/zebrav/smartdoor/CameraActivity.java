@@ -3,8 +3,6 @@ package za.co.zebrav.smartdoor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Face;

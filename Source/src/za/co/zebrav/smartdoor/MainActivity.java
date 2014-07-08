@@ -6,13 +6,12 @@
 //This is the main activity for the Smart Door Application.
 package za.co.zebrav.smartdoor;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.widget.Button;
 
-public class MainActivity extends Activity
+public class MainActivity extends FragmentActivity
 {
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -20,7 +19,7 @@ public class MainActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 	}
-	
+
 	/*
 	 * On click button handler.
 	 * Go to the TwitterActivity.
@@ -30,16 +29,7 @@ public class MainActivity extends Activity
 		Intent intent = new Intent(this, TextToSpeechActivity.class);
 		startActivity(intent);
 	}
-	
-	/*
-	 * On click button handler.
-	 * Go to the TwitterActivity.
-	 */
-	public void gotoTwitter(View v)
-	{
-		Intent intent = new Intent(this, TwitterActivity.class);
-		startActivity(intent);
-	}
+
 	/*
 	 * On click button handler.
 	 * Go to the CameraActivity.

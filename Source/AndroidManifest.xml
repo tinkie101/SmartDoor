@@ -30,12 +30,6 @@
         </activity>
         
         <activity
-            android:configChanges="orientation|screenSize"
-            android:name="za.co.zebrav.smartdoor.TwitterActivity"
-            android:label="@string/title_activity_twitter" >
-        </activity>
-        
-        <activity
             android:name=".CameraActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
