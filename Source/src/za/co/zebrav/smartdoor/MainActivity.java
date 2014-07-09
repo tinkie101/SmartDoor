@@ -19,15 +19,16 @@ import android.widget.ListView;
 public class MainActivity extends FragmentActivity
 {
 	CustomMenu sliderMenu;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		//add slider menu
-		sliderMenu = new CustomMenu((Activity)this, (ListView) findViewById(R.id.drawer_list), (DrawerLayout) findViewById(R.id.drawer_layout));
+
+		// add slider menu
+		sliderMenu = new CustomMenu((Activity) this, (ListView) findViewById(R.id.drawer_list),
+							(DrawerLayout) findViewById(R.id.drawer_layout));
 	}
 
 	/*
@@ -39,7 +40,17 @@ public class MainActivity extends FragmentActivity
 		Intent intent = new Intent(this, TextToSpeechActivity.class);
 		startActivity(intent);
 	}
-	
+
+	/*
+	 * On click button handler.
+	 * Go to the SpeechToText.
+	 */
+	public void gotoSpeechToText(View v)
+	{
+		Intent intent = new Intent(this, SpeechToTextActivity.class);
+		startActivity(intent);
+	}
+
 	@Override
 	protected void onPostResume()
 	{
@@ -47,8 +58,6 @@ public class MainActivity extends FragmentActivity
 		// Sync the toggle state after onRestoreInstanceState has occurred.
 		sliderMenu.getDrawerToggle().syncState();
 	}
-	
-	
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
@@ -57,7 +66,7 @@ public class MainActivity extends FragmentActivity
 		// Pass any configuration change to the drawer toggles
 		sliderMenu.getDrawerToggle().onConfigurationChanged(newConfig);
 	}
-    
+
 	/**
 	 * This is needed to produce the image at the top left position Responsible
 	 * for 3 lines image and its movement on opening the menu

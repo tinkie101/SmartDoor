@@ -33,6 +33,13 @@
                 android:layout_height="wrap_content"
                 android:onClick="gotoTextToSpeech"
                 android:text="Go to Text-to-speech" />
+            
+            <Button
+                android:id="@+id/stt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="gotoSpeechToText"
+                android:text="Go to Speech-to-Text" />
 
             <fragment
                 android:id="@+id/cameraFragment"
