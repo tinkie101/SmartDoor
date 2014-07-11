@@ -19,9 +19,12 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		Button ttsButton = (Button) findViewById(R.id.tts);
-		
+	}
+	
+	public void gotoTTS(View v)
+	{
+		Intent intent = new Intent(this, TextToSpeechActivity.class);
+		startActivity(intent);
 	}
 	
 	/*
