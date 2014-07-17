@@ -15,7 +15,7 @@ import android.speech.SpeechRecognizer;
 
 public class SpeechToTextActivity extends Activity
 {
-	
+
 	private static final String LOG_TAG_SPEECH_TO_TEXT_ACTIVITY = "SpeechToTextActivity";
 	SpeechRecognizer speechRecogniser;
 
@@ -26,24 +26,21 @@ public class SpeechToTextActivity extends Activity
 		setContentView(R.layout.activity_speech_to_text);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
-		if(SpeechRecognizer.isRecognitionAvailable(this))
-		{
 
+		if (SpeechRecognizer.isRecognitionAvailable(this))
+		{
 			ListView list = (ListView) findViewById(R.id.speechToTextList);
-			
+
 			speechRecogniser = SpeechRecognizer.createSpeechRecognizer(this);
-			
-			
 			speechRecogniser.setRecognitionListener(new SpeechListner(this, list));
 		}
 		else
 		{
 			Toast.makeText(this, "Speech Recognition not Available on this Device!", Toast.LENGTH_LONG).show();
-			
+
 			Button button = (Button) findViewById(R.id.listenSpeech);
 			button.setEnabled(false);
-			
+
 			Log.d(LOG_TAG_SPEECH_TO_TEXT_ACTIVITY, "Speech Recognition not Available on this Device!");
 		}
 	}
@@ -67,12 +64,12 @@ public class SpeechToTextActivity extends Activity
 
 	public void listenToSpeech(View v)
 	{
-			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-			
-			intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
-			intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
-			
-			speechRecogniser.startListening(intent);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+
+		intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
+
+		speechRecogniser.startListening(intent);
 	}
 }

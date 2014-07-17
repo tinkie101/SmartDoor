@@ -303,6 +303,7 @@ public class TwitterFragment extends ListFragment
 						Drawable drawable;
 
 						int indexOf = userID.indexOf(tweet.getUser().getId());
+						//Already in list
 						if (indexOf == -1)
 						{
 							// Get the users profile image

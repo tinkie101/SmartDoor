@@ -17,64 +17,104 @@ public class SpeechListner implements RecognitionListener
 	private Context context;
 	private ListView list;
 	
+	/**
+	 * @param context
+	 * @param list	The listview to populate with the results
+	 */
 	public SpeechListner(Context context, ListView list)
 	{
 		this.context = context;
 		this.list = list;
 	}
 
+	/**
+	 * The user has started to speak
+	 */
 	@Override
 	public void onBeginningOfSpeech()
 	{
 		Log.d(LOG_TAG_SPEECH_LISTNER, "onBeginningOfSpeech");
 	}
 
+	/**
+	 * More sound has been received
+	 */
 	@Override
 	public void onBufferReceived(byte[] buffer)
 	{
 		Log.d(LOG_TAG_SPEECH_LISTNER, "onBufferReceived");
 	}
 
+	/**
+	 * Called after the user stops speaking
+	 */
 	@Override
 	public void onEndOfSpeech()
 	{
 		Log.d(LOG_TAG_SPEECH_LISTNER, "onEndOfSpeech");
 	}
 
+	/**
+	 * A recognition error occurred
+	 * 
+	 * Error codes: 1-Network operation timed out
+	 * 				2-Other network related errors
+	 * 				3-Audio recording error
+	 * 				4-Server sends error status
+	 * 				5-Other client side errors
+	 * 				6-No speech input
+	 * 				7-No recognition result matched
+	 * 				8-RecognitionService busy
+	 * 				9-Insufficient permissions
+	 */
 	@Override
 	public void onError(int error)
 	{
 		Log.d(LOG_TAG_SPEECH_LISTNER, "Speech Listner Error: " + error);
 	}
 
+	/**
+	 * Reserved for adding future events
+	 */
 	@Override
 	public void onEvent(int eventType, Bundle params)
 	{
 		Log.d(LOG_TAG_SPEECH_LISTNER, "onEvent");
 	}
 
+	/**
+	 * Partial recognition results are available
+	 */
 	@Override
 	public void onPartialResults(Bundle partialResults)
 	{
 		Log.d(LOG_TAG_SPEECH_LISTNER, "onPartialResults");
 	}
 
+	/**
+	 * The user may start to speak
+	 */
 	@Override
 	public void onReadyForSpeech(Bundle params)
 	{
 		Log.d(LOG_TAG_SPEECH_LISTNER, "onReadyForSpeech");
 	}
 
+	/**
+	 * recognition results are read
+	 */
 	@Override
 	public void onResults(Bundle results)
 	{
 		Log.d(LOG_TAG_SPEECH_LISTNER, "onResults");
 		
 		ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-		
 		list.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1 ,data));
 	}
 
+	/**
+	 * Called when the sound level in the audio stream has changed
+	 */
 	@Override
 	public void onRmsChanged(float rmsdB)
 	{
