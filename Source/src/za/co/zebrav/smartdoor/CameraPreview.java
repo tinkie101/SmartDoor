@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.hardware.Camera.FaceDetectionListener;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -24,10 +25,12 @@ public class CameraPreview extends SurfaceView implements
 		mHolder = getHolder();
 		mHolder.addCallback(this);
 	}
+
 	public void setCamera(Camera camera)
 	{
 		mCamera = camera;
 	}
+
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		// The Surface has been created, now tell the camera where to draw the
@@ -86,6 +89,18 @@ public class CameraPreview extends SurfaceView implements
 
 	public void startFaceDetection()
 	{
-		mCamera.startFaceDetection();
+		// Try starting Face Detection
+		Camera.Parameters params = mCamera.getParameters();
+
+		// start face detection only *after* preview has started
+		if (params.getMaxNumDetectedFaces() > 0)
+		{
+			// camera supports face detection, so can start it:
+			mCamera.startFaceDetection();
+		}
+		else
+		{
+			Log.d("Face detection.","Face detection not supported!");
+		}
 	}
 }
