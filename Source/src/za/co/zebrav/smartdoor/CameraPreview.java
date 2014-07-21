@@ -97,6 +97,7 @@ public class CameraPreview extends SurfaceView implements
 		{
 			// camera supports face detection, so can start it:
 			mCamera.startFaceDetection();
+			Log.d("Face detection.","Face detection is supported!");
 		}
 		else
 		{
