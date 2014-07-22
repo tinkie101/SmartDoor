@@ -50,6 +50,14 @@ public class MainActivity extends FragmentActivity
 		Intent intent = new Intent(this, SpeechToTextActivity.class);
 		startActivity(intent);
 	}
+	
+	public void gotoVoiceIdentification(View v)
+	{
+		Intent intent = new Intent(this, VoiceIdentificationActivity.class);
+		startActivity(intent);
+	}
+	
+	
 
 	@Override
 	protected void onPostResume()

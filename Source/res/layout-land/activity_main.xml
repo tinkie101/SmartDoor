@@ -40,6 +40,13 @@
                 android:layout_height="wrap_content"
                 android:onClick="gotoSpeechToText"
                 android:text="Go to Speech-to-Text" />
+            
+            <Button
+                android:id="@+id/voiceIdentification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="gotoVoiceIdentification"
+                android:text="Go to Voice Identification" />
 
             <fragment
                 android:id="@+id/cameraFragment"

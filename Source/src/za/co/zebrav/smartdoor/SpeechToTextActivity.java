@@ -1,8 +1,12 @@
 package za.co.zebrav.smartdoor;
 
+import java.util.List;
+
 import za.co.zebrav.smartdoor.SpeechRecognition.SpeechListner;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,10 +24,10 @@ public class SpeechToTextActivity extends Activity
 	private static final String LOG_TAG_SPEECH_TO_TEXT_ACTIVITY = "SpeechToTextActivity";
 	private SpeechRecognizer speechRecogniser;
 	private boolean enableRecognition;
-	
+
 	private ProgressBar progressBar;
 	private ListView list;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -34,7 +38,7 @@ public class SpeechToTextActivity extends Activity
 
 		list = (ListView) findViewById(R.id.speechToTextList);
 		progressBar = (ProgressBar) findViewById(R.id.speech_loadingBar);
-		
+
 		if (SpeechRecognizer.isRecognitionAvailable(this))
 		{
 			enableRecognition();
@@ -44,7 +48,7 @@ public class SpeechToTextActivity extends Activity
 			disableRecognition();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param item
@@ -60,6 +64,14 @@ public class SpeechToTextActivity extends Activity
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		// TODO Auto-generated method stub
+		super.onStop();
+		speechRecogniser.cancel();
 	}
 
 	private void enableRecognition()
@@ -80,7 +92,7 @@ public class SpeechToTextActivity extends Activity
 
 		Log.d(LOG_TAG_SPEECH_TO_TEXT_ACTIVITY, "Speech Recognition not Available on this Device!");
 	}
-	
+
 	/*
 	 * Getter
 	 */
@@ -88,7 +100,7 @@ public class SpeechToTextActivity extends Activity
 	{
 		return enableRecognition;
 	}
-	
+
 	/*
 	 * Getter
 	 */
@@ -103,7 +115,7 @@ public class SpeechToTextActivity extends Activity
 		{
 			list.setAdapter(null);
 			progressBar.setVisibility(ProgressBar.VISIBLE);
-			
+
 			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
 			intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
