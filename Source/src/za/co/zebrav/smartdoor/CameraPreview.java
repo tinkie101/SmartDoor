@@ -85,6 +85,6 @@ public class CameraPreview extends SurfaceView implements
 
 	public void startFaceDetection()
 	{
-		mCamera.startFaceDetection();
+//		mCamera.startFaceDetection();
 	}
 }

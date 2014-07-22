@@ -76,11 +76,10 @@ public class SpeechListner implements RecognitionListener
 	{
 		Log.d(LOG_TAG_SPEECH_LISTNER, "Speech Listner Error: " + error);
 		
-		progressBar.setVisibility(ProgressBar.GONE);
-		
 		switch(error)
 		{
 			case 6: Toast.makeText(context, "Speech Listner Timed Out", Toast.LENGTH_LONG).show();
+					progressBar.setVisibility(ProgressBar.GONE);
 					break;
 					
 			case 8: Toast.makeText(context, "Recognition service is busy", Toast.LENGTH_LONG).show();
