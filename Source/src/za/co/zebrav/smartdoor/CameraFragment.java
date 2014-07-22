@@ -29,7 +29,7 @@ public class CameraFragment extends Fragment
 	/**
 	 * Standard on create method
 	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 * @see android.app.Fragment#onCreate(android.os.Bundle)
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -39,12 +39,10 @@ public class CameraFragment extends Fragment
 		context = getActivity().getBaseContext();
 		// check that the hardware does indeed have a camera
 		checkFrontCamera(context);
-		// Create an instance of Camera
-		mCamera = getFrontCameraInstance();
-		mCamera.setFaceDetectionListener(new FDL());
-		// Create our Preview view and set it as the content of our activity.
-		mPreview = new CameraPreview(context, mCamera);
-
+		//Create the view with nothing to show
+		//This is so that onCreateView has a view to return
+		//Then onResume we add the camera to the preview
+		mPreview = new CameraPreview(context);
 	}
 
 	/**
@@ -56,17 +54,26 @@ public class CameraFragment extends Fragment
 	{
 		return mPreview;
 	}
-
 	/**
-	 * Releases the camera for the OS when the activity closes.
-	 * 
-	 * @see android.app.Activity#onPause()
+	 * Releases the camera to the OS
 	 */
 	@Override
 	public void onPause()
 	{
 		super.onPause();
 		releaseCamera();
+	}
+	/**
+	 * Acquires the camera from the OS
+	 */
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		// Create an instance of Camera
+		mCamera = getFrontCameraInstance();
+		//mCamera.setFaceDetectionListener(new FDL());
+		mPreview.setCamera(mCamera);
 	}
 
 	/**
@@ -94,6 +101,7 @@ public class CameraFragment extends Fragment
 	 * */
 	public Camera getFrontCameraInstance()
 	{
+		Log.d("Camera", "Aquiring Camera");
 		Camera c = null;
 		try
 		{
@@ -118,8 +126,10 @@ public class CameraFragment extends Fragment
 	{
 		if (mCamera != null)
 		{
+			Log.d("Camera", "Releasing Camera");
 			mCamera.release(); // release the camera for other applications
 			mCamera = null;
+			mPreview.setCamera(null);
 		}
 	}
 
