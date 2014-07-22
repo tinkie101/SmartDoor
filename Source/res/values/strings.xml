@@ -8,18 +8,19 @@
     <string name="placeholder">example</string>
     <string name="UserImage">User\'s Profile Image</string>
     <string name="Refresh">Refresh</string>
-    
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    
-     <string-array name="mainMenuOptions">
+
+    <string-array name="mainMenuOptions">
         <item>Switch Login</item>
         <item>Twitter prefrences</item>
         <item>Theme prefrences</item>
         <item>About</item>
         <item>Exit</item>
     </string-array>
+
     <string name="SpeechToText">Speech to Text</string>
     <string name="title_activity_speech_to_text">SpeechToTextActivity</string>
+    <string name="title_activity_voice_identification">VoiceIdentificationActivity</string>
 
 </resources>
