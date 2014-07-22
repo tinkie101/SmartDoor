@@ -9,6 +9,8 @@ import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class SpeechListner implements RecognitionListener
 {
@@ -16,15 +18,17 @@ public class SpeechListner implements RecognitionListener
 	private static final String LOG_TAG_SPEECH_LISTNER = "SpeechListner";
 	private Context context;
 	private ListView list;
+	private ProgressBar progressBar;
 	
 	/**
 	 * @param context
 	 * @param list	The listview to populate with the results
 	 */
-	public SpeechListner(Context context, ListView list)
+	public SpeechListner(Context context, ListView list, ProgressBar progressBar)
 	{
 		this.context = context;
 		this.list = list;
+		this.progressBar = progressBar;
 	}
 
 	/**
@@ -71,6 +75,17 @@ public class SpeechListner implements RecognitionListener
 	public void onError(int error)
 	{
 		Log.d(LOG_TAG_SPEECH_LISTNER, "Speech Listner Error: " + error);
+		
+		progressBar.setVisibility(ProgressBar.GONE);
+		
+		switch(error)
+		{
+			case 6: Toast.makeText(context, "Speech Listner Timed Out", Toast.LENGTH_LONG).show();
+					break;
+					
+			case 8: Toast.makeText(context, "Recognition service is busy", Toast.LENGTH_LONG).show();
+					break;
+		}
 	}
 
 	/**
@@ -110,6 +125,7 @@ public class SpeechListner implements RecognitionListener
 		
 		ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 		list.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1 ,data));
+		progressBar.setVisibility(ProgressBar.GONE);
 	}
 
 	/**

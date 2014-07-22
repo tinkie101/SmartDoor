@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -17,8 +18,12 @@ public class SpeechToTextActivity extends Activity
 {
 
 	private static final String LOG_TAG_SPEECH_TO_TEXT_ACTIVITY = "SpeechToTextActivity";
-	SpeechRecognizer speechRecogniser;
-
+	private SpeechRecognizer speechRecogniser;
+	private boolean enableRecognition;
+	
+	private ProgressBar progressBar;
+	private ListView list;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -27,24 +32,19 @@ public class SpeechToTextActivity extends Activity
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
+		list = (ListView) findViewById(R.id.speechToTextList);
+		progressBar = (ProgressBar) findViewById(R.id.speech_loadingBar);
+		
 		if (SpeechRecognizer.isRecognitionAvailable(this))
 		{
-			ListView list = (ListView) findViewById(R.id.speechToTextList);
-
-			speechRecogniser = SpeechRecognizer.createSpeechRecognizer(this);
-			speechRecogniser.setRecognitionListener(new SpeechListner(this, list));
+			enableRecognition();
 		}
 		else
 		{
-			Toast.makeText(this, "Speech Recognition not Available on this Device!", Toast.LENGTH_LONG).show();
-
-			Button button = (Button) findViewById(R.id.listenSpeech);
-			button.setEnabled(false);
-
-			Log.d(LOG_TAG_SPEECH_TO_TEXT_ACTIVITY, "Speech Recognition not Available on this Device!");
+			disableRecognition();
 		}
 	}
-
+	
 	/**
 	 * 
 	 * @param item
@@ -62,14 +62,59 @@ public class SpeechToTextActivity extends Activity
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void enableRecognition()
+	{
+		enableRecognition = true;
+		ListView list = (ListView) findViewById(R.id.speechToTextList);
+
+		speechRecogniser = SpeechRecognizer.createSpeechRecognizer(this);
+		speechRecogniser.setRecognitionListener(new SpeechListner(this, list, progressBar));
+	}
+
+	private void disableRecognition()
+	{
+		enableRecognition = false;
+
+		Button button = (Button) findViewById(R.id.listenSpeech);
+		button.setEnabled(false);
+
+		Log.d(LOG_TAG_SPEECH_TO_TEXT_ACTIVITY, "Speech Recognition not Available on this Device!");
+	}
+	
+	/*
+	 * Getter
+	 */
+	public boolean getEnableRecognition()
+	{
+		return enableRecognition;
+	}
+	
+	/*
+	 * Getter
+	 */
+	public SpeechRecognizer getspeechRecogniser()
+	{
+		return speechRecogniser;
+	}
+
 	public void listenToSpeech(View v)
 	{
-		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		if (enableRecognition)
+		{
+			list.setAdapter(null);
+			progressBar.setVisibility(ProgressBar.VISIBLE);
+			
+			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
-		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+			intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 
-		intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
+			intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
 
-		speechRecogniser.startListening(intent);
+			speechRecogniser.startListening(intent);
+		}
+		else
+		{
+			Toast.makeText(this, "Speech Recognition not Available on this Device!", Toast.LENGTH_LONG).show();
+		}
 	}
 }
