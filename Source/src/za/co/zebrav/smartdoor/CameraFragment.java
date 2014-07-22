@@ -72,7 +72,7 @@ public class CameraFragment extends Fragment
 		super.onResume();
 		// Create an instance of Camera
 		mCamera = getFrontCameraInstance();
-		//mCamera.setFaceDetectionListener(new FDL());
+		mCamera.setFaceDetectionListener(new FDL());
 		mPreview.setCamera(mCamera);
 	}
 
