@@ -27,7 +27,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -66,7 +65,7 @@ public class TwitterFragment extends ListFragment
 	private int maxTweetCount = 50;
 
 	// Auto-update time delay
-	final int updateTime = 61000;
+	final int updateTime = 60000;
 	
 	boolean test = false;
 
@@ -133,7 +132,7 @@ public class TwitterFragment extends ListFragment
 				updateThreadHandler.postDelayed(this, updateTime);
 
 				// Update tweets if we aren't already doing it.
-				// If gettingTweets is 0 then set 1 1 and get tweets, else do nothing
+				// If gettingTweets is 0 then set to 1 and get tweets, else do nothing
 				if (gettingTweets.compareAndSet(0, 1))
 				{
 					getTweets();

@@ -1,13 +1,11 @@
 package za.co.zebrav.smartdoor;
 
-import java.util.List;
-
 import za.co.zebrav.smartdoor.SpeechRecognition.SpeechListner;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +13,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
 
 public class SpeechToTextActivity extends Activity
 {
