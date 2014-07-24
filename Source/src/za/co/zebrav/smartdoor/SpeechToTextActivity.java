@@ -71,9 +71,10 @@ public class SpeechToTextActivity extends Activity
 	@Override
 	protected void onStop()
 	{
-		// TODO Auto-generated method stub
 		super.onStop();
-		speechRecogniser.cancel();
+		
+		//Destroy any active speechRecognisers
+		speechRecogniser.destroy();
 	}
 
 	private void enableRecognition()

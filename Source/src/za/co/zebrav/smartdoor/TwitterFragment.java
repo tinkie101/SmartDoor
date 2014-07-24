@@ -27,7 +27,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 /**
@@ -65,6 +67,8 @@ public class TwitterFragment extends ListFragment
 
 	// Auto-update time delay
 	final int updateTime = 61000;
+	
+	boolean test = false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -81,14 +85,10 @@ public class TwitterFragment extends ListFragment
 			twitterHandler.cancel(true);
 	}
 
-	/**
-	 * 
-	 * @param savedInstanceState
-	 */
 	@Override
-	public void onStart()
+	public void onActivityCreated(Bundle savedInstanceState)
 	{
-		super.onStart();
+		super.onActivityCreated(savedInstanceState);
 
 		fragmentContext = (FragmentActivity) getActivity();
 
@@ -187,6 +187,7 @@ public class TwitterFragment extends ListFragment
 		if (networkInfo != null && networkInfo.isConnected())
 		{
 			Toast.makeText(fragmentContext, "Updating Tweets", Toast.LENGTH_LONG).show();
+			fragmentContext.findViewById(R.id.twitter_refreshBar).setVisibility(ProgressBar.VISIBLE);
 			twitterHandler = new TwitterHandler();
 			twitterHandler.execute();
 		}
@@ -303,7 +304,7 @@ public class TwitterFragment extends ListFragment
 						Drawable drawable;
 
 						int indexOf = userID.indexOf(tweet.getUser().getId());
-						//Already in list
+						// Already in list
 						if (indexOf == -1)
 						{
 							// Get the users profile image
@@ -414,6 +415,8 @@ public class TwitterFragment extends ListFragment
 			}
 
 			Log.d(LOG_TAG_TWITTER_FRAGMENT, "Update Complete");
+
+			fragmentContext.findViewById(R.id.twitter_refreshBar).setVisibility(ProgressBar.GONE);
 
 			if (!gettingTweets.compareAndSet(1, 0))
 			{

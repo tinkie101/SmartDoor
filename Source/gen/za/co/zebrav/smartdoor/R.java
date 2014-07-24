@@ -21,8 +21,8 @@ public final class R {
         public static final int ic_launcher=0x7f020004;
     }
     public static final class id {
-        public static final int action_refresh_tweets=0x7f080015;
-        public static final int btnSpeak=0x7f080014;
+        public static final int action_refresh_tweets=0x7f080016;
+        public static final int btnSpeak=0x7f080015;
         public static final int buttonLinear=0x7f080002;
         public static final int cameraFragment=0x7f080006;
         public static final int camera_preview=0x7f08000d;
@@ -34,14 +34,15 @@ public final class R {
         public static final int speech_loadingBar=0x7f08000a;
         public static final int speech_soundLevel=0x7f08000c;
         public static final int stt=0x7f080004;
-        public static final int textView1=0x7f080012;
+        public static final int textView1=0x7f080013;
         public static final int tts=0x7f080003;
         public static final int twitterFragment=0x7f080007;
-        public static final int twitterPostDateTime=0x7f080011;
-        public static final int twitterUserHandle=0x7f08000f;
-        public static final int twitterUserImage=0x7f08000e;
-        public static final int twitterUserText=0x7f080010;
-        public static final int txtText=0x7f080013;
+        public static final int twitterPostDateTime=0x7f080012;
+        public static final int twitterUserHandle=0x7f080010;
+        public static final int twitterUserImage=0x7f08000f;
+        public static final int twitterUserText=0x7f080011;
+        public static final int twitter_refreshBar=0x7f08000e;
+        public static final int txtText=0x7f080014;
         public static final int voiceIdentification=0x7f080005;
     }
     public static final class layout {
