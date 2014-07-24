@@ -26,6 +26,7 @@ public class SpeechToTextActivity extends Activity
 	private boolean enableRecognition;
 
 	private ProgressBar progressBar;
+	private ProgressBar soundLevel;
 	private ListView list;
 
 	@Override
@@ -38,6 +39,7 @@ public class SpeechToTextActivity extends Activity
 
 		list = (ListView) findViewById(R.id.speechToTextList);
 		progressBar = (ProgressBar) findViewById(R.id.speech_loadingBar);
+		soundLevel = (ProgressBar) findViewById(R.id.speech_soundLevel);
 
 		if (SpeechRecognizer.isRecognitionAvailable(this))
 		{
@@ -80,7 +82,7 @@ public class SpeechToTextActivity extends Activity
 		ListView list = (ListView) findViewById(R.id.speechToTextList);
 
 		speechRecogniser = SpeechRecognizer.createSpeechRecognizer(this);
-		speechRecogniser.setRecognitionListener(new SpeechListner(this, list, progressBar));
+		speechRecogniser.setRecognitionListener(new SpeechListner(this, list, progressBar, soundLevel));
 	}
 
 	private void disableRecognition()
@@ -115,6 +117,7 @@ public class SpeechToTextActivity extends Activity
 		{
 			list.setAdapter(null);
 			progressBar.setVisibility(ProgressBar.VISIBLE);
+			soundLevel.setVisibility(ProgressBar.VISIBLE);
 
 			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
