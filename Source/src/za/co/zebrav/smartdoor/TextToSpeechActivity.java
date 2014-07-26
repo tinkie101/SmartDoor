@@ -25,7 +25,7 @@ public class TextToSpeechActivity extends Activity implements OnInitListener
 		setContentView(R.layout.texttospeech);
 		tts = new TextToSpeech(this, this);
 		speakButton = (Button) findViewById(R.id.btnSpeak);
-		editText = (EditText) findViewById(R.id.txtText);
+		editText = (EditText) findViewById(R.id.editTextTextTTS);
 
 		speakButton.setOnClickListener(new View.OnClickListener()
 		{
