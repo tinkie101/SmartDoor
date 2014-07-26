@@ -6,7 +6,6 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 public class TextToSpeechTest extends ActivityInstrumentationTestCase2<TextToSpeechActivity>
 {
@@ -38,7 +37,5 @@ public class TextToSpeechTest extends ActivityInstrumentationTestCase2<TextToSpe
 		assertNotNull(mainActivity);
 		assertNotNull(btnSpeech);
 		assertNotNull(editText);
-
-
 	}
 }
