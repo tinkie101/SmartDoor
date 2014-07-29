@@ -39,9 +39,9 @@ public class MenuFragment extends Fragment
 		//------------------------------------------------------------------Main Menu Options:
 		if(selectedName.equals("Switch Login"))// selected login
 		{
-			menu.getDrawerlayout().closeDrawer(menu.getDrawerList());
-			MainActivity mainActivity = new MainActivity();
-			if(mainActivity.getClass().equals(getActivity().getClass()))
+			//menu.getDrawerlayout().closeDrawer(menu.getDrawerList());
+			//MainActivity mainActivity = new MainActivity();
+			//if(mainActivity.getClass().equals(getActivity().getClass()))
 			{
 				Intent intent = new Intent(getActivity(), ManualLogin.class);
 				startActivity(intent);

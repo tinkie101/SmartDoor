@@ -98,33 +98,6 @@ public class CustomMenu
 		});
 	}
 	
-	public void setCloseDrawerListOnclickListener()
-	{
-		// Setting item click listener for the listview mDrawerList
-		drawerList.setOnItemClickListener(new OnItemClickListener()
-		{
-			@Override
-			/**
-			 * Get selected item data and safe in fragment
-			 * Then commit fragment transaction using fragment manager
-			 */
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-			{
-				MenuFragment menuFragment = new MenuFragment();
-				menuFragment.setup(adapter.getItem(position), menu, activity);
-				Bundle data = new Bundle();
-				data.putInt("position", position);// index of currently selected item
-				
-				menuFragment.setArguments(data);
-				FragmentTransaction ft = fragmentManager.beginTransaction();
-				ft.replace(R.id.content_frame, menuFragment);// add fragment to fragment transaction
-				ft.commit();// commit selected menu option
-
-				drawerLayout.closeDrawer(drawerList);// Close drawer
-			}
-		});
-	}
-	
 	/**
 	 * @return the drawerLayout used by menu
 	 */
@@ -235,14 +208,6 @@ public class CustomMenu
 	public Activity getActivity()
 	{
 		return activity;
-	}
-
-	
-
-	
-	
-	
-	
-	
+	}	
 	
 }

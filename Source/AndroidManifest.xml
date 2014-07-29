@@ -40,6 +40,8 @@
             android:name="za.co.zebrav.smartdoor.VoiceIdentificationActivity"
             android:label="@string/title_activity_voice_identification" >
         </activity>
+        <activity android:name=".ManualLogin"></activity>
+        
     </application>
 
 </manifest>

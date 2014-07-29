@@ -46,8 +46,7 @@ public class TextToSpeechActivity extends Activity implements OnInitListener
 	 * ShutDown TextToSpeech when activity is destroyed
 	 */
 	public void onDestroy()
-	{
-		
+	{	
 		if (tts != null)
 		{
 			tts.stop();
