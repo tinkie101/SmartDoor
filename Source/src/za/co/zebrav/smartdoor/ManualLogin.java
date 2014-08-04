@@ -20,7 +20,7 @@ public class ManualLogin extends Activity
 		
 		// add slider menu
 		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list), (DrawerLayout) findViewById(R.id.drawer_layout), 
-				getResources().getStringArray(R.array.manualLoginMenuOptions));
+				getResources().getStringArray(R.array.mainMenuOptions));
 	}
 
 	@Override

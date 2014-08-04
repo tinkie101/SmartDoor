@@ -10,6 +10,6 @@ public class AddUserActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_user);
+		setContentView(R.layout.add_user_step1);
 	}
 }
