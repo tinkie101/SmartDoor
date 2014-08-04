@@ -20,7 +20,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/CustomActionBarTheme" >
         <activity
             android:name="za.co.zebrav.smartdoor.MainActivity"
             android:label="@string/app_name"
@@ -40,7 +40,14 @@
             android:name="za.co.zebrav.smartdoor.VoiceIdentificationActivity"
             android:label="@string/title_activity_voice_identification" >
         </activity>
-        <activity android:name=".ManualLogin"></activity>
+        <activity 
+            android:name=".ManualLogin"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity 
+            android:name="za.co.zebrav.smartdoor.users.AddUserActivity"
+            android:screenOrientation="landscape">
+        </activity>
         
     </application>
 

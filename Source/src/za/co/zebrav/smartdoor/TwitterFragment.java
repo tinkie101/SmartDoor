@@ -56,18 +56,18 @@ public class TwitterFragment extends ListFragment
 	private AtomicInteger gettingTweets;
 
 	// TODO
-	private int timelineSize = 20;
-
-	// We get 2 lists with a maximum size of timelineSize each.
-	// Worst case is we have timelineSize*2 different images.
+	// We get 2 lists with a maximum size of 20.
+	// Worst case is we have 40 different images.
 	// Add 10 to have a small cache of previous images
-	private int maxImageCount = timelineSize * 2 + 10;
+	private int maxImageCount = 50;
 
 	// The maximum number of Tweets to display
 	private int maxTweetCount = 50;
 
 	// Auto-update time delay
 	final int updateTime = 60000;
+	
+	boolean test = false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -97,7 +97,12 @@ public class TwitterFragment extends ListFragment
 		String ACCESS_TOKEN = "239453626-73H379K274Qfm9KaPfq8C3hKPhq3jqGk04gQXkIw";
 		String TOKEN_SECRET = "7ozxcBnoAA4WEocKeUSrFI9iOO9hVqNYwS2xFOeB0osUl";
 
-		twitter = constructTwitterAuthority(API_KEY, API_SECRET, ACCESS_TOKEN, TOKEN_SECRET);
+		// Set the authority settings for the Twitter API
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setDebugEnabled(true).setOAuthConsumerKey(API_KEY).setOAuthConsumerSecret(API_SECRET)
+							.setOAuthAccessToken(ACCESS_TOKEN).setOAuthAccessTokenSecret(TOKEN_SECRET);
+		TwitterFactory tf = new TwitterFactory(cb.build());
+		twitter = tf.getInstance();
 
 		// Initialise the lists and sinceId's
 		drawableProfileImage = new ArrayList<Drawable>();
@@ -130,7 +135,6 @@ public class TwitterFragment extends ListFragment
 				// If gettingTweets is 0 then set to 1 and get tweets, else do nothing
 				if (gettingTweets.compareAndSet(0, 1))
 				{
-					// Get the tweets
 					getTweets();
 				}
 				else
@@ -140,29 +144,6 @@ public class TwitterFragment extends ListFragment
 			}
 		};
 
-	}
-
-	/**
-	 * 
-	 * @param API_KEY
-	 * @param API_SECRET
-	 * @param ACCESS_TOKEN
-	 * @param TOKEN_SECRET
-	 * @return
-	 */
-	private Twitter constructTwitterAuthority(String API_KEY, String API_SECRET, String ACCESS_TOKEN,
-						String TOKEN_SECRET)
-	{
-		Twitter result = null;
-
-		// Set the authority settings for the Twitter API
-		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setDebugEnabled(true).setOAuthConsumerKey(API_KEY).setOAuthConsumerSecret(API_SECRET)
-							.setOAuthAccessToken(ACCESS_TOKEN).setOAuthAccessTokenSecret(TOKEN_SECRET);
-		TwitterFactory tf = new TwitterFactory(cb.build());
-		result = tf.getInstance();
-
-		return result;
 	}
 
 	/**
@@ -247,214 +228,163 @@ public class TwitterFragment extends ListFragment
 		@Override
 		protected List<twitter4j.Status> doInBackground(Void... params)
 		{
-			// Get the user and mentions timeline, then merge them into one sorted timeline
-			List<twitter4j.Status> tweets = getTimelines();
-
-			// Store a list of already retrieved profile images to reduce the network cost
-			// Add the images to the front of the list. So that the last image in the list is
-			// one that isn't
-			// used a lot.
-			// If the list gets to big, delete the least frequently used images (at the back of
-			// the list)
-			for (twitter4j.Status tweet : tweets)
-			{
-				try
-				{
-					String imageURL = tweet.getUser().getOriginalProfileImageURL();
-					URL url;
-					InputStream content;
-					Drawable drawable;
-
-					int indexOf = userID.indexOf(tweet.getUser().getId());
-					// Already in list
-					if (indexOf == -1)
-					{
-						// Get the users profile image
-						url = new URL(imageURL);
-						content = (InputStream) url.openStream();
-						drawable = Drawable.createFromStream(content, "src");
-
-						// Add the image to the front of the list.
-						drawableProfileImage.add(0, drawable);
-						userProfileImageURL.add(0, imageURL);
-
-						// Add user to the front of the list
-						userID.add(0, tweet.getUser().getId());
-					}
-					else
-					{
-						// Check if there is a new profile image
-						if (!userProfileImageURL.contains(imageURL))
-						{
-							// Get new profile image
-							url = new URL(imageURL);
-							content = (InputStream) url.openStream();
-							drawable = Drawable.createFromStream(content, "src");
-						}
-						else
-						{
-							// Get old image, so we can move it to the front of the list
-							drawable = drawableProfileImage.get(indexOf);
-							imageURL = userProfileImageURL.get(indexOf);
-						}
-
-						// Move the image to the front of the list.
-						drawableProfileImage.remove(indexOf);
-						drawableProfileImage.add(0, drawable);
-
-						userProfileImageURL.remove(indexOf);
-						userProfileImageURL.add(0, imageURL);
-
-						long tempID = userID.get(indexOf);
-						userID.remove(indexOf);
-						userID.add(0, tempID);
-					}
-
-				}
-				catch (MalformedURLException e)
-				{
-				}
-				catch (IOException e)
-				{
-				}
-
-			}
-
-			// Remove the least recently used profile images if the List gets to big
-			while (userID.size() > maxImageCount)
-			{
-				int i = userID.size() - 1;
-				userID.remove(i);
-				drawableProfileImage.remove(i);
-				userProfileImageURL.remove(i);
-			}
-
-			// Only save the newest tweets (don't let the tweet list get to long)
-			while (tweets.size() > maxTweetCount)
-			{
-				int i = tweets.size() - 1;
-				tweets.remove(i);
-			}
-
-			// Save some space
-			drawableProfileImage.trimToSize();
-			userID.trimToSize();
-			userProfileImageURL.trimToSize();
-
-			return tweets;
-		}
-
-		private List<twitter4j.Status> getTimelines()
-		{
-			List<twitter4j.Status> result = null;
-
-			List<twitter4j.Status> userTimeline = getUserTimeline();
-			List<twitter4j.Status> mentionsTimeline = getMentionsTimeline();
-
-			result = mergeAndSort(userTimeline, mentionsTimeline);
-
-			return result;
-		}
-
-		private List<twitter4j.Status> mergeAndSort(List<twitter4j.Status> userTimeline,
-							List<twitter4j.Status> mentionsTimeline)
-		{
-			// Add both timelines into one.
-			// Sort from most recent to least recently posted tweet.
-			List<twitter4j.Status> result = new ArrayList<twitter4j.Status>(userTimeline);
-
-			for (twitter4j.Status tweet : mentionsTimeline)
-			{
-				Log.d(LOG_TAG_TWITTER_FRAGMENT, "comparing: " + tweet.getId());
-
-				for (int i = 0; i <= result.size(); i++)
-				{
-					if (i == result.size())
-					{
-						// List is empty or we reached the end of the list, so add normally
-						Log.d(LOG_TAG_TWITTER_FRAGMENT, "Added: " + tweet.getId());
-						result.add(tweet);
-						break;
-					}
-					else if (result.get(i).getCreatedAt().compareTo(tweet.getCreatedAt()) < 0)
-					{
-						// Add the tweet in its correct position (sort by date)
-						Log.d(LOG_TAG_TWITTER_FRAGMENT, "Added: " + tweet.getId() + " to: " + i);
-						result.add(i, tweet);
-						break;
-					}
-				}
-			}
-			return result;
-		}
-
-		/**
-		 * 
-		 * @return
-		 */
-		private List<twitter4j.Status> getUserTimeline()
-		{
-			List<twitter4j.Status> result = null;
-
 			try
 			{
-				// Get default amount of tweets for beginning
+				List<twitter4j.Status> userTimeline;
+				List<twitter4j.Status> mentionsTimeline;
+
+				// Only get 20 of the newest tweets from each timeline
 				if (sinceUserTimelineID == -1)
 				{
-					result = twitter.getUserTimeline();
+					userTimeline = twitter.getUserTimeline();
 				}
 				else
-				// Only get newest tweets
 				{
-					Paging paging = new Paging(1, timelineSize).sinceId(sinceUserTimelineID);
-					result = twitter.getUserTimeline(paging);
+					Paging paging = new Paging(1, 20).sinceId(sinceUserTimelineID);
+					userTimeline = twitter.getUserTimeline(paging);
 				}
-
-				// Set the sinceID to the first(newest) Tweet ID, so that in the future we only get
-				// newer tweets
-				if (result.size() > 0)
-					sinceUserTimelineID = result.get(0).getId();
-			}
-			catch (TwitterException e)
-			{
-				result = null;
-			}
-
-			return result;
-		}
-
-		/**
-		 * 
-		 * @return
-		 */
-		private List<twitter4j.Status> getMentionsTimeline()
-		{
-			List<twitter4j.Status> result = null;
-
-			try
-			{
 				if (sinceMentionsTimelineID == -1)
 				{
-					result = twitter.getMentionsTimeline();
+					mentionsTimeline = twitter.getMentionsTimeline();
 				}
 				else
 				{
 					Paging paging = new Paging(1, 20).sinceId(sinceMentionsTimelineID);
-					result = twitter.getMentionsTimeline(paging);
+					mentionsTimeline = twitter.getMentionsTimeline(paging);
 				}
 
 				// Set the sinceID to the first(newest) Tweet ID, so that in the future we only get
 				// newer tweets
-				if (result.size() > 0)
-					sinceMentionsTimelineID = result.get(0).getId();
+				if (userTimeline.size() > 0)
+					sinceUserTimelineID = userTimeline.get(0).getId();
+				if (mentionsTimeline.size() > 0)
+					sinceMentionsTimelineID = mentionsTimeline.get(0).getId();
 
+				Log.d(LOG_TAG_TWITTER_FRAGMENT, sinceMentionsTimelineID + ":" + sinceUserTimelineID);
+
+				// Add both timelines into one.
+				// Sort from most recent to least recently posted tweet.
+				List<twitter4j.Status> tweets = new ArrayList<twitter4j.Status>(userTimeline);
+				for (twitter4j.Status tweet : mentionsTimeline)
+				{
+					Log.d(LOG_TAG_TWITTER_FRAGMENT, "comparing: " + tweet.getId());
+					for (int i = 0; i <= tweets.size(); i++)
+					{
+						if (i == tweets.size())
+						{
+							// List is empty or we reached the end of the list, so add normally
+							Log.d(LOG_TAG_TWITTER_FRAGMENT, "Added: " + tweet.getId());
+							tweets.add(tweet);
+							break;
+						}
+						else if (tweets.get(i).getCreatedAt().compareTo(tweet.getCreatedAt()) < 0)
+						{
+							// Add the tweet in its correct position (sort by date)
+							Log.d(LOG_TAG_TWITTER_FRAGMENT, "Added: " + tweet.getId() + " to: " + i);
+							tweets.add(i, tweet);
+							break;
+						}
+					}
+				}
+
+				// Store a list of already retrieved profile images to reduce the network cost
+				// Add the images to the front of the list. So that the last image in the list is
+				// one that isn't
+				// used a lot.
+				// If the list gets to big, delete the least frequently used images (at the back of
+				// the list)
+				for (twitter4j.Status tweet : tweets)
+				{
+					try
+					{
+						String imageURL = tweet.getUser().getOriginalProfileImageURL();
+						URL url;
+						InputStream content;
+						Drawable drawable;
+
+						int indexOf = userID.indexOf(tweet.getUser().getId());
+						// Already in list
+						if (indexOf == -1)
+						{
+							// Get the users profile image
+							url = new URL(imageURL);
+							content = (InputStream) url.openStream();
+							drawable = Drawable.createFromStream(content, "src");
+
+							// Add the image to the front of the list.
+							drawableProfileImage.add(0, drawable);
+							userProfileImageURL.add(0, imageURL);
+
+							// Add user to the front of the list
+							userID.add(0, tweet.getUser().getId());
+						}
+						else
+						{
+							// Check if there is a new profile image
+							if (!userProfileImageURL.contains(imageURL))
+							{
+								// Get new profile image
+								url = new URL(imageURL);
+								content = (InputStream) url.openStream();
+								drawable = Drawable.createFromStream(content, "src");
+							}
+							else
+							{
+								// Get old image, so we can move it to the front of the list
+								drawable = drawableProfileImage.get(indexOf);
+								imageURL = userProfileImageURL.get(indexOf);
+							}
+
+							// Move the image to the front of the list.
+							drawableProfileImage.remove(indexOf);
+							drawableProfileImage.add(0, drawable);
+
+							userProfileImageURL.remove(indexOf);
+							userProfileImageURL.add(0, imageURL);
+
+							long tempID = userID.get(indexOf);
+							userID.remove(indexOf);
+							userID.add(0, tempID);
+						}
+
+					}
+					catch (MalformedURLException e)
+					{
+					}
+					catch (IOException e)
+					{
+					}
+
+				}
+
+				// Remove the least recently used profile images if the List gets to big
+				while (userID.size() > maxImageCount)
+				{
+					int i = userID.size() - 1;
+					userID.remove(i);
+					drawableProfileImage.remove(i);
+					userProfileImageURL.remove(i);
+				}
+
+				// Only save the newest tweets (don't let the tweet list get to long)
+				while (tweets.size() > maxTweetCount)
+				{
+					int i = tweets.size() - 1;
+					tweets.remove(i);
+				}
+
+				// Save some space
+				drawableProfileImage.trimToSize();
+				userID.trimToSize();
+				userProfileImageURL.trimToSize();
+
+				return tweets;
 			}
 			catch (TwitterException e)
 			{
-				result = null;
+				Log.d(LOG_TAG_TWITTER_FRAGMENT, "Twitter Error: " + e.toString());
 			}
-
-			return result;
+			return null;
 		}
 
 		/**

@@ -27,8 +27,8 @@ public class MainActivity extends FragmentActivity
 		setContentView(R.layout.activity_main);
 
 		// add slider menu
-		sliderMenu = new CustomMenu((Activity) this, (ListView) findViewById(R.id.drawer_list),
-							(DrawerLayout) findViewById(R.id.drawer_layout));
+		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list), (DrawerLayout) findViewById(R.id.drawer_layout), 
+				getResources().getStringArray(R.array.mainMenuOptions));
 	}
 
 	/*

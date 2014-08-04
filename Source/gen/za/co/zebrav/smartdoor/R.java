@@ -10,56 +10,73 @@ package za.co.zebrav.smartdoor;
 public final class R {
     public static final class array {
         public static final int mainMenuOptions=0x7f050000;
+        public static final int manualLoginMenuOptions=0x7f050001;
     }
     public static final class attr {
     }
     public static final class drawable {
-        public static final int background=0x7f020000;
-        public static final int ic_action_microphone=0x7f020001;
-        public static final int ic_action_refresh=0x7f020002;
-        public static final int ic_drawer=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
+        public static final int actionbar_background=0x7f020000;
+        public static final int background=0x7f020001;
+        public static final int button1=0x7f020002;
+        public static final int ic_action_microphone=0x7f020003;
+        public static final int ic_action_refresh=0x7f020004;
+        public static final int ic_drawer=0x7f020005;
+        public static final int ic_launcher=0x7f020006;
+        public static final int manual_login_semi_background=0x7f020007;
     }
     public static final class id {
-        public static final int action_refresh_tweets=0x7f080016;
-        public static final int btnSpeak=0x7f080015;
+        public static final int ManualLogin_button1=0x7f080019;
+        public static final int ManualLogin_et1=0x7f080016;
+        public static final int ManualLogin_et2=0x7f080018;
+        public static final int ManualLogin_tv1=0x7f080015;
+        public static final int ManualLogin_tv2=0x7f080017;
+        public static final int ManualLogin_tvH=0x7f080014;
+        public static final int action_refresh_tweets=0x7f08001c;
+        public static final int btnSpeak=0x7f08001b;
         public static final int buttonLinear=0x7f080002;
         public static final int cameraFragment=0x7f080006;
-        public static final int camera_preview=0x7f08000d;
+        public static final int camera_preview=0x7f08000e;
         public static final int content_frame=0x7f080001;
         public static final int drawer_layout=0x7f080000;
         public static final int drawer_list=0x7f080008;
-        public static final int editTextTextTTS=0x7f080014;
+        public static final int editTextTextTTS=0x7f08001a;
         public static final int listenSpeech=0x7f080009;
         public static final int speechToTextList=0x7f08000b;
         public static final int speech_loadingBar=0x7f08000a;
         public static final int speech_soundLevel=0x7f08000c;
         public static final int stt=0x7f080004;
-        public static final int textView1=0x7f080013;
+        public static final int textView1=0x7f08000d;
         public static final int ttsButton=0x7f080003;
         public static final int twitterFragment=0x7f080007;
-        public static final int twitterPostDateTime=0x7f080012;
-        public static final int twitterUserHandle=0x7f080010;
-        public static final int twitterUserImage=0x7f08000f;
-        public static final int twitterUserText=0x7f080011;
-        public static final int twitter_refreshBar=0x7f08000e;
+        public static final int twitterPostDateTime=0x7f080013;
+        public static final int twitterUserHandle=0x7f080011;
+        public static final int twitterUserImage=0x7f080010;
+        public static final int twitterUserText=0x7f080012;
+        public static final int twitter_refreshBar=0x7f08000f;
         public static final int voiceIdentification=0x7f080005;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_speech_to_text=0x7f030001;
         public static final int activity_voice_identification=0x7f030002;
-        public static final int camera_layout=0x7f030003;
-        public static final int drawer_list_item=0x7f030004;
-        public static final int fragment_twitter=0x7f030005;
-        public static final int list_twitter=0x7f030006;
-        public static final int manual_login=0x7f030007;
-        public static final int texttospeech=0x7f030008;
+        public static final int add_user=0x7f030003;
+        public static final int camera_layout=0x7f030004;
+        public static final int drawer_list_item=0x7f030005;
+        public static final int fragment_twitter=0x7f030006;
+        public static final int list_twitter=0x7f030007;
+        public static final int manual_login=0x7f030008;
+        public static final int texttospeech=0x7f030009;
     }
     public static final class menu {
         public static final int twitter=0x7f070000;
     }
     public static final class string {
+        public static final int ManualLogin_b1=0x7f04000f;
+        /**  Manual Login Activity 
+         */
+        public static final int ManualLogin_heading=0x7f04000c;
+        public static final int ManualLogin_tv1=0x7f04000d;
+        public static final int ManualLogin_tv2=0x7f04000e;
         public static final int Refresh=0x7f040006;
         public static final int SpeechToText=0x7f040009;
         public static final int UserImage=0x7f040005;
@@ -100,5 +117,11 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f060001;
+        /**  the theme applied to the application or activity 
+         */
+        public static final int CustomActionBarTheme=0x7f060002;
+        /**  ActionBar styles 
+         */
+        public static final int MyActionBar=0x7f060003;
     }
 }

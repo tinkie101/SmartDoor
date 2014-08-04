@@ -13,14 +13,25 @@
 
     <string-array name="mainMenuOptions">
         <item>Switch Login</item>
+        <item>User options</item>
         <item>Twitter prefrences</item>
         <item>Theme prefrences</item>
         <item>About</item>
         <item>Exit</item>
     </string-array>
+    
+    <string-array name="manualLoginMenuOptions">
+        <item>Switch Login</item>
+        <item>User options</item>
+    </string-array>
 
     <string name="SpeechToText">Speech to Text</string>
     <string name="title_activity_speech_to_text">SpeechToTextActivity</string>
     <string name="title_activity_voice_identification">VoiceIdentificationActivity</string>
-
+    
+    <!-- Manual Login Activity -->
+    <string name="ManualLogin_heading">Classic Login</string>
+	<string name="ManualLogin_tv1">Username:</string>
+	<string name="ManualLogin_tv2">Password:</string>
+	<string name="ManualLogin_b1">Login</string>
 </resources>

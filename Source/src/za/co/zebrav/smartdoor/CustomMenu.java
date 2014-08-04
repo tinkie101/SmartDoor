@@ -1,16 +1,23 @@
 package za.co.zebrav.smartdoor;
 
+import za.co.zebrav.smartdoor.users.AddUserActivity;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * This class allows one to add a slider menu to an activity
@@ -22,24 +29,31 @@ public class CustomMenu
 	private ActionBarDrawerToggle drawerToggle;
 	private String title = "";
 	private Activity activity;
-	private CustomMenu menu = this;
-	private FragmentManager fragmentManager;
+	private String[] options;
 	
 	private ArrayAdapter<String> adapter;
+	
+	//menu content related variable declarations:
+	private String[] twitterOptions = {"Goto main menu", "Twitter key", "Twitter secret", "Twitter token key", "Twitter token secret", "update rate", "Exit"};
+	private String[] themeOptions = {"Goto main menu","Background", "ActionBar", "Exit"};
+	private String[] userOptions = {"Goto main menu", "Add user", "Search User", "Delete User", "Exit"};
+	private AlertDialog.Builder alert;
 	
 	/**
 	 * @param activity - the activity using the sliderMenu
 	 * @param drawerList - specified drawerList to be used
 	 * @param drawerLayout - specified drawerLayout to be used
 	 */
-	public CustomMenu(Activity activity, ListView drawerList, DrawerLayout drawerLayout)
+	public CustomMenu(Activity activity, ListView drawerList, DrawerLayout drawerLayout, String[] options)
 	{
+		this.options = options;
+		this.alert  = new AlertDialog.Builder(activity);
+		
 		setActivity(activity);
 		setTitle((String)activity.getTitle());
 		setDrawerList(drawerList);
 		setDrawerLayout(drawerLayout);
 		setDrawerToggle();
-		fragmentManager = activity.getFragmentManager();
 		
 		setupSettings();
 		setDrawerListOnclickListener();
@@ -55,7 +69,7 @@ public class CustomMenu
 	public void setupSettings()
 	{
 		drawerLayout.setDrawerListener(drawerToggle);
-		adapter = new ArrayAdapter<String>(activity.getBaseContext(), R.layout.drawer_list_item, activity.getResources().getStringArray(R.array.mainMenuOptions));
+		adapter = new ArrayAdapter<String>(activity.getBaseContext(), R.layout.drawer_list_item, options);
 		drawerList.setAdapter(adapter);
 	}
 	
@@ -84,17 +98,189 @@ public class CustomMenu
 			 * Then commit fragment transaction using fragment manager
 			 */
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-			{
-				MenuFragment menuFragment = new MenuFragment();
-				menuFragment.setup(adapter.getItem(position), menu, activity);
-				Bundle data = new Bundle();
-				data.putInt("position", position);// index of currently selected item
+			{	
+				String selectedName = adapter.getItem(position);
 				
-				menuFragment.setArguments(data);
-				FragmentTransaction ft = fragmentManager.beginTransaction();
-				ft.replace(R.id.content_frame, menuFragment);// add fragment to fragment transaction
-				ft.commit();// commit selected menu option
+				//------------------------------------------------------------------Main Menu Options:
+				if(selectedName.equals("Switch Login"))// selected login
+				{
+					//If current activity is main activity then go to classic login activity
+					getDrawerlayout().closeDrawer(getDrawerList());
+					MainActivity mainActivity = new MainActivity();
+					if(mainActivity.getClass().equals(getActivity().getClass()))
+					{
+						Intent intent = new Intent(getActivity(), ManualLogin.class);
+						activity.startActivity(intent);
+					}
+					//if current activity is not main activity finish current activity to switch back to main login
+					else
+						activity.finish();
+				}
+				else if(selectedName.equals("User options"))
+				{
+					editMenuOptions(userOptions, "Menu");
+				}
+				else if(selectedName.equals("Twitter prefrences"))
+				{
+					//menu.setDrawerListOnclickListener();
+					editMenuOptions(twitterOptions, "Menu");
+				}
+				else if(selectedName.equals("Theme prefrences"))
+				{
+					//menu.setDrawerListOnclickListener();
+					editMenuOptions(themeOptions, "Menu");
+				}
+				else if(selectedName.equals("About"))
+				{
+					Toast.makeText(getActivity().getApplicationContext(),selectedName, Toast.LENGTH_LONG).show();
+				}
+				//----------------------------------------------------------------All
+				/**
+				 * Exit leaves closing this app up to the operating system (when device is switched off)
+				 * When one uses "Exit" the device's home button is issued. 
+				 */
+				else if(selectedName.equals("Exit"))
+				{
+					System.exit(0);
+				}
+				//----------------------------------------------------------------All except Main Menu Options
+				else if(selectedName.equals("Goto main menu"))
+				{
+					editMenuOptions(options, "Menu");
+				}
+				//----------------------------------------------------------------Twitter specific Options:
+				else if(selectedName.equals("Twitter key"))
+				{
+					alert.setTitle("Change Twitter key");
+					
+					final EditText input = new EditText(activity.getApplicationContext());
+					alert.setView(input);
+					
+					alert.setNegativeButton("Cancel",null);
+					alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							String value = input.getText().toString();
+							//do something with value
+							Toast.makeText(getActivity().getApplicationContext(),"Entered " + value, Toast.LENGTH_LONG).show();
+						}
+					});
+					
+					alert.show();
+				}
+				else if(selectedName.equals("Twitter secret"))
+				{
+					alert.setTitle("Change Twitter secret");
+					
+					final EditText input = new EditText(activity.getApplicationContext());
+					alert.setView(input);
+					
+					alert.setNegativeButton("Cancel",null);
+					alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							String value = input.getText().toString();
+							//do something with value
+							Toast.makeText(getActivity().getApplicationContext(),"Entered " + value, Toast.LENGTH_LONG).show();
+						}
+					});
+					
+					alert.show();
+				}
+				else if(selectedName.equals("Twitter token key"))
+				{
+					alert.setTitle("Change Twitter Token key");
+					
+					final EditText input = new EditText(activity.getApplicationContext());
+					alert.setView(input);
+					
+					alert.setNegativeButton("Cancel",null);
+					alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							String value = input.getText().toString();
+							//do something with value
+							Toast.makeText(getActivity().getApplicationContext(),"Entered " + value, Toast.LENGTH_LONG).show();
+						}
+					});
+					
+					alert.show();
+				}
+				else if(selectedName.equals("Twitter token secret"))
+				{
+					alert.setTitle("Change Twitter Token secret");
+					
+					final EditText input = new EditText(activity.getApplicationContext());
+					alert.setView(input);
+					
+					alert.setNegativeButton("Cancel",null);
+					alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							String value = input.getText().toString();
+							//do something with value
+							Toast.makeText(getActivity().getApplicationContext(),"Entered " + value, Toast.LENGTH_LONG).show();
+						}
+					});
+					
+					alert.show();
+				}
+				else if(selectedName.equals("update rate"))
+				{
+					alert.setTitle("Change Twitter update rate");
+					
+					final EditText input = new EditText(activity.getApplicationContext());
+					alert.setView(input);
+					
+					alert.setNegativeButton("Cancel",null);
+					alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							String value = input.getText().toString();
+							//do something with value
+							Toast.makeText(getActivity().getApplicationContext(),"Entered " + value, Toast.LENGTH_LONG).show();
+						}
+					});
+					
+					alert.show();
+				}
+				//----------------------------------------------------------------Theme specific Options:
+				else if(selectedName.equals("Background"))
+				{
+					
+				}
+				else if(selectedName.equals("ActionBar"))
+				{
+					
+				}
+				//---------------------------------------------------------------User Options:
+				else if(selectedName.equals("Add user"))
+				{
+					editMenuOptions(options, "Menu");
+					getDrawerlayout().closeDrawer(getDrawerList());
+					Intent intent = new Intent(getActivity(), AddUserActivity.class);
+					activity.startActivity(intent);
+				}
+				else if(selectedName.equals("Search user"))
+				{
+					
+				}
+				else if(selectedName.equals("Delete user"))
+				{
+					
+				}
 			}
+			
 		});
 	}
 	
