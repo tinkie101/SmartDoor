@@ -2,7 +2,6 @@ package za.co.zebrav.smartdoor;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -250,76 +249,15 @@ public class TwitterFragment extends ListFragment
 			// Get the user and mentions timeline, then merge them into one sorted timeline
 			List<twitter4j.Status> tweets = getTimelines();
 
-			// Store a list of already retrieved profile images to reduce the network cost
-			// Add the images to the front of the list. So that the last image in the list is
-			// one that isn't
-			// used a lot.
-			// If the list gets to big, delete the least frequently used images (at the back of
-			// the list)
-			for (twitter4j.Status tweet : tweets)
-			{
-				try
-				{
-					String imageURL = tweet.getUser().getOriginalProfileImageURL();
-					URL url;
-					InputStream content;
-					Drawable drawable;
+			doProfileImages(tweets);
 
-					int indexOf = userID.indexOf(tweet.getUser().getId());
-					// Already in list
-					if (indexOf == -1)
-					{
-						// Get the users profile image
-						url = new URL(imageURL);
-						content = (InputStream) url.openStream();
-						drawable = Drawable.createFromStream(content, "src");
+			cleanup(tweets);
 
-						// Add the image to the front of the list.
-						drawableProfileImage.add(0, drawable);
-						userProfileImageURL.add(0, imageURL);
+			return tweets;
+		}
 
-						// Add user to the front of the list
-						userID.add(0, tweet.getUser().getId());
-					}
-					else
-					{
-						// Check if there is a new profile image
-						if (!userProfileImageURL.contains(imageURL))
-						{
-							// Get new profile image
-							url = new URL(imageURL);
-							content = (InputStream) url.openStream();
-							drawable = Drawable.createFromStream(content, "src");
-						}
-						else
-						{
-							// Get old image, so we can move it to the front of the list
-							drawable = drawableProfileImage.get(indexOf);
-							imageURL = userProfileImageURL.get(indexOf);
-						}
-
-						// Move the image to the front of the list.
-						drawableProfileImage.remove(indexOf);
-						drawableProfileImage.add(0, drawable);
-
-						userProfileImageURL.remove(indexOf);
-						userProfileImageURL.add(0, imageURL);
-
-						long tempID = userID.get(indexOf);
-						userID.remove(indexOf);
-						userID.add(0, tempID);
-					}
-
-				}
-				catch (MalformedURLException e)
-				{
-				}
-				catch (IOException e)
-				{
-				}
-
-			}
-
+		private void cleanup(List<twitter4j.Status> tweets)
+		{
 			// Remove the least recently used profile images if the List gets to big
 			while (userID.size() > maxImageCount)
 			{
@@ -341,7 +279,89 @@ public class TwitterFragment extends ListFragment
 			userID.trimToSize();
 			userProfileImageURL.trimToSize();
 
-			return tweets;
+		}
+
+		/**
+		 * Store a list of already retrieved profile images to reduce the network cost
+		 * Add the images to the front of the list. So that the last image in the list is
+		 * one that isn't
+		 * used a lot.
+		 * If the list gets to big, delete the least frequently used images (at the back of
+		 * the list)
+		 * 
+		 * @param tweets
+		 */
+		private void doProfileImages(List<twitter4j.Status> tweets)
+		{
+
+			for (twitter4j.Status tweet : tweets)
+			{
+				String imageURL = tweet.getUser().getOriginalProfileImageURL();
+				Drawable drawable;
+				
+				int indexOf = userID.indexOf(tweet.getUser().getId());
+				// not in list
+				if (indexOf == -1)
+				{
+					drawable = getUserProfileImage(imageURL);
+
+					// Add the image to the front of the list.
+					drawableProfileImage.add(0, drawable);
+					userProfileImageURL.add(0, imageURL);
+
+					// Add user to the front of the list
+					userID.add(0, tweet.getUser().getId());
+				}
+				else
+				{
+					// Check if there is a new profile image
+					if (!userProfileImageURL.contains(imageURL))
+					{
+						// Get new profile image
+						drawable = getUserProfileImage(imageURL);
+					}
+					else
+					{
+						// Get old image, so we can move it to the front of the list
+						drawable = drawableProfileImage.get(indexOf);
+						imageURL = userProfileImageURL.get(indexOf);
+					}
+
+					// Move the image to the front of the list.
+					drawableProfileImage.remove(indexOf);
+					drawableProfileImage.add(0, drawable);
+
+					userProfileImageURL.remove(indexOf);
+					userProfileImageURL.add(0, imageURL);
+
+					long tempID = userID.get(indexOf);
+					userID.remove(indexOf);
+					userID.add(0, tempID);
+				}
+
+			}
+
+		}
+
+		private Drawable getUserProfileImage(String imageURL)
+		{
+			URL url;
+			InputStream content;
+			Drawable result = null;
+			try
+			{
+				// Get the users profile image
+				url = new URL(imageURL);
+
+				content = (InputStream) url.openStream();
+				result = Drawable.createFromStream(content, "src");
+			}
+			catch (IOException e)
+			{
+				Log.e(LOG_TAG_TWITTER_FRAGMENT, "Error retrieving profile image", e);
+			}
+
+			return result;
 		}
 
 		private List<twitter4j.Status> getTimelines()
