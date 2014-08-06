@@ -1,16 +1,13 @@
 package za.co.zebrav.smartdoor;
 
 import za.co.zebrav.smartdoor.users.AddUserActivity;
+import za.co.zebrav.smartdoor.users.ViewUserActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -36,7 +33,7 @@ public class CustomMenu
 	//menu content related variable declarations:
 	private String[] twitterOptions = {"Goto main menu", "Twitter key", "Twitter secret", "Twitter token key", "Twitter token secret", "update rate", "Exit"};
 	private String[] themeOptions = {"Goto main menu","Background", "ActionBar", "Exit"};
-	private String[] userOptions = {"Goto main menu", "Add user", "Search User", "Delete User", "Exit"};
+	private String[] userOptions = {"Goto main menu", "Add user", "Search user", "Delete user", "Exit"};
 	private AlertDialog.Builder alert;
 	
 	/**
@@ -273,11 +270,17 @@ public class CustomMenu
 				}
 				else if(selectedName.equals("Search user"))
 				{
-					
+					editMenuOptions(options, "Menu");
+					getDrawerlayout().closeDrawer(getDrawerList());
+					Intent intent = new Intent(getActivity(), ViewUserActivity.class);
+					activity.startActivity(intent);
 				}
 				else if(selectedName.equals("Delete user"))
 				{
-					
+					editMenuOptions(options, "Menu");
+					getDrawerlayout().closeDrawer(getDrawerList());
+					Intent intent = new Intent(getActivity(), ViewUserActivity.class);
+					activity.startActivity(intent);
 				}
 			}
 			
