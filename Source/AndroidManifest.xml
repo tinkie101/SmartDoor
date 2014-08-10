@@ -48,6 +48,10 @@
             android:name="za.co.zebrav.smartdoor.users.AddUserActivity"
             android:screenOrientation="landscape">
         </activity>
+        <activity 
+            android:name="za.co.zebrav.smartdoor.users.ViewUserActivity"
+            android:screenOrientation="landscape">
+        </activity>
         
     </application>
 

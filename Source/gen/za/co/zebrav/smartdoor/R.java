@@ -70,6 +70,7 @@ public final class R {
         public static final int list_twitter=0x7f030007;
         public static final int manual_login=0x7f030008;
         public static final int texttospeech=0x7f030009;
+        public static final int view_user=0x7f03000a;
     }
     public static final class menu {
         public static final int twitter=0x7f070000;
