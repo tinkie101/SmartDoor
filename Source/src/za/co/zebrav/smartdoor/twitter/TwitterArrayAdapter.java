@@ -141,4 +141,10 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 		userID.clear();
 		notifyDataSetChanged();
 	}
+
+	public void updateProfileArraLists(ArrayList<Drawable> drawableProfileImage, ArrayList<Long> userID)
+	{
+		this.drawableProfileImage = drawableProfileImage;
+		this.userID = userID;
+	}
 }
