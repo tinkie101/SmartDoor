@@ -31,8 +31,8 @@ public final class R {
         public static final int ManualLogin_tv1=0x7f080019;
         public static final int ManualLogin_tv2=0x7f08001b;
         public static final int ManualLogin_tvH=0x7f080018;
-        public static final int action_refresh_tweets=0x7f080020;
-        public static final int btnSpeak=0x7f08001f;
+        public static final int action_refresh_tweets=0x7f080023;
+        public static final int btnSpeak=0x7f080020;
         public static final int button1=0x7f08000d;
         public static final int button2=0x7f08000e;
         public static final int button3=0x7f08000f;
@@ -43,12 +43,15 @@ public final class R {
         public static final int content_frame=0x7f080001;
         public static final int drawer_layout=0x7f080000;
         public static final int drawer_list=0x7f080008;
-        public static final int editTextTextTTS=0x7f08001e;
+        public static final int editTextTextTTS=0x7f08001f;
+        public static final int list=0x7f080022;
         public static final int listenSpeech=0x7f080009;
+        public static final int searchText=0x7f080021;
         public static final int speechToTextList=0x7f08000b;
         public static final int speech_loadingBar=0x7f08000a;
         public static final int speech_soundLevel=0x7f08000c;
         public static final int stt=0x7f080004;
+        public static final int testerTextView=0x7f08001e;
         public static final int textView1=0x7f080011;
         public static final int ttsButton=0x7f080003;
         public static final int twitterFragment=0x7f080007;
@@ -69,8 +72,9 @@ public final class R {
         public static final int fragment_twitter=0x7f030006;
         public static final int list_twitter=0x7f030007;
         public static final int manual_login=0x7f030008;
-        public static final int texttospeech=0x7f030009;
-        public static final int view_user=0x7f03000a;
+        public static final int search_user_listview_item=0x7f030009;
+        public static final int texttospeech=0x7f03000a;
+        public static final int view_user=0x7f03000b;
     }
     public static final class menu {
         public static final int twitter=0x7f070000;

@@ -283,7 +283,6 @@ public class CustomMenu
 					activity.startActivity(intent);
 				}
 			}
-			
 		});
 	}
 	
