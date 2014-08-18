@@ -227,7 +227,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 				{
 					Canvas canvas = new Canvas();
 					canvas.setBitmap(mBitmap);
-					Iv.setImageBitmap(mBitmap);
+					//Iv.setImageBitmap(mBitmap);
 					if (countImages >= MAXIMG - 1)
 					{
 						toggleButtonGrabar.setChecked(false);
