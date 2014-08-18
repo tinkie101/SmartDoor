@@ -210,9 +210,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 		Log.i(TAG, "called onCreate");
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+		
 		setContentView(R.layout.face_detect_surface_view);
-
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
 
 		mOpenCvCameraView.setCvCameraViewListener(this);
