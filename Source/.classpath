@@ -6,5 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="libs/db4o-8.0.249.16098-all-java5.jar"/>
+	<classpathentry kind="lib" path="/OpenCV Library - 2.4.9/bin/opencv library - 2.4.9.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
