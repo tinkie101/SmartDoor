@@ -30,12 +30,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.88" />
 
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="120dp"
-                    android:layout_height="140dp"
-                    android:src="@drawable/lightbulb" />
-
             </LinearLayout>
 
         </RelativeLayout>

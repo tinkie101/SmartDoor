@@ -23,15 +23,12 @@ import org.opencv.core.Size;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.objdetect.CascadeClassifier;
 
-import com.googlecode.javacv.cpp.opencv_imgproc;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -70,10 +67,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 	// private MenuItem mItemFace40;
 	// private MenuItem mItemFace30;
 	// private MenuItem mItemFace20;
-	
+
 	private MenuItem nBackCam;
 	private MenuItem mFrontCam;
-	private MenuItem mEigen;
 
 	private Mat mRgba;
 	private Mat mGray;
@@ -209,7 +205,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 		Log.i(TAG, "called onCreate");
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		
+
 		setContentView(R.layout.face_detect_surface_view);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
@@ -220,7 +216,6 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 
 		labelsFile = new labels(mPath);
 
-		Iv = (ImageView) findViewById(R.id.imageView1);
 		textresult = (TextView) findViewById(R.id.textView1);
 
 		mHandler = new Handler()
