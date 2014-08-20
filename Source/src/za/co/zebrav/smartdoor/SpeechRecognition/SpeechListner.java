@@ -47,6 +47,7 @@ public class SpeechListner implements RecognitionListener
 
 	/**
 	 * More sound has been received
+	 * It is not guaranteed that this function will be called
 	 */
 	@Override
 	public void onBufferReceived(byte[] buffer)
@@ -61,6 +62,8 @@ public class SpeechListner implements RecognitionListener
 	public void onEndOfSpeech()
 	{
 		Log.d(LOG_TAG_SPEECH_LISTNER, "onEndOfSpeech");
+
+		soundLevel.setVisibility(ProgressBar.GONE);
 	}
 
 	/**
@@ -182,7 +185,6 @@ public class SpeechListner implements RecognitionListener
 		ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 		list.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, data));
 		progressBar.setVisibility(ProgressBar.GONE);
-		soundLevel.setVisibility(ProgressBar.GONE);
 	}
 
 	/**

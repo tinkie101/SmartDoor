@@ -128,9 +128,12 @@ public final class R {
         public static final int AppTheme=0x7f060001;
         /**  the theme applied to the application or activity 
          */
-        public static final int CustomActionBarTheme=0x7f060002;
+        public static final int CustomActionBarTheme=0x7f060003;
         /**  ActionBar styles 
          */
-        public static final int MyActionBar=0x7f060003;
+        public static final int MyActionBar=0x7f060004;
+        /**   Set style for sound level Progressbar
+         */
+        public static final int soundBarStyle=0x7f060002;
     }
 }
