@@ -119,9 +119,14 @@ public class SpeechToTextActivity extends Activity
 			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
 			intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-
 			intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
 
+			intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
+			
+			//TODO
+			intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1000);//Maybe get rid of this line, Android documentation recommends to not change the length to a user specified value
+			
+			Log.d(LOG_TAG_SPEECH_TO_TEXT_ACTIVITY, "Start Listening");
 			speechRecogniser.startListening(intent);
 		}
 		else
