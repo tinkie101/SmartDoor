@@ -6,7 +6,6 @@
 //This is the main activity for the Smart Door Application.
 package za.co.zebrav.smartdoor;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity
 {
@@ -56,7 +56,11 @@ public class MainActivity extends FragmentActivity
 		Intent intent = new Intent(this, VoiceIdentificationActivity.class);
 		startActivity(intent);
 	}
-	
+	public void gotoFdActivity(View v)
+	{
+		Intent intent = new Intent(this, za.co.zebrav.facerecognition.FdActivity.class);
+		startActivity(intent);
+	}
 	
 
 	@Override

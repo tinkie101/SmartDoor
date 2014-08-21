@@ -47,6 +47,13 @@
                 android:layout_height="wrap_content"
                 android:onClick="gotoVoiceIdentification"
                 android:text="Go to Voice Identification" />
+            
+            <Button
+                android:id="@+id/FD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="gotoFdActivity"
+                android:text="Go to Facial Regocnition" />
 
             <fragment
                 android:id="@+id/cameraFragment"

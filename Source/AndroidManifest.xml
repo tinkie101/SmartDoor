@@ -10,11 +10,22 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front.autofocus"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -40,19 +51,24 @@
             android:name="za.co.zebrav.smartdoor.VoiceIdentificationActivity"
             android:label="@string/title_activity_voice_identification" >
         </activity>
-        <activity 
+        <activity
             android:name=".ManualLogin"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape" >
         </activity>
-        <activity 
+        <activity
             android:name="za.co.zebrav.smartdoor.users.AddUserActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape" >
         </activity>
-        <activity 
+        <activity
             android:name="za.co.zebrav.smartdoor.users.ViewUserActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape" >
         </activity>
-        
+        <activity
+            android:name="za.co.zebrav.facerecognition.FdActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity android:name="za.co.zebrav.facerecognition.ImageGallery" >
+        </activity>
     </application>
 
 </manifest>
