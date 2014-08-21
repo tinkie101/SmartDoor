@@ -17,7 +17,7 @@ import android.util.Log;
 public class CustomCameraView extends JavaCameraView
 {
 
-	private static final String TAG = "Sample::Tutorial3View";
+	private static final String TAG = "FacailRecognition::CustomCameraView";
 
 	public CustomCameraView(Context context, AttributeSet attrs)
 	{
@@ -72,12 +72,7 @@ public class CustomCameraView extends JavaCameraView
 	{
 		Camera.Parameters parameters = mCamera.getParameters();
 		parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-		// if (parameters.isVideoStabilizationSupported())
-		// {
-		// parameters.setVideoStabilization(true);
-		// }
 		mCamera.setParameters(parameters);
-
 	}
 
 	public void setCamFront()

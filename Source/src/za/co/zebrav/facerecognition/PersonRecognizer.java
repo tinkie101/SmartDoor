@@ -2,7 +2,6 @@ package za.co.zebrav.facerecognition;
 
 import static com.googlecode.javacv.cpp.opencv_highgui.*;
 import static com.googlecode.javacv.cpp.opencv_core.*;
-
 import static com.googlecode.javacv.cpp.opencv_imgproc.*;
 
 import java.io.File;
@@ -22,7 +21,7 @@ import android.util.Log;
 
 public class PersonRecognizer
 {
-
+	private static final String TAG = "FacailRecognition::PersonRecognizer";
 	public final static int MAXIMG = 100;
 	FaceRecognizer faceRecognizer;
 	String mPath;

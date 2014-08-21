@@ -7,7 +7,6 @@ import java.io.FilenameFilter;
 import java.io.InputStream;
 
 import za.co.zebrav.smartdoor.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -43,7 +42,7 @@ public class ImageGallery extends Activity implements
 	Button buttonDel;
 	ImageButton buttonBack;
 	Gallery g;
-
+	private static final String TAG = "FacailRecognition::ImageGallery";
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{

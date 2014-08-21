@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
+import android.app.*;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.LoaderCallbackInterface;
@@ -48,7 +48,7 @@ import android.widget.ToggleButton;
 public class FdActivity extends Activity implements CvCameraViewListener2
 {
 
-	private static final String TAG = "OCVSample::Activity";
+	private static final String TAG = "FacialRegocnition::FdActivity";
 	private static final Scalar FACE_RECT_COLOR = new Scalar(0, 255, 0, 255);
 	public static final int JAVA_DETECTOR = 0;
 	public static final int NATIVE_DETECTOR = 1;
@@ -61,12 +61,6 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 	private static final int backCam = 2;
 
 	private int faceState = IDLE;
-	// private int countTrain=0;
-
-	// private MenuItem mItemFace50;
-	// private MenuItem mItemFace40;
-	// private MenuItem mItemFace30;
-	// private MenuItem mItemFace20;
 
 	private MenuItem nBackCam;
 	private MenuItem mFrontCam;
@@ -196,7 +190,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 
 		Log.i(TAG, "Instantiated new " + this.getClass());
 	}
-
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -587,7 +581,12 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 			mChooseCamera = backCam;
 			mOpenCvCameraView.setCamBack();
 		}
-
+	    switch (item.getItemId()) 
+	    {
+		    // Respond to the action bar's Up/Home button
+		    case android.R.id.home:
+		        finish();
+	    }
 		item.setChecked(true);
 
 		return true;

@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -16,6 +15,7 @@ import android.util.Log;
 
 public class labels
 {
+	private static final String TAG = "FacailRecognition::labels";
 	String mPath;
 	class label
 	{
