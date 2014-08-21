@@ -24,8 +24,8 @@
                     android:layout_height="68dp"
                     android:text="@string/SViewAll" />
 
-                <za.co.zebrav.facerecognition.Tutorial3View
-                    android:id="@+id/tutorial3_activity_java_surface_view"
+                <za.co.zebrav.facerecognition.CustomCameraView
+                    android:id="@+id/CustomCameraView_activity_java_surface_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.88" />

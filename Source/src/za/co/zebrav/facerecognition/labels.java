@@ -16,9 +16,7 @@ import android.util.Log;
 
 public class labels
 {
-
 	String mPath;
-
 	class label
 	{
 		public label(String s, int n)
@@ -26,13 +24,11 @@ public class labels
 			thelabel = s;
 			num = n;
 		}
-
 		int num;
 		String thelabel;
 	}
 
 	ArrayList<label> thelist = new ArrayList<label>();
-
 	public labels(String Path)
 	{
 		mPath = Path;
@@ -119,7 +115,6 @@ public class labels
 			fstream.close();
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

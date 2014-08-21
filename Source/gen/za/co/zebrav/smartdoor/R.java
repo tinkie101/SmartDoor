@@ -32,6 +32,7 @@ public final class R {
         public static final int manual_login_semi_background=0x7f02000e;
     }
     public static final class id {
+        public static final int CustomCameraView_activity_java_surface_view=0x7f090018;
         public static final int FD=0x7f090006;
         public static final int ManualLogin_button1=0x7f09002b;
         public static final int ManualLogin_et1=0x7f090028;
@@ -74,7 +75,6 @@ public final class R {
         public static final int toggleButton1=0x7f09001d;
         public static final int toggleButtonGrabar=0x7f090020;
         public static final int ttsButton=0x7f090003;
-        public static final int tutorial3_activity_java_surface_view=0x7f090018;
         public static final int twitterFragment=0x7f090008;
         public static final int twitterPostDateTime=0x7f090025;
         public static final int twitterUserHandle=0x7f090023;
@@ -170,19 +170,12 @@ public final class R {
         public static final int AppTheme=0x7f070001;
         /**  the theme applied to the application or activity 
          */
-<<<<<<< HEAD
-        public static final int CustomActionBarTheme=0x7f060003;
+        public static final int CustomActionBarTheme=0x7f070003;
         /**  ActionBar styles 
          */
-        public static final int MyActionBar=0x7f060004;
+        public static final int MyActionBar=0x7f070004;
         /**   Set style for sound level Progressbar
          */
-        public static final int soundBarStyle=0x7f060002;
-=======
-        public static final int CustomActionBarTheme=0x7f070002;
-        /**  ActionBar styles 
-         */
-        public static final int MyActionBar=0x7f070003;
->>>>>>> origin/FacialRegocnition
+        public static final int soundBarStyle=0x7f070002;
     }
 }

@@ -37,7 +37,6 @@ public class PersonRecognizer
 	{
 		faceRecognizer = com.googlecode.javacv.cpp.opencv_contrib
 				.createLBPHFaceRecognizer(2, 8, 8, 8, 200);
-		// path=Environment.getExternalStorageDirectory()+"/facerecog/faces/";
 		mPath = path;
 		labelsFile = new labels(mPath);
 
@@ -173,7 +172,6 @@ public class PersonRecognizer
 		int n[] = new int[1];
 		double p[] = new double[1];
 		IplImage ipl = MatToIplImage(m, WIDTH, HEIGHT);
-		// IplImage ipl = MatToIplImage(m,-1, -1);
 
 		faceRecognizer.predict(ipl, n, p);
 
@@ -232,7 +230,6 @@ public class PersonRecognizer
 			file.close();
 		} catch (Exception e)
 		{
-			// TODO Auto-generated catch block
 			Log.e("", e.getMessage() + e.getCause());
 			e.printStackTrace();
 		}

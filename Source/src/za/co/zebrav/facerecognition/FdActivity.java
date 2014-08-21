@@ -86,12 +86,11 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 
 	String mPath = "";
 
-	private Tutorial3View mOpenCvCameraView;
+	private CustomCameraView mOpenCvCameraView;
 	private int mChooseCamera = backCam;
 
 	EditText text;
 	TextView textresult;
-	private ImageView Iv;
 	Bitmap mBitmap;
 	Handler mHandler;
 
@@ -208,7 +207,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 
 		setContentView(R.layout.face_detect_surface_view);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
+		mOpenCvCameraView = (CustomCameraView) findViewById(R.id.CustomCameraView_activity_java_surface_view);
 
 		mOpenCvCameraView.setCvCameraViewListener(this);
 
@@ -576,34 +575,17 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		Log.i(TAG, "called onOptionsItemSelected; selected item: " + item);
-		// if (item == mItemFace50)
-		// setMinFaceSize(0.5f);
-		// else if (item == mItemFace40)
-		// setMinFaceSize(0.4f);
-		// else if (item == mItemFace30)
-		// setMinFaceSize(0.3f);
-		// else if (item == mItemFace20)
-		// setMinFaceSize(0.2f);
-		// else if (item == mItemType) {
-		// mDetectorType = (mDetectorType + 1) % mDetectorName.length;
-		// item.setTitle(mDetectorName[mDetectorType]);
-		// setDetectorType(mDetectorType);
-		//
-		// }
 		nBackCam.setChecked(false);
 		mFrontCam.setChecked(false);
-		// mEigen.setChecked(false);
 		if (item == nBackCam)
 		{
 			mOpenCvCameraView.setCamFront();
 			mChooseCamera = frontCam;
 		}
-		// fr.changeRecognizer(0);
 		else if (item == mFrontCam)
 		{
 			mChooseCamera = backCam;
 			mOpenCvCameraView.setCamBack();
-
 		}
 
 		item.setChecked(true);
@@ -616,20 +598,4 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 		mRelativeFaceSize = faceSize;
 		mAbsoluteFaceSize = 0;
 	}
-
-	private void setDetectorType(int type)
-	{
-		// if (mDetectorType != type) {
-		// mDetectorType = type;
-		//
-		// if (type == NATIVE_DETECTOR) {
-		// Log.i(TAG, "Detection Based Tracker enabled");
-		// mNativeDetector.start();
-		// } else {
-		// Log.i(TAG, "Cascade detector enabled");
-		// mNativeDetector.stop();
-		// }
-		// }
-	}
-
 }
