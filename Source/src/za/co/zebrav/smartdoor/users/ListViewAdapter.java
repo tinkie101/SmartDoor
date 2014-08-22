@@ -71,7 +71,7 @@ public class ListViewAdapter extends BaseAdapter
 		}
 		
 		// Set the results into TextViews
-		holder.test.setText(userpopulationlist.get(position).getId());
+		holder.test.setText(userpopulationlist.get(position).getFirstnames());
 		
 		view.setOnClickListener(new OnClickListener()
 		{
@@ -79,7 +79,7 @@ public class ListViewAdapter extends BaseAdapter
 			@Override
 			public void onClick(View arg0)
 			{
-				Toast.makeText(mContext, userpopulationlist.get(position).getId(), Toast.LENGTH_LONG).show();
+				Toast.makeText(mContext, userpopulationlist.get(position).getFirstnames(), Toast.LENGTH_LONG).show();
 			}
 		});
 			
@@ -98,7 +98,7 @@ public class ListViewAdapter extends BaseAdapter
 		{
 			for (User us : arraylist)
 			{
-				if (us.getId().toLowerCase(Locale.getDefault())
+				if (us.getFirstnames().toLowerCase(Locale.getDefault())
 						.contains(charText))
 				{
 					userpopulationlist.add(us);
