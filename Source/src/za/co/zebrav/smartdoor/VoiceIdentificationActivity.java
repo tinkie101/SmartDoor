@@ -1,33 +1,52 @@
 package za.co.zebrav.smartdoor;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import android.app.Activity;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.EditText;
+import at.fhooe.mcm.smc.wav.WavReader;
+import at.fhooe.mcm.smc.wav.WaveRecorder;
+import at.fhooe.mcm.sms.Constants;
 
+import com.bitsinharmony.recognito.MatchResult;
 import com.bitsinharmony.recognito.Recognito;
 
-public class VoiceIdentificationActivity extends Activity
+public class VoiceIdentificationActivity extends ListActivity
 {
-
 	private static final String LOG_TAG = "VoiceIdentificationActivity";
-	private static String mFileName = null;
 
-	private RecordButton mRecordButton = null;
-	private MediaRecorder mRecorder = null;
+	private Button btnRecognise;
 
-	private PlayButton mPlayButton = null;
+	private Button btnPlay;
+	private boolean StartPlaying;
+
+	private Button btnRecord;
+	private boolean StartRecording;
+
+	private static final String tempRecordingFile = "TempRecording.wav";
+	private static final int sampleRate = 44100;
+	private File outputFile;
+	private WaveRecorder waveRecorder;
+
 	private MediaPlayer mPlayer = null;
+	private Recognito<String> recognito;
+	private ArrayList<String> userKeys;
+	private boolean isTraining = false;
+	private String currentKey;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -37,14 +56,18 @@ public class VoiceIdentificationActivity extends Activity
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		LinearLayout ll = new LinearLayout(this);
-		mRecordButton = new RecordButton(this);
-		ll.addView(mRecordButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-							ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-		mPlayButton = new PlayButton(this);
-		ll.addView(mPlayButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-							ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-		setContentView(ll);
+		btnPlay = (Button) findViewById(R.id.btnPlay);
+		btnRecord = (Button) findViewById(R.id.btnRecord);
+		btnRecognise = (Button) findViewById(R.id.btnRecognise);
+
+		StartPlaying = true;
+		StartRecording = true;
+
+		outputFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), tempRecordingFile);
+		waveRecorder = new WaveRecorder(sampleRate);
+		recognito = new Recognito<String>(44100.0f);
+		userKeys = new ArrayList<String>();
+		currentKey = "";
 	}
 
 	/**
@@ -68,24 +91,20 @@ public class VoiceIdentificationActivity extends Activity
 	public void onPause()
 	{
 		super.onPause();
-		if (mRecorder != null)
-		{
-			mRecorder.release();
-			mRecorder = null;
-		}
 
-		if (mPlayer != null)
-		{
-			mPlayer.release();
-			mPlayer = null;
-		}
+		// Stop play/record
+		stopRecording();
+		stopPlaying();
 	}
 
-	private void onRecord(boolean start)
+	private void onRecord(File output)
 	{
-		if (start)
+		boolean temp = StartRecording;
+		StartRecording = !StartRecording;
+
+		if (temp)
 		{
-			startRecording();
+			startRecording(output);
 		}
 		else
 		{
@@ -93,9 +112,12 @@ public class VoiceIdentificationActivity extends Activity
 		}
 	}
 
-	private void onPlay(boolean start)
+	private void onPlay()
 	{
-		if (start)
+		boolean temp = StartPlaying;
+		StartPlaying = !StartPlaying;
+
+		if (temp)
 		{
 			startPlaying();
 		}
@@ -105,14 +127,31 @@ public class VoiceIdentificationActivity extends Activity
 		}
 	}
 
+	/**
+	 * Start to play the file that was recorded
+	 */
 	private void startPlaying()
 	{
+		btnPlay.setText("Stop Playing");
+
 		mPlayer = new MediaPlayer();
 		try
 		{
-			mPlayer.setDataSource(mFileName);
+			mPlayer.setDataSource(outputFile.getAbsolutePath());
 			mPlayer.prepare();
 			mPlayer.start();
+
+			// Stop playing when done
+			mPlayer.setOnCompletionListener(new OnCompletionListener()
+			{
+
+				@Override
+				public void onCompletion(MediaPlayer mp)
+				{
+					// will handle the current play state
+					onPlay();
+				}
+			});
 		}
 		catch (IOException e)
 		{
@@ -120,104 +159,233 @@ public class VoiceIdentificationActivity extends Activity
 		}
 	}
 
+	/**
+	 * Stop playing the file
+	 */
 	private void stopPlaying()
 	{
-		mPlayer.release();
-		mPlayer = null;
+		btnPlay.setText("Start Playing");
+
+		if (mPlayer != null)
+		{
+			mPlayer.release();
+			mPlayer = null;
+		}
 	}
 
-	private void startRecording()
+	/**
+	 * Delete old recording and record a new file as wav
+	 * 
+	 * @param output
+	 */
+	private void startRecording(File output)
 	{
-		mRecorder = new MediaRecorder();
-		mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-		mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-		mRecorder.setOutputFile(mFileName);
-		mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
+		btnRecord.setText("Stop Recording");
+
+		if (output.exists())
+			output.delete();
+
+		waveRecorder.setOutputFile(output.getAbsolutePath());
+		waveRecorder.prepare();
+		waveRecorder.start();
+	}
+
+	/**
+	 * Stop the recording of a wav file
+	 */
+	private void stopRecording()
+	{
+		btnRecord.setText("Start Recording");
+
+		if (waveRecorder != null)
+		{
+			waveRecorder.stop();
+			waveRecorder.release();
+			waveRecorder.reset();
+			
+			if(isTraining)
+			{
+				isTraining = !isTraining;
+				
+				String fileName = currentKey + ".wav";
+				//Create voice Prints
+				if (!userKeys.contains(currentKey))
+				{
+					Log.d(LOG_TAG, "Creating voice print for: " + currentKey);
+					userKeys.add(currentKey);
+					createVoicePrintFromFile(fileName, currentKey);
+				}
+				else
+				{
+					Log.d(LOG_TAG, "Merging voice print for: " + currentKey);
+					mergeVoicePrintFromFile(fileName, currentKey);
+				}
+			}
+			
+		}
+	}
+
+	/**
+	 * Opens the wav file and try to identify who the speaker is.
+	 * Sets the ListView to contain the list of possibilities and their likelihood Ratios
+	 * 
+	 * @param file
+	 *            The wav file that contains the voice to be identified
+	 */
+	private void identifySpeaker(String file)
+	{
+		String filename = Environment.getExternalStorageDirectory().getAbsolutePath();
+		filename += "/" + file;
+
+		WavReader wavReader = new WavReader(filename);
+		double[] samples = readSamples(wavReader);
+
+		List<MatchResult<String>> matches = recognito.identify(samples);
+
+		ArrayList<String> list = new ArrayList<String>();
+
+		// TODO Only get the best 3 results
+		for (MatchResult<String> matchResult : matches)
+		{
+			list.add(matchResult.getKey() + ": " + matchResult.getLikelihoodRatio() + "%");
+		}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+		setListAdapter(adapter);
+	}
+
+	/**
+	 * Read in the wav file and create a new voice print.
+	 * 
+	 * @param file
+	 *            The wav file to read in
+	 * @param key
+	 *            The key of the voice print to be created
+	 */
+	private void createVoicePrintFromFile(String file, String key)
+	{
+		String filename = Environment.getExternalStorageDirectory().getAbsolutePath();
+		filename += "/" + file;
+
+		WavReader wavReader = new WavReader(filename);
+		double[] samples = readSamples(wavReader);
+
+		recognito.createVoicePrint(key, samples);
+	}
+
+	private void mergeVoicePrintFromFile(String file, String key)
+	{
+		String filename = Environment.getExternalStorageDirectory().getAbsolutePath();
+		filename += "/" + file;
+
+		WavReader wavReader = new WavReader(filename);
+		double[] samples = readSamples(wavReader);
+
+		recognito.mergeVoiceSample(key, samples);
+	}
+
+	/**
+	 * TODO(From example code)
+	 * 
+	 * Reads in a wav file and returns it as a double[]
+	 * 
+	 * @param wavReader
+	 * @return
+	 */
+	private double[] readSamples(WavReader wavReader)
+	{
+		int sampleSize = wavReader.getFrameSize();
+		int sampleCount = wavReader.getPayloadLength() / sampleSize;
+		int windowCount = (int) Math.floor(sampleCount / Constants.WINDOWSIZE);
+		byte[] buffer = new byte[sampleSize];
+		double[] samples = new double[windowCount * Constants.WINDOWSIZE];
 
 		try
 		{
-			mRecorder.prepare();
+			for (int i = 0; i < samples.length; i++)
+			{
+				wavReader.read(buffer, 0, sampleSize);
+				samples[i] = createSample(buffer);
+
+			}
 		}
 		catch (IOException e)
 		{
-			Log.e(LOG_TAG, "prepare() failed");
+			Log.e(LOG_TAG, "Exception in reading samples", e);
 		}
-
-		mRecorder.start();
+		return samples;
 	}
 
-	private void stopRecording()
+	/**
+	 * TODO(From example code)
+	 * 
+	 * Used by the readSamples function
+	 * 
+	 * @param buffer
+	 * @return
+	 */
+	private short createSample(byte[] buffer)
 	{
-		Recognito<String> recognito = new Recognito(44100.0f);
-		//TODO
-//		recognito.createVoicePrint("TEST", new File(mFileName));
-		
-		mRecorder.stop();
-		mRecorder.release();
-		mRecorder = null;
+		short sample = 0;
+		// hardcoded two bytes here
+		short b1 = buffer[0];
+		short b2 = buffer[1];
+		b2 <<= 8;
+		sample = (short) (b1 | b2);
+		return sample;
 	}
 
-	class RecordButton extends Button
+	/**
+	 * Handle the button pressed
+	 * 
+	 * @param v
+	 */
+	public void buttonClicked(View v)
 	{
-		boolean mStartRecording = true;
-
-		OnClickListener clicker = new OnClickListener()
-		{
-			public void onClick(View v)
-			{
-				onRecord(mStartRecording);
-				if (mStartRecording)
-				{
-					setText("Stop recording");
-				}
-				else
-				{
-					setText("Start recording");
-				}
-				mStartRecording = !mStartRecording;
-			}
-		};
-
-		public RecordButton(Context ctx)
-		{
-			super(ctx);
-			setText("Start recording");
-			setOnClickListener(clicker);
-		}
+		if (v == btnPlay)
+			onPlay();
+		else if (v == btnRecord)
+			onRecord(outputFile);
+		else if (v == btnRecognise)
+			recognise();
+		else if (v == (Button) findViewById(R.id.btnTrain))
+			train();
 	}
 
-	class PlayButton extends Button
+	private void train()
 	{
-		boolean mStartPlaying = true;
+		final EditText input = new EditText(this);
 
-		OnClickListener clicker = new OnClickListener()
-		{
-			public void onClick(View v)
-			{
-				onPlay(mStartPlaying);
-				if (mStartPlaying)
-				{
-					setText("Stop playing");
-				}
-				else
-				{
-					setText("Start playing");
-				}
-				mStartPlaying = !mStartPlaying;
-			}
-		};
+		new AlertDialog.Builder(this).setTitle("Update Status").setMessage("Enter user KEY").setView(input)
+							.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+							{
+								public void onClick(DialogInterface dialog, int whichButton)
+								{
+									String key = input.getText().toString();
+									String fileName = key + ".wav";
+									File tempFile = new File(Environment.getExternalStorageDirectory()
+														.getAbsolutePath(), fileName);
+									onRecord(tempFile);
+									currentKey = key;
+									isTraining = true;
+								}
+							}).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+							{
+								public void onClick(DialogInterface dialog, int whichButton)
+								{
+									// Do nothing.
+								}
+							}).show();
 
-		public PlayButton(Context ctx)
-		{
-			super(ctx);
-			setText("Start playing");
-			setOnClickListener(clicker);
-		}
 	}
 
-	public VoiceIdentificationActivity()
+	/**
+	 * TODO read old voice prints from database
+	 * Identify the person speaking in the recorded file
+	 * 
+	 */
+	public void recognise()
 	{
-		mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-		mFileName += "/audiorecordtest.3gp";
+		Log.d(LOG_TAG, "Recognising...");
+		identifySpeaker(tempRecordingFile);
 	}
 }

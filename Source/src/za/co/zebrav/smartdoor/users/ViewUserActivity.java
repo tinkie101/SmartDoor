@@ -20,12 +20,6 @@ public class ViewUserActivity extends Activity
 	Button btDeletar;
 	UserProvider provider;
 	LinearLayout linear;
-
-	@Override
-	protected void onStop()
-	{
-		provider.close();
-	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)

@@ -4,4 +4,57 @@
     android:layout_height="match_parent"
     tools:context="${packageName}.${activityClass}" >
 
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="18dp"
+        android:text="Start Playing" 
+        android:onClick="buttonClicked"/>
+
+    <Button
+        android:id="@+id/btnRecognise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnRecord"
+        android:layout_alignBottom="@+id/btnRecord"
+        android:layout_toRightOf="@+id/btnRecord"
+        android:layout_marginLeft="18dp"
+        android:text="Recognise"
+        android:onClick="buttonClicked" />
+
+    <Button
+        android:id="@+id/btnRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnPlay"
+        android:layout_alignBottom="@+id/btnPlay"
+        android:layout_marginLeft="18dp"
+        android:layout_toRightOf="@+id/btnPlay"
+        android:text="Start Recording"
+        android:onClick="buttonClicked" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnRecord"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" >
+    </ListView>
+
+    <Button
+        android:id="@+id/btnTrain"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnRecognise"
+        android:layout_alignBottom="@+id/btnRecognise"
+        android:layout_toRightOf="@+id/btnRecognise"
+        android:text="Train"
+        android:onClick="buttonClicked" />
+
 </RelativeLayout>
