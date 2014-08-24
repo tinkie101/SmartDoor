@@ -20,8 +20,8 @@
                 android:width="1dp"
                 android:color= "#FFF" />
             <corners
-                android:topLeftRadius="5dp"
-                android:topRightRadius="5dp" />
+                android:topLeftRadius="15dp"
+                android:topRightRadius="15dp" />
 
         </shape>
     </item>

@@ -2,8 +2,6 @@ package za.co.zebrav.smartdoor.users;
 
 import java.util.List;
 
-import com.db4o.ObjectSet;
-
 import za.co.zebrav.smartdoor.R;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.app.Activity;
 import android.graphics.Color;
 
@@ -24,6 +21,8 @@ public class ViewUserActivity extends Activity
 	UserProvider provider;
 	LinearLayout linear;
 	Activity thisAct;
+	
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -54,7 +53,6 @@ public class ViewUserActivity extends Activity
 
 		viewAllButton.setOnClickListener(new View.OnClickListener()
 		{
-
 			public void onClick(View v)
 			{
 				linear.removeAllViews();
@@ -68,9 +66,10 @@ public class ViewUserActivity extends Activity
 					for (User u : result)
 					{
 						tv = new TextView(getApplicationContext());
-						tv.setText(u.getFirstnames());
+						tv.setText(u.getUsername() + " " + u.getPassword());
 						tv.setTextColor(Color.WHITE);
 						linear.addView(tv);
+						
 					}
 				}
 				provider.close();//must close after data has been used

@@ -22,7 +22,8 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="Enter first names:"
-	            android:textSize="25sp" />
+	            android:textSize="25sp"
+	            android:textColor="#FFF" />
 	
 	        <EditText
 	            android:id="@+id/addUser_fname_et"
@@ -30,14 +31,16 @@
 	            android:layout_height="wrap_content"
 	            android:ems="10"
 	            android:inputType="textPersonName"
-	            android:textSize="25sp"/>
+	            android:textSize="25sp"
+	            android:textColor="#FFF"/>
 	
 	        <TextView
 	            android:id="@+id/addUser_sname_tv"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="Enter surname:"
-	            android:textSize="25sp" />
+	            android:textSize="25sp"
+	            android:textColor="#FFF" />
 	
 	        <EditText
 	            android:id="@+id/addUser_sname_et"
@@ -45,28 +48,32 @@
 	            android:layout_height="wrap_content"
 	            android:ems="10"
 	            android:inputType="textPersonName"
-	            android:textSize="25sp" />
+	            android:textSize="25sp"
+	            android:textColor="#FFF" />
 	
 	        <TextView
 	            android:id="@+id/addUser_uname_tv"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="Enter username"
-	            android:textSize="25sp" />
+	            android:textSize="25sp"
+	            android:textColor="#FFF" />
 	
 	        <EditText
 	            android:id="@+id/addUser_uname_et"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:ems="10"
-	            android:textSize="25sp" />
+	            android:textSize="25sp"
+	            android:textColor="#FFF" />
 	
 	        <TextView
 	            android:id="@+id/addUser_pass1_tv"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="Enter password"
-	            android:textSize="25sp" />
+	            android:textSize="25sp"
+	            android:textColor="#FFF" />
 	
 	        <EditText
 	            android:id="@+id/addUser_pass1_et"
@@ -74,13 +81,15 @@
 	            android:layout_height="wrap_content"
 	            android:ems="10"
 	            android:inputType="textPassword"
-	            android:textSize="25sp" />
+	            android:textSize="25sp" 
+	            android:textColor="#FFF"/>
 	
 	        <TextView
 	            android:id="@+id/addUser_pass2_tv"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="Re-enter pasword:"
+	            android:text="Re-enter password:"
+	            android:textColor="#FFF"
 	            android:textSize="25sp" />
 	
 	        <EditText
@@ -89,16 +98,17 @@
 	            android:layout_height="wrap_content"
 	            android:ems="10"
 	            android:inputType="textPassword"
-	            android:textSize="25sp" />
+	            android:textSize="25sp"
+	            android:textColor="#FFF" />
 	        
 	         <Button
 	             android:id="@+id/stepOneDoneButton"
 	             android:layout_width="match_parent"
 	             android:layout_height="wrap_content"
+	             android:layout_marginTop="5dp"
 	             android:background="@drawable/button1"
 	             android:onClick="doneStepOneAddUser"
 	             android:text="Done"
-	             android:layout_marginTop="5dp"
 	             android:textSize="25sp" />
 	       
 	    </LinearLayout>

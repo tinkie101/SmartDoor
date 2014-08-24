@@ -36,7 +36,6 @@ public class AddUserActivity extends Activity
 		
 		provider = new UserProvider(this);
 		
-		//provider = new UserProvider(this);
 		alert = new AlertDialog.Builder(this);
 		addUserStepOne = new AddUserStepOne();
 		

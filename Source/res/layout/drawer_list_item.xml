@@ -5,10 +5,7 @@
     android:background="?android:attr/activatedBackgroundIndicator"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
+    android:padding="18dp"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
     android:textColor="#fff"
-    android:textSize="20sp" />
+    android:textSize="25sp" />
