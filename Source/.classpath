@@ -10,5 +10,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/twitter4j-core-4.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/db4o-8.0.249.16098-all-java5.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/recognitoAndroid.jar"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
