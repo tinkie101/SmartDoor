@@ -95,6 +95,7 @@ public class AddUserActivity extends Activity
 	}
 	
 	/**
+	 * Make sure the user name does not exists already
 	 * check that all fields are filled in
 	 * check that password1 and password2 match
 	 * @return boolean
@@ -102,29 +103,50 @@ public class AddUserActivity extends Activity
 	public boolean validateStep1()
 	{
 		boolean valid = true;
+		
+		//Check if username already exists
+		valid = !usernameExists();
+		if(!valid)
+		{
+			alertMessage("A user with that username already exists!");
+			return false;
+		}
+		
+		//Check if all fields are filled
 		valid = addUserStepOne.allFieldsFilled();
 		if(!valid)
-			alertEmptyFields();
-		else
 		{
-			valid = addUserStepOne.passMatch();
-			if(!valid)
-				alsertPassMissMatch();
+			alertMessage("Empty field!");
+			return false;
 		}
+		
+		//check if the passwords match
+		valid = addUserStepOne.passMatch();
+		if(!valid)
+		{
+			alertMessage("Passwords do not match!");
+			return false;
+		}
+		
 		return valid;
 	}
 	
 	/**
-	 * Alerts user that empty fields exist
+	 * checks in the database if entered username already exists
+	 * @return
 	 */
-	public void alertEmptyFields()
+	public boolean usernameExists()
 	{
-		alert.setTitle("Alert").setMessage("Empty field!").setNeutralButton("OK", null).show();
+		String username = addUserStepOne.getUsername();
+		return provider.userExists(username);
 	}
 	
-	public void alsertPassMissMatch()
+	/**
+	 * Alerts the specified message in dialogue box.
+	 */
+	public void alertMessage(String message)
 	{
-		alert.setTitle("Alert").setMessage("Passwords do not match!").setNeutralButton("OK", null).show();
+		alert.setTitle("Alert").setMessage(message).setNeutralButton("OK", null).show();
 	}
 	
 	/**

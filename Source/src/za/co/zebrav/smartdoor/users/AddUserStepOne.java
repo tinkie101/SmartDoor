@@ -70,7 +70,7 @@ public class AddUserStepOne extends Fragment
 	}
 	
 	/**
-	 * 
+	 * Sends back content of first name input box
 	 * @return
 	 */
 	public String getFirstName()
@@ -79,7 +79,7 @@ public class AddUserStepOne extends Fragment
 	}
 	
 	/**
-	 * 
+	 * Sends back content of surname input box
 	 * @return
 	 */
 	public String getSurname()
@@ -88,7 +88,7 @@ public class AddUserStepOne extends Fragment
 	}
 	
 	/**
-	 * 
+	 * Sends back content of Username input box
 	 * @return
 	 */
 	public String getUsername()
@@ -97,7 +97,7 @@ public class AddUserStepOne extends Fragment
 	}
 	
 	/**
-	 * 
+	 * Sends back the chosen password
 	 * @return
 	 */
 	public String getPass()

@@ -9,12 +9,20 @@ import com.db4o.ObjectSet;
 public class UserProvider extends Db4oHelper
 {
 	//------------------------------------------------------------------------CONSTRUCTOR
+	/**
+	 * Needs the activity context
+	 * @param context
+	 */
 	public UserProvider(Context context)
 	{
 		super(context);
 	}
 	
 	//------------------------------------------------------------------------saveUser
+	/**
+	 * Saves a user to the database and commits action.
+	 * @param user to be stored
+	 */
 	public void saveUser(User user)
 	{
 		open();
@@ -24,6 +32,10 @@ public class UserProvider extends Db4oHelper
 	}
 	
 	//------------------------------------------------------------------------deleteUser
+	/**
+	 * Deletes specified user from database and commits action.
+	 * @param user
+	 */
 	public void deleteUser(User user) 
 	{
 		open();
@@ -33,6 +45,9 @@ public class UserProvider extends Db4oHelper
     }
 
 	//------------------------------------------------------------------------getListOfAllUsers
+	/**
+	 * @return result, list of all the users objects stored in database
+	 */
 	public ObjectSet getListOfAllUsers() 
 	{
 		ObjectSet result;
@@ -42,7 +57,29 @@ public class UserProvider extends Db4oHelper
     	return result;
     } 
 	
+	//------------------------------------------------------------------------userExists
+	/**
+	 * @param username to check if user already exists with this username
+	 * @return true if user exists, false if it does not
+	 */
+	public boolean userExists(String username)
+	{
+		boolean exists = false;
+		open();
+		ObjectSet result = getDatabase().queryByExample(new User(null, null, username, null));
+		
+		if(!result.isEmpty())
+		{
+			exists = true;
+		}
+		close();
+		return exists;
+	}
+	
 	//------------------------------------------------------------------------clearAllUsersData
+	/**
+	 * Clears all the users from the database.
+	 */
 	public void clearAllUsersData()
 	{
 		open();
