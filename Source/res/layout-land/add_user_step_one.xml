@@ -2,93 +2,105 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/FrameLayout1"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="@drawable/background" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/stepOneDoneButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="doneStepOneAddUser"
-            android:text="Done" />
-
-        <TextView
-            android:id="@+id/addUser_fname_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter first names:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <EditText
-            android:id="@+id/addUser_fname_et"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName" >
-            <requestFocus />
-        </EditText>
-
-        <TextView
-            android:id="@+id/addUser_sname_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter surname:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <EditText
-            android:id="@+id/addUser_sname_et"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName" />
-
-        <TextView
-            android:id="@+id/addUser_uname_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter username:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <EditText
-            android:id="@+id/addUser_uname_et"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10" >
-        </EditText>
-
-        <TextView
-            android:id="@+id/addUser_pass1_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter password:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <EditText
-            android:id="@+id/addUser_pass1_et"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword" />
-
-        <TextView
-            android:id="@+id/addUser_pass2_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Re-enter"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <EditText
-            android:id="@+id/addUser_pass2_et"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword" />
-
-    </LinearLayout>
-
+     <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" >
+	        
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerInParent="true"
+	            android:background="@drawable/manual_login_semi_background"
+	            android:orientation="vertical"
+	            android:padding="25dp" >
+	
+	        <TextView
+	            android:id="@+id/addUser_fname_tv"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Enter first names:"
+	            android:textSize="25sp" />
+	
+	        <EditText
+	            android:id="@+id/addUser_fname_et"
+	            android:layout_width="517dp"
+	            android:layout_height="wrap_content"
+	            android:ems="10"
+	            android:inputType="textPersonName"
+	            android:textSize="25sp"/>
+	
+	        <TextView
+	            android:id="@+id/addUser_sname_tv"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Enter surname:"
+	            android:textSize="25sp" />
+	
+	        <EditText
+	            android:id="@+id/addUser_sname_et"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:ems="10"
+	            android:inputType="textPersonName"
+	            android:textSize="25sp" />
+	
+	        <TextView
+	            android:id="@+id/addUser_uname_tv"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Enter username"
+	            android:textSize="25sp" />
+	
+	        <EditText
+	            android:id="@+id/addUser_uname_et"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:ems="10"
+	            android:textSize="25sp" />
+	
+	        <TextView
+	            android:id="@+id/addUser_pass1_tv"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Enter password"
+	            android:textSize="25sp" />
+	
+	        <EditText
+	            android:id="@+id/addUser_pass1_et"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:ems="10"
+	            android:inputType="textPassword"
+	            android:textSize="25sp" />
+	
+	        <TextView
+	            android:id="@+id/addUser_pass2_tv"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Re-enter pasword:"
+	            android:textSize="25sp" />
+	
+	        <EditText
+	            android:id="@+id/addUser_pass2_et"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:ems="10"
+	            android:inputType="textPassword"
+	            android:textSize="25sp" />
+	        
+	         <Button
+	             android:id="@+id/stepOneDoneButton"
+	             android:layout_width="match_parent"
+	             android:layout_height="wrap_content"
+	             android:background="@drawable/button1"
+	             android:onClick="doneStepOneAddUser"
+	             android:text="Done"
+	             android:layout_marginTop="5dp"
+	             android:textSize="25sp" />
+	       
+	    </LinearLayout>
+	</RelativeLayout>
 </FrameLayout>

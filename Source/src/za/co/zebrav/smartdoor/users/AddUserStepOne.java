@@ -24,12 +24,12 @@ public class AddUserStepOne extends Fragment
 	 {
 		  View view = inflater.inflate(R.layout.add_user_step_one, null);
 		  
-		//editText GUI
-		firstname = (EditText) view.findViewById(R.id.addUser_fname_et);
-			surname = (EditText) view.findViewById(R.id.addUser_sname_et);
-			username = (EditText) view.findViewById(R.id.addUser_uname_et);
-			pass1 = (EditText) view.findViewById(R.id.addUser_pass1_et);
-			pass2 = (EditText) view.findViewById(R.id.addUser_pass2_et);
+		  //editText GUI
+		  firstname = (EditText) view.findViewById(R.id.addUser_fname_et);
+		  surname = (EditText) view.findViewById(R.id.addUser_sname_et);
+		  username = (EditText) view.findViewById(R.id.addUser_uname_et);
+		  pass1 = (EditText) view.findViewById(R.id.addUser_pass1_et);
+		  pass2 = (EditText) view.findViewById(R.id.addUser_pass2_et);
 		  
 		  return view;
 	 }
@@ -103,5 +103,17 @@ public class AddUserStepOne extends Fragment
 	public String getPass()
 	{
 		return pass1.getText().toString();
+	}
+	
+	/**
+	 * clear content of boxes
+	 */
+	public void clearEditBoxes()
+	{
+		this.firstname.setText("");
+		this.surname.setText("");
+		this.username.setText("");
+		this.pass1.setText("");
+		this.pass2.setText("");
 	}
 }

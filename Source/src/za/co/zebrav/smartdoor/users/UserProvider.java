@@ -1,7 +1,10 @@
 package za.co.zebrav.smartdoor.users;
 
 import android.content.Context;
+
 import java.util.List;
+
+import com.db4o.ObjectSet;
 
 public class UserProvider extends Db4oHelper
 {
@@ -14,31 +17,42 @@ public class UserProvider extends Db4oHelper
 	//------------------------------------------------------------------------saveUser
 	public void saveUser(User user)
 	{
+		open();
 		getDatabase().store(user);
     	commit();
+    	close();
 	}
 	
 	//------------------------------------------------------------------------deleteUser
 	public void deleteUser(User user) 
 	{
+		open();
     	getDatabase().delete(user);
     	commit();
+    	close();
     }
 
 	//------------------------------------------------------------------------getListOfAllUsers
-	public List getListOfAllUsers() 
+	public ObjectSet getListOfAllUsers() 
 	{
-    	return getDatabase().query(User.class);
+		ObjectSet result;
+		open();
+		result = getDatabase().queryByExample(new User(null, null, null, null));
+	
+    	return result;
     } 
 	
 	//------------------------------------------------------------------------clearAllUsersData
 	public void clearAllUsersData()
 	{
+		open();
     	List<User> list = getListOfAllUsers();
     	
     	for(User u : list){
-    		deleteUser(u);
+    		getDatabase().delete(u);
+        	commit();
     	}
     	commit();
+    	close();
     } 
 }

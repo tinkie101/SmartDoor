@@ -23,8 +23,9 @@ public class AddUserActivity extends Activity
 	private String uname;
 	private String password;
 	
-	AlertDialog.Builder alert;
-	AddUserStepOne addUserStepOne;
+	private AlertDialog.Builder alert;
+	private AddUserStepOne addUserStepOne;
+	private UserProvider provider;
 	//UserProvider provider;
 	
 	@Override
@@ -33,6 +34,7 @@ public class AddUserActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_user);
 		
+		provider = new UserProvider(this);
 		
 		//provider = new UserProvider(this);
 		alert = new AlertDialog.Builder(this);
@@ -72,11 +74,14 @@ public class AddUserActivity extends Activity
 		if(validateStep1())
 		{
 			getValidUserStep1Info();
+			addUserStepOne.clearEditBoxes();
 			switchFragToStep2();
 			enableStep2Button();
 			disableStep1Button();
 		}
 	}
+	
+	
 	
 	/**
 	 * 
@@ -199,19 +204,35 @@ public class AddUserActivity extends Activity
 	 */
 	public void doneStepThreeAddUser(View v)
 	{
-		Toast.makeText(this.getApplicationContext(), "Saved new user successfully", Toast.LENGTH_SHORT).show();
 		saveNewUser();
+		Toast.makeText(this.getApplicationContext(), "Saved new user successfully", Toast.LENGTH_SHORT).show();
 		switchFragToStep1();
 		enableStep1Button();
 		disableStep3Button();
-		
+		clearInputData();
 	}
 	
+	/**
+	 * User is saved to database
+	 */
 	private void saveNewUser()
 	{
-		//User user = new User(fname, sname, uname, password);
-		//provider.saveUser(user);
+		User user = new User(fname, sname, uname, password);
+		provider.saveUser(user);
 	}
+
+	/**
+	 * User input in editTexts needs to be cleared, 
+	 * as well private strings containing data
+	 */
+	private void clearInputData()
+	{
+		fname = "";
+		sname = "";
+		uname = "";
+		password = "";
+	}
+	
 	
 	/**
 	 * switch current frameLayout to represent the layout of step 1 - insert basic data such as name etc.
@@ -219,7 +240,7 @@ public class AddUserActivity extends Activity
 	public void switchFragToStep1()
 	{
 		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplace, addUserStepOne);
+		ft.replace(R.id.layoutToReplace, this.addUserStepOne);
 		ft.commit();
 	}
 	

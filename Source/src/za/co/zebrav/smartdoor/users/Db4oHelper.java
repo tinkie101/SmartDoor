@@ -6,14 +6,22 @@ import android.util.Log;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.config.EmbeddedConfiguration;
+import com.db4o.ObjectSet;
 
 public class Db4oHelper
 {
 	private ObjectContainer database = null;
+	private Context context = null;
 	private String DATABASE_NAME = "smartdoor_users.db4o";
 	
 	//------------------------------------------------------------------------CONSTRUCTOR
 	public Db4oHelper(Context context) 
+	{
+		this.context = context;
+	}
+	
+	//------------------------------------------------------------------------open
+	public void open()
 	{
 		try 
 		{
