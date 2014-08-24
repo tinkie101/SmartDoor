@@ -2,6 +2,8 @@ package za.co.zebrav.smartdoor.users;
 
 import java.util.List;
 
+import com.db4o.ObjectSet;
+
 import za.co.zebrav.smartdoor.R;
 import android.os.Bundle;
 import android.view.View;
@@ -9,17 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.app.Activity;
 import android.graphics.Color;
 
 public class ViewUserActivity extends Activity
 {
 	EditText edit;
-	Button btInserir;
-	Button btBuscar;
-	Button btDeletar;
+	Button insertButton;
+	Button viewAllButton;
+	Button deleteButton;
 	UserProvider provider;
 	LinearLayout linear;
+	Activity thisAct;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -27,15 +31,16 @@ public class ViewUserActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.view_user);
 
+		thisAct = this;
 		provider = new UserProvider(this);
 		edit = (EditText) findViewById(R.id.et_palavra);
-		btInserir = (Button) findViewById(R.id.bt_adicionar);
-		btBuscar = (Button) findViewById(R.id.bt_buscar);
-		btDeletar = (Button) findViewById(R.id.bt_deletar);
+		insertButton = (Button) findViewById(R.id.bt_adicionar);
+		viewAllButton = (Button) findViewById(R.id.bt_buscar);
+		deleteButton = (Button) findViewById(R.id.bt_deletar);
 		linear = (LinearLayout) findViewById(R.id.linear_palavras);
 
-		// A��o do botao inserir, insere o texto no do edittext na base
-		btInserir.setOnClickListener(new View.OnClickListener()
+		
+		insertButton.setOnClickListener(new View.OnClickListener()
 		{
 
 			public void onClick(View arg0)
@@ -47,26 +52,20 @@ public class ViewUserActivity extends Activity
 			}
 		});
 
-		
-
-		
-		// A��o do botao buscar, primeiro remove todas as palavras do linear em
-		// seguida busca todas as palavras na base
-		// e por fim adiciona os textos no linear.
-		btBuscar.setOnClickListener(new View.OnClickListener()
+		viewAllButton.setOnClickListener(new View.OnClickListener()
 		{
 
 			public void onClick(View v)
 			{
 				linear.removeAllViews();
-
-				List<User> list = provider.getListOfAllUsers();
-
-				if (!list.isEmpty())
+				
+				List<User> result = provider.getListOfAllUsers();
+				
+				if (!result.isEmpty())
 				{
 					TextView tv;
 
-					for (User u : list)
+					for (User u : result)
 					{
 						tv = new TextView(getApplicationContext());
 						tv.setText(u.getFirstnames());
@@ -74,13 +73,12 @@ public class ViewUserActivity extends Activity
 						linear.addView(tv);
 					}
 				}
-
+				provider.close();//must close after data has been used
 			}
 		});
-
-		// A��o do bot�o deletar, remove todos os textos do linear e em seguida
-		// deleta todas as palavras da base.
-		btDeletar.setOnClickListener(new View.OnClickListener()
+		
+		
+		deleteButton.setOnClickListener(new View.OnClickListener()
 		{
 
 			public void onClick(View v)

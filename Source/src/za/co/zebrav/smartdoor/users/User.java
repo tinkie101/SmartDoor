@@ -9,7 +9,7 @@ public class User
 	private String surname = "";
 	
 	//------------------------------------------------------------------------CONSTRUCTOR
-	public User(String username, String password, String firstnames, String surname)
+	public User(String firstnames, String surname, String username, String password)
 	{
 		id++;
 		//if ever id went out of range of a long, flip back to zero (MAX_VALUE -> 9,223,372,036,854,775,807)
