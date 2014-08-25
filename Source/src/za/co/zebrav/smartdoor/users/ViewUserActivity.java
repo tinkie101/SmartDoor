@@ -54,26 +54,36 @@ public class ViewUserActivity extends Activity
  		// Capture Text in EditText
 		searchText.addTextChangedListener(new TextWatcher() 
 		{
+			//the moment some text is edited to the editText field, it is detected by this function
 			@Override
-			public void afterTextChanged(Editable arg0) {
-				// TODO Auto-generated method stub
+			public void afterTextChanged(Editable arg0) 
+			{
 				String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
 				adapter.filter(text);
 			}
 
+			//Useless function that are needs to be implemented (present) for TextWatcher
 			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
-				// TODO Auto-generated method stub
+			public void beforeTextChanged(CharSequence s, int start, int count,int after)
+			{
 			}
-
+			//Useless function that are needs to be implemented (present) for TextWatcher
 			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
-				// TODO Auto-generated method stub
+			public void onTextChanged(CharSequence s, int start, int before,int count)
+			{
 			}
 		});
 		provider.close();
+	}
+	
+	/**
+	 * This function is called the moment the user presses the 'Cancel' button at the top left.
+	 * This function exits the current activity, removing it from the stack.
+	 * @param v
+	 */
+	public void goBack(View v)
+	{
+		this.finish();
 	}
 
 }

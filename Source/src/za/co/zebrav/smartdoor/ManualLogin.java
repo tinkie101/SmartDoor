@@ -30,15 +30,12 @@ public class ManualLogin extends Activity implements OnInitListener
 	private TextToSpeech tts;
 	private boolean ttsReady = false;
 	
-	private Handler myHandler;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		setContentView(R.layout.manual_login);
 		super.onCreate(savedInstanceState);
 		
-		myHandler = new Handler();
 		//database provider
 		provider = new UserProvider(this);
 		

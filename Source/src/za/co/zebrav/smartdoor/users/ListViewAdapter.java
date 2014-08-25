@@ -17,34 +17,36 @@ import android.widget.Toast;
 public class ListViewAdapter extends BaseAdapter
 {
 	Context mContext;
-	private List<User> userpopulationlist = null;
+	private List<User> useList = null;
 	private ArrayList<User> arraylist;
 	LayoutInflater inflater;
 	
-	public ListViewAdapter(Context context, List<User> userpopulationlist)
+	public ListViewAdapter(Context context, List<User> userList)
 	{
 		mContext = context;
-		this.userpopulationlist = userpopulationlist;
+		this.useList = userList;
 		inflater = LayoutInflater.from(mContext);
 		this.arraylist = new ArrayList<User>();
-		this.arraylist.addAll(userpopulationlist);
+		this.arraylist.addAll(userList);
 	}
 	
 	public class ViewHolder
 	{
-		TextView test;
+		TextView firstName;
+		TextView surname;
+		TextView username;
 	}
 	
 	@Override
 	public int getCount()
 	{
-		return userpopulationlist.size();
+		return useList.size();
 	}
 
 	@Override
 	public User getItem(int position)
 	{
-		return userpopulationlist.get(position);
+		return useList.get(position);
 	}
 
 	@Override
@@ -56,55 +58,61 @@ public class ListViewAdapter extends BaseAdapter
 	@Override
 	public View getView(final int position, View view, ViewGroup parent)
 	{
-		final ViewHolder holderFirstname;
+		final ViewHolder holder;
 		if (view == null)
 		{
-			holderFirstname = new ViewHolder();
+			holder= new ViewHolder();
 			view = inflater.inflate(R.layout.search_user_listview_item, null);
-			// Locate the TextViews in listview_item.xml
-			holderFirstname.test= (TextView) view.findViewById(R.id.firstnamesTV);
-			view.setTag(holderFirstname);
+			holder.firstName = (TextView) view.findViewById(R.id.firstnamesTV);
+			holder.surname = (TextView) view.findViewById(R.id.surnamesTV);
+			holder.username = (TextView) view.findViewById(R.id.usernameTV);
+			view.setTag(holder);
 		} else
 		{
-			holderFirstname = (ViewHolder) view.getTag();
+			holder = (ViewHolder) view.getTag();
 		}
 		
 		// Set the results into TextViews
-		holderFirstname.test.setText(userpopulationlist.get(position).getFirstnames());
+		holder.firstName.setText(useList.get(position).getFirstnames());
+		holder.surname.setText(useList.get(position).getSurname());
+		holder.username.setText(useList.get(position).getUsername());
 		
 		view.setOnClickListener(new OnClickListener()
 		{
-
 			@Override
 			public void onClick(View arg0)
 			{
-				Toast.makeText(mContext, userpopulationlist.get(position).getFirstnames(), Toast.LENGTH_LONG).show();
+				Toast.makeText(mContext, useList.get(position).getFirstnames(), Toast.LENGTH_LONG).show();
 			}
 		});
 			
 		return view;
 	}
 	
-	// Filter Class
+	//--------------------------------------------------------------------------Search functionality
+	/**
+	 * Filter the listView via first names, surnames or even usernames
+	 * @param charText
+	 */
 	public void filter(String charText)
 	{
 		charText = charText.toLowerCase(Locale.getDefault());
-		userpopulationlist.clear();
+		useList.clear();
 		if (charText.length() == 0)
 		{
-			userpopulationlist.addAll(arraylist);
+			useList.addAll(arraylist);
 		} else
 		{
 			for (User us : arraylist)
 			{
-				if (us.getFirstnames().toLowerCase(Locale.getDefault())
-						.contains(charText)) 
+				if (us.getFirstnames().toLowerCase(Locale.getDefault()).contains(charText)
+						|| us.getSurname().toLowerCase(Locale.getDefault()).contains(charText) 
+						|| us.getUsername().toLowerCase(Locale.getDefault()).contains(charText))
 				{
-					userpopulationlist.add(us);
+					useList.add(us);
 				}
 			}
 		}
 		notifyDataSetChanged();
 	}
-
 }
