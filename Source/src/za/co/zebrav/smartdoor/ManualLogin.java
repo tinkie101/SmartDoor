@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.support.v4.widget.DrawerLayout;
@@ -29,12 +30,15 @@ public class ManualLogin extends Activity implements OnInitListener
 	private TextToSpeech tts;
 	private boolean ttsReady = false;
 	
+	private Handler myHandler;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		setContentView(R.layout.manual_login);
 		super.onCreate(savedInstanceState);
 		
+		myHandler = new Handler();
 		//database provider
 		provider = new UserProvider(this);
 		
@@ -55,8 +59,9 @@ public class ManualLogin extends Activity implements OnInitListener
 	/**
 	 * This function is called the moment the "Login" button is clicked
 	 * @param v
+	 * @throws InterruptedException 
 	 */
-	public void pressedLoginButton(View v)
+	public void pressedLoginButton(View v) throws InterruptedException
 	{
 		User user = getUser();
 		

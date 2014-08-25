@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 public class ListViewAdapter extends BaseAdapter
 {
-
 	Context mContext;
 	private List<User> userpopulationlist = null;
 	private ArrayList<User> arraylist;
@@ -57,21 +56,21 @@ public class ListViewAdapter extends BaseAdapter
 	@Override
 	public View getView(final int position, View view, ViewGroup parent)
 	{
-		final ViewHolder holder;
+		final ViewHolder holderFirstname;
 		if (view == null)
 		{
-			holder = new ViewHolder();
+			holderFirstname = new ViewHolder();
 			view = inflater.inflate(R.layout.search_user_listview_item, null);
 			// Locate the TextViews in listview_item.xml
-			holder.test= (TextView) view.findViewById(R.id.testerTextView);
-			view.setTag(holder);
+			holderFirstname.test= (TextView) view.findViewById(R.id.firstnamesTV);
+			view.setTag(holderFirstname);
 		} else
 		{
-			holder = (ViewHolder) view.getTag();
+			holderFirstname = (ViewHolder) view.getTag();
 		}
 		
 		// Set the results into TextViews
-		holder.test.setText(userpopulationlist.get(position).getFirstnames());
+		holderFirstname.test.setText(userpopulationlist.get(position).getFirstnames());
 		
 		view.setOnClickListener(new OnClickListener()
 		{
@@ -99,7 +98,7 @@ public class ListViewAdapter extends BaseAdapter
 			for (User us : arraylist)
 			{
 				if (us.getFirstnames().toLowerCase(Locale.getDefault())
-						.contains(charText))
+						.contains(charText)) 
 				{
 					userpopulationlist.add(us);
 				}

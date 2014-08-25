@@ -1,96 +1,79 @@
 package za.co.zebrav.smartdoor.users;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import za.co.zebrav.smartdoor.R;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.app.Activity;
 import android.graphics.Color;
 
 public class ViewUserActivity extends Activity
 {
-	EditText edit;
-	Button insertButton;
-	Button viewAllButton;
-	Button deleteButton;
-	UserProvider provider;
-	LinearLayout linear;
-	Activity thisAct;
+	protected EditText searchText;
+	protected ListView userList;
+	protected ArrayList<User> users = new ArrayList<User>();
+	protected UserProvider provider;
 	
-	
+	ListViewAdapter adapter;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState)
+	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.view_user);
-
-		thisAct = this;
+		
+		//create new database userProvider
 		provider = new UserProvider(this);
-		edit = (EditText) findViewById(R.id.et_palavra);
-		insertButton = (Button) findViewById(R.id.bt_adicionar);
-		viewAllButton = (Button) findViewById(R.id.bt_buscar);
-		deleteButton = (Button) findViewById(R.id.bt_deletar);
-		linear = (LinearLayout) findViewById(R.id.linear_palavras);
-
 		
-		insertButton.setOnClickListener(new View.OnClickListener()
+		//get GUI components
+		searchText = (EditText) findViewById (R.id.searchText);
+        userList = (ListView) findViewById (R.id.list);
+        
+        //get database info
+        List<User> result = provider.getListOfAllUsers();
+        
+        for(int i = 0; i < result.size(); i++)
+        	users.add(result.get(i));
+        
+        // Pass results to ListViewAdapter Class
+        adapter = new ListViewAdapter(this, users);
+        
+        // Binds the Adapter to the ListView
+ 		userList.setAdapter(adapter);
+     	
+ 		// Capture Text in EditText
+		searchText.addTextChangedListener(new TextWatcher() 
 		{
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				// TODO Auto-generated method stub
+				String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
+				adapter.filter(text);
+			}
 
-			public void onClick(View arg0)
-			{
-				User user = new User("", "", "", "");
-				user.setFirstnames(edit.getText().toString());
-				provider.saveUser(user);
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+				// TODO Auto-generated method stub
+			}
 
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+				// TODO Auto-generated method stub
 			}
 		});
-
-		viewAllButton.setOnClickListener(new View.OnClickListener()
-		{
-			public void onClick(View v)
-			{
-				linear.removeAllViews();
-				
-				List<User> result = provider.getListOfAllUsers();
-				
-				if (!result.isEmpty())
-				{
-					TextView tv;
-
-					for (User u : result)
-					{
-						tv = new TextView(getApplicationContext());
-						tv.setText(u.getUsername() + " " + u.getPassword());
-						tv.setTextColor(Color.WHITE);
-						linear.addView(tv);
-						
-					}
-				}
-				provider.close();//must close after data has been used
-			}
-		});
-		
-		
-		deleteButton.setOnClickListener(new View.OnClickListener()
-		{
-
-			public void onClick(View v)
-			{
-				linear.removeAllViews();
-
-				provider.clearAllUsersData();
-			}
-		});
-		
-		
-		
-
+		provider.close();
 	}
 
 }
