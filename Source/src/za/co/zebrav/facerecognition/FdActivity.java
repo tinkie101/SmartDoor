@@ -95,7 +95,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 	ImageButton imCamera;
 
 	TextView textState;
-	com.googlecode.javacv.cpp.opencv_contrib.FaceRecognizer faceRecognizer;
+	//com.googlecode.javacv.cpp.opencv_contrib.FaceRecognizer faceRecognizer;
 
 	static final long MAXIMG = 10;
 
@@ -513,7 +513,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 			mHandler.sendMessage(msg);
 			if (countImages < MAXIMG)
 			{
-				fr.add(m, text.getText().toString());
+				//fr.add(m, text.getText().toString());
 				countImages++;
 			}
 
@@ -530,7 +530,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2
 			msg.obj = textTochange;
 			mHandler.sendMessage(msg);
 
-			textTochange = fr.predict(m);
+			//textTochange = fr.predict(m);
 			mLikely = fr.getProb();
 			msg = new Message();
 			msg.obj = textTochange;
