@@ -32,6 +32,7 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -113,6 +114,62 @@ public class FaceRecognizeCameraFragment extends Fragment
 			System.exit(0);
 			return false;
 		}
+	}
+
+	/**
+	 * Releases the camera to the OS
+	 */
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		releaseCamera();
+	}
+
+	/**
+	 * Acquires the camera from the OS
+	 */
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		// Create an instance of Camera
+		mCamera = getFrontCameraInstance();
+		mPreview.setCamera(mCamera);
+	}
+
+	private void releaseCamera()
+	{
+		if (mCamera != null)
+		{
+			Log.d("Camera", "Releasing Camera");
+			mCamera.release(); // release the camera for other applications
+			mCamera = null;
+			mPreview.setCamera(null);
+		}
+	}
+
+	/**
+	 * A safe way to get an instance of the Camera object.
+	 * */
+	public Camera getFrontCameraInstance()
+	{
+		Log.d("Camera", "Aquiring Camera");
+		Camera c = null;
+		try
+		{
+			// attempt to get a Camera instance
+			c = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
+			// c = Camera.open(CameraInfo.CAMERA_FACING_BACK);
+
+		}
+		catch (Exception e)
+		{
+			Toast t = Toast.makeText(context, "Camera in use", Toast.LENGTH_LONG);
+			t.show();
+			System.exit(0);
+		}
+		return c; // returns null if camera is unavailable
 	}
 }
 
@@ -198,9 +255,9 @@ class FaceView extends View implements Camera.PreviewCallback
 		paint.setColor(Color.RED);
 		paint.setTextSize(20);
 
-//		String s = "FacePreview - This side up.";
-//		float textWidth = paint.measureText(s);
-//		canvas.drawText(s, (getWidth() - textWidth) / 2, 20, paint);
+		// String s = "FacePreview - This side up.";
+		// float textWidth = paint.measureText(s);
+		// canvas.drawText(s, (getWidth() - textWidth) / 2, 20, paint);
 
 		if (faces != null)
 		{
@@ -213,8 +270,9 @@ class FaceView extends View implements Camera.PreviewCallback
 			{
 				CvRect r = new CvRect(cvGetSeqElem(faces, i));
 				int x = r.x(), y = r.y(), w = r.width(), h = r.height();
-				//x = (int) (getWidth() - (x * scaleX));
-				canvas.drawRect(getWidth() - ((x+w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h) * scaleY, paint);
+				// x = (int) (getWidth() - (x * scaleX));
+				canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
+									* scaleY, paint);
 			}
 		}
 	}
@@ -225,6 +283,11 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback
 	SurfaceHolder mHolder;
 	Camera mCamera;
 	Camera.PreviewCallback previewCallback;
+
+	public void setCamera(Camera camera)
+	{
+		mCamera = camera;
+	}
 
 	Preview(Context context, Camera.PreviewCallback previewCallback)
 	{
@@ -241,7 +304,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback
 	{
 		// The Surface has been created, acquire the camera and tell it where
 		// to draw.
-		mCamera = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
+		//mCamera = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
 		try
 		{
 			mCamera.setPreviewDisplay(holder);
@@ -259,9 +322,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback
 		// Surface will be destroyed when we return, so stop the preview.
 		// Because the CameraDevice object is not a shared resource, it's very
 		// important to release it when the activity is paused.
-		mCamera.stopPreview();
-		mCamera.release();
-		mCamera = null;
+//		mCamera.stopPreview();
+//		mCamera.release();
+//		mCamera = null;
 	}
 
 	private Size getOptimalPreviewSize(List<Size> sizes, int w, int h)
