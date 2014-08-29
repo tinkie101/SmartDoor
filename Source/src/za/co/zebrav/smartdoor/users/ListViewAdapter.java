@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Locale;
 
 import za.co.zebrav.smartdoor.R;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +18,34 @@ import android.widget.Toast;
 
 public class ListViewAdapter extends BaseAdapter
 {
-	Context mContext;
+	private Context mContext;
 	private List<User> useList = null;
 	private ArrayList<User> arraylist;
-	LayoutInflater inflater;
+	private LayoutInflater inflater;
+	private UserProvider provider;
+	private AlertDialog.Builder alert;
 	
+	/**
+	 * Constructor
+	 * @param context
+	 * @param userList
+	 */
 	public ListViewAdapter(Context context, List<User> userList)
 	{
 		mContext = context;
+		alert  = new AlertDialog.Builder(mContext);
 		this.useList = userList;
 		inflater = LayoutInflater.from(mContext);
 		this.arraylist = new ArrayList<User>();
 		this.arraylist.addAll(userList);
+		
+		provider = new UserProvider(mContext);
 	}
 	
+	/**
+	 * Every GUI component you want to show  in a single list view item must be contained by this class
+	 * then found in the search_user_listview_item layout
+	 */
 	public class ViewHolder
 	{
 		TextView firstName;
@@ -37,24 +53,36 @@ public class ListViewAdapter extends BaseAdapter
 		TextView username;
 	}
 	
+	/**
+	 * Must be present, because of extends BaseAdapter
+	 */
 	@Override
 	public int getCount()
 	{
 		return useList.size();
 	}
 
+	/**
+	 * Must be present, because of extends BaseAdapter
+	 */
 	@Override
 	public User getItem(int position)
 	{
 		return useList.get(position);
 	}
-
+	
+	/**
+	 * Must be present, because of extends BaseAdapter
+	 */
 	@Override
 	public long getItemId(int pos)
 	{
 		return pos;
 	}
 
+	/**
+	 * Here each list view item's view is set.
+	 */
 	@Override
 	public View getView(final int position, View view, ViewGroup parent)
 	{
@@ -76,17 +104,39 @@ public class ListViewAdapter extends BaseAdapter
 		holder.firstName.setText(useList.get(position).getFirstnames());
 		holder.surname.setText(useList.get(position).getSurname());
 		holder.username.setText(useList.get(position).getUsername());
-		
+	
 		view.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View arg0)
 			{
 				Toast.makeText(mContext, useList.get(position).getFirstnames(), Toast.LENGTH_LONG).show();
+				//alert if user wants to delete
+				//deleteAlert(useList.get(position));
 			}
 		});
 			
 		return view;
+	}
+	
+	/**
+	 * An dialogue box pops up, prompting the user if he is sure he wants to delete the selected user.
+	 */
+	private void deleteAlert(final User user)
+	{
+		alert.setTitle("Delete user");
+		alert.setNegativeButton("Cancel",null);
+		alert.setPositiveButton("Delete", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				provider.deleteUser(user);
+				filter("");
+			}
+		});
+		
+		alert.show();
 	}
 	
 	//--------------------------------------------------------------------------Search functionality
