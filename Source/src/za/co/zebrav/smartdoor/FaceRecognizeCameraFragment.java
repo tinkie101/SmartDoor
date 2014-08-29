@@ -214,7 +214,7 @@ class FaceView extends View implements Camera.PreviewCallback
 				CvRect r = new CvRect(cvGetSeqElem(faces, i));
 				int x = r.x(), y = r.y(), w = r.width(), h = r.height();
 				//x = (int) (getWidth() - (x * scaleX));
-				canvas.drawRect(x * scaleX, y * scaleY, (x + w) * scaleX, (y + h) * scaleY, paint);
+				canvas.drawRect(getWidth() - ((x+w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h) * scaleY, paint);
 			}
 		}
 	}
