@@ -111,8 +111,7 @@ public class ListViewAdapter extends BaseAdapter
 			public void onClick(View arg0)
 			{
 				//alert if user wants to delete
-				deleteAlert(useList.get(position));
-				notifyDataSetChanged();
+				deleteAlert(useList.get(position), position);
 			}
 		});
 			
@@ -122,7 +121,7 @@ public class ListViewAdapter extends BaseAdapter
 	/**
 	 * An dialogue box pops up, prompting the user if he is sure he wants to delete the selected user.
 	 */
-	private void deleteAlert(final User user)
+	private void deleteAlert(final User user, final int position)
 	{
 		alert.setTitle("Delete user");
 		alert.setNegativeButton("Cancel",null);
@@ -132,7 +131,9 @@ public class ListViewAdapter extends BaseAdapter
 			public void onClick(DialogInterface dialog, int which)
 			{
 				provider.deleteUser(user);
-				filter("");
+				//update list
+				useList.remove(position);
+				notifyDataSetChanged();
 			}
 		});
 		
