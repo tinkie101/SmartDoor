@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor.users;
+package za.co.zebrav.smartdoor.database;
 
 import za.co.zebrav.smartdoor.R;
 import android.app.Activity;
@@ -18,15 +18,12 @@ public class AddUserActivity extends Activity
 	private Button stepTwo;
 	private Button stepThree;
 	
-	private String fname;
-	private String sname;
-	private String uname;
-	private String password;
+	//user to be saved
+	private User user;
 	
 	private AlertDialog.Builder alert;
 	private AddUserStepOne addUserStepOne;
 	private UserProvider provider;
-	//UserProvider provider;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -43,10 +40,6 @@ public class AddUserActivity extends Activity
 		stepOne = (Button) findViewById(R.id.stepOne);
 		stepTwo = (Button) findViewById(R.id.stepTwo);
 		stepThree = (Button) findViewById(R.id.stepThree);
-		
-		//this part is necessary to avoid null pointer exceptions when EditText.getText() is used
-		 //Dialog dialog = new Dialog(this);
-         //dialog.setContentView(R.layout.add_user_step_one);
 		
 		//start with 
 		fm = getFragmentManager();
@@ -73,6 +66,7 @@ public class AddUserActivity extends Activity
 		if(validateStep1())
 		{
 			getValidUserStep1Info();
+			saveNewUser();//save user to get 
 			addUserStepOne.clearEditBoxes();
 			switchFragToStep2();
 			enableStep2Button();
@@ -80,17 +74,17 @@ public class AddUserActivity extends Activity
 		}
 	}
 	
-	
-	
 	/**
-	 * 
+	 * Creates new user and retrieves id
+	 * Saves the user info to this activity's private variables.
 	 */
 	private void getValidUserStep1Info()
 	{
-		this.fname = addUserStepOne.getFirstName();
-		this.sname = addUserStepOne.getSurname();
-		this.uname = addUserStepOne.getUsername();
-		this.password = addUserStepOne.getPass();
+		user = new User(
+				addUserStepOne.getFirstName(), 
+				addUserStepOne.getSurname(), 
+				addUserStepOne.getUsername(), 
+				addUserStepOne.getPass());
 	}
 	
 	/**
@@ -154,7 +148,10 @@ public class AddUserActivity extends Activity
 	public void switchFragToStep2()
 	{
 		AddUserStepTwo fv = new AddUserStepTwo();
-		
+		Toast.makeText(this, "Before: " + user.getID(), Toast.LENGTH_SHORT).show();
+		Bundle bundle = new Bundle();
+		bundle.putLong("userID", user.getID());
+		fv.setArguments(bundle);
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplace, fv);
 		ft.commit();
@@ -225,12 +222,11 @@ public class AddUserActivity extends Activity
 	 */
 	public void doneStepThreeAddUser(View v)
 	{
-		saveNewUser();
+		//saveNewUser();
 		Toast.makeText(this.getApplicationContext(), "Saved new user successfully", Toast.LENGTH_SHORT).show();
 		switchFragToStep1();
 		enableStep1Button();
 		disableStep3Button();
-		clearInputData();
 	}
 	
 	/**
@@ -238,20 +234,7 @@ public class AddUserActivity extends Activity
 	 */
 	private void saveNewUser()
 	{
-		User user = new User(fname, sname, uname, password);
 		provider.saveUser(user);
-	}
-
-	/**
-	 * User input in editTexts needs to be cleared, 
-	 * as well private strings containing data
-	 */
-	private void clearInputData()
-	{
-		fname = "";
-		sname = "";
-		uname = "";
-		password = "";
 	}
 	
 	

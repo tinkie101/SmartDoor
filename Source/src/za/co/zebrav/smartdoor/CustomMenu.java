@@ -1,7 +1,7 @@
 package za.co.zebrav.smartdoor;
 
-import za.co.zebrav.smartdoor.users.AddUserActivity;
-import za.co.zebrav.smartdoor.users.ViewUserActivity;
+import za.co.zebrav.smartdoor.database.AddUserActivity;
+import za.co.zebrav.smartdoor.database.ViewUserActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor.users;
+package za.co.zebrav.smartdoor.database;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,7 +11,7 @@ import com.db4o.ObjectSet;
 public class Db4oHelper
 {
 	private ObjectContainer database = null;
-	private Context context = null;
+	protected Context context = null;
 	private String DATABASE_NAME = "smartdoor_users.db4o";
 	
 	//------------------------------------------------------------------------CONSTRUCTOR

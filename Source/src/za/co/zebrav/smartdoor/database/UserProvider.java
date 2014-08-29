@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor.users;
+package za.co.zebrav.smartdoor.database;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -9,7 +9,6 @@ import com.db4o.ObjectSet;
 
 public class UserProvider extends Db4oHelper
 {
-	private Context context;
 	//------------------------------------------------------------------------CONSTRUCTOR
 	/**
 	 * Needs the activity context
@@ -27,7 +26,13 @@ public class UserProvider extends Db4oHelper
 	 * @param user to be stored
 	 */
 	public void saveUser(User user)
-	{
+	{	
+		PKprovider pk = new PKprovider(context);
+		
+		long largestPK = pk.getLargestPK();
+		pk.increment();
+		user.setID(largestPK + 1);
+		
 		open();
 		getDatabase().store(user);
     	commit();

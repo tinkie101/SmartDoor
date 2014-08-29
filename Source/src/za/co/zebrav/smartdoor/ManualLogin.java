@@ -2,8 +2,8 @@ package za.co.zebrav.smartdoor;
 
 import java.util.Locale;
 
-import za.co.zebrav.smartdoor.users.User;
-import za.co.zebrav.smartdoor.users.UserProvider;
+import za.co.zebrav.smartdoor.database.User;
+import za.co.zebrav.smartdoor.database.UserProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.res.Configuration;

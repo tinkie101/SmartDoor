@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor.users;
+package za.co.zebrav.smartdoor.database;
 
 public class User
 {
@@ -11,11 +11,6 @@ public class User
 	//------------------------------------------------------------------------CONSTRUCTOR
 	public User(String firstnames, String surname, String username, String password)
 	{
-		id++;
-		//if ever id went out of range of a long, flip back to zero (MAX_VALUE -> 9,223,372,036,854,775,807)
-		if(id < 0)
-			id = 0;
-		
 		this.username = username;
 		this.password = password;
 		this.firstnames = firstnames;
@@ -26,6 +21,12 @@ public class User
 	public long getID()
 	{
 		return id;
+	}
+	
+	//------------------------------------------------------------------------setID
+	public void setID(long value)
+	{
+		id = value;
 	}
 	
 	//------------------------------------------------------------------------getUsername

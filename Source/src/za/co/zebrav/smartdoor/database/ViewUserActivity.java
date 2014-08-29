@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor.users;
+package za.co.zebrav.smartdoor.database;
 
 import java.util.ArrayList;
 import java.util.List;

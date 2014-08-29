@@ -56,11 +56,11 @@
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="za.co.zebrav.smartdoor.users.AddUserActivity"
+            android:name="za.co.zebrav.smartdoor.database.AddUserActivity"
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="za.co.zebrav.smartdoor.users.ViewUserActivity"
+            android:name="za.co.zebrav.smartdoor.database.ViewUserActivity"
             android:screenOrientation="landscape" >
         </activity>
         <activity

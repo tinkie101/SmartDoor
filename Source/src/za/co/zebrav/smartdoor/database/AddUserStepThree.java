@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor.users;
+package za.co.zebrav.smartdoor.database;
 
 import za.co.zebrav.smartdoor.R;
 import android.app.Fragment;
