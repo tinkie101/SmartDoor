@@ -110,9 +110,9 @@ public class ListViewAdapter extends BaseAdapter
 			@Override
 			public void onClick(View arg0)
 			{
-				Toast.makeText(mContext, useList.get(position).getFirstnames(), Toast.LENGTH_LONG).show();
 				//alert if user wants to delete
-				//deleteAlert(useList.get(position));
+				deleteAlert(useList.get(position));
+				notifyDataSetChanged();
 			}
 		});
 			

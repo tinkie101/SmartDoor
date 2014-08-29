@@ -42,7 +42,12 @@ public class UserProvider extends Db4oHelper
 	public void deleteUser(User user) 
 	{
 		open();
-    	getDatabase().delete(user);
+		//get user from database
+		ObjectSet result = getDatabase().queryByExample(new User(null, null, user.getUsername(), null));
+		User u = (User)result.get(0);
+		
+		//delete
+    	getDatabase().delete(u);
     	commit();
     	close();
     }
