@@ -1,41 +1,15 @@
 package za.co.zebrav.facerecognition;
 
-import static org.bytedeco.javacpp.helper.opencv_objdetect.cvHaarDetectObjects;
-import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
-import static org.bytedeco.javacpp.opencv_core.cvClearMemStorage;
-import static org.bytedeco.javacpp.opencv_core.cvGetSeqElem;
-import static org.bytedeco.javacpp.opencv_core.cvLoad;
-import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
-
-import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.List;
-
-import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.opencv_objdetect;
-import org.bytedeco.javacpp.opencv_core.CvMemStorage;
-import org.bytedeco.javacpp.opencv_core.CvRect;
-import org.bytedeco.javacpp.opencv_core.CvSeq;
-import org.bytedeco.javacpp.opencv_core.IplImage;
-import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
-
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ImageFormat;
-import android.graphics.Paint;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
-import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
