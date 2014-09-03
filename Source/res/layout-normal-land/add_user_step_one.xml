@@ -5,113 +5,136 @@
     android:layout_height="fill_parent"
     android:background="@drawable/background" >
 
-     <RelativeLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent" >
-	        
-	    <LinearLayout
-	        android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_centerInParent="true"
-	            android:background="@drawable/manual_login_semi_background"
-	            android:orientation="vertical"
-	            android:padding="25dp" >
-	
-	        <TextView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridLayout
+            android:id="@+id/GridLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/manual_login_semi_background"
+            android:columnCount="4"
+            android:orientation="horizontal" >
+
+           <TextView
 	            android:id="@+id/addUser_fname_tv"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/add_user_one_firstname"
-	            android:textSize="25sp"
+	            android:layout_column="0"
+	            android:layout_row="0"
+	            android:textSize="15sp"
 	            android:textColor="#FFF" />
-	
-	        <EditText
-	            android:id="@+id/addUser_fname_et"
-	            android:layout_width="517dp"
-	            android:layout_height="wrap_content"
-	            android:ems="10"
-	            android:inputType="textPersonName"
-	            android:textSize="25sp"
-	            android:textColor="#FFF"/>
-	
-	        <TextView
+           
+           <EditText
+               android:id="@+id/addUser_fname_et"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_column="1"
+               android:layout_row="0"
+               android:ems="10"
+               android:inputType="textPersonName"
+               android:textColor="#FFF"
+               android:textSize="15sp" />
+           
+           <TextView
 	            android:id="@+id/addUser_sname_tv"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/add_user_one_surname"
-	            android:textSize="25sp"
+	            android:textSize="15sp"
+	            android:layout_column="0"
+	            android:layout_row="1"
 	            android:textColor="#FFF" />
 	
 	        <EditText
 	            android:id="@+id/addUser_sname_et"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
+	            android:layout_column="1"
+	            android:layout_row="1"
 	            android:ems="10"
 	            android:inputType="textPersonName"
-	            android:textSize="25sp"
+	            android:textSize="15sp"
 	            android:textColor="#FFF" />
-	
+	        
 	        <TextView
 	            android:id="@+id/addUser_uname_tv"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
+	            android:layout_column="0"
+	            android:layout_row="2"
 	            android:text="@string/add_user_one_username"
-	            android:textSize="25sp"
+	            android:textSize="15sp"
 	            android:textColor="#FFF" />
 	
 	        <EditText
 	            android:id="@+id/addUser_uname_et"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
+	            android:layout_column="1"
+	            android:layout_row="2"
 	            android:ems="10"
-	            android:textSize="25sp"
+	            android:textSize="15sp"
 	            android:inputType="text"
 	            android:textColor="#FFF" />
-	
+	        
 	        <TextView
 	            android:id="@+id/addUser_pass1_tv"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
+	            android:layout_column="0"
+	            android:layout_row="3"
 	            android:text="@string/add_user_one_passOne"
-	            android:textSize="25sp"
+	            android:textSize="15sp"
 	            android:textColor="#FFF" />
 	
 	        <EditText
 	            android:id="@+id/addUser_pass1_et"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
+	            android:layout_column="1"
+	            android:layout_row="3"
 	            android:ems="10"
 	            android:inputType="textPassword"
-	            android:textSize="25sp" 
+	            android:textSize="15sp" 
 	            android:textColor="#FFF"/>
-	
-	        <TextView
+	        
+	         <TextView
 	            android:id="@+id/addUser_pass2_tv"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
+	            android:layout_column="0"
+	            android:layout_row="4"
 	            android:text="@string/add_user_one_passTwo"
 	            android:textColor="#FFF"
-	            android:textSize="25sp" />
+	            android:textSize="15sp" />
 	
 	        <EditText
 	            android:id="@+id/addUser_pass2_et"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
+	            android:layout_column="1"
+	            android:layout_row="4"
 	            android:ems="10"
 	            android:inputType="textPassword"
-	            android:textSize="25sp"
+	            android:textSize="15sp"
 	            android:textColor="#FFF" />
 	        
-	         <Button
-	             android:id="@+id/stepOneDoneButton"
-	             android:layout_width="match_parent"
-	             android:layout_height="wrap_content"
-	             android:layout_marginTop="5dp"
-	             android:background="@drawable/button1"
-	             android:onClick="doneStepOneAddUser"
-	             android:text="@string/add_user_done"
-	             android:textSize="25sp" />
-	       
-	    </LinearLayout>
-	</RelativeLayout>
+	        <Button
+	            android:id="@+id/stepOneDoneButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_column="0"
+	            android:layout_row="5"
+	            android:background="@drawable/button1"
+	            android:onClick="doneStepOneAddUser"
+	            android:text="@string/add_user_done"
+	            android:textSize="15sp" />
+
+        </GridLayout>
+    </RelativeLayout>
+
 </FrameLayout>

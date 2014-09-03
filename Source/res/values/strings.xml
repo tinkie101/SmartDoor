@@ -34,6 +34,15 @@
 	<string name="ManualLogin_tv1">Username:</string>
 	<string name="ManualLogin_tv2">Password:</string>
 	<string name="ManualLogin_b1">Login</string>
+	
+	<!-- Add_user_one fragement -->
+	<string name="add_user_one_firstname">"Enter first names:"</string>
+	<string name="add_user_one_surname">"Enter surname:"</string>
+	<string name="add_user_one_username">"Enter username"</string>
+	<string name="add_user_one_passOne">"Enter password"</string>
+	<string name="add_user_one_passTwo">"Re-enter password:"</string>
+	<string name="add_user_done">Done</string>
+	
 	<!-- Face Detection stuff -->
     <string name="BLANK"></string>
     <string name="STrain">Train</string>
