@@ -1,6 +1,7 @@
 package za.co.zebrav.facerecognition;
 
 import java.io.IOException;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -15,8 +16,16 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+@SuppressLint("ValidFragment")
 public class FaceRecognizeCameraFragment extends Fragment
 {
+	public FaceRecognizeCameraFragment(Context contex, FaceView faceView)
+	{
+		super();
+		this.faceView = faceView;
+		this.context = context;
+	}
+
 	private FrameLayout layout;
 	/**
 	 * Stores the camera instance for the class
@@ -46,20 +55,10 @@ public class FaceRecognizeCameraFragment extends Fragment
 		// Create the view with nothing to show
 		// This is so that onCreateView has a view to return
 		// Then onResume we add the camera to the preview
-		try
-		{
-			layout = new FrameLayout(context);
-			faceView = new FaceView(context);
-			mPreview = new Preview(context, faceView);
-			layout.addView(mPreview);
-			layout.addView(faceView);
-			// setContentView(layout);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			new AlertDialog.Builder(context).setMessage(e.getMessage()).create().show();
-		}
+		layout = new FrameLayout(context);
+		mPreview = new Preview(context, faceView);
+		layout.addView(mPreview);
+		layout.addView(faceView);
 	}
 
 	/**

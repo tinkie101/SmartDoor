@@ -6,6 +6,10 @@
 //This is the main activity for the Smart Door Application.
 package za.co.zebrav.smartdoor;
 
+import java.io.IOException;
+
+import za.co.zebrav.facerecognition.FaceRecognizeCameraFragment;
+import za.co.zebrav.facerecognition.SearchFaceView;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -18,6 +22,8 @@ import android.widget.ListView;
 public class MainActivity extends FragmentActivity
 {
 	CustomMenu sliderMenu;
+	private android.app.FragmentManager fm;
+	private android.app.FragmentTransaction ft;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -26,8 +32,22 @@ public class MainActivity extends FragmentActivity
 		setContentView(R.layout.activity_main);
 
 		// add slider menu
-		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list), (DrawerLayout) findViewById(R.id.drawer_layout), 
-				getResources().getStringArray(R.array.mainMenuOptions));
+		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list),
+							(DrawerLayout) findViewById(R.id.drawer_layout), getResources().getStringArray(
+												R.array.mainMenuOptions));
+		try
+		{
+			FaceRecognizeCameraFragment frcm = new FaceRecognizeCameraFragment(this, new SearchFaceView(this));
+			fm = getFragmentManager();
+			ft = fm.beginTransaction();
+			ft.replace(R.id.layoutToReplaceFromMain , frcm);
+			ft.commit();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -49,18 +69,18 @@ public class MainActivity extends FragmentActivity
 		Intent intent = new Intent(this, SpeechToTextActivity.class);
 		startActivity(intent);
 	}
-	
+
 	public void gotoVoiceIdentification(View v)
 	{
 		Intent intent = new Intent(this, VoiceIdentificationActivity.class);
 		startActivity(intent);
 	}
+
 	public void gotoFdActivity(View v)
 	{
 		Intent intent = new Intent(this, za.co.zebrav.facerecognition.FdActivity.class);
 		startActivity(intent);
 	}
-	
 
 	@Override
 	protected void onPostResume()

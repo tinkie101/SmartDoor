@@ -26,7 +26,7 @@ import android.graphics.Paint;
 import android.hardware.Camera;
 import android.view.View;
 
-class FaceView extends View implements Camera.PreviewCallback
+abstract class FaceView extends View implements Camera.PreviewCallback
 {
 	public static final int SUBSAMPLING_FACTOR = 4;
 
@@ -34,11 +34,12 @@ class FaceView extends View implements Camera.PreviewCallback
 	private CvHaarClassifierCascade classifier;
 	private CvMemStorage storage;
 	private CvSeq faces;
+	private Paint paint;
 
 	public FaceView(Context context) throws IOException
 	{
 		super(context);
-
+		paint = new Paint();
 		// Load the classifier file from Java resources.
 		File classifierFile = Loader.extractResource(getClass(),
 							"/za/co/zebrav/facerecognition/haarcascade_frontalface_alt.xml", context.getCacheDir(),
@@ -58,6 +59,8 @@ class FaceView extends View implements Camera.PreviewCallback
 		}
 		storage = CvMemStorage.create();
 	}
+
+	public abstract void processFaces(CvSeq faces);
 
 	public void onPreviewFrame(final byte[] data, final Camera camera)
 	{
@@ -98,13 +101,14 @@ class FaceView extends View implements Camera.PreviewCallback
 
 		cvClearMemStorage(storage);
 		faces = cvHaarDetectObjects(grayImage, classifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
+		if (faces.total() > 0)
+			processFaces(faces);
 		postInvalidate();
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
-		Paint paint = new Paint();
 		paint.setColor(Color.RED);
 		paint.setTextSize(20);
 

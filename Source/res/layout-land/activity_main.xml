@@ -54,13 +54,19 @@
                 android:layout_height="wrap_content"
                 android:onClick="gotoFdActivity"
                 android:text="Go to Facial Regocnition" />
-
+              
+              <FrameLayout
+       		 android:id="@+id/layoutToReplaceFromMain"
+       		 android:layout_width="match_parent"
+       		 android:layout_height="match_parent" >
+   		 </FrameLayout>
+<!-- 
             <fragment
                 android:id="@+id/cameraFragment"
                 android:name="za.co.zebrav.facerecognition.FaceRecognizeCameraFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
+-->
         </LinearLayout>
     </RelativeLayout>
 
