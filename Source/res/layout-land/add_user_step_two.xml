@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="za.co.zebrav.smartdoor.FaceRecognizeCameraFragment"
+        android:name="za.co.zebrav.facerecognition.FaceRecognizeCameraFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
