@@ -5,7 +5,7 @@ import com.db4o.ObjectSet;
 
 import android.content.Context;
 
-public class PKprovider extends Db4oHelper
+public class PKprovider extends Db4oAdapter
 {	
 	//----------------------------------------------------------CONSTRUCTOR
 	public PKprovider(Context context)

@@ -1,5 +1,7 @@
 package za.co.zebrav.smartdoor.database;
 
+import java.util.List;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -8,14 +10,14 @@ import com.db4o.ObjectContainer;
 import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.ObjectSet;
 
-public class Db4oHelper
+public class Db4oAdapter implements DatabaseAdaptee
 {
 	private ObjectContainer database = null;
 	protected Context context = null;
 	private String DATABASE_NAME = "smartdoor_users.db4o";
 	
 	//------------------------------------------------------------------------CONSTRUCTOR
-	public Db4oHelper(Context context) 
+	public Db4oAdapter(Context context) 
 	{
 		this.context = context;
 	}
@@ -32,25 +34,23 @@ public class Db4oHelper
 		} 
 		catch (Exception ie) 
 		{
-			Log.e(Db4oHelper.class.getName(), ie.getMessage());
+			Log.e(Db4oAdapter.class.getName(), ie.getMessage());
 		}
 	}
 	 
-	//------------------------------------------------------------------------Config
 	private EmbeddedConfiguration config() 
 	{
 		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
 		return configuration;
 	}
 	
-	//------------------------------------------------------------------------db4oBDFullPath
 	private String db4oDBFullPath(Context ctx) 
 	{
 		return ctx.getDir("data", 0) + "/" + DATABASE_NAME;
 	}
 	
 	//------------------------------------------------------------------------commit
-	public void commit() 
+	protected void commit() 
 	{
 		database.commit();
 	}
@@ -74,5 +74,20 @@ public class Db4oHelper
 	public ObjectContainer getDatabase() 
 	{
 		return this.database;
+	}
+
+	//------------------------------------------------------------------------LOAD
+	@Override
+	public List<Object> load(Object object)
+	{ 
+		return getDatabase().queryByExample(object);
+	}
+
+	//------------------------------------------------------------------------SAVE
+	@Override
+	public void save(Object object)
+	{
+		getDatabase().store(object);
+    	commit();
 	}
 }

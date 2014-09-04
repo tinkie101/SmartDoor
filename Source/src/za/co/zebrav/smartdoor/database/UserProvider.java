@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.db4o.ObjectSet;
 
-public class UserProvider extends Db4oHelper
+public class UserProvider extends Db4oAdapter
 {
 	//------------------------------------------------------------------------CONSTRUCTOR
 	/**
