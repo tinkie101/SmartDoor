@@ -33,9 +33,11 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 	private IplImage grayImage;
 	private CvHaarClassifierCascade faceClassifier;
 	private CvHaarClassifierCascade eyeClassifier;
+	private CvHaarClassifierCascade noseClassifier;
 	private CvMemStorage storage;
 	private CvSeq faces;
 	private CvSeq eyes;
+	private CvSeq noses;
 	private Paint paint;
 
 	public FaceView(Context context) throws IOException
@@ -49,6 +51,9 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		File eyeClassifierFile = Loader.extractResource(getClass(),
 							"/za/co/zebrav/facerecognition/haarcascade_eye.xml", context.getCacheDir(),
 							"classifier", ".xml");
+		File noseClassifierFile = Loader.extractResource(getClass(),
+							"/za/co/zebrav/facerecognition/haarcascade_nose.xml", context.getCacheDir(),
+							"classifier", ".xml");
 		if (faceClassifierFile == null || faceClassifierFile.length() <= 0)
 		{
 			throw new IOException("Could not extract the face classifier file from Java resource.");
@@ -56,6 +61,10 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		if (eyeClassifierFile == null || eyeClassifierFile.length() <= 0)
 		{
 			throw new IOException("Could not extract the classifier eye file from Java resource.");
+		}
+		if (noseClassifierFile == null || noseClassifierFile.length() <= 0)
+		{
+			throw new IOException("Could not extract the nose classifier file from Java resource.");
 		}
 		// Preload the opencv_objdetect module to work around a known bug.
 		Loader.load(opencv_objdetect.class);
@@ -71,7 +80,15 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		eyeClassifierFile.delete();
 		if (eyeClassifier.isNull())
 		{
-			throw new IOException("Could not load the face classifier file.");
+			throw new IOException("Could not load the eye classifier file.");
+		}
+		
+		Loader.load(opencv_objdetect.class);
+		noseClassifier = new CvHaarClassifierCascade(cvLoad(noseClassifierFile.getAbsolutePath()));
+		noseClassifierFile.delete();
+		if (noseClassifier.isNull())
+		{
+			throw new IOException("Could not load the nose classifier file.");
 		}
 		storage = CvMemStorage.create();
 	}
@@ -118,6 +135,7 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		cvClearMemStorage(storage);
 		faces = cvHaarDetectObjects(grayImage, faceClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
 		eyes = cvHaarDetectObjects(grayImage, eyeClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
+		noses = cvHaarDetectObjects(grayImage, noseClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
 		if (faces.total() > 0)
 			processFaces(faces);
 		postInvalidate();
@@ -126,7 +144,7 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
-		paint.setColor(Color.RED);
+		
 		paint.setTextSize(20);
 
 		// String s = "FacePreview - This side up.";
@@ -135,6 +153,7 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 
 		if (faces != null)
 		{
+			paint.setColor(Color.RED);
 			paint.setStrokeWidth(2);
 			paint.setStyle(Paint.Style.STROKE);
 			float scaleX = (float) getWidth() / grayImage.width();
@@ -151,6 +170,7 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		}
 		if (eyes != null)
 		{
+			paint.setColor(Color.GREEN);
 			paint.setStrokeWidth(2);
 			paint.setStyle(Paint.Style.STROKE);
 			float scaleX = (float) getWidth() / grayImage.width();
@@ -159,6 +179,23 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 			for (int i = 0; i < total; i++)
 			{
 				CvRect r = new CvRect(cvGetSeqElem(eyes, i));
+				int x = r.x(), y = r.y(), w = r.width(), h = r.height();
+				// x = (int) (getWidth() - (x * scaleX));
+				canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
+									* scaleY, paint);
+			}
+		}
+		if (noses != null)
+		{
+			paint.setColor(Color.BLUE);
+			paint.setStrokeWidth(2);
+			paint.setStyle(Paint.Style.STROKE);
+			float scaleX = (float) getWidth() / grayImage.width();
+			float scaleY = (float) getHeight() / grayImage.height();
+			int total = noses.total();
+			for (int i = 0; i < total; i++)
+			{
+				CvRect r = new CvRect(cvGetSeqElem(noses, i));
 				int x = r.x(), y = r.y(), w = r.width(), h = r.height();
 				// x = (int) (getWidth() - (x * scaleX));
 				canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
