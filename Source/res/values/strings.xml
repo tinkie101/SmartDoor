@@ -19,7 +19,6 @@
         <item>About</item>
         <item>Exit</item>
     </string-array>
-    
     <string-array name="manualLoginMenuOptions">
         <item>Switch Login</item>
         <item>User options</item>
@@ -28,22 +27,22 @@
     <string name="SpeechToText">Speech to Text</string>
     <string name="title_activity_speech_to_text">SpeechToTextActivity</string>
     <string name="title_activity_voice_identification">VoiceIdentificationActivity</string>
-    
+
     <!-- Manual Login Activity -->
     <string name="ManualLogin_heading">Classic Login</string>
-	<string name="ManualLogin_tv1">Username:</string>
-	<string name="ManualLogin_tv2">Password:</string>
-	<string name="ManualLogin_b1">Login</string>
-	
-	<!-- Add_user_one fragement -->
-	<string name="add_user_one_firstname">"Enter first names:"</string>
-	<string name="add_user_one_surname">"Enter surname:"</string>
-	<string name="add_user_one_username">"Enter username"</string>
-	<string name="add_user_one_passOne">"Enter password"</string>
-	<string name="add_user_one_passTwo">"Re-enter password:"</string>
-	<string name="add_user_done">Done</string>
-	
-	<!-- Face Detection stuff -->
+    <string name="ManualLogin_tv1">Username:</string>
+    <string name="ManualLogin_tv2">Password:</string>
+    <string name="ManualLogin_b1">Login</string>
+
+    <!-- Add_user_one fragement -->
+    <string name="add_user_one_firstname">"Enter first names:"</string>
+    <string name="add_user_one_surname">"Enter surname:"</string>
+    <string name="add_user_one_username">"Enter username"</string>
+    <string name="add_user_one_passOne">"Enter password"</string>
+    <string name="add_user_one_passTwo">"Re-enter password:"</string>
+    <string name="add_user_done">Done</string>
+
+    <!-- Face Detection stuff -->
     <string name="BLANK"></string>
     <string name="STrain">Train</string>
     <string name="SViewAll">View all faces</string>
@@ -59,4 +58,6 @@
     <string name="SSearching">Searching</string>
     <string name="SFrontCamera">Front Camera</string>
     <string name="SBackCamera">Back Camera</string>
+    <string name="title_activity_voice_auth">VoiceAuth</string>
+
 </resources>

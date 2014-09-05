@@ -60,6 +60,12 @@ public class MainActivity extends FragmentActivity
 		startActivity(intent);
 	}
 
+	public void gotoVoiceAuth(View v)
+	{
+		Intent intent = new Intent(this, VoiceAuth.class);
+		startActivity(intent);
+	}
+	
 	/*
 	 * On click button handler.
 	 * Go to the SpeechToText.

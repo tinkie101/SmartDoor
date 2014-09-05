@@ -49,6 +49,13 @@
                 android:text="Go to Voice Identification" />
             
             <Button
+                android:id="@+id/voiceAuth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="gotoVoiceAuth"
+                android:text="Go to Voice Auth" />
+            
+            <Button
                 android:id="@+id/FD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
