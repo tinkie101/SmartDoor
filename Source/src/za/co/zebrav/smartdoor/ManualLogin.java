@@ -5,7 +5,6 @@ import java.util.Locale;
 
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
-import za.co.zebrav.smartdoor.database.UserProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.res.Configuration;
