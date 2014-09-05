@@ -28,12 +28,14 @@ import android.view.View;
 
 abstract class FaceView extends View implements Camera.PreviewCallback
 {
-	public static final int SUBSAMPLING_FACTOR = 4;
+	public static final int SUBSAMPLING_FACTOR = 2;
 
 	private IplImage grayImage;
-	private CvHaarClassifierCascade classifier;
+	private CvHaarClassifierCascade faceClassifier;
+	private CvHaarClassifierCascade eyeClassifier;
 	private CvMemStorage storage;
 	private CvSeq faces;
+	private CvSeq eyes;
 	private Paint paint;
 
 	public FaceView(Context context) throws IOException
@@ -41,21 +43,35 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		super(context);
 		paint = new Paint();
 		// Load the classifier file from Java resources.
-		File classifierFile = Loader.extractResource(getClass(),
+		File faceClassifierFile = Loader.extractResource(getClass(),
 							"/za/co/zebrav/facerecognition/haarcascade_frontalface_alt.xml", context.getCacheDir(),
 							"classifier", ".xml");
-		if (classifierFile == null || classifierFile.length() <= 0)
+		File eyeClassifierFile = Loader.extractResource(getClass(),
+							"/za/co/zebrav/facerecognition/haarcascade_eye.xml", context.getCacheDir(),
+							"classifier", ".xml");
+		if (faceClassifierFile == null || faceClassifierFile.length() <= 0)
 		{
-			throw new IOException("Could not extract the classifier file from Java resource.");
+			throw new IOException("Could not extract the face classifier file from Java resource.");
 		}
-
+		if (eyeClassifierFile == null || eyeClassifierFile.length() <= 0)
+		{
+			throw new IOException("Could not extract the classifier eye file from Java resource.");
+		}
 		// Preload the opencv_objdetect module to work around a known bug.
 		Loader.load(opencv_objdetect.class);
-		classifier = new CvHaarClassifierCascade(cvLoad(classifierFile.getAbsolutePath()));
-		classifierFile.delete();
-		if (classifier.isNull())
+		faceClassifier = new CvHaarClassifierCascade(cvLoad(faceClassifierFile.getAbsolutePath()));
+		faceClassifierFile.delete();
+		if (faceClassifier.isNull())
 		{
-			throw new IOException("Could not load the classifier file.");
+			throw new IOException("Could not load the face classifier file.");
+		}
+
+		Loader.load(opencv_objdetect.class);
+		eyeClassifier = new CvHaarClassifierCascade(cvLoad(eyeClassifierFile.getAbsolutePath()));
+		eyeClassifierFile.delete();
+		if (eyeClassifier.isNull())
+		{
+			throw new IOException("Could not load the face classifier file.");
 		}
 		storage = CvMemStorage.create();
 	}
@@ -100,7 +116,8 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		}
 
 		cvClearMemStorage(storage);
-		faces = cvHaarDetectObjects(grayImage, classifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
+		faces = cvHaarDetectObjects(grayImage, faceClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
+		eyes = cvHaarDetectObjects(grayImage, eyeClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
 		if (faces.total() > 0)
 			processFaces(faces);
 		postInvalidate();
@@ -126,6 +143,22 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 			for (int i = 0; i < total; i++)
 			{
 				CvRect r = new CvRect(cvGetSeqElem(faces, i));
+				int x = r.x(), y = r.y(), w = r.width(), h = r.height();
+				// x = (int) (getWidth() - (x * scaleX));
+				canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
+									* scaleY, paint);
+			}
+		}
+		if (eyes != null)
+		{
+			paint.setStrokeWidth(2);
+			paint.setStyle(Paint.Style.STROKE);
+			float scaleX = (float) getWidth() / grayImage.width();
+			float scaleY = (float) getHeight() / grayImage.height();
+			int total = eyes.total();
+			for (int i = 0; i < total; i++)
+			{
+				CvRect r = new CvRect(cvGetSeqElem(eyes, i));
 				int x = r.x(), y = r.y(), w = r.width(), h = r.height();
 				// x = (int) (getWidth() - (x * scaleX));
 				canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
