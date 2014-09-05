@@ -82,12 +82,6 @@ public class MainActivity extends FragmentActivity
 		startActivity(intent);
 	}
 
-	public void gotoFdActivity(View v)
-	{
-		Intent intent = new Intent(this, za.co.zebrav.facerecognition.FdActivity.class);
-		startActivity(intent);
-	}
-
 	@Override
 	protected void onPostResume()
 	{
