@@ -10,6 +10,7 @@ import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.text.DecimalFormat;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_objdetect;
@@ -18,26 +19,63 @@ import org.bytedeco.javacpp.opencv_core.CvRect;
 import org.bytedeco.javacpp.opencv_core.CvSeq;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
-
-import android.R.color;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Camera;
+import android.util.Log;
 import android.view.View;
 
 abstract class FaceView extends View implements Camera.PreviewCallback
 {
-	public static final int SUBSAMPLING_FACTOR = 2;
-	private IplImage grayImage;
-	private CvMemStorage storage;
-	private Paint paint;
+	private static final String TAG = "FaceView";
+	/**
+	 * The factor by which the camera feed needs to be down sampled by.
+	 * Higher number = Higher performance.
+	 * Higher number = Lower accuracy.
+	 * Typically in the range [1,6]
+	 */
+	public static final byte SUBSAMPLING_FACTOR = 2;
+	/**
+	 * List of all the XML files used for classifiers
+	 */
 	private static final String[] classifierFiles = {"haarcascade_frontalface_alt.xml","haarcascade_eye.xml","haarcascade_nose.xml"};
+	/**
+	 * Colors which will be used to draw squares around classified objects.
+	 * Order will be the same as for classifiers.
+	 */
 	private static final int Colors[] = {Color.RED,Color.GREEN,Color.BLUE};
+	/**
+	 * Directory where all the XML classifiers are stored.
+	 */
 	private static final String directory = "/za/co/zebrav/facerecognition/";
+	/**
+	 * List of threads to run each classifier.
+	 */
 	private Thread[] threads;
+	/**
+	 * List of Runnable objects used in threads.
+	 * List is kept to have access to their local variables.
+	 */
 	private concurrentDetector[] runnables;
+	/**
+	 * Used to draw squares around detected objects.
+	 */
+	private Paint paint;
+	/**
+	 * Grey scale image to detect from. 
+	 */
+	private IplImage grayImage;
+	/**
+	 * Storage to store temporary image.
+	 */
+	private CvMemStorage storage;
+	/**
+	 * Last time a frame was drawn.
+	 * Used to calculate FPS.	
+	 */
+	private long lastTime;
 	public FaceView(Context context) throws IOException
 	{
 		super(context);
@@ -65,7 +103,8 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 			}
 			runnables[i] = new concurrentDetector(classifier, storage);
 			threads[i] = new  Thread(runnables[i], "" + i);
-		}		
+		}
+		lastTime = System.currentTimeMillis();
 	}
 	
 	public abstract void processFaces(CvSeq faces);
@@ -108,9 +147,6 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		}
 
 		cvClearMemStorage(storage);
-		//faces = cvHaarDetectObjects(grayImage, faceClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
-		//eyes = cvHaarDetectObjects(grayImage, eyeClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
-		//noses = cvHaarDetectObjects(grayImage, noseClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
 		for(int i = 0; i < threads.length;i++)
 		{
 			threads[i].run();
@@ -134,10 +170,25 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 	{
 		
 		paint.setTextSize(20);
-
-		// String s = "FacePreview - This side up.";
-		// float textWidth = paint.measureText(s);
-		// canvas.drawText(s, (getWidth() - textWidth) / 2, 20, paint);
+		long newTime = System.currentTimeMillis();
+		String s = "FPS: ";
+		if(lastTime != newTime)
+		{
+			long temp = newTime-lastTime;
+			double temp2 = temp/(double)1000;
+			Log.d(TAG, "" +temp2);
+			double fps = (double)1/temp2;
+			DecimalFormat df = new DecimalFormat("#.00");
+			if(fps < 1) s = s + "0" +   df.format(fps);
+			else s = s +  df.format(fps);
+		}
+		else
+		{
+			s = s + "max";
+		}
+		 float textWidth = paint.measureText(s);
+		 canvas.drawText(s, (getWidth() - textWidth), 15, paint);
+		lastTime = newTime;
 		paint.setStrokeWidth(3);
 		paint.setStyle(Paint.Style.STROKE);
 
