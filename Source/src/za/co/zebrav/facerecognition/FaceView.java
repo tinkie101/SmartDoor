@@ -19,6 +19,7 @@ import org.bytedeco.javacpp.opencv_core.CvSeq;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
 
+import android.R.color;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -29,70 +30,44 @@ import android.view.View;
 abstract class FaceView extends View implements Camera.PreviewCallback
 {
 	public static final int SUBSAMPLING_FACTOR = 2;
-
 	private IplImage grayImage;
-	private CvHaarClassifierCascade faceClassifier;
-	private CvHaarClassifierCascade eyeClassifier;
-	private CvHaarClassifierCascade noseClassifier;
 	private CvMemStorage storage;
-	private CvSeq faces;
-	private CvSeq eyes;
-	private CvSeq noses;
 	private Paint paint;
-
+	private static final String[] classifierFiles = {"haarcascade_frontalface_alt.xml","haarcascade_eye.xml","haarcascade_nose.xml"};
+	private static final int Colors[] = {Color.RED,Color.GREEN,Color.BLUE};
+	private static final String directory = "/za/co/zebrav/facerecognition/";
+	private Thread[] threads;
+	private concurrentDetector[] runnables;
 	public FaceView(Context context) throws IOException
 	{
 		super(context);
 		paint = new Paint();
 		// Load the classifier file from Java resources.
-		File faceClassifierFile = Loader.extractResource(getClass(),
-							"/za/co/zebrav/facerecognition/haarcascade_frontalface_alt.xml", context.getCacheDir(),
-							"classifier", ".xml");
-		File eyeClassifierFile = Loader.extractResource(getClass(),
-							"/za/co/zebrav/facerecognition/haarcascade_eye.xml", context.getCacheDir(),
-							"classifier", ".xml");
-		File noseClassifierFile = Loader.extractResource(getClass(),
-							"/za/co/zebrav/facerecognition/haarcascade_nose.xml", context.getCacheDir(),
-							"classifier", ".xml");
-		if (faceClassifierFile == null || faceClassifierFile.length() <= 0)
-		{
-			throw new IOException("Could not extract the face classifier file from Java resource.");
-		}
-		if (eyeClassifierFile == null || eyeClassifierFile.length() <= 0)
-		{
-			throw new IOException("Could not extract the classifier eye file from Java resource.");
-		}
-		if (noseClassifierFile == null || noseClassifierFile.length() <= 0)
-		{
-			throw new IOException("Could not extract the nose classifier file from Java resource.");
-		}
-		// Preload the opencv_objdetect module to work around a known bug.
-		Loader.load(opencv_objdetect.class);
-		faceClassifier = new CvHaarClassifierCascade(cvLoad(faceClassifierFile.getAbsolutePath()));
-		faceClassifierFile.delete();
-		if (faceClassifier.isNull())
-		{
-			throw new IOException("Could not load the face classifier file.");
-		}
-
-		Loader.load(opencv_objdetect.class);
-		eyeClassifier = new CvHaarClassifierCascade(cvLoad(eyeClassifierFile.getAbsolutePath()));
-		eyeClassifierFile.delete();
-		if (eyeClassifier.isNull())
-		{
-			throw new IOException("Could not load the eye classifier file.");
-		}
-		
-		Loader.load(opencv_objdetect.class);
-		noseClassifier = new CvHaarClassifierCascade(cvLoad(noseClassifierFile.getAbsolutePath()));
-		noseClassifierFile.delete();
-		if (noseClassifier.isNull())
-		{
-			throw new IOException("Could not load the nose classifier file.");
-		}
 		storage = CvMemStorage.create();
+		threads = new Thread[classifierFiles.length];
+		runnables = new concurrentDetector[classifierFiles.length];
+		for(int i = 0; i < classifierFiles.length;i++)
+		{
+			File file = Loader.extractResource(getClass(),
+					directory + classifierFiles[i], context.getCacheDir(),
+					"classifier", ".xml");
+			if (file == null || file.length() <= 0)
+			{
+				throw new IOException("Could not extract the ["+classifierFiles[i]+"] classifier file from Java resource.");
+			}
+			// Preload the opencv_objdetect module to work around a known bug.
+			Loader.load(opencv_objdetect.class);
+			CvHaarClassifierCascade classifier = new CvHaarClassifierCascade(cvLoad(file.getAbsolutePath()));
+			file.delete();
+			if (classifier.isNull())
+			{
+				throw new IOException("Could not load the ["+classifierFiles[i]+"] classifier file.");
+			}
+			runnables[i] = new concurrentDetector(classifier, storage);
+			threads[i] = new  Thread(runnables[i], "" + i);
+		}		
 	}
-
+	
 	public abstract void processFaces(CvSeq faces);
 
 	public void onPreviewFrame(final byte[] data, final Camera camera)
@@ -133,11 +108,24 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		}
 
 		cvClearMemStorage(storage);
-		faces = cvHaarDetectObjects(grayImage, faceClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
-		eyes = cvHaarDetectObjects(grayImage, eyeClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
-		noses = cvHaarDetectObjects(grayImage, noseClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
-		if (faces.total() > 0)
-			processFaces(faces);
+		//faces = cvHaarDetectObjects(grayImage, faceClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
+		//eyes = cvHaarDetectObjects(grayImage, eyeClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
+		//noses = cvHaarDetectObjects(grayImage, noseClassifier, storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
+		for(int i = 0; i < threads.length;i++)
+		{
+			threads[i].run();
+		}
+		for(int i = 0; i < threads.length;i++)
+		{
+			try 
+			{
+				threads[i].join();
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 		postInvalidate();
 	}
 
@@ -150,57 +138,46 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		// String s = "FacePreview - This side up.";
 		// float textWidth = paint.measureText(s);
 		// canvas.drawText(s, (getWidth() - textWidth) / 2, 20, paint);
+		paint.setStrokeWidth(3);
+		paint.setStyle(Paint.Style.STROKE);
 
-		if (faces != null)
+		for(int i = 0; i < runnables.length; i++)
 		{
-			paint.setColor(Color.RED);
-			paint.setStrokeWidth(2);
-			paint.setStyle(Paint.Style.STROKE);
-			float scaleX = (float) getWidth() / grayImage.width();
-			float scaleY = (float) getHeight() / grayImage.height();
-			int total = faces.total();
-			for (int i = 0; i < total; i++)
+			if (runnables[i].getObjects() != null)
 			{
-				CvRect r = new CvRect(cvGetSeqElem(faces, i));
-				int x = r.x(), y = r.y(), w = r.width(), h = r.height();
-				// x = (int) (getWidth() - (x * scaleX));
-				canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
-									* scaleY, paint);
+				paint.setColor(Colors[i]);
+				float scaleX = (float) getWidth() / grayImage.width();
+				float scaleY = (float) getHeight() / grayImage.height();
+				int total = runnables[i].getObjects().total();
+				for (int j = 0; j < total; j++)
+				{
+					CvRect r = new CvRect(cvGetSeqElem(runnables[i].getObjects(), j));
+					int x = r.x(), y = r.y(), w = r.width(), h = r.height();
+					// x = (int) (getWidth() - (x * scaleX));
+					canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
+										* scaleY, paint);
+				}
 			}
 		}
-		if (eyes != null)
-		{
-			paint.setColor(Color.GREEN);
-			paint.setStrokeWidth(2);
-			paint.setStyle(Paint.Style.STROKE);
-			float scaleX = (float) getWidth() / grayImage.width();
-			float scaleY = (float) getHeight() / grayImage.height();
-			int total = eyes.total();
-			for (int i = 0; i < total; i++)
-			{
-				CvRect r = new CvRect(cvGetSeqElem(eyes, i));
-				int x = r.x(), y = r.y(), w = r.width(), h = r.height();
-				// x = (int) (getWidth() - (x * scaleX));
-				canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
-									* scaleY, paint);
-			}
+	}
+	private class concurrentDetector implements Runnable
+	{
+		CvHaarClassifierCascade classifier;
+		CvSeq objects;
+		public CvSeq getObjects() {
+			return objects;
 		}
-		if (noses != null)
+		CvMemStorage storage;
+		public concurrentDetector(CvHaarClassifierCascade classifier, CvMemStorage storage) 
 		{
-			paint.setColor(Color.BLUE);
-			paint.setStrokeWidth(2);
-			paint.setStyle(Paint.Style.STROKE);
-			float scaleX = (float) getWidth() / grayImage.width();
-			float scaleY = (float) getHeight() / grayImage.height();
-			int total = noses.total();
-			for (int i = 0; i < total; i++)
-			{
-				CvRect r = new CvRect(cvGetSeqElem(noses, i));
-				int x = r.x(), y = r.y(), w = r.width(), h = r.height();
-				// x = (int) (getWidth() - (x * scaleX));
-				canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
-									* scaleY, paint);
-			}
+			this.classifier = classifier;
+			this.storage = storage;
 		}
+		@Override
+		public void run() 
+		{
+			objects = cvHaarDetectObjects(grayImage, classifier, this.storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
+		}
+		
 	}
 }
