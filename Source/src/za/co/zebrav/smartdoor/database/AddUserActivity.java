@@ -27,7 +27,7 @@ public class AddUserActivity extends Activity
 
 	private AlertDialog.Builder alert;
 	private AddUserStepOne addUserStepOne;
-	private UserProvider provider;
+	private Db4oAdapter provider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -35,7 +35,7 @@ public class AddUserActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_user);
 
-		provider = new UserProvider(this);
+		provider = new Db4oAdapter(this);
 
 		alert = new AlertDialog.Builder(this);
 		addUserStepOne = new AddUserStepOne();
@@ -137,7 +137,11 @@ public class AddUserActivity extends Activity
 	public boolean usernameExists()
 	{
 		String username = addUserStepOne.getUsername();
-		return provider.userExists(username);
+		boolean exists = false;
+		provider.open();
+		exists = provider.exists(new User(null, null, username, null));
+		provider.close();
+		return exists;
 	}
 
 	/**
@@ -258,7 +262,9 @@ public class AddUserActivity extends Activity
 	 */
 	private void saveNewUser()
 	{
-		provider.saveUser(user);
+		provider.open();
+		provider.save(user);
+		provider.close();
 	}
 
 	/**

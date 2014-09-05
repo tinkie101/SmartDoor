@@ -1,7 +1,9 @@
 package za.co.zebrav.smartdoor;
 
+import java.util.List;
 import java.util.Locale;
 
+import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import za.co.zebrav.smartdoor.database.UserProvider;
 import android.app.Activity;
@@ -21,7 +23,7 @@ import android.widget.Toast;
 public class ManualLogin extends Activity implements OnInitListener
 {
 	private CustomMenu sliderMenu;
-	private UserProvider provider;
+	private Db4oAdapter provider;
 	
 	private EditText usernameET;
 	private EditText passwordET;
@@ -37,7 +39,7 @@ public class ManualLogin extends Activity implements OnInitListener
 		super.onCreate(savedInstanceState);
 		
 		//database provider
-		provider = new UserProvider(this);
+		provider = new Db4oAdapter(this);
 		
 		//create alert and textToSpeech
 		alert = new AlertDialog.Builder(this);
@@ -104,7 +106,19 @@ public class ManualLogin extends Activity implements OnInitListener
 	{
 		String uName = usernameET.getText().toString();
 		String pass = passwordET.getText().toString();
-		return provider.getUserOnPassword(uName, pass);
+		provider.open();
+		List<Object> users = provider.load(new User(null, null, uName, pass));
+	
+		if(users.isEmpty())
+		{
+			provider.close();
+			return null;
+		}
+		
+		User temp = (User) users.get(0);
+		User user = new User(temp.getFirstnames(), temp.getSurname(), temp.getUsername(), temp.getPassword());
+		
+		return user;
 	}
 	
 	//-------------------------------------------------------------------------TextToSpeech

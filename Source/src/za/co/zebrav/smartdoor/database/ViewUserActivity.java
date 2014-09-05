@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.app.Activity;
 import android.graphics.Color;
 
@@ -22,7 +23,7 @@ public class ViewUserActivity extends Activity
 	protected EditText searchText;
 	protected ListView userList;
 	protected ArrayList<User> users = new ArrayList<User>();
-	protected UserProvider provider;
+	protected Db4oAdapter provider;
 	
 	ListViewAdapter adapter;
 	
@@ -33,17 +34,20 @@ public class ViewUserActivity extends Activity
 		setContentView(R.layout.view_user);
 		
 		//create new database userProvider
-		provider = new UserProvider(this);
+		provider = new Db4oAdapter(this);
 		
 		//get GUI components
 		searchText = (EditText) findViewById (R.id.searchText);
         userList = (ListView) findViewById (R.id.list);
         
         //get database info
-        List<User> result = provider.getListOfAllUsers();
+        provider.open();
+        List<Object> result = provider.load(new User(null, null, null, null));
         
         for(int i = 0; i < result.size(); i++)
-        	users.add(result.get(i));
+        {
+        	users.add((User)result.get(i));
+        }
         
         // Pass results to ListViewAdapter Class
         adapter = new ListViewAdapter(this, users);

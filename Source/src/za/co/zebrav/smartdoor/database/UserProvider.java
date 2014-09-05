@@ -25,7 +25,7 @@ public class UserProvider extends Db4oAdapter
 	 * Saves a user to the database and commits action.
 	 * @param user to be stored
 	 */
-	public void saveUser(User user)
+	/*public void saveUser(User user)
 	{	
 		PKprovider pk = new PKprovider(context);
 		
@@ -37,14 +37,14 @@ public class UserProvider extends Db4oAdapter
 		getDatabase().store(user);
     	commit();
     	close();
-	}
+	}*/
 	
 	//------------------------------------------------------------------------deleteUser
 	/**
 	 * Deletes specified user from database and commits action.
 	 * @param user
 	 */
-	public void deleteUser(User user) 
+	/*public void deleteUser(User user) 
 	{
 		open();
 		//get user from database
@@ -55,27 +55,27 @@ public class UserProvider extends Db4oAdapter
     	getDatabase().delete(u);
     	commit();
     	close();
-    }
+    }*/
 
 	//------------------------------------------------------------------------getListOfAllUsers
 	/**
 	 * @return result, list of all the users objects stored in database
 	 */
-	public ObjectSet getListOfAllUsers() 
+	/*public ObjectSet getListOfAllUsers() 
 	{
 		ObjectSet result;
 		open();
 		result = getDatabase().queryByExample(new User(null, null, null, null));
 	
     	return result;
-    } 
+    }*/ 
 	
 	//------------------------------------------------------------------------userExists
 	/**
 	 * @param username to check if user already exists with this username
 	 * @return true if user exists, false if it does not
 	 */
-	public boolean userExists(String username)
+	/*public boolean userExists(String username)
 	{
 		boolean exists = false;
 		open();
@@ -86,7 +86,7 @@ public class UserProvider extends Db4oAdapter
 		
 		close();
 		return exists;
-	}
+	}*/
 	
 	//------------------------------------------------------------------------validatePassword
 	/**
@@ -119,7 +119,7 @@ public class UserProvider extends Db4oAdapter
 	/**
 	 * Clears all the users from the database.
 	 */
-	public void clearAllUsersData()
+	/*public void clearAllUsersData()
 	{
 		open();
     	List<User> list = getListOfAllUsers();
@@ -130,5 +130,5 @@ public class UserProvider extends Db4oAdapter
     	}
     	commit();
     	close();
-    } 
+    }*/ 
 }

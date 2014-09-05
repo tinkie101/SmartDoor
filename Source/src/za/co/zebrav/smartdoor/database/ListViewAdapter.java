@@ -21,7 +21,7 @@ public class ListViewAdapter extends BaseAdapter
 	private List<User> useList = null;
 	private ArrayList<User> arraylist;
 	private LayoutInflater inflater;
-	private UserProvider provider;
+	private Db4oAdapter provider;
 	private AlertDialog.Builder alert;
 	
 	/**
@@ -38,7 +38,7 @@ public class ListViewAdapter extends BaseAdapter
 		this.arraylist = new ArrayList<User>();
 		this.arraylist.addAll(userList);
 		
-		provider = new UserProvider(mContext);
+		provider = new Db4oAdapter(mContext);
 	}
 	
 	/**
@@ -129,7 +129,9 @@ public class ListViewAdapter extends BaseAdapter
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				provider.deleteUser(user);
+				provider.open();
+				provider.delete(user);
+				provider.close();
 				//update list
 				useList.remove(position);
 				notifyDataSetChanged();

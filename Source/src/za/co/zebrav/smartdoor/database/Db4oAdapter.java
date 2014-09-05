@@ -80,7 +80,8 @@ public class Db4oAdapter implements DatabaseAdaptee
 	@Override
 	public List<Object> load(Object object)
 	{ 
-		return getDatabase().queryByExample(object);
+		List<Object> result = getDatabase().queryByExample(object);
+		return result;
 	}
 
 	//------------------------------------------------------------------------SAVE
@@ -89,5 +90,41 @@ public class Db4oAdapter implements DatabaseAdaptee
 	{
 		getDatabase().store(object);
     	commit();
+	}
+	
+	//------------------------------------------------------------------------exists
+	/**
+	 * @param username to check if user already exists with this username
+	 * @return true if user exists, false if it does not
+	 */
+	public boolean exists(Object object)
+	{
+		boolean exists = false;
+		ObjectSet<Object> result = getDatabase().queryByExample(object);
+		
+		if(!result.isEmpty())
+			exists = true;
+		return exists;
+	}
+	
+	//--------------------------------------------------------------------------DELETE
+	public boolean delete(Object object)
+	{
+		boolean found = false;
+		
+		//get user from database
+		ObjectSet result = getDatabase().queryByExample(object);
+		
+		if(result.isEmpty())
+			return false;
+		else
+		{
+			for(Object o: result)
+			{
+				getDatabase().delete(result.get(0));
+				commit();
+			}
+			return true;
+		}
 	}
 }
