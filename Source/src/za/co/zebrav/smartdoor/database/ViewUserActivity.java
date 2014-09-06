@@ -42,7 +42,7 @@ public class ViewUserActivity extends Activity
         
         //get database info
         provider.open();
-        List<Object> result = provider.load(new User(null, null, null, null, false));
+        List<Object> result = provider.load(new User(null, null, null, null, 0));
         
         for(int i = 0; i < result.size(); i++)
         {

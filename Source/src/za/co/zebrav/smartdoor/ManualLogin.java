@@ -105,7 +105,7 @@ public class ManualLogin extends Activity implements OnInitListener
 		String uName = usernameET.getText().toString();
 		String pass = passwordET.getText().toString();
 		provider.open();
-		List<Object> users = provider.load(new User(null, null, uName, pass, false));
+		List<Object> users = provider.load(new User(null, null, uName, pass));
 	
 		if(users.isEmpty())
 		{
@@ -114,7 +114,7 @@ public class ManualLogin extends Activity implements OnInitListener
 		}
 		
 		User temp = (User) users.get(0);
-		User user = new User(temp.getFirstnames(), temp.getSurname(), temp.getUsername(), temp.getPassword(), false);
+		User user = new User(temp.getFirstnames(), temp.getSurname(), temp.getUsername(), temp.getPassword());
 		
 		return user;
 	}

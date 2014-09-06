@@ -100,7 +100,7 @@ public class ListViewAdapter extends BaseAdapter
 		}
 		
 		// Set the results into TextViews
-		holder.firstName.setText(useList.get(position).getFirstnames());
+		holder.firstName.setText(useList.get(position).getFirstnames() + " " + useList.get(position).getID());
 		holder.surname.setText(useList.get(position).getSurname());
 		holder.username.setText(useList.get(position).getUsername());
 	

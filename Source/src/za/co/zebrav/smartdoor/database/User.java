@@ -2,35 +2,13 @@ package za.co.zebrav.smartdoor.database;
 
 public class User
 {
-	private static long id = -1;
+	private long id = -1;
 	private String username = "";//user names must be unique
 	private String password = "";
 	private String firstnames = "";
 	private String surname = "";
 	
-	//------------------------------------------------------------------------CONSTRUCTOR
-	/**
-	 * When (addPK == true) the largest PK is updated in the database
-	 * Use this for storing user in database (with addPK as true)
-	 * @param firstnames
-	 * @param surname
-	 * @param username
-	 * @param password
-	 * @param addPK
-	 */
-	public User(String firstnames, String surname, String username, String password, boolean addPK)
-	{
-		this.username = username;
-		this.password = password;
-		this.firstnames = firstnames;
-		this.surname = surname;
-		
-		//if addPK == true, update nextPK
-		if(addPK)
-		{
-			
-		}
-	}
+	
 	
 	/**
 	 * Use this for database queries.
@@ -45,6 +23,15 @@ public class User
 		this.password = password;
 		this.firstnames = firstnames;
 		this.surname = surname;
+	}
+	
+	public User(String firstnames, String surname, String username, String password, long pk)
+	{
+		this.username = username;
+		this.password = password;
+		this.firstnames = firstnames;
+		this.surname = surname;
+		this.id = pk;
 	}
 	
 	//------------------------------------------------------------------------getID

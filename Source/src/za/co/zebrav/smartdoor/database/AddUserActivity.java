@@ -88,7 +88,7 @@ public class AddUserActivity extends Activity
 	private void getValidUserStep1Info()
 	{
 		user = new User(addUserStepOne.getFirstName(), addUserStepOne.getSurname(), addUserStepOne.getUsername(),
-							addUserStepOne.getPass(), true);
+							addUserStepOne.getPass(), 5);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class AddUserActivity extends Activity
 		String username = addUserStepOne.getUsername();
 		boolean exists = false;
 		provider.open();
-		exists = provider.exists(new User(null, null, username, null, false));
+		exists = provider.exists(new User(null, null, username, null));
 		provider.close();
 		return exists;
 	}
@@ -263,6 +263,7 @@ public class AddUserActivity extends Activity
 	private void saveNewUser()
 	{
 		provider.open();
+		user.setID(10);
 		provider.save(user);
 		provider.close();
 	}
