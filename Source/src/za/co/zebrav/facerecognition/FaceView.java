@@ -19,6 +19,8 @@ import org.bytedeco.javacpp.opencv_core.CvRect;
 import org.bytedeco.javacpp.opencv_core.CvSeq;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
+
+import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -76,14 +78,35 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 	 * Used to calculate FPS.	
 	 */
 	private long lastTime;
+	/**
+	 * Used to recognize faces.
+	 */
+	protected PersonRecognizer personRecognizer;
+	
+	/**
+	 * Database to load the personRecognizer from.
+	 */
+	private Db4oAdapter database;
+	/**
+	 * Method implemented by child classes.
+	 * This processes the detected faces to either add to DB or compare to DB.
+	 * @param faces
+	 */
+	public abstract void processFaces(CvSeq faces);
+	
+	private Context context;
+	
 	public FaceView(Context context) throws IOException
 	{
 		super(context);
-		paint = new Paint();
+		this.context = context;
+		paint = initialisePaint();
 		// Load the classifier file from Java resources.
 		storage = CvMemStorage.create();
 		threads = new Thread[classifierFiles.length];
 		runnables = new concurrentDetector[classifierFiles.length];
+		// Preload the opencv_objdetect module to work around a known bug.
+		Loader.load(opencv_objdetect.class);
 		for(int i = 0; i < classifierFiles.length;i++)
 		{
 			File file = Loader.extractResource(getClass(),
@@ -93,8 +116,7 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 			{
 				throw new IOException("Could not extract the ["+classifierFiles[i]+"] classifier file from Java resource.");
 			}
-			// Preload the opencv_objdetect module to work around a known bug.
-			Loader.load(opencv_objdetect.class);
+			
 			CvHaarClassifierCascade classifier = new CvHaarClassifierCascade(cvLoad(file.getAbsolutePath()));
 			file.delete();
 			if (classifier.isNull())
@@ -104,11 +126,62 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 			runnables[i] = new concurrentDetector(classifier, storage);
 			threads[i] = new  Thread(runnables[i], "" + i);
 		}
+		//TODO: add loadPersonRecognizer call once db is fixed.
+		//loadPersonRecognizer();
 		lastTime = System.currentTimeMillis();
 	}
+	/**
+	 * Initialises the paint Object
+	 */
+	private Paint initialisePaint()
+	{
+		Paint result = new Paint();
+		result.setTextSize(20);
+		result.setStrokeWidth(3);
+		result.setStyle(Paint.Style.STROKE);
+		return result;
+	}
+	/**
+	 * Loads PersonRecognizer from the database.
+	 * If there is no PersonRecognizer in database it will create and save a new Recognizer.
+	 * Called from constructor. Is save to call multiple times.
+	 * Must be called onResume of Fragment/Activity.
+	 * @return True if success, false otherwise.
+	 */
+	public boolean loadPersonRecognizer()
+	{
+		//If the personRecognizer has a value then it has already been loaded and we can emmidiatly return.
+		if(personRecognizer != null) return true;
+		//For safety make sure that we do not have 2 databases
+		if(database == null) database = new Db4oAdapter(this.context);
+		//For safety make sure that we do not open the database twice
+		if(!database.isOpen()) database.open();
+		personRecognizer =(PersonRecognizer) database.load(new PersonRecognizer(null)).get(0);
+		if(personRecognizer == null)
+		{
+			//TODO: change constructor once PersonRecognizer is updated.
+			personRecognizer = new PersonRecognizer("dummy");
+			database.save(personRecognizer);
+		}
+		return true;
+	}
+	/**
+	 * Saves the personRecognizer in the database.
+	 * Closes connection to database.
+	 * Important to call when Fragment/Activity is paused.
+	 * @return True if success, false otherwise.
+	 */
+	public boolean savePersonRecognizer()
+	{
+		//If the database is null we cannot save to it.
+		if(database == null) return false;
+		//If the database is closed we cannot write to it.
+		if(!database.isOpen()) return false;
+		database.save(personRecognizer);
+		database.close();
+		return true;
+	}
 	
-	public abstract void processFaces(CvSeq faces);
-
 	public void onPreviewFrame(final byte[] data, final Camera camera)
 	{
 		try
@@ -165,13 +238,10 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		postInvalidate();
 	}
 
-	@Override
-	protected void onDraw(Canvas canvas)
+	private String calculateFPS()
 	{
-		
-		paint.setTextSize(20);
 		long newTime = System.currentTimeMillis();
-		String s = "FPS: ";
+		String result = "FPS: ";
 		if(lastTime != newTime)
 		{
 			long temp = newTime-lastTime;
@@ -179,19 +249,22 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 			Log.d(TAG, "" +temp2);
 			double fps = (double)1/temp2;
 			DecimalFormat df = new DecimalFormat("#.00");
-			if(fps < 1) s = s + "0" +   df.format(fps);
-			else s = s +  df.format(fps);
+			if(fps < 1) result = result + "0" +   df.format(fps);
+			else result = result +  df.format(fps);
 		}
 		else
 		{
-			s = s + "max";
+			result = result + "max";
 		}
-		 float textWidth = paint.measureText(s);
-		 canvas.drawText(s, (getWidth() - textWidth), 15, paint);
 		lastTime = newTime;
-		paint.setStrokeWidth(3);
-		paint.setStyle(Paint.Style.STROKE);
-
+		return result;
+	}
+	@Override
+	protected void onDraw(Canvas canvas)
+	{
+		String FPS = calculateFPS();
+		float textWidth = paint.measureText(FPS);
+		canvas.drawText(FPS, (getWidth() - textWidth), 15, paint);
 		for(int i = 0; i < runnables.length; i++)
 		{
 			if (runnables[i].getObjects() != null)
@@ -211,6 +284,9 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 			}
 		}
 	}
+	/**
+	 * Private class to do the object detection.
+	 */
 	private class concurrentDetector implements Runnable
 	{
 		CvHaarClassifierCascade classifier;
