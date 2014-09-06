@@ -98,7 +98,7 @@ public class FaceRecognizeCameraFragment extends Fragment
 		super.onPause();
 		releaseCamera();
 		//TODO: add savePersonRecognizer call once db is fixed.
-//		faceView.savePersonRecognizer();
+		//faceView.savePersonRecognizer();
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class FaceRecognizeCameraFragment extends Fragment
 		mCamera = getFrontCameraInstance();
 		mPreview.setCamera(mCamera);
 		//TODO: add loadPersonRecognizer call once db is fixed.
-//		faceView.loadPersonRecognizer();
+		//faceView.loadPersonRecognizer();
 	}
 
 	private void releaseCamera()

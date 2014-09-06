@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
+import java.util.List;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_objdetect;
@@ -19,6 +20,8 @@ import org.bytedeco.javacpp.opencv_core.CvRect;
 import org.bytedeco.javacpp.opencv_core.CvSeq;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
+
+import com.db4o.ObjectSet;
 
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import android.content.Context;
@@ -156,8 +159,15 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		if(database == null) database = new Db4oAdapter(this.context);
 		//For safety make sure that we do not open the database twice
 		if(!database.isOpen()) database.open();
-		personRecognizer =(PersonRecognizer) database.load(new PersonRecognizer(null)).get(0);
-		if(personRecognizer == null)
+		//Get all PersonRecognizers from database
+		List<Object> tempList = database.load(new PersonRecognizer(null));
+		//If tempList has an entry we can just load from database
+		if(tempList != null && tempList.size() != 0)
+		{
+			personRecognizer =(PersonRecognizer) tempList.get(0);
+		}
+		//Otherwise we have to create the recogniser
+		else
 		{
 			//TODO: change constructor once PersonRecognizer is updated.
 			personRecognizer = new PersonRecognizer("dummy");
