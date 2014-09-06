@@ -15,6 +15,7 @@ public class Db4oAdapter implements DatabaseAdaptee
 	private ObjectContainer database = null;
 	protected Context context = null;
 	private String DATABASE_NAME = "smartdoor_users.db4o";
+	private boolean isDbOpen = false;
 	
 	//------------------------------------------------------------------------CONSTRUCTOR
 	public Db4oAdapter(Context context) 
@@ -30,6 +31,7 @@ public class Db4oAdapter implements DatabaseAdaptee
 			if (database == null || database.ext().isClosed()) 
 			{
 				database = Db4oEmbedded.openFile(config(), db4oDBFullPath(context));
+				isDbOpen = true;
 			}
 		} 
 		catch (Exception ie) 
@@ -67,9 +69,15 @@ public class Db4oAdapter implements DatabaseAdaptee
 		if (this.database != null) 
 		{
 			this.database.close();
+			isDbOpen = false;
 		}
 	}
 	
+	//------------------------------------------------------------------------close
+	public boolean isOpen() 
+	{
+		return isDbOpen;
+	}
 	//------------------------------------------------------------------------getDatabase
 	public ObjectContainer getDatabase() 
 	{
