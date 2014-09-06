@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.support.v4.widget.DrawerLayout;
@@ -106,7 +105,7 @@ public class ManualLogin extends Activity implements OnInitListener
 		String uName = usernameET.getText().toString();
 		String pass = passwordET.getText().toString();
 		provider.open();
-		List<Object> users = provider.load(new User(null, null, uName, pass));
+		List<Object> users = provider.load(new User(null, null, uName, pass, false));
 	
 		if(users.isEmpty())
 		{
@@ -115,7 +114,7 @@ public class ManualLogin extends Activity implements OnInitListener
 		}
 		
 		User temp = (User) users.get(0);
-		User user = new User(temp.getFirstnames(), temp.getSurname(), temp.getUsername(), temp.getPassword());
+		User user = new User(temp.getFirstnames(), temp.getSurname(), temp.getUsername(), temp.getPassword(), false);
 		
 		return user;
 	}
