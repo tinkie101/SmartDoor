@@ -1,6 +1,7 @@
 package za.co.zebrav.smartdoor.database;
 
 import java.io.IOException;
+import java.util.List;
 
 import za.co.zebrav.facerecognition.FaceRecognizeCameraFragment;
 import za.co.zebrav.facerecognition.addFaceView;
@@ -139,7 +140,7 @@ public class AddUserActivity extends Activity
 		String username = addUserStepOne.getUsername();
 		boolean exists = false;
 		provider.open();
-		exists = provider.exists(new User(null, null, username, null));
+		exists = provider.exists(new User(null, null, username, null, 0));
 		provider.close();
 		return exists;
 	}
@@ -262,8 +263,27 @@ public class AddUserActivity extends Activity
 	 */
 	private void saveNewUser()
 	{
+		LastPK lastPK = null;
+		long newPK = 0;
 		provider.open();
-		user.setID(10);
+		
+		List<Object> results = provider.load(new LastPK(0));
+		
+		//If list is empty, then PK has not been instantiated yet
+		if(results.isEmpty())
+		{
+			lastPK = new LastPK(1);
+			newPK = 1;
+			provider.save(lastPK);
+		}
+		else
+		{
+			lastPK = (LastPK) results.get(0);
+			newPK = lastPK.getPK() + 1;
+			LastPK temp = new LastPK(newPK);
+			provider.update(lastPK, temp);
+		}
+		user.setID(newPK);
 		provider.save(user);
 		provider.close();
 	}

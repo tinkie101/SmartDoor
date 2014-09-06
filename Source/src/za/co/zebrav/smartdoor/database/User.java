@@ -17,13 +17,13 @@ public class User
 	 * @param username
 	 * @param password
 	 */
-	public User(String firstnames, String surname, String username, String password)
+	/*public User(String firstnames, String surname, String username, String password)
 	{
 		this.username = username;
 		this.password = password;
 		this.firstnames = firstnames;
 		this.surname = surname;
-	}
+	}*/
 	
 	public User(String firstnames, String surname, String username, String password, long pk)
 	{

@@ -135,4 +135,12 @@ public class Db4oAdapter implements DatabaseAdaptee
 			return true;
 		}
 	}
+	
+	public boolean update(Object oldO, Object newO)
+	{
+		delete(oldO);
+		
+		save(newO);
+		return false;
+	}
 }

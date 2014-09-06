@@ -16,4 +16,6 @@ public interface DatabaseAdaptee
 	public boolean exists(Object object);
 	
 	public boolean delete(Object object);
+	
+	public boolean update(Object oldO, Object newO);
 }
