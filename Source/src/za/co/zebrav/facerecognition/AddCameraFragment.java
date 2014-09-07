@@ -33,8 +33,6 @@ public class AddCameraFragment extends Fragment
 		try
 		{
 			this.faceView = new AddFaceView(contex);
-			Bundle bundle = new Bundle();
-			uID = bundle.getLong("userID");
 		}
 		catch (IOException e)
 		{
@@ -83,8 +81,8 @@ public class AddCameraFragment extends Fragment
 		{
 			public void onClick(View view)
 			{
-				labeledMat result = new labeledMat(uID,faceView.getFace());
-				
+				labeledMat result = new labeledMat(uID, faceView.getFace());
+
 				Db4oAdapter db = new Db4oAdapter(context);
 				db.open();
 				db.save(result);
@@ -102,6 +100,8 @@ public class AddCameraFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		Bundle bundle = this.getArguments();
+		uID = bundle.getLong("userID", -1);
 		return layout;
 	}
 

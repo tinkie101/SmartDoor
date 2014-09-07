@@ -158,10 +158,12 @@ public class AddUserActivity extends Activity
 	public void switchFragToStep2()
 	{
 		AddCameraFragment f = new AddCameraFragment(this);
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplace, f);
+		
 		Bundle bundle = new Bundle();
 		bundle.putLong("userID", user.getID());
+		f.setArguments(bundle);
+		ft = fm.beginTransaction();
+		ft.replace(R.id.layoutToReplace, f);
 		ft.commit();
 
 		// AddUserStepTwo fv = new AddUserStepTwo();
