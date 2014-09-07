@@ -1,6 +1,7 @@
 package za.co.zebrav.facerecognition;
 
 import java.io.IOException;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -17,13 +18,19 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 @SuppressLint("ValidFragment")
-public class FaceRecognizeCameraFragment extends Fragment
+public class AddCameraFragment extends Fragment
 {
-	public FaceRecognizeCameraFragment(Context contex, FaceView faceView)
+	public AddCameraFragment(Context contex)
 	{
 		super();
-		this.faceView = faceView;
-		this.context = context;
+		try
+		{
+			this.faceView = new AddFaceView(contex);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	private FrameLayout layout;
@@ -37,7 +44,7 @@ public class FaceRecognizeCameraFragment extends Fragment
 	private Preview mPreview;
 
 	private Context context = null;
-	private FaceView faceView;
+	private AddFaceView faceView;
 
 	/**
 	 * Standard on create method

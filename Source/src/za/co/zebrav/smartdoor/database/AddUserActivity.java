@@ -3,8 +3,7 @@ package za.co.zebrav.smartdoor.database;
 import java.io.IOException;
 import java.util.List;
 
-import za.co.zebrav.facerecognition.FaceRecognizeCameraFragment;
-import za.co.zebrav.facerecognition.addFaceView;
+import za.co.zebrav.facerecognition.AddCameraFragment;
 import za.co.zebrav.smartdoor.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -158,20 +157,10 @@ public class AddUserActivity extends Activity
 	 */
 	public void switchFragToStep2()
 	{
-		try
-		{
-			FaceRecognizeCameraFragment f = new FaceRecognizeCameraFragment(this, new addFaceView(this));
-			ft = fm.beginTransaction();
-			ft.replace(R.id.layoutToReplace, f);
-			ft.commit();
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// Bundle bundle = new Bundle();
-		// bundle.p putLong("userID", user.getID());
+		AddCameraFragment f = new AddCameraFragment(this);
+		ft = fm.beginTransaction();
+		ft.replace(R.id.layoutToReplace, f);
+		ft.commit();
 
 		// AddUserStepTwo fv = new AddUserStepTwo();
 		// Toast.makeText(this, "Before: " + user.getID(), Toast.LENGTH_SHORT).show();

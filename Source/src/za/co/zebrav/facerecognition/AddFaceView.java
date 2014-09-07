@@ -33,7 +33,7 @@ import android.hardware.Camera;
 import android.util.Log;
 import android.view.View;
 
-abstract class FaceView extends View implements Camera.PreviewCallback
+class AddFaceView extends View implements Camera.PreviewCallback
 {
 	private static final String TAG = "FaceView";
 	/**
@@ -99,11 +99,14 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 	 * 
 	 * @param faces
 	 */
-	public abstract void processFaces(CvSeq faces);
+	private void processFaces(CvSeq faces)
+	{
+		
+	}
 
 	private Context context;
 
-	public FaceView(Context context) throws IOException
+	public AddFaceView(Context context) throws IOException
 	{
 		super(context);
 		this.context = context;

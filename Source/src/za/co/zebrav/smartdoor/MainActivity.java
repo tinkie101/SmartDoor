@@ -8,8 +8,7 @@ package za.co.zebrav.smartdoor;
 
 import java.io.IOException;
 
-import za.co.zebrav.facerecognition.FaceRecognizeCameraFragment;
-import za.co.zebrav.facerecognition.SearchFaceView;
+import za.co.zebrav.facerecognition.SearchCameraFragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -35,19 +34,11 @@ public class MainActivity extends FragmentActivity
 		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list),
 							(DrawerLayout) findViewById(R.id.drawer_layout), getResources().getStringArray(
 												R.array.mainMenuOptions));
-		try
-		{
-			FaceRecognizeCameraFragment frcm = new FaceRecognizeCameraFragment(this, new SearchFaceView(this));
-			fm = getFragmentManager();
-			ft = fm.beginTransaction();
-			ft.replace(R.id.layoutToReplaceFromMain , frcm);
-			ft.commit();
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		SearchCameraFragment cm = new SearchCameraFragment(this);
+		fm = getFragmentManager();
+		ft = fm.beginTransaction();
+		ft.replace(R.id.layoutToReplaceFromMain , cm);
+		ft.commit();
 	}
 
 	/*
