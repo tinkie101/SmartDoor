@@ -140,7 +140,6 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 	{
 		Paint result = new Paint();
 		result.setTextSize(20);
-		result.setStrokeWidth(3);
 		result.setStyle(Paint.Style.STROKE);
 		return result;
 	}
@@ -256,7 +255,6 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 		{
 			long temp = newTime-lastTime;
 			double temp2 = temp/(double)1000;
-			Log.d(TAG, "" +temp2);
 			double fps = (double)1/temp2;
 			DecimalFormat df = new DecimalFormat("#.00");
 			if(fps < 1) result = result + "0" +   df.format(fps);
@@ -274,7 +272,10 @@ abstract class FaceView extends View implements Camera.PreviewCallback
 	{
 		String FPS = calculateFPS();
 		float textWidth = paint.measureText(FPS);
+		paint.setStrokeWidth(2);
+		paint.setColor(Color.WHITE);
 		canvas.drawText(FPS, (getWidth() - textWidth), 15, paint);
+		paint.setStrokeWidth(3);
 		for(int i = 0; i < runnables.length; i++)
 		{
 			if (runnables[i].getObjects() != null)
