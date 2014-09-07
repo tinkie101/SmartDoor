@@ -1,5 +1,8 @@
 package za.co.zebrav.facerecognition;
 
+import static org.bytedeco.javacpp.opencv_contrib.*;
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_highgui.*;
 import static org.bytedeco.javacpp.helper.opencv_objdetect.cvHaarDetectObjects;
 import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
 import static org.bytedeco.javacpp.opencv_core.cvClearMemStorage;
@@ -10,6 +13,7 @@ import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -21,8 +25,6 @@ import org.bytedeco.javacpp.opencv_core.CvRect;
 import org.bytedeco.javacpp.opencv_core.CvSeq;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
-
-import com.db4o.ObjectSet;
 
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import android.content.Context;
@@ -46,7 +48,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	/**
 	 * List of all the XML files used for classifiers
 	 */
-	private static final String[] classifierFiles = { "haarcascade_frontalface_alt.xml"};
+	private static final String[] classifierFiles = { "haarcascade_frontalface_alt.xml" };
 	/**
 	 * Colors which will be used to draw squares around classified objects.
 	 * Order will be the same as for classifiers.
@@ -100,7 +102,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	 */
 	private void processFaces(CvSeq faces)
 	{
-		
+
 	}
 
 	private Context context;
@@ -136,8 +138,34 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 			threads[i] = new Thread(runnables[i], "" + i);
 		}
 		// TODO: add loadPersonRecognizer call once db is fixed.
-		// loadPersonRecognizer();
+		//initialisePersonRecogniser();
 		lastTime = System.currentTimeMillis();
+	}
+
+	private boolean initialisePersonRecogniser()
+	{
+		Db4oAdapter db = new Db4oAdapter(context);
+		db.open();
+		List<Object> tempList = db.load(new labeledMat(0, null));
+		if (tempList.size() < 2)
+		{
+			db.close();
+			return false;
+		}
+		Mat labels = new Mat(tempList.size(), 1, CV_32SC1);
+		IntBuffer labelsBuf = labels.getIntBuffer();
+		MatVector images = new MatVector(tempList.size());
+		int i = 0;
+		for (Object o : tempList)
+		{
+			labeledMat lm = (labeledMat) o;
+			labelsBuf.put(i, (int) lm.getLabel());
+			images.put(i, lm.getMat());
+			i++;
+		}
+		personRecognizer.train(images, labels);
+		db.close();
+		return true;
 	}
 
 	/**
@@ -159,33 +187,33 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	 * 
 	 * @return True if success, false otherwise.
 	 */
-//	public boolean loadPersonRecognizer()
-//	{
-//		// If the personRecognizer has a value then it has already been loaded and we can emmidiatly return.
-//		if (personRecognizer != null)
-//			return true;
-//		// For safety make sure that we do not have 2 databases
-//		if (database == null)
-//			database = new Db4oAdapter(this.context);
-//		// For safety make sure that we do not open the database twice
-//		if (!database.isOpen())
-//			database.open();
-//		// Get all PersonRecognizers from database
-//		List<Object> tempList = database.load(new PersonRecognizer(null));
-//		// If tempList has an entry we can just load from database
-//		if (tempList != null && tempList.size() != 0)
-//		{
-//			personRecognizer = (PersonRecognizer) tempList.get(0);
-//		}
-//		// Otherwise we have to create the recogniser
-//		else
-//		{
-//			// TODO: change constructor once PersonRecognizer is updated.
-//			personRecognizer = new PersonRecognizer("dummy");
-//			database.save(personRecognizer);
-//		}
-//		return true;
-//	}
+	// public boolean loadPersonRecognizer()
+	// {
+	// // If the personRecognizer has a value then it has already been loaded and we can emmidiatly return.
+	// if (personRecognizer != null)
+	// return true;
+	// // For safety make sure that we do not have 2 databases
+	// if (database == null)
+	// database = new Db4oAdapter(this.context);
+	// // For safety make sure that we do not open the database twice
+	// if (!database.isOpen())
+	// database.open();
+	// // Get all PersonRecognizers from database
+	// List<Object> tempList = database.load(new PersonRecognizer(null));
+	// // If tempList has an entry we can just load from database
+	// if (tempList != null && tempList.size() != 0)
+	// {
+	// personRecognizer = (PersonRecognizer) tempList.get(0);
+	// }
+	// // Otherwise we have to create the recogniser
+	// else
+	// {
+	// // TODO: change constructor once PersonRecognizer is updated.
+	// personRecognizer = new PersonRecognizer("dummy");
+	// database.save(personRecognizer);
+	// }
+	// return true;
+	// }
 
 	/**
 	 * Saves the personRecognizer in the database.
@@ -194,18 +222,18 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	 * 
 	 * @return True if success, false otherwise.
 	 */
-//	public boolean savePersonRecognizer()
-//	{
-//		// If the database is null we cannot save to it.
-//		if (database == null)
-//			return false;
-//		// If the database is closed we cannot write to it.
-//		if (!database.isOpen())
-//			return false;
-//		database.save(personRecognizer);
-//		database.close();
-//		return true;
-//	}
+	// public boolean savePersonRecognizer()
+	// {
+	// // If the database is null we cannot save to it.
+	// if (database == null)
+	// return false;
+	// // If the database is closed we cannot write to it.
+	// if (!database.isOpen())
+	// return false;
+	// database.save(personRecognizer);
+	// database.close();
+	// return true;
+	// }
 
 	public void onPreviewFrame(final byte[] data, final Camera camera)
 	{
@@ -306,7 +334,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 				for (int j = 0; j < total; j++)
 				{
 					CvRect r = new CvRect(cvGetSeqElem(runnables[i].getObjects(), j));
-					//Mat test = new Mat(cvGetSeqElem(runnables[i].getObjects(), j));
+					// Mat test = new Mat(cvGetSeqElem(runnables[i].getObjects(), j));
 					int x = r.x(), y = r.y(), w = r.width(), h = r.height();
 					canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
 										* scaleY, paint);
@@ -322,7 +350,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	{
 		CvHaarClassifierCascade classifier;
 		CvSeq objects;
-		
+
 		public CvSeq getObjects()
 		{
 			return objects;

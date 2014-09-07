@@ -103,7 +103,11 @@ class AddFaceView extends View implements Camera.PreviewCallback
 	{
 		
 	}
-
+	
+	public Mat getFace()
+	{
+		return new Mat(runnables[0].getObjects().first());
+	}
 	private Context context;
 
 	public AddFaceView(Context context) throws IOException

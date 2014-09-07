@@ -2,6 +2,12 @@ package za.co.zebrav.facerecognition;
 
 import java.io.IOException;
 
+import org.bytedeco.javacpp.opencv_core.Mat;
+
+import za.co.zebrav.smartdoor.database.Db4oAdapter;
+
+import com.db4o.Db4o;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -14,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -26,6 +33,8 @@ public class AddCameraFragment extends Fragment
 		try
 		{
 			this.faceView = new AddFaceView(contex);
+			Bundle bundle = new Bundle();
+			uID = bundle.getLong("userID");
 		}
 		catch (IOException e)
 		{
@@ -33,6 +42,7 @@ public class AddCameraFragment extends Fragment
 		}
 	}
 
+	private long uID;
 	private FrameLayout layout;
 	/**
 	 * Stores the camera instance for the class
@@ -45,6 +55,7 @@ public class AddCameraFragment extends Fragment
 
 	private Context context = null;
 	private AddFaceView faceView;
+	private Button addButton;
 
 	/**
 	 * Standard on create method
@@ -66,6 +77,23 @@ public class AddCameraFragment extends Fragment
 		mPreview = new Preview(context, faceView);
 		layout.addView(mPreview);
 		layout.addView(faceView);
+
+		addButton = new Button(context);
+		addButton.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View view)
+			{
+				labeledMat result = new labeledMat(uID,faceView.getFace());
+				
+				Db4oAdapter db = new Db4oAdapter(context);
+				db.open();
+				db.save(result);
+				db.close();
+				Toast.makeText(context, "Successfully saved " + uID + " in db.", Toast.LENGTH_LONG).show();
+			}
+		});
+		addButton.setText("Take Picture");
+		layout.addView(addButton);
 	}
 
 	/**
@@ -104,8 +132,8 @@ public class AddCameraFragment extends Fragment
 	{
 		super.onPause();
 		releaseCamera();
-		//TODO: add savePersonRecognizer call once db is fixed.
-		//faceView.savePersonRecognizer();
+		// TODO: add savePersonRecognizer call once db is fixed.
+		// faceView.savePersonRecognizer();
 	}
 
 	/**
@@ -118,8 +146,8 @@ public class AddCameraFragment extends Fragment
 		// Create an instance of Camera
 		mCamera = getFrontCameraInstance();
 		mPreview.setCamera(mCamera);
-		//TODO: add loadPersonRecognizer call once db is fixed.
-		//faceView.loadPersonRecognizer();
+		// TODO: add loadPersonRecognizer call once db is fixed.
+		// faceView.loadPersonRecognizer();
 	}
 
 	private void releaseCamera()

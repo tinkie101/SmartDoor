@@ -160,6 +160,8 @@ public class AddUserActivity extends Activity
 		AddCameraFragment f = new AddCameraFragment(this);
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplace, f);
+		Bundle bundle = new Bundle();
+		bundle.putLong("userID", user.getID());
 		ft.commit();
 
 		// AddUserStepTwo fv = new AddUserStepTwo();
@@ -255,11 +257,11 @@ public class AddUserActivity extends Activity
 		LastPK lastPK = null;
 		long newPK = 0;
 		provider.open();
-		
+
 		List<Object> results = provider.load(new LastPK(0));
-		
-		//If list is empty, then PK has not been instantiated yet
-		if(results.isEmpty())
+
+		// If list is empty, then PK has not been instantiated yet
+		if (results.isEmpty())
 		{
 			lastPK = new LastPK(1);
 			newPK = 1;
