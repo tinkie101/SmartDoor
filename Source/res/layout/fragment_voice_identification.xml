@@ -20,8 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/btnRecognise"
         android:layout_toRightOf="@+id/btnRecognise"
-        android:text="Train"
-        android:onClick="buttonClicked" />
+        android:text="Train"/>
 
     <Button
         android:id="@+id/btnPlay"
@@ -29,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:onClick="buttonClicked"
         android:text="Start Playing" />
 
     <Button
@@ -38,7 +36,6 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/btnPlay"
         android:layout_toRightOf="@+id/btnPlay"
-        android:onClick="buttonClicked"
         android:text="Recognise" />
 
 </RelativeLayout>

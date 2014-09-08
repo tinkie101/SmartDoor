@@ -1,99 +1,86 @@
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    
+    android:layout_height="match_parent" >
+
     <!-- The main content view -->
+
     <LinearLayout
-    android:id="@+id/content_frame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:baselineAligned="false"
-    android:orientation="horizontal" >
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="10" >
-
-        <LinearLayout
-            android:id="@+id/buttonLinear"
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:orientation="vertical" >
+            android:layout_height="fill_parent"
+            android:layout_weight="10" >
 
-            <Button
-                android:id="@+id/ttsButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="gotoTextToSpeech"
-                android:text="Go to Text-to-speech" />
-            
-            <Button
-                android:id="@+id/stt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="gotoSpeechToText"
-                android:text="Go to Speech-to-Text" />
-            
-            <Button
-                android:id="@+id/voiceIdentification"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="gotoVoiceIdentification"
-                android:text="Go to Voice Identification" />
-            
-            <Button
-                android:id="@+id/voiceAuth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="gotoVoiceAuth"
-                android:text="Go to Voice Auth" />
-                         
-              <FrameLayout
-       		 android:id="@+id/layoutToReplaceFromMain"
-       		 android:layout_width="match_parent"
-       		 android:layout_height="match_parent" >
-   		 </FrameLayout>
-<!-- 
+            <LinearLayout
+                android:id="@+id/buttonLinear"
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/ttsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="gotoTextToSpeech"
+                    android:text="Go to Text-to-speech" />
+
+                <Button
+                    android:id="@+id/stt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="gotoSpeechToText"
+                    android:text="Go to Speech-to-Text" />
+
+                <FrameLayout
+                    android:id="@+id/layoutToReplaceFromMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+                </FrameLayout>
+                <!--
             <fragment
                 android:id="@+id/cameraFragment"
                 android:name="za.co.zebrav.facerecognition.FaceRecognizeCameraFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
--->
-        </LinearLayout>
-    </RelativeLayout>
+                -->
+            </LinearLayout>
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="17dp"
-        android:layout_weight="10"
-        android:background="#5FFF" >
-
-        <fragment
-            android:id="@+id/twitterFragment"
-            android:name="za.co.zebrav.smartdoor.TwitterFragment"
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-    </RelativeLayout>
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="17dp"
+            android:layout_weight="10"
+            android:background="#5FFF" >
 
-</LinearLayout>
+            <fragment
+                android:id="@+id/twitterFragment"
+                android:name="za.co.zebrav.smartdoor.TwitterFragment"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </RelativeLayout>
+    </LinearLayout>
 
-<!-- The navigation drawer (MENU)-->
-    <ListView android:id="@+id/drawer_list"
+    <!-- The navigation drawer (MENU) -->
+
+    <ListView
+        android:id="@+id/drawer_list"
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="#111"
         android:choiceMode="singleChoice"
         android:divider="#449DEF"
-        android:dividerHeight="1dp"
-        android:background="#111"/>
+        android:dividerHeight="1dp" />
 
 </android.support.v4.widget.DrawerLayout>
