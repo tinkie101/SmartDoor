@@ -90,11 +90,6 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	protected PersonRecognizer personRecognizer;
 
 	/**
-	 * Database to load the personRecognizer from.
-	 */
-	private Db4oAdapter database;
-
-	/**
 	 * Method implemented by child classes.
 	 * This processes the detected faces to either add to DB or compare to DB.
 	 * 
@@ -110,6 +105,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	public SearchFaceView(Context context) throws IOException
 	{
 		super(context);
+		Log.d(TAG, "Constructor called.");
 		this.context = context;
 		paint = initialisePaint();
 		// Load the classifier file from Java resources.
@@ -149,22 +145,28 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 		List<Object> tempList = db.load(new labeledMat(0, null));
 		if (tempList.size() < 2)
 		{
+			Log.d(TAG,"List less than 2");
 			db.close();
 			return false;
 		}
+		Log.d(TAG,"List more than 10");
 		Mat labels = new Mat(tempList.size(), 1, CV_32SC1);
 		IntBuffer labelsBuf = labels.getIntBuffer();
 		MatVector images = new MatVector(tempList.size());
 		int i = 0;
+		Log.d(TAG,"Start to loop");
 		for (Object o : tempList)
 		{
+			Log.d(TAG,"Inside loop");
 			labeledMat lm = (labeledMat) o;
 			labelsBuf.put(i, (int) lm.getLabel());
 			images.put(i, lm.getMat());
 			i++;
 		}
-		personRecognizer.train(images, labels);
+		Log.d(TAG,"After Loop");
+		//personRecognizer.train(images, labels);
 		db.close();
+		Log.d(TAG,"Database closed");
 		return true;
 	}
 
@@ -288,6 +290,8 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 				e.printStackTrace();
 			}
 		}
+		
+		//Log.d(TAG,"ID recognised:" + personRecognizer.predict(new Mat(runnables[0].getObjects())));
 		postInvalidate();
 	}
 

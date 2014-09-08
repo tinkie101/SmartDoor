@@ -18,18 +18,6 @@ import android.widget.Toast;
 @SuppressLint("ValidFragment")
 public class SearchCameraFragment extends Fragment
 {
-	public SearchCameraFragment(Context contex)
-	{
-		super();
-		try
-		{
-			this.faceView = new SearchFaceView(contex);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
 
 	private FrameLayout layout;
 	/**
@@ -51,6 +39,7 @@ public class SearchCameraFragment extends Fragment
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+		
 		super.onCreate(savedInstanceState);
 
 		Context context = getActivity().getBaseContext();
@@ -59,6 +48,15 @@ public class SearchCameraFragment extends Fragment
 		// Create the view with nothing to show
 		// This is so that onCreateView has a view to return
 		// Then onResume we add the camera to the preview
+		try
+		{
+			this.faceView = new SearchFaceView(context);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
 		layout = new FrameLayout(context);
 		mPreview = new Preview(context, faceView);
 		layout.addView(mPreview);

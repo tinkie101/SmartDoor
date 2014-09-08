@@ -34,7 +34,7 @@ public class MainActivity extends FragmentActivity
 		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list),
 							(DrawerLayout) findViewById(R.id.drawer_layout), getResources().getStringArray(
 												R.array.mainMenuOptions));
-		SearchCameraFragment cm = new SearchCameraFragment(this);
+		SearchCameraFragment cm = new SearchCameraFragment();
 		fm = getFragmentManager();
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplaceFromMain , cm);
