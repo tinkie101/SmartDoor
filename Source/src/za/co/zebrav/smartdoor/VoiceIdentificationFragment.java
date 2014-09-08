@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
+import android.app.ListFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
@@ -12,14 +12,16 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import at.fhhgb.auth.voice.VoiceAuthenticator;
 
-public class VoiceAuth extends ListActivity
+public class VoiceIdentificationFragment extends ListFragment implements OnClickListener
 {
 	private static final String LOG_TAG = "AuthTest";
 
@@ -38,39 +40,32 @@ public class VoiceAuth extends ListActivity
 	private Context context;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_voice_auth);
+		View view = inflater.inflate(R.layout.fragment_voice_identification, container, false);
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		btnPlay = (Button) view.findViewById(R.id.btnPlay);
+		btnPlay.setOnClickListener(this);
+		
+		btnRecognise = (Button) view.findViewById(R.id.btnRecognise);
+		btnRecognise.setOnClickListener(this);
+		
+		btnTrain = (Button) view.findViewById(R.id.btnTrain);
+		btnTrain.setOnClickListener(this);
+		
+		return view;
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
 
-		context = this;
+		context = getActivity();
 		
 		voiceAuthenticator = new VoiceAuthenticator(this);
 
-		btnPlay = (Button) findViewById(R.id.btnPlay);
-		btnRecognise = (Button) findViewById(R.id.btnRecognise);
-		btnTrain = (Button) findViewById(R.id.btnTrain);
-
 		StartPlaying = true;
-	}
-
-	/**
-	 * 
-	 * @param item
-	 * @return
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-			case android.R.id.home:
-				finish();
-				break;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -110,6 +105,7 @@ public class VoiceAuth extends ListActivity
 			mPlayer = new MediaPlayer();
 			try
 			{
+				Log.i(LOG_TAG, "Playing Active File");
 				mPlayer.setDataSource(activeFile.getAbsolutePath());
 				mPlayer.prepare();
 				mPlayer.start();
@@ -146,6 +142,7 @@ public class VoiceAuth extends ListActivity
 
 		if (mPlayer != null)
 		{
+			Log.i(LOG_TAG, "Stoped audio playback");
 			mPlayer.release();
 			mPlayer = null;
 		}
@@ -160,6 +157,7 @@ public class VoiceAuth extends ListActivity
 	{
 		if(activeFile != null)
 		{
+			Log.i(LOG_TAG, "Recording to File");
 		voiceAuthenticator.startRecording(activeFile);
 
 		// Alert user of recording and Stop button
@@ -179,10 +177,10 @@ public class VoiceAuth extends ListActivity
 
 	private void trainVoice()
 	{
-		Log.d(LOG_TAG, "Training Voice");
-		final EditText input = new EditText(this);
+		Log.i(LOG_TAG, "Training Voice");
+		final EditText input = new EditText(getActivity());
 
-		new AlertDialog.Builder(this).setTitle("Update Status").setMessage("Enter user KEY").setView(input)
+		new AlertDialog.Builder(getActivity()).setTitle("Update Status").setMessage("Enter user KEY").setView(input)
 							.setPositiveButton("Ok", new DialogInterface.OnClickListener()
 							{
 								public void onClick(DialogInterface dialog, int whichButton)
@@ -213,7 +211,8 @@ public class VoiceAuth extends ListActivity
 	 * 
 	 * @param v
 	 */
-	public void buttonClicked(View v)
+	@Override
+	public void onClick(View v)
 	{
 		if (v == btnPlay)
 			onPlay();
@@ -221,5 +220,6 @@ public class VoiceAuth extends ListActivity
 			identifySpeaker();
 		else if (v == btnTrain)
 			trainVoice();
+		
 	}
 }

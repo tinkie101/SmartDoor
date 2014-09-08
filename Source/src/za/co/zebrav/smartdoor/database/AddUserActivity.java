@@ -5,6 +5,7 @@ import java.util.List;
 
 import za.co.zebrav.facerecognition.AddCameraFragment;
 import za.co.zebrav.smartdoor.R;
+import za.co.zebrav.smartdoor.VoiceIdentificationFragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -158,7 +159,7 @@ public class AddUserActivity extends Activity
 	public void switchFragToStep2()
 	{
 		AddCameraFragment f = new AddCameraFragment(this);
-		
+
 		Bundle bundle = new Bundle();
 		bundle.putLong("userID", user.getID());
 		f.setArguments(bundle);
@@ -212,7 +213,7 @@ public class AddUserActivity extends Activity
 	 */
 	public void switchFragToStep3()
 	{
-		AddUserStepThree fv = new AddUserStepThree();
+		VoiceIdentificationFragment fv = new VoiceIdentificationFragment();
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplace, fv);
 		ft.commit();

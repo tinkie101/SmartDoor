@@ -6,8 +6,6 @@
 //This is the main activity for the Smart Door Application.
 package za.co.zebrav.smartdoor;
 
-import java.io.IOException;
-
 import za.co.zebrav.facerecognition.SearchCameraFragment;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -50,12 +48,6 @@ public class MainActivity extends FragmentActivity
 		Intent intent = new Intent(this, TextToSpeechActivity.class);
 		startActivity(intent);
 	}
-
-	public void gotoVoiceAuth(View v)
-	{
-		Intent intent = new Intent(this, VoiceAuth.class);
-		startActivity(intent);
-	}
 	
 	/*
 	 * On click button handler.
@@ -64,12 +56,6 @@ public class MainActivity extends FragmentActivity
 	public void gotoSpeechToText(View v)
 	{
 		Intent intent = new Intent(this, SpeechToTextActivity.class);
-		startActivity(intent);
-	}
-
-	public void gotoVoiceIdentification(View v)
-	{
-		Intent intent = new Intent(this, VoiceIdentificationActivity.class);
 		startActivity(intent);
 	}
 

@@ -18,10 +18,4 @@
         android:onClick="doneStepTwoAddUser"
         android:text="Done" />
 
-    <fragment
-        android:id="@+id/cameraFragment"
-        android:name="za.co.zebrav.facerecognition.SearchCameraFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
 </LinearLayout>
