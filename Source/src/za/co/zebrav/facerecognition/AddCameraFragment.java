@@ -4,11 +4,13 @@ import java.io.IOException;
 
 import org.bytedeco.javacpp.opencv_core.Mat;
 
+import za.co.zebrav.smartdoor.database.AddUserActivity;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 
 import com.db4o.Db4o;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -75,7 +77,7 @@ public class AddCameraFragment extends Fragment
 		mPreview = new Preview(context, faceView);
 		layout.addView(mPreview);
 		layout.addView(faceView);
-
+		final AddUserActivity activity = (AddUserActivity) getActivity();
 		addButton = new Button(context);
 		addButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -88,6 +90,7 @@ public class AddCameraFragment extends Fragment
 				db.save(result);
 				db.close();
 				Toast.makeText(context, "Successfully saved " + uID + " in db.", Toast.LENGTH_LONG).show();
+				activity.switchFragToStep3();
 			}
 		});
 		addButton.setText("Take Picture");
