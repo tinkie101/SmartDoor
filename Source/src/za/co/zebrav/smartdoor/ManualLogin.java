@@ -7,6 +7,7 @@ import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -18,7 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class ManualLogin extends Activity implements OnInitListener
+public class ManualLogin extends Activity
 {
 	private CustomMenu sliderMenu;
 	private Db4oAdapter provider;
@@ -27,8 +28,6 @@ public class ManualLogin extends Activity implements OnInitListener
 	private EditText passwordET;
 	
 	private AlertDialog.Builder alert;
-	private TextToSpeech tts;
-	private boolean ttsReady = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -41,7 +40,6 @@ public class ManualLogin extends Activity implements OnInitListener
 		
 		//create alert and textToSpeech
 		alert = new AlertDialog.Builder(this);
-		tts = new TextToSpeech(this, this);
 		
 		//Get needed GUI components
 		usernameET = (EditText) findViewById(R.id.ManualLogin_et1);
@@ -66,26 +64,12 @@ public class ManualLogin extends Activity implements OnInitListener
 		{
 			alertMessage("Incorrect username or password.");
 		}
-		else if(ttsReady)
+		else
 		{
 			Toast.makeText(this, "VALID", Toast.LENGTH_SHORT).show();
-			greetUser(user.getFirstnames(), user.getSurname());
+			Intent intent = new Intent(this, OpenDoor.class);
+			this.startActivity(intent);
 		}
-	}
-	
-	/**
-	 * Greet user by first  and last name
-	 * @param firstName of the user who entered the correct username and password
-	 * @param surname firstName of the user who entered the correct username and password
-	 */
-	public void greetUser(String firstName, String surname)
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("You may now enter, ");
-		sb.append(firstName + " ");
-		sb.append(surname);
-		sb.append(".");
-		tts.speak(sb.toString(), TextToSpeech.QUEUE_FLUSH, null);
 	}
 	
 	/**
@@ -119,37 +103,6 @@ public class ManualLogin extends Activity implements OnInitListener
 		return user;
 	}
 	
-	//-------------------------------------------------------------------------TextToSpeech
-	/**
-	 * Sets voice pronunciation 
-	 */
-	@Override
-	public void onInit(int status)
-	{
-		if (status == TextToSpeech.SUCCESS)
-		{
-			int result = tts.setLanguage(Locale.UK);
-
-			if (result == TextToSpeech.LANG_MISSING_DATA|| result == TextToSpeech.LANG_NOT_SUPPORTED)
-				Toast.makeText(this, "Language not supported",Toast.LENGTH_LONG).show();
-			else
-				ttsReady = true;
-		}
-	}
-	
-	@Override
-	/**
-	 * ShutDown TextToSpeech when activity is destroyed
-	 */
-	public void onDestroy()
-	{	
-		if (tts != null)
-		{
-			tts.stop();
-			tts.shutdown();
-		}
-		super.onDestroy();
-	}
 
 	//-------------------------------------------------------------------------FOR Menu
 	@Override

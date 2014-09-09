@@ -63,6 +63,10 @@
             android:name="za.co.zebrav.facerecognition.FdActivity"
             android:screenOrientation="landscape" >
         </activity>
+         <activity
+            android:name=".OpenDoor"
+            android:screenOrientation="landscape" >
+        </activity>
         <activity android:name="za.co.zebrav.facerecognition.ImageGallery" >
         </activity>
     </application>
