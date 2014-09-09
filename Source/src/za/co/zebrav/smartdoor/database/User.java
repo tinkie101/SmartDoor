@@ -1,6 +1,9 @@
 package za.co.zebrav.smartdoor.database;
 
-public class User
+import java.io.Serializable;
+
+
+public class User implements Serializable
 {
 	private long id = -1;
 	private String username = "";//user names must be unique

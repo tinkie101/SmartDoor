@@ -1,5 +1,6 @@
 package za.co.zebrav.smartdoor;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
@@ -10,6 +11,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.support.v4.widget.DrawerLayout;
@@ -66,9 +68,13 @@ public class ManualLogin extends Activity
 		}
 		else
 		{
-			Toast.makeText(this, "VALID", Toast.LENGTH_SHORT).show();
-			Intent intent = new Intent(this, OpenDoor.class);
-			this.startActivity(intent);
+			Intent i = new Intent();
+			Bundle bundle = new Bundle();
+			bundle.putSerializable("user", user);
+			i.putExtras(bundle);
+			i.setClass(this, OpenDoor.class);
+			this.startActivity(i);
+			
 		}
 	}
 	
