@@ -68,11 +68,12 @@ public class ManualLogin extends Activity
 		}
 		else
 		{
+			//Pass user that logged in over to LoggedIn activity
 			Intent i = new Intent();
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("user", user);
 			i.putExtras(bundle);
-			i.setClass(this, OpenDoor.class);
+			i.setClass(this, LoggedIn.class);
 			this.startActivity(i);
 			
 		}
