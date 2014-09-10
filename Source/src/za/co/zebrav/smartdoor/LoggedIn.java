@@ -14,7 +14,7 @@ import android.widget.Toast;
 public class LoggedIn extends Activity implements OnInitListener
 {
 	private TextToSpeech tts;
-	private Button speakButton;
+	private User user;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -25,20 +25,9 @@ public class LoggedIn extends Activity implements OnInitListener
 		tts = new TextToSpeech(this, this);
 		
 		//receive user that logged in.
-		
 		Bundle bundle = this.getIntent().getExtras();
 		
-		final User user = (User) bundle.getSerializable("user");
-		
-		speakButton = (Button) findViewById(R.id.buttonSpeak);
-		speakButton.setOnClickListener(new View.OnClickListener()
-		{
-			public void onClick(View arg0)
-			{
-				speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
-			}
-		});
-		//speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
+		user = (User) bundle.getSerializable("user");
 	}
 
 	@Override
@@ -70,7 +59,8 @@ public class LoggedIn extends Activity implements OnInitListener
 			} 
 			else
 			{
-				speakButton.setEnabled(true);
+				//Only at this time will the tts be ready for speaking
+				speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 			}
 		}
 	}

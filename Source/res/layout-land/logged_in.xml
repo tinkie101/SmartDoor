@@ -12,11 +12,4 @@
         android:text="Door OPEN!"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Button
-        android:id="@+id/buttonSpeak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        android:enabled="false" />
-
 </LinearLayout>
