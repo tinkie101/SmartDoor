@@ -46,7 +46,7 @@ public class AddCameraFragment extends Fragment
 		}
 	}
 
-	private long uID;
+	private int uID;
 	private static final String TAG = "AddCameraFragment";
 	private FrameLayout layout;
 	/**
@@ -89,8 +89,9 @@ public class AddCameraFragment extends Fragment
 		{
 			public void onClick(View view)
 			{
+				//LabeledImage li = new LabeledImage(faceView.getCameraData(), (int)uID, faceView.getFace(), faceView.getHeight());
 				Mat m = faceView.getFace();
-				SaveImage(m,(int) uID + ".png");
+				SaveImage(m, uID + ".png");
 				
 				activity.switchFragToStep3();
 			}
@@ -123,7 +124,7 @@ public class AddCameraFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		Bundle bundle = this.getArguments();
-		uID = bundle.getLong("userID", -1);
+		uID = bundle.getInt("userID", -1);
 		return layout;
 	}
 

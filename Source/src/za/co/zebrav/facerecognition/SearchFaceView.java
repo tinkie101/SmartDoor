@@ -252,6 +252,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 			}
 		}
 		
+		//Log.d(TAG,"ID recognised:" + personRecognizer.predict(new Mat(runnables[0].getObjects())));
 		postInvalidate();
 	}
 

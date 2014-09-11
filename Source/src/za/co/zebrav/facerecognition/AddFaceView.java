@@ -172,9 +172,15 @@ class AddFaceView extends View implements Camera.PreviewCallback
 
 	byte[] cameraData;
 
-	byte[] getCameraData()
+
+	public byte[] getCameraData()
 	{
 		return cameraData;
+	}
+
+	public void setCameraData(byte[] cameraData)
+	{
+		this.cameraData = cameraData;
 	}
 
 	int dataWidth;
