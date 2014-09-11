@@ -17,6 +17,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
@@ -83,6 +84,7 @@ public class AddCameraFragment extends Fragment
 		layout.addView(faceView);
 		final AddUserActivity activity = (AddUserActivity) getActivity();
 		addButton = new Button(context);
+		addButton.setBackgroundColor(Color.TRANSPARENT);
 		addButton.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View view)
@@ -93,7 +95,9 @@ public class AddCameraFragment extends Fragment
 				activity.switchFragToStep3();
 			}
 		});
-		addButton.setText("Take Picture");
+		
+		addButton.setText("Tap to capture");
+		addButton.setTextSize(30);
 		layout.addView(addButton);
 	}
 
