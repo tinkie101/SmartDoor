@@ -60,45 +60,4 @@ public class PersonRecognizer
 		//Do the prediction
 		return faceRecognizer.predict(testImage);
 	}
-	
-//	public boolean train()
-//	{
-//
-//		File root = new File("Temp path");
-//
-//		FilenameFilter imgFilter = new FilenameFilter()
-//		{
-//			public boolean accept(File dir, String name)
-//			{
-//				return name.toLowerCase().endsWith(".jpg");
-//
-//			};
-//		};
-//
-//		File[] imageFiles = root.listFiles(imgFilter);
-//
-//		MatVector images = new MatVector(imageFiles.length);
-//
-//		Mat labels = new Mat(imageFiles.length, 1, CV_32SC1);
-//		IntBuffer labelsBuf = labels.getIntBuffer();
-//
-//		int counter = 0;
-//
-//		for (File image : imageFiles)
-//		{
-//			Mat img = imread(image.getAbsolutePath(), CV_LOAD_IMAGE_GRAYSCALE);
-//			int label = Integer.parseInt(image.getName().split("\\-")[0]);
-//
-//			images.put(counter, img);
-//
-//			labelsBuf.put(counter, label);
-//
-//			counter++;
-//		}
-//		if (counter > 0)
-//			if (labelsFile.max() > 1)
-//				faceRecognizer.train(images, labels);
-//		labelsFile.Save();
-//		return true;
-//	}
 }

@@ -197,62 +197,6 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 		return result;
 	}
 
-	/**
-	 * Loads PersonRecognizer from the database.
-	 * If there is no PersonRecognizer in database it will create and save a new Recognizer.
-	 * Called from constructor. Is save to call multiple times.
-	 * Must be called onResume of Fragment/Activity.
-	 * 
-	 * @return True if success, false otherwise.
-	 */
-	// public boolean loadPersonRecognizer()
-	// {
-	// // If the personRecognizer has a value then it has already been loaded and we can emmidiatly return.
-	// if (personRecognizer != null)
-	// return true;
-	// // For safety make sure that we do not have 2 databases
-	// if (database == null)
-	// database = new Db4oAdapter(this.context);
-	// // For safety make sure that we do not open the database twice
-	// if (!database.isOpen())
-	// database.open();
-	// // Get all PersonRecognizers from database
-	// List<Object> tempList = database.load(new PersonRecognizer(null));
-	// // If tempList has an entry we can just load from database
-	// if (tempList != null && tempList.size() != 0)
-	// {
-	// personRecognizer = (PersonRecognizer) tempList.get(0);
-	// }
-	// // Otherwise we have to create the recogniser
-	// else
-	// {
-	// // TODO: change constructor once PersonRecognizer is updated.
-	// personRecognizer = new PersonRecognizer("dummy");
-	// database.save(personRecognizer);
-	// }
-	// return true;
-	// }
-
-	/**
-	 * Saves the personRecognizer in the database.
-	 * Closes connection to database.
-	 * Important to call when Fragment/Activity is paused.
-	 * 
-	 * @return True if success, false otherwise.
-	 */
-	// public boolean savePersonRecognizer()
-	// {
-	// // If the database is null we cannot save to it.
-	// if (database == null)
-	// return false;
-	// // If the database is closed we cannot write to it.
-	// if (!database.isOpen())
-	// return false;
-	// database.save(personRecognizer);
-	// database.close();
-	// return true;
-	// }
-
 	public void onPreviewFrame(final byte[] data, final Camera camera)
 	{
 		try
@@ -308,7 +252,6 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 			}
 		}
 		
-		//Log.d(TAG,"ID recognised:" + personRecognizer.predict(new Mat(runnables[0].getObjects())));
 		postInvalidate();
 	}
 
