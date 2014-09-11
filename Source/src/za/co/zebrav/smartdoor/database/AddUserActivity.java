@@ -161,7 +161,7 @@ public class AddUserActivity extends Activity
 		AddCameraFragment f = new AddCameraFragment(this);
 
 		Bundle bundle = new Bundle();
-		bundle.putLong("userID", user.getID());
+		bundle.putInt("userID", user.getID());
 		f.setArguments(bundle);
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplace, f);
@@ -258,7 +258,7 @@ public class AddUserActivity extends Activity
 	private void saveNewUser()
 	{
 		LastPK lastPK = null;
-		long newPK = 0;
+		int newPK = 0;
 		provider.open();
 
 		List<Object> results = provider.load(new LastPK(0));

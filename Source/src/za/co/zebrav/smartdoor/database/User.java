@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class User implements Serializable
 {
-	private long id = -1;
+	private int id = -1;
 	private String username = "";//user names must be unique
 	private String password = "";
 	private String firstnames = "";
@@ -28,7 +28,7 @@ public class User implements Serializable
 		this.surname = surname;
 	}*/
 	
-	public User(String firstnames, String surname, String username, String password, long pk)
+	public User(String firstnames, String surname, String username, String password, int pk)
 	{
 		this.username = username;
 		this.password = password;
@@ -38,13 +38,13 @@ public class User implements Serializable
 	}
 	
 	//------------------------------------------------------------------------getID
-	public long getID()
+	public int getID()
 	{
 		return id;
 	}
 	
 	//------------------------------------------------------------------------setID
-	public void setID(long value)
+	public void setID(int value)
 	{
 		id = value;
 	}

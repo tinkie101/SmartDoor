@@ -2,14 +2,14 @@ package za.co.zebrav.smartdoor.database;
 
 public class LastPK
 {
-	private long pk = 0;
+	private int pk = 0;
 	
-	public LastPK(long pk)
+	public LastPK(int pk)
 	{
 		this.pk = pk;
 	}
 	
-	public long getPK()
+	public int getPK()
 	{
 		return pk;
 	}
