@@ -195,7 +195,6 @@ public class AddCameraFragment extends Fragment
 			// attempt to get a Camera instance
 			c = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
 			// c = Camera.open(CameraInfo.CAMERA_FACING_BACK);
-
 		}
 		catch (Exception e)
 		{
