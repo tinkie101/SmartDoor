@@ -4,38 +4,29 @@
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
 
-   <ListView
+    <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnPlay"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" >
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/btnDone" >
     </ListView>
 
     <Button
         android:id="@+id/btnTrain"
-        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/btnRecognise"
         android:layout_toRightOf="@+id/btnRecognise"
-        android:text="Train"/>
+        android:text="Train" />
 
     <Button
-        android:id="@+id/btnPlay"
+        android:id="@+id/btnDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="Start Playing" />
-
-    <Button
-        android:id="@+id/btnRecognise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnPlay"
-        android:layout_toRightOf="@+id/btnPlay"
-        android:text="Recognise" />
+        android:layout_below="@+id/btnTrain"
+        android:text="Done" 
+        android:onClick="doneStepThreeAddUser"/>
 
 </RelativeLayout>
