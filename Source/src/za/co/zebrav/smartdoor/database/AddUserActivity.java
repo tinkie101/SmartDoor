@@ -1,11 +1,10 @@
 package za.co.zebrav.smartdoor.database;
 
-import java.io.IOException;
 import java.util.List;
 
 import za.co.zebrav.facerecognition.AddCameraFragment;
+import za.co.zebrav.smartdoor.AddVoiceFragment;
 import za.co.zebrav.smartdoor.R;
-import za.co.zebrav.smartdoor.VoiceIdentificationFragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -212,8 +211,11 @@ public class AddUserActivity extends Activity
 	 * switch current frameLayout to represent the layout of step 3 - Twitter
 	 */
 	public void switchFragToStep3()
-	{
-		VoiceIdentificationFragment fv = new VoiceIdentificationFragment();
+	{		
+		AddVoiceFragment fv = new AddVoiceFragment();
+		Bundle bundle = new Bundle();
+		bundle.putLong("userID", user.getID());
+		fv.setArguments(bundle);
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplace, fv);
 		ft.commit();

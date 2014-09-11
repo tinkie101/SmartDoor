@@ -57,10 +57,10 @@ public final class R {
         public static final int addUser_uname_et=0x7f090017;
         public static final int addUser_uname_tv=0x7f090016;
         public static final int as=0x7f090040;
-        public static final int btnPlay=0x7f090030;
-        public static final int btnRecognise=0x7f090032;
+        public static final int btnDone=0x7f09002f;
+        public static final int btnRecognise=0x7f090031;
         public static final int btnSpeak=0x7f090043;
-        public static final int btnTrain=0x7f090031;
+        public static final int btnTrain=0x7f090030;
         public static final int buttonBuscar=0x7f09002d;
         public static final int buttonCat=0x7f090025;
         public static final int buttonDel=0x7f090024;
@@ -106,7 +106,7 @@ public final class R {
         public static final int twitterUserHandle=0x7f090034;
         public static final int twitterUserImage=0x7f090033;
         public static final int twitterUserText=0x7f090035;
-        public static final int twitter_refreshBar=0x7f09002f;
+        public static final int twitter_refreshBar=0x7f090032;
         public static final int usernameTV=0x7f090041;
     }
     public static final class layout {
@@ -119,8 +119,8 @@ public final class R {
         public static final int catalog_view=0x7f030006;
         public static final int drawer_list_item=0x7f030007;
         public static final int face_detect_surface_view=0x7f030008;
-        public static final int fragment_twitter=0x7f030009;
-        public static final int fragment_voice_identification=0x7f03000a;
+        public static final int fragment_add_voice=0x7f030009;
+        public static final int fragment_twitter=0x7f03000a;
         public static final int list_twitter=0x7f03000b;
         public static final int logged_in=0x7f03000c;
         public static final int manual_login=0x7f03000d;
