@@ -34,7 +34,7 @@ public class IdentifyVoiceFragment extends ListFragment implements OnClickListen
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		Bundle bundle = this.getArguments();
-		Long id = bundle.getLong("userID", -1);
+		Integer id = bundle.getInt("userID", -1);
 		activeKey = id.toString();
 		return inflater.inflate(R.layout.fragment_identify_voice, container, false);
 	}
