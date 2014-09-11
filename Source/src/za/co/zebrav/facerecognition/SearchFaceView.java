@@ -26,14 +26,17 @@ import org.bytedeco.javacpp.opencv_core.CvSeq;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
 
+import za.co.zebrav.smartdoor.database.User;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Camera;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 class SearchFaceView extends View implements Camera.PreviewCallback
 {
@@ -134,7 +137,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 			threads[i] = new Thread(runnables[i], "" + i);
 		}
 		// TODO: add loadPersonRecognizer call once db is fixed.
-		//initialisePersonRecogniser();
+		initialisePersonRecogniser();
 		lastTime = System.currentTimeMillis();
 	}
 
@@ -142,29 +145,42 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	{
 		Db4oAdapter db = new Db4oAdapter(context);
 		db.open();
-		List<Object> tempList = db.load(new labeledMat(0, null));
+		List<Object> tempList = db.load(new User(null, null, null, null, 0));
 		if (tempList.size() < 2)
 		{
 			Log.d(TAG,"List less than 2");
 			db.close();
 			return false;
 		}
-		Log.d(TAG,"List more than 10");
+		Log.d(TAG,"List more than 2");
 		Mat labels = new Mat(tempList.size(), 1, CV_32SC1);
 		IntBuffer labelsBuf = labels.getIntBuffer();
 		MatVector images = new MatVector(tempList.size());
 		int i = 0;
-		Log.d(TAG,"Start to loop");
 		for (Object o : tempList)
 		{
-			Log.d(TAG,"Inside loop");
-			labeledMat lm = (labeledMat) o;
-			labelsBuf.put(i, (int) lm.getLabel());
-			images.put(i, lm.getMat());
+			User u = (User)o;
+			labelsBuf.put(i, (int) u.getID());
+			File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+			File file = new File(path, (int) u.getID() + ".png");
+			Log.d(TAG, "File name: " + file.toString());
+			if(!file.exists())
+			{
+				Log.d(TAG, "File does not exist!");
+			}
+			else
+				Log.d(TAG, "File is there..");
+			
+			Mat m = imread(file.getAbsolutePath(),CV_LOAD_IMAGE_GRAYSCALE);
+			Log.d(TAG, "Loaded file");
+			images.put(i,m);
 			i++;
 		}
 		Log.d(TAG,"After Loop");
-		//personRecognizer.train(images, labels);
+		personRecognizer = new PersonRecognizer();
+		Log.d(TAG,"Created PersonRecognizer");
+		personRecognizer.train(images, labels);
+		Log.d(TAG,"Trained PersonRecognizer");
 		db.close();
 		Log.d(TAG,"Database closed");
 		return true;
@@ -273,7 +289,8 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 				imageBuffer.put(imageLine + x, data[dataLine + f * x]);
 			}
 		}
-
+		
+		Log.d(TAG, "Face detected:" + personRecognizer.predict(new Mat(grayImage)));
 		cvClearMemStorage(storage);
 		for (int i = 0; i < threads.length; i++)
 		{

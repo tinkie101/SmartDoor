@@ -26,10 +26,12 @@ import com.db4o.ObjectSet;
 
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Camera;
+import android.media.Image;
 import android.util.Log;
 import android.view.View;
 
@@ -106,10 +108,21 @@ class AddFaceView extends View implements Camera.PreviewCallback
 	
 	public Mat getFace()
 	{
-		return new Mat(runnables[0].getObjects().first());
+		return new Mat(grayImage);
+		//return new Mat(runnables[0].getObjects().first());
+	}
+	public ByteBuffer getByteBuffer()
+	{
+		return bb;
+	}
+	public ByteBuffer getGreyImage()
+	{
+		grayImage.getByteBuffer();
+		ByteBuffer result = grayImage.getByteBuffer();
+		return result.duplicate();
 	}
 	private Context context;
-
+	ByteBuffer bb;
 	public AddFaceView(Context context) throws IOException
 	{
 		super(context);
@@ -211,7 +224,7 @@ class AddFaceView extends View implements Camera.PreviewCallback
 //		database.close();
 //		return true;
 //	}
-
+	@Override
 	public void onPreviewFrame(final byte[] data, final Camera camera)
 	{
 		try
@@ -225,17 +238,37 @@ class AddFaceView extends View implements Camera.PreviewCallback
 			// The camera has probably just been released, ignore.
 		}
 	}
-
+	byte[] cameraData;
+	byte[] getCameraData()
+	{
+		return cameraData;
+	}
+	int dataWidth;
+	int dataHeight;
+	
+	int getDataWidth()
+	{
+		return dataWidth;
+	}
+	int getDataHeight()
+	{
+		return dataHeight;
+	}
 	protected void processImage(byte[] data, int width, int height)
 	{
+		dataWidth = width;
+		dataHeight = height;
 		// First, downsample our image and convert it into a grayscale IplImage
 		int f = SUBSAMPLING_FACTOR;
 		if (grayImage == null || grayImage.width() != width / f || grayImage.height() != height / f)
 		{
 			grayImage = IplImage.create(width / f, height / f, IPL_DEPTH_8U, 1);
+			//outBitmap = Bitmap.createBitmap(grayImage.width(), grayImage.height(), Bitmap.Config.ARGB_8888);
 		}
 		int imageWidth = grayImage.width();
 		int imageHeight = grayImage.height();
+		
+        
 		int dataStride = f * width;
 		int imageStride = grayImage.widthStep();
 		ByteBuffer imageBuffer = grayImage.getByteBuffer();
@@ -248,7 +281,7 @@ class AddFaceView extends View implements Camera.PreviewCallback
 				imageBuffer.put(imageLine + x, data[dataLine + f * x]);
 			}
 		}
-
+		
 		cvClearMemStorage(storage);
 		for (int i = 0; i < threads.length; i++)
 		{

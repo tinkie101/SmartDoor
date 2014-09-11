@@ -1,9 +1,11 @@
 package za.co.zebrav.facerecognition;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.bytedeco.javacpp.opencv_core.Mat;
 
+import static org.bytedeco.javacpp.opencv_highgui.*;
 import za.co.zebrav.smartdoor.database.AddUserActivity;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 
@@ -18,6 +20,7 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +46,7 @@ public class AddCameraFragment extends Fragment
 	}
 
 	private long uID;
+	private static final String TAG = "AddCameraFragment";
 	private FrameLayout layout;
 	/**
 	 * Stores the camera instance for the class
@@ -83,18 +87,29 @@ public class AddCameraFragment extends Fragment
 		{
 			public void onClick(View view)
 			{
-				labeledMat result = new labeledMat(uID, faceView.getFace());
-
-				Db4oAdapter db = new Db4oAdapter(context);
-				db.open();
-				db.save(result);
-				db.close();
-				Toast.makeText(context, "Successfully saved " + uID + " in db.", Toast.LENGTH_LONG).show();
+				Mat m = faceView.getFace();
+				SaveImage(m,(int) uID + ".png");
+				
 				activity.switchFragToStep3();
 			}
 		});
 		addButton.setText("Take Picture");
 		layout.addView(addButton);
+	}
+
+	public void SaveImage(Mat mat,String fileName)
+	{
+		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+		File file = new File(path, fileName);
+
+		Boolean bool = null;
+		fileName = file.toString();
+		bool = imwrite(fileName, mat);
+
+		if (bool == true)
+			Log.d(TAG, "SUCCESS writing image to external storage");
+		else
+			Log.d(TAG, "Fail writing image to external storage");
 	}
 
 	/**

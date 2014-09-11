@@ -1,6 +1,7 @@
 package za.co.zebrav.facerecognition;
 
 import java.io.IOException;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
@@ -18,7 +19,7 @@ import android.widget.Toast;
 @SuppressLint("ValidFragment")
 public class SearchCameraFragment extends Fragment
 {
-
+	private static final String TAG = "SearchCameraFragment";
 	private FrameLayout layout;
 	/**
 	 * Stores the camera instance for the class
@@ -39,7 +40,7 @@ public class SearchCameraFragment extends Fragment
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		
+		Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 
 		Context context = getActivity().getBaseContext();

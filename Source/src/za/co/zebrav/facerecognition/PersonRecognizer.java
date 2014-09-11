@@ -4,6 +4,7 @@ import static org.bytedeco.javacpp.opencv_contrib.*;
 import static org.bytedeco.javacpp.opencv_core.*;
 import android.util.Log;
 
+
 public class PersonRecognizer
 {
 	private static final String TAG = "FacailRecognition::PersonRecognizer";
@@ -13,7 +14,10 @@ public class PersonRecognizer
 	PersonRecognizer()
 	{
 		isTrained = false;
-		faceRecognizer = createLBPHFaceRecognizer(2, 8, 8, 8, 200);
+		//faceRecognizer = createEigenFaceRecognizer();
+		//faceRecognizer = createFisherFaceRecognizer();
+		faceRecognizer = createLBPHFaceRecognizer();
+		//faceRecognizer = createLBPHFaceRecognizer(2, 8, 8, 8, 200);
 	}
 
 	public boolean train(MatVector images,Mat labels)
@@ -28,13 +32,15 @@ public class PersonRecognizer
 		//Get start time		
 		long startTime = System.currentTimeMillis();
 		//Main training
+		Log.d(TAG, "Moment of truth");
 		faceRecognizer.train(images, labels);
+		Log.d(TAG, "After the moment of truth");
 		//Get end time
 		long endTime = System.currentTimeMillis();
 		//calculate and log training time
 		long temp = startTime - endTime;
 		double timeInSeconds = temp / (double) 1000;
-		Log.d(TAG, "Training on " + 1 + "file[s] took " + timeInSeconds + " seconds.");
+		Log.d(TAG, "Training on " + images.capacity() + "file[s] took " + timeInSeconds + " seconds.");
 		//Successfully trained
 		isTrained = true;
 		return true;

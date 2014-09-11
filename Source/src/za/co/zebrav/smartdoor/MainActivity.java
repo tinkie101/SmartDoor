@@ -12,12 +12,14 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 public class MainActivity extends FragmentActivity
 {
+	private static final String TAG = "MainActivity";
 	CustomMenu sliderMenu;
 	private android.app.FragmentManager fm;
 	private android.app.FragmentTransaction ft;
@@ -26,6 +28,7 @@ public class MainActivity extends FragmentActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "onCreate");
 		setContentView(R.layout.activity_main);
 
 		// add slider menu
