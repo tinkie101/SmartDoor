@@ -88,7 +88,7 @@ public class AddUserActivity extends Activity
 	private void getValidUserStep1Info()
 	{
 		user = new User(addUserStepOne.getFirstName(), addUserStepOne.getSurname(), addUserStepOne.getUsername(),
-							addUserStepOne.getPass(), 5);
+							addUserStepOne.getPass(), 5, null);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class AddUserActivity extends Activity
 		String username = addUserStepOne.getUsername();
 		boolean exists = false;
 		provider.open();
-		exists = provider.exists(new User(null, null, username, null, 0));
+		exists = provider.exists(new User(null, null, username, null, 0, null));
 		provider.close();
 		return exists;
 	}
@@ -214,7 +214,7 @@ public class AddUserActivity extends Activity
 	{		
 		AddVoiceFragment fv = new AddVoiceFragment();
 		Bundle bundle = new Bundle();
-		bundle.putLong("userID", user.getID());
+		bundle.putInt("userID", user.getID());
 		fv.setArguments(bundle);
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplace, fv);

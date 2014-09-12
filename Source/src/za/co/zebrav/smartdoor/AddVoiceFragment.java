@@ -1,7 +1,11 @@
 package za.co.zebrav.smartdoor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import za.co.zebrav.smartdoor.database.AddUserActivity;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
+import za.co.zebrav.smartdoor.database.User;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.Context;
@@ -16,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 import at.fhhgb.auth.voice.VoiceAuthenticator;
+import at.fhooe.mcm.smc.math.vq.Codebook;
 
 public class AddVoiceFragment extends ListFragment implements OnClickListener
 {
@@ -137,7 +142,12 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 	{
 		Db4oAdapter database = new Db4oAdapter(context);
 		database.open();
-		database.save(voiceAuthenticator.getCodeBook());
+		
+		List<Object> a = database.load(new User(null, null, null, null, Integer.parseInt(this.activeKey),null));
+		Log.d(LOG_TAG, "size = " + a.size() + "; ID = " + activeKey);
+		User user = (User)a.get(0);
+		user.setCodeBook(voiceAuthenticator.getCodeBook());
+		database.save(user);
 		database.close();
 	}
 

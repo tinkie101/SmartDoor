@@ -1,6 +1,9 @@
 package za.co.zebrav.smartdoor.database;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import at.fhooe.mcm.smc.math.vq.Codebook;
 
 
 public class User implements Serializable
@@ -10,6 +13,7 @@ public class User implements Serializable
 	private String password = "";
 	private String firstnames = "";
 	private String surname = "";
+	private ArrayList<Codebook> codeBook;
 	
 	
 	
@@ -28,13 +32,26 @@ public class User implements Serializable
 		this.surname = surname;
 	}*/
 	
-	public User(String firstnames, String surname, String username, String password, int pk)
+	public User(String firstnames, String surname, String username, String password, int pk, ArrayList<Codebook> cb)
 	{
 		this.username = username;
 		this.password = password;
 		this.firstnames = firstnames;
 		this.surname = surname;
 		this.id = pk;
+		
+		if(cb != null)
+			this.codeBook = new ArrayList<Codebook>(cb);
+	}
+	
+	public ArrayList<Codebook> getCodeBook()
+	{
+		return new ArrayList<Codebook>(codeBook);
+	}
+	
+	public void setCodeBook(ArrayList<Codebook> cb)
+	{
+		this.codeBook = new ArrayList<Codebook>(cb);
 	}
 	
 	//------------------------------------------------------------------------getID

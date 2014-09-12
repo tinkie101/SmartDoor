@@ -96,7 +96,7 @@ public class ManualLogin extends Activity
 		String uName = usernameET.getText().toString();
 		String pass = passwordET.getText().toString();
 		provider.open();
-		List<Object> users = provider.load(new User(null, null, uName, pass, 0));
+		List<Object> users = provider.load(new User(null, null, uName, pass, 0, null));
 	
 		if(users.isEmpty())
 		{
@@ -105,7 +105,7 @@ public class ManualLogin extends Activity
 		}
 		
 		User temp = (User) users.get(0);
-		User user = new User(temp.getFirstnames(), temp.getSurname(), temp.getUsername(), temp.getPassword(), temp.getID());
+		User user = new User(temp.getFirstnames(), temp.getSurname(), temp.getUsername(), temp.getPassword(), temp.getID(), null);
 		
 		return user;
 	}
