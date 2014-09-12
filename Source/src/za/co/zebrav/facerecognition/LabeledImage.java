@@ -1,9 +1,11 @@
 package za.co.zebrav.facerecognition;
 
 import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
+import static org.bytedeco.javacpp.opencv_core.cvClearMemStorage;
 
 import java.nio.ByteBuffer;
 
+import org.bytedeco.javacpp.opencv_core.CvMemStorage;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Mat;
 
@@ -14,15 +16,20 @@ public class LabeledImage
 	int width;
 	int height;
 	final static int SUBSAMPLING_FACTOR = 1;
+	public LabeledImage()
+	{
+		//blank for db search
+	}
 	public Mat getGreyImage()
 	{
+		CvMemStorage storage = CvMemStorage.create();
 		int f = SUBSAMPLING_FACTOR;
 		
 		IplImage grayImage = IplImage.create(width / f, height / f, IPL_DEPTH_8U, 1);
-			
+		grayImage = IplImage.create(width / f, height / f, IPL_DEPTH_8U, 1);
+		
 		int imageWidth = grayImage.width();
 		int imageHeight = grayImage.height();
-
 		int dataStride = f * width;
 		int imageStride = grayImage.widthStep();
 		ByteBuffer imageBuffer = grayImage.getByteBuffer();
@@ -36,6 +43,8 @@ public class LabeledImage
 			}
 		}
 		
+		
+		cvClearMemStorage(storage);
 		return new Mat(grayImage);
 	}
 	public LabeledImage(byte[] data, int label, int width, int height)

@@ -162,6 +162,7 @@ class AddFaceView extends View implements Camera.PreviewCallback
 		{
 			Camera.Size size = camera.getParameters().getPreviewSize();
 			processImage(data, size.width, size.height);
+			cameraData = data;
 			camera.addCallbackBuffer(data);
 		}
 		catch (RuntimeException e)

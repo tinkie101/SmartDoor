@@ -89,8 +89,12 @@ public class AddCameraFragment extends Fragment
 		{
 			public void onClick(View view)
 			{
-				//LabeledImage li = new LabeledImage(faceView.getCameraData(), (int)uID, faceView.getFace(), faceView.getHeight());
-				Mat m = faceView.getFace();
+				LabeledImage li = new LabeledImage(faceView.getCameraData(), uID, faceView.getDataWidth(), faceView.getDataHeight());
+				Db4oAdapter db = new Db4oAdapter(context);
+				db.open();
+				db.save(li);
+				db.close();
+				Mat m = li.getGreyImage();
 				SaveImage(m, uID + ".png");
 				
 				activity.switchFragToStep3();

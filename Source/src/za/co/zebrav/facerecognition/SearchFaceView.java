@@ -92,16 +92,6 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	 */
 	protected PersonRecognizer personRecognizer;
 
-	/**
-	 * Method implemented by child classes.
-	 * This processes the detected faces to either add to DB or compare to DB.
-	 * 
-	 * @param faces
-	 */
-	private void processFaces(CvSeq faces)
-	{
-
-	}
 
 	private Context context;
 
@@ -145,7 +135,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	{
 		Db4oAdapter db = new Db4oAdapter(context);
 		db.open();
-		List<Object> tempList = db.load(new User(null, null, null, null, 0));
+		List<Object> tempList = db.load(new LabeledImage());
 		if (tempList.size() < 2)
 		{
 			Log.d(TAG,"List less than 2");
@@ -159,10 +149,11 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 		int i = 0;
 		for (Object o : tempList)
 		{
-			User u = (User)o;
-			labelsBuf.put(i, (int) u.getID());
+			LabeledImage li = (LabeledImage)o;
+			labelsBuf.put(i, li.getLabel());
+			
 			File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-			File file = new File(path, (int) u.getID() + ".png");
+			File file = new File(path, li.getLabel() + ".png");
 			Log.d(TAG, "File name: " + file.toString());
 			if(!file.exists())
 			{
@@ -172,6 +163,8 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 				Log.d(TAG, "File is there..");
 			
 			Mat m = imread(file.getAbsolutePath(),CV_LOAD_IMAGE_GRAYSCALE);
+			Log.d(TAG, "Loaded file");
+			//Mat m = li.getGreyImage();
 			Log.d(TAG, "Loaded file");
 			images.put(i,m);
 			i++;
