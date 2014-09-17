@@ -28,6 +28,14 @@
                 android:orientation="vertical" >
 
                 <Button
+                    android:id="@+id/switchLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button1"
+                    android:text="Switch Login"
+                    android:onClick="switchLogin" />
+
+                <Button
                     android:id="@+id/ttsButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

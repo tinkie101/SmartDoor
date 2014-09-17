@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity
 {
@@ -23,6 +24,7 @@ public class MainActivity extends FragmentActivity
 	CustomMenu sliderMenu;
 	private android.app.FragmentManager fm;
 	private android.app.FragmentTransaction ft;
+	private String currentFragment = "advanced";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -49,6 +51,32 @@ public class MainActivity extends FragmentActivity
 	{
 		Intent intent = new Intent(this, TextToSpeechActivity.class);
 		startActivity(intent);
+	}
+	
+	/**
+	 * When the user presses the toggle login button, the fragment part underneath the button must change.
+	 * When the current fragment is the advanced part (camera or voice authentication), it switches to a manual login
+	 * and vice versa
+	 * @param v
+	 */
+	public void switchLogin(View v)
+	{
+		fm = getFragmentManager();
+		ft = fm.beginTransaction();
+		if(this.currentFragment.equals("advanced"))
+		{
+			ManualLoginFragment fragment = new ManualLoginFragment();
+			ft.replace(R.id.layoutToReplaceFromMain , fragment);
+			currentFragment = "manual";
+		}
+		else
+		{
+			searchCameraFragment = new SearchCameraFragment();
+			ft.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
+			currentFragment = "camera";
+		}
+		
+		ft.commit();
 	}
 	
 	IdentifyVoiceFragment identifyVoiceFragment;
