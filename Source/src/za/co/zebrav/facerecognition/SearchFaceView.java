@@ -183,7 +183,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 				e.printStackTrace();
 			}
 		}
-		if (runnables[0].getObjects().total() == 1)
+		if (runnables[0].getObjects().total() == 1 && personRecognizer.canPredict())
 		{
 			int detectedId =  personRecognizer.predict(new Mat(grayImage));
 			Log.d(TAG, "Face detected:" + detectedId);

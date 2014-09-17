@@ -115,7 +115,7 @@ public class PersonRecognizer
 		return true;
 	}
 
-	private boolean canPredict()
+	public boolean canPredict()
 	{
 		return isTrained;
 	}
