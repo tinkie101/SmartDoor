@@ -16,12 +16,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity
 {
 	private static final String TAG = "MainActivity";
-	CustomMenu sliderMenu;
+	private CustomMenu sliderMenu;
 	private android.app.FragmentManager fm;
 	private android.app.FragmentTransaction ft;
 	private String currentFragment = "advanced";

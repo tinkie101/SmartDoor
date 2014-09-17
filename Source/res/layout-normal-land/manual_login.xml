@@ -11,87 +11,57 @@
 	    android:layout_height="match_parent"
 	    android:background="@drawable/background"
 	    android:orientation="vertical" >
-	
-	    <TextView
-	        android:id="@+id/ManualLogin_tvH"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center"
-	        android:text="@string/ManualLogin_heading"
-	        android:textColor="#012D50"
-	        android:textSize="20sp"
-	        android:textStyle="bold" />
-	    <RelativeLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent" >
-	
-	        <LinearLayout
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_centerInParent="true"
-	            android:background="@drawable/manual_login_semi_background"
-	            android:orientation="vertical"
-	            android:padding="25dp" >
 	            
-	             <LinearLayout
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal" >
-	            
-	                 <TextView
-	                android:id="@+id/ManualLogin_tv1"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="@string/ManualLogin_tv1"
-	                android:textColor="#FFF"
-	                android:textSize="15sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+       
+            <TextView
+           android:id="@+id/ManualLogin_tv1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/ManualLogin_tv1"
+           android:textSize="15sp" />
 
-	                 <EditText
-	                     android:id="@+id/ManualLogin_et1"
-	                     android:layout_width="236dp"
-	                     android:layout_height="wrap_content"
-	                     android:inputType="text"
-	                     android:textColor="#FFF"
-	                     android:textSize="15sp" />
-	                 
-	            </LinearLayout>
+            <EditText
+                android:id="@+id/ManualLogin_et1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textSize="15sp" />
+            
+       </LinearLayout>
+
+       <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal" >
+       <TextView
+           android:id="@+id/ManualLogin_tv2"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/ManualLogin_tv2"
+           android:textSize="15sp" />
+
+       <EditText
+           android:id="@+id/ManualLogin_et2"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:inputType="textPassword"
+           android:textSize="15sp" />
+
+       <Button
+           android:id="@+id/ManualLogin_button1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:background="@drawable/button1"
+           android:onClick="pressedLoginButton"
+           android:text="@string/ManualLogin_b1"
+           android:textSize="15sp" />
+
+       </LinearLayout>
 	
-	            <LinearLayout
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal" >
-	            <TextView
-	                android:id="@+id/ManualLogin_tv2"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="@string/ManualLogin_tv2"
-	                android:textColor="#FFF"
-	                android:textSize="15sp" />
-	
-	            <EditText
-	                android:id="@+id/ManualLogin_et2"
-	                android:layout_width="236dp"
-	                android:layout_height="wrap_content"
-	                android:inputType="textPassword"
-	                
-	                android:textColor="#FFF"
-	                android:textSize="15sp" />
-	            </LinearLayout>
-	
-	            <Button
-	                android:id="@+id/ManualLogin_button1"
-	                android:layout_width="match_parent"
-	                android:layout_height="wrap_content"
-	                android:layout_gravity="center"
-	                android:layout_marginTop="25dip"
-	                android:background="@drawable/button1"
-	                android:onClick="pressedLoginButton"
-	                android:padding="2dp"
-	                android:text="@string/ManualLogin_b1"
-	                android:textSize="20sp" />
-	
-	        </LinearLayout>
-	    </RelativeLayout>
 	</LinearLayout>
 	
 	<!-- The navigation drawer (MENU)-->
