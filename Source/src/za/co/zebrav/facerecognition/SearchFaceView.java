@@ -126,57 +126,8 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 			runnables[i] = new concurrentDetector(classifier, storage);
 			threads[i] = new Thread(runnables[i], "" + i);
 		}
-		// TODO: add loadPersonRecognizer call once db is fixed.
-		initialisePersonRecogniser();
+		personRecognizer = new PersonRecognizer(context);
 		lastTime = System.currentTimeMillis();
-	}
-
-	private boolean initialisePersonRecogniser()
-	{
-		Db4oAdapter db = new Db4oAdapter(context);
-		db.open();
-		List<Object> tempList = db.load(new LabeledImage());
-		if (tempList.size() < 2)
-		{
-			Log.d(TAG,"List less than 2");
-			db.close();
-			return false;
-		}
-		Log.d(TAG,"List more than 2");
-		Mat labels = new Mat(tempList.size(), 1, CV_32SC1);
-		IntBuffer labelsBuf = labels.getIntBuffer();
-		MatVector images = new MatVector(tempList.size());
-		int i = 0;
-		for (Object o : tempList)
-		{
-			LabeledImage li = (LabeledImage)o;
-			labelsBuf.put(i, li.getLabel());
-			
-			File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-			File file = new File(path, li.getLabel() + ".png");
-			Log.d(TAG, "File name: " + file.toString());
-			if(!file.exists())
-			{
-				Log.d(TAG, "File does not exist!");
-			}
-			else
-				Log.d(TAG, "File is there..");
-			
-			Mat m = imread(file.getAbsolutePath(),CV_LOAD_IMAGE_GRAYSCALE);
-			Log.d(TAG, "Loaded file");
-			//Mat m = li.getGreyImage();
-			Log.d(TAG, "Loaded file");
-			images.put(i,m);
-			i++;
-		}
-		Log.d(TAG,"After Loop");
-		personRecognizer = new PersonRecognizer();
-		Log.d(TAG,"Created PersonRecognizer");
-		personRecognizer.train(images, labels);
-		Log.d(TAG,"Trained PersonRecognizer");
-		db.close();
-		Log.d(TAG,"Database closed");
-		return true;
 	}
 
 	/**
@@ -244,8 +195,6 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 				e.printStackTrace();
 			}
 		}
-		
-		//Log.d(TAG,"ID recognised:" + personRecognizer.predict(new Mat(runnables[0].getObjects())));
 		postInvalidate();
 	}
 
@@ -292,7 +241,6 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 				for (int j = 0; j < total; j++)
 				{
 					CvRect r = new CvRect(cvGetSeqElem(runnables[i].getObjects(), j));
-					// Mat test = new Mat(cvGetSeqElem(runnables[i].getObjects(), j));
 					int x = r.x(), y = r.y(), w = r.width(), h = r.height();
 					canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
 										* scaleY, paint);
