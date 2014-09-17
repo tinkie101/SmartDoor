@@ -26,8 +26,10 @@ import org.bytedeco.javacpp.opencv_core.CvSeq;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
 
+import za.co.zebrav.smartdoor.MainActivity;
 import za.co.zebrav.smartdoor.database.User;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -195,12 +197,23 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 		}
 		if (runnables[0].getObjects().total() == 1)
 		{
-			Log.d(TAG, "Face detected:" + personRecognizer.predict(new Mat(grayImage)));
+			int detectedId =  personRecognizer.predict(new Mat(grayImage));
+			Log.d(TAG, "Face detected:" + detectedId);
 			Log.d(TAG, "Certainty:" + personRecognizer.getCertainty());
+			if(detectedId != -1)
+			{
+				activity.switchToVoice(detectedId);
+			}
+				
 		}
 		postInvalidate();
 	}
-
+	
+	private MainActivity activity;
+	public void setMainActivity(MainActivity a)
+	{
+		activity = a;
+	}
 	private String calculateFPS()
 	{
 		long newTime = System.currentTimeMillis();

@@ -2,6 +2,7 @@ package za.co.zebrav.facerecognition;
 
 import java.io.IOException;
 
+import za.co.zebrav.smartdoor.MainActivity;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
@@ -52,6 +53,7 @@ public class SearchCameraFragment extends Fragment
 		try
 		{
 			this.faceView = new SearchFaceView(context);
+			faceView.setMainActivity((MainActivity)getActivity());
 		}
 		catch (IOException e)
 		{

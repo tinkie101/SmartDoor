@@ -35,11 +35,10 @@ public class MainActivity extends FragmentActivity
 		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list),
 							(DrawerLayout) findViewById(R.id.drawer_layout), getResources().getStringArray(
 												R.array.mainMenuOptions));
-		SearchCameraFragment cm = new SearchCameraFragment();
-		fm = getFragmentManager();
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplaceFromMain , cm);
-		ft.commit();
+		
+		identifyVoiceFragment = new IdentifyVoiceFragment();
+		searchCameraFragment = new SearchCameraFragment();
+		switchToCamera();
 	}
 
 	/*
@@ -52,6 +51,28 @@ public class MainActivity extends FragmentActivity
 		startActivity(intent);
 	}
 	
+	IdentifyVoiceFragment identifyVoiceFragment;
+	SearchCameraFragment searchCameraFragment;
+	
+	public void switchToCamera()
+	{
+		searchCameraFragment = new SearchCameraFragment();
+		fm = getFragmentManager();
+		ft = fm.beginTransaction();
+		ft.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
+		ft.commit();
+	}
+	
+	public void switchToVoice(int id)
+	{
+		Bundle bundle = new Bundle();
+		bundle.putInt("userID", id);
+		identifyVoiceFragment.setArguments(bundle);
+		fm = getFragmentManager();
+		ft = fm.beginTransaction();
+		ft.replace(R.id.layoutToReplaceFromMain , identifyVoiceFragment);
+		ft.commit();
+	}
 	/*
 	 * On click button handler.
 	 * Go to the SpeechToText.
