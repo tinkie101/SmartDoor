@@ -92,7 +92,6 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	 */
 	protected PersonRecognizer personRecognizer;
 
-
 	private Context context;
 
 	public SearchFaceView(Context context) throws IOException
@@ -177,9 +176,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 				imageBuffer.put(imageLine + x, data[dataLine + f * x]);
 			}
 		}
-		
-		Log.d(TAG, "Face detected:" + personRecognizer.predict(new Mat(grayImage)));
-		Log.d(TAG, "Certainty:" + personRecognizer.getCertainty());
+
 		cvClearMemStorage(storage);
 		for (int i = 0; i < threads.length; i++)
 		{
@@ -195,6 +192,11 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 			{
 				e.printStackTrace();
 			}
+		}
+		if (runnables[0].getObjects().total() == 1)
+		{
+			Log.d(TAG, "Face detected:" + personRecognizer.predict(new Mat(grayImage)));
+			Log.d(TAG, "Certainty:" + personRecognizer.getCertainty());
 		}
 		postInvalidate();
 	}
