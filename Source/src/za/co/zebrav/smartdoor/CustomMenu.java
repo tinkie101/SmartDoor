@@ -99,21 +99,7 @@ public class CustomMenu
 				String selectedName = adapter.getItem(position);
 				
 				//------------------------------------------------------------------Main Menu Options:
-				if(selectedName.equals("Switch Login"))// selected login
-				{
-					//If current activity is main activity then go to classic login activity
-					getDrawerlayout().closeDrawer(getDrawerList());
-					MainActivity mainActivity = new MainActivity();
-					if(mainActivity.getClass().equals(getActivity().getClass()))
-					{
-						Intent intent = new Intent(getActivity(), ManualLogin.class);
-						activity.startActivity(intent);
-					}
-					//if current activity is not main activity finish current activity to switch back to main login
-					else
-						activity.finish();
-				}
-				else if(selectedName.equals("User options"))
+				if(selectedName.equals("User options"))
 				{
 					editMenuOptions(userOptions, "Menu");
 				}

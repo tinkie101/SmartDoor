@@ -50,7 +50,6 @@ public class MainActivity extends FragmentActivity
 		switchToCamera();
 	}
 	
-
 	protected void onResume()
 	{
 		super.onResume();

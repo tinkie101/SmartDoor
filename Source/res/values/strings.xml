@@ -12,7 +12,6 @@
     <string name="drawer_close">Close navigation drawer</string>
 
     <string-array name="mainMenuOptions">
-        <item>Switch Login</item>
         <item>User options</item>
         <item>Twitter prefrences</item>
         <item>Theme prefrences</item>
