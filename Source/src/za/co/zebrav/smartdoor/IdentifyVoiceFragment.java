@@ -152,6 +152,12 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 					voiceAuthenticator.setCodeBook(cb);
 	
 					ArrayList<Double> tempResult = voiceAuthenticator.identify();
+					
+					if(tempResult == null)
+					{
+						Log.d(LOG_TAG, "Error with identify! Check if ActiveFile is set");
+						continue;
+					}
 	
 					// caluclate user's average
 					for (int l = 0; l < tempResult.size(); l++)
@@ -186,7 +192,7 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 				}
 				else
 				{
-					Log.d(LOG_TAG, "CodeBook is Null");
+					Log.d(LOG_TAG, "User's CodeBook is Null");
 				}
 			}
 
@@ -220,6 +226,10 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
 								result);
 			listView.setAdapter(adapter);
+			
+			//delete active file from device storage
+			voiceAuthenticator.deleteActiveFile();
+			
 			Log.d(LOG_TAG, "Adapter Set to Results");
 		}
 	}

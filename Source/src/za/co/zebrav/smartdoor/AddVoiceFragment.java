@@ -1,6 +1,5 @@
 package za.co.zebrav.smartdoor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import za.co.zebrav.smartdoor.database.AddUserActivity;
@@ -20,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 import at.fhhgb.auth.voice.VoiceAuthenticator;
-import at.fhooe.mcm.smc.math.vq.Codebook;
 
 public class AddVoiceFragment extends ListFragment implements OnClickListener
 {
@@ -127,7 +125,11 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 		@Override
 		protected Void doInBackground(Void... params)
 		{
-			voiceAuthenticator.train(activeKey);
+			if(!voiceAuthenticator.train(activeKey))
+			{
+				Toast.makeText(context, "Error with Training voice", Toast.LENGTH_LONG).show();
+				Log.d(LOG_TAG, "Error with training voice, check if activeFile is set");
+			}
 			return null;
 		}
 
