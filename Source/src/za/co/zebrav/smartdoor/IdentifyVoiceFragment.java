@@ -1,29 +1,16 @@
 package za.co.zebrav.smartdoor;
 
-import static org.bytedeco.javacpp.opencv_core.CV_32SC1;
-import static org.bytedeco.javacpp.opencv_highgui.CV_LOAD_IMAGE_GRAYSCALE;
-import static org.bytedeco.javacpp.opencv_highgui.imread;
-
-import java.io.File;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bytedeco.javacpp.opencv_core.Mat;
-import org.bytedeco.javacpp.opencv_core.MatVector;
-
-import za.co.zebrav.facerecognition.LabeledImage;
-import za.co.zebrav.facerecognition.PersonRecognizer;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
-
 import android.app.AlertDialog;
-import android.app.ListFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,16 +18,18 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 import at.fhhgb.auth.voice.VoiceAuthenticator;
 import at.fhooe.mcm.smc.math.vq.Codebook;
 
-public class IdentifyVoiceFragment extends ListFragment implements OnClickListener
+public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 {
 	private static final String LOG_TAG = "AuthTest";
 
 	private Button btnIdentify;
 	private Button btnDone;
+	private ListView listView;
 
 	private VoiceAuthenticator voiceAuthenticator;
 
@@ -73,6 +62,8 @@ public class IdentifyVoiceFragment extends ListFragment implements OnClickListen
 
 		btnDone = (Button) view.findViewById(R.id.btnDone);
 		btnDone.setOnClickListener(this);
+		
+		listView = (ListView) view.findViewById(R.id.identify_list);
 	}
 
 	@Override
@@ -165,6 +156,7 @@ public class IdentifyVoiceFragment extends ListFragment implements OnClickListen
 					// caluclate user's average
 					for (int l = 0; l < tempResult.size(); l++)
 					{
+						Log.i(LOG_TAG, l + "= " + tempResult.get(l));
 						tempAvgDist += tempResult.get(l);
 					}
 	
@@ -172,6 +164,7 @@ public class IdentifyVoiceFragment extends ListFragment implements OnClickListen
 					Log.d(LOG_TAG, "user average distance = " + tempAvgDist);
 	
 					// Insert new user into sorted list
+					boolean inserted = false;
 					for (int l = 0; l < resultDist.size(); l++)
 					{
 						if (resultDist.get(l) > tempAvgDist)
@@ -179,7 +172,16 @@ public class IdentifyVoiceFragment extends ListFragment implements OnClickListen
 							resultDist.add(l, tempAvgDist);
 							Integer id = user.getID();
 							result.add(l, id.toString());
+							inserted = true;
+							break;
 						}
+					}
+					
+					if(!inserted)
+					{
+						resultDist.add(tempAvgDist);
+						Integer id = user.getID();
+						result.add(id.toString());
 					}
 				}
 				else
@@ -210,9 +212,15 @@ public class IdentifyVoiceFragment extends ListFragment implements OnClickListen
 		@Override
 		protected void onPostExecute(ArrayList<String> result)
 		{
+			for (String string : result)
+			{
+				Log.i(LOG_TAG, string);
+			}
+			
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
 								result);
-			setListAdapter(adapter);
+			listView.setAdapter(adapter);
+			Log.d(LOG_TAG, "Adapter Set to Results");
 		}
 	}
 
