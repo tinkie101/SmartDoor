@@ -7,6 +7,8 @@
 package za.co.zebrav.smartdoor;
 
 
+import java.util.Locale;
+
 import za.co.zebrav.facerecognition.SearchCameraFragment;
 import za.co.zebrav.smartdoor.R.id;
 import za.co.zebrav.smartdoor.database.User;
@@ -14,6 +16,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -21,8 +25,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity
+public class MainActivity extends FragmentActivity implements OnInitListener
 {
 	private static final String TAG = "MainActivity";
 	private CustomMenu sliderMenu;
@@ -32,6 +37,7 @@ public class MainActivity extends FragmentActivity
 	private String currentFragment = "advanced";
 	private AlertDialog.Builder alert;
 	private User user = null;
+	private TextToSpeech tts;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -40,6 +46,8 @@ public class MainActivity extends FragmentActivity
 		Log.d(TAG, "onCreate");
 		setContentView(R.layout.activity_main);
 
+		tts = new TextToSpeech(this, this);
+		
 		// add slider menu
 		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list),
 							(DrawerLayout) findViewById(R.id.drawer_layout), getResources().getStringArray(
@@ -117,15 +125,8 @@ public class MainActivity extends FragmentActivity
 		}
 		else
 		{	
-			//
 			switchToLoggedInFrag();
 			changeOnlyButtonText("Logout");
-			/*Intent i = new Intent();
-			Bundle bundle = new Bundle();
-			bundle.putSerializable("user", user);
-			i.putExtras(bundle);
-			i.setClass(this, LoggedIn.class);
-			this.startActivity(i);*/
 		}
 	}
 	
@@ -142,6 +143,7 @@ public class MainActivity extends FragmentActivity
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplaceFromMain , t);
 		ft.commit();
+		speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 	}
 	
 	/**
@@ -183,8 +185,53 @@ public class MainActivity extends FragmentActivity
 		Intent intent = new Intent(this, SpeechToTextActivity.class);
 		startActivity(intent);
 	}
+	
+	//-------------------------------------------------------------------------------------Text to speech
+	@Override
+	/**
+	 * ShutDown TextToSpeech when activity is destroyed
+	 */
+	public void onDestroy()
+	{	
+		if (tts != null)
+		{
+			tts.stop();
+			tts.shutdown();
+		}
+		super.onDestroy();
+	}
+	
+	/**
+	 * Sets voice pronunciation 
+	 */
+	public void onInit(int status)
+	{
+		if (status == TextToSpeech.SUCCESS)
+		{
+			int result = tts.setLanguage(Locale.UK);
 
-	//----------------------------------------------------------------Menu
+			if (result == TextToSpeech.LANG_MISSING_DATA|| result == TextToSpeech.LANG_NOT_SUPPORTED)
+			{
+				Toast.makeText(this, "Language not supported",Toast.LENGTH_LONG).show();
+			}
+		}
+	}
+	
+	/**
+	 * @param text, The text to be spoken out loud by the device
+	 */
+	public void speakOut(String text)
+	{
+		if (text.length() == 0)
+		{
+			tts.speak("You haven't typed text", TextToSpeech.QUEUE_FLUSH, null);
+		} else
+		{
+			tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+		}
+	}
+
+	//-------------------------------------------------------------------------------------Menu
 	@Override
 	protected void onPostResume()
 	{
