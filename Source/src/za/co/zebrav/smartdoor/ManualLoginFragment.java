@@ -62,7 +62,7 @@ public class ManualLoginFragment extends Fragment
 			
 			User temp = (User) users.get(0);
 			User user = new User(temp.getFirstnames(), temp.getSurname(), temp.getUsername(), temp.getPassword(), temp.getID(), null);
-			
+			provider.close();
 			return user;
 		}
 }

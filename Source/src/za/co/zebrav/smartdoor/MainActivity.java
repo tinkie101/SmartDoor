@@ -49,6 +49,14 @@ public class MainActivity extends FragmentActivity
 		searchCameraFragment = new SearchCameraFragment();
 		switchToCamera();
 	}
+	
+
+	protected void onResume()
+	{
+		super.onResume();
+		this.currentFragment = "advanced";
+		this.switchToCamera();
+	}
 
 	/*
 	 * On click button handler.
@@ -97,8 +105,7 @@ public class MainActivity extends FragmentActivity
 			alertMessage("Incorrect username or password.");
 		}
 		else
-		{
-			//Pass user that logged in over to LoggedIn activity
+		{	
 			Intent i = new Intent();
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("user", user);
