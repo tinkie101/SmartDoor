@@ -65,8 +65,9 @@ public class PersonRecognizer
 			User u = (User)o;
 			labelsBuf.put(i, u.getID());
 			
-			File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-			File file = new File(path, u.getID() + ".png");
+			//File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+			File path = context.getDir("data", 0);
+			File file = new File(path + "/photos/", u.getID() + ".png");
 			Log.d(TAG, "File name: " + file.toString());
 			if(!file.exists())
 			{

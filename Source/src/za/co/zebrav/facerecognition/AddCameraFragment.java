@@ -104,8 +104,18 @@ public class AddCameraFragment extends Fragment
 
 	public void SaveImage(Mat mat,String fileName)
 	{
-		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		File file = new File(path, fileName);
+		File path = context.getDir("data", 0);
+		File file = new File(path +"/photos/");
+		
+		if(!file.exists())
+		{
+			Log.d(TAG, "Creating dir");
+			if(!file.mkdir())
+				Log.e(TAG, "Failed Creating dirs");
+				
+		}
+		
+		file = new File(path +"/photos/", fileName);
 
 		Boolean bool = null;
 		fileName = file.toString();
@@ -114,7 +124,7 @@ public class AddCameraFragment extends Fragment
 		if (bool == true)
 			Log.d(TAG, "SUCCESS writing image to external storage");
 		else
-			Log.d(TAG, "Fail writing image to external storage");
+			Log.e(TAG, "Fail writing image to external storage");
 	}
 
 	/**
