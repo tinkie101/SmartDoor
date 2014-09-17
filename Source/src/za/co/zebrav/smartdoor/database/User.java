@@ -46,7 +46,12 @@ public class User implements Serializable
 	
 	public ArrayList<Codebook> getCodeBook()
 	{
-		return new ArrayList<Codebook>(codeBook);
+		ArrayList<Codebook> result = null;
+		
+		if(codeBook != null)
+			result = new ArrayList<Codebook>(codeBook);
+		
+		return result;
 	}
 	
 	public void setCodeBook(ArrayList<Codebook> cb)
