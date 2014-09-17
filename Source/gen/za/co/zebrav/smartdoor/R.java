@@ -97,7 +97,7 @@ public final class R {
         public static final int stepTwoDoneButton=0x7f090021;
         public static final int stt=0x7f090005;
         public static final int surnamesTV=0x7f090042;
-        public static final int switchLogin=0x7f090003;
+        public static final int switchLoginButton=0x7f090003;
         public static final int switcher=0x7f090023;
         public static final int textView1=0x7f09001f;
         public static final int textViewState=0x7f090028;

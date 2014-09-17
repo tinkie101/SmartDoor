@@ -8,6 +8,7 @@ package za.co.zebrav.smartdoor;
 
 
 import za.co.zebrav.facerecognition.SearchCameraFragment;
+import za.co.zebrav.smartdoor.R.id;
 import za.co.zebrav.smartdoor.database.User;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 public class MainActivity extends FragmentActivity
@@ -29,6 +31,7 @@ public class MainActivity extends FragmentActivity
 	private ManualLoginFragment manualFrag;
 	private String currentFragment = "advanced";
 	private AlertDialog.Builder alert;
+	private User user = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -53,6 +56,7 @@ public class MainActivity extends FragmentActivity
 	protected void onResume()
 	{
 		super.onResume();
+		user = null;
 		this.currentFragment = "advanced";
 		this.switchToCamera();
 	}
@@ -75,27 +79,35 @@ public class MainActivity extends FragmentActivity
 	 */
 	public void switchLogin(View v)
 	{
+		Button button = (Button) findViewById(id.switchLoginButton);
 		fm = getFragmentManager();
 		ft = fm.beginTransaction();
-		if(this.currentFragment.equals("advanced"))
+		
+		if(button.getText().equals("Logout") || currentFragment.equals("manual"))
+		{
+			button.setText("Switch Login");
+			searchCameraFragment = new SearchCameraFragment();
+			ft.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
+			currentFragment = "advanced";
+		}
+		else if(this.currentFragment.equals("advanced"))
 		{
 			manualFrag = new ManualLoginFragment();
 			ft.replace(R.id.layoutToReplaceFromMain , manualFrag);
 			currentFragment = "manual";
 		}
-		else
-		{
-			searchCameraFragment = new SearchCameraFragment();
-			ft.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
-			currentFragment = "advanced";
-		}
 		
 		ft.commit();
 	}
 	
-	public void pressedLoginButton(View v) throws InterruptedException
+	/**
+	 * Function called when Login button from the manual login fragment is pressed.
+	 * @param v
+	 * @throws InterruptedException
+	 */
+	public void pressedLoginButton(View v)
 	{
-		User user = null;
+		user = null;
 		if(!currentFragment.equals("advanced"))
 			user = manualFrag.getUser();
 		
@@ -105,13 +117,31 @@ public class MainActivity extends FragmentActivity
 		}
 		else
 		{	
-			Intent i = new Intent();
+			//
+			switchToLoggedInFrag();
+			changeOnlyButtonText("Logout");
+			/*Intent i = new Intent();
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("user", user);
 			i.putExtras(bundle);
 			i.setClass(this, LoggedIn.class);
-			this.startActivity(i);
+			this.startActivity(i);*/
 		}
+	}
+	
+	private void changeOnlyButtonText(String text)
+	{
+		Button button = (Button) findViewById(id.switchLoginButton);
+		button.setText(text);
+	}
+	
+	private void switchToLoggedInFrag()
+	{
+		LoggedInFragment t = new LoggedInFragment();
+		fm = getFragmentManager();
+		ft = fm.beginTransaction();
+		ft.replace(R.id.layoutToReplaceFromMain , t);
+		ft.commit();
 	}
 	
 	/**
@@ -154,6 +184,7 @@ public class MainActivity extends FragmentActivity
 		startActivity(intent);
 	}
 
+	//----------------------------------------------------------------Menu
 	@Override
 	protected void onPostResume()
 	{

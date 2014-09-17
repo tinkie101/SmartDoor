@@ -28,11 +28,12 @@
                 android:orientation="vertical" >
 
                 <Button
-                    android:id="@+id/switchLogin"
+                    android:id="@+id/switchLoginButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button1"
                     android:text="Switch Login"
+                    android:textColor="#fff"
                     android:onClick="switchLogin" />
 
                 <Button
