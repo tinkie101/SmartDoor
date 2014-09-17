@@ -20,11 +20,14 @@ import org.bytedeco.javacpp.opencv_core.CvRect;
 import org.bytedeco.javacpp.opencv_core.CvSeq;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
+
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Camera;
+import android.util.Log;
 import android.view.View;
 
 class AddFaceView extends View implements Camera.PreviewCallback
@@ -231,9 +234,19 @@ class AddFaceView extends View implements Camera.PreviewCallback
 				e.printStackTrace();
 			}
 		}
+//		if (runnables[0].getObjects().total() == 1)
+//		{
+//			count++;
+//			if(count == 5)
+//			{
+//				
+//			}
+//		}
 		postInvalidate();
 	}
-
+	
+	int count = 0;
+	
 	private String calculateFPS()
 	{
 		long newTime = System.currentTimeMillis();

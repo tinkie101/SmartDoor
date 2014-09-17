@@ -190,13 +190,22 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 			Log.d(TAG, "Certainty:" + personRecognizer.getCertainty());
 			if(detectedId != -1)
 			{
-				activity.switchToVoice(detectedId);
+				if(tempdetected != detectedId)
+					count = 0;
+				else count++;
+				tempdetected = detectedId;
+				Log.d(TAG, "Count in a row:" + count);
+				if(count == DETECTED_IN_A_ROW)
+					activity.switchToVoice(detectedId);
 			}
 				
 		}
 		postInvalidate();
 	}
 	
+	private static final int DETECTED_IN_A_ROW = 5;
+	private int count = 0;
+	private int tempdetected = -1;
 	private MainActivity activity;
 	public void setMainActivity(MainActivity a)
 	{
