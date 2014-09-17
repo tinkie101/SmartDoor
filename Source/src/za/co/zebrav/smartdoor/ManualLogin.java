@@ -1,8 +1,6 @@
 package za.co.zebrav.smartdoor;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Locale;
 
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
@@ -11,9 +9,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;

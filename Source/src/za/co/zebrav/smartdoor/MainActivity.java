@@ -6,7 +6,10 @@
 //This is the main activity for the Smart Door Application.
 package za.co.zebrav.smartdoor;
 
+
 import za.co.zebrav.facerecognition.SearchCameraFragment;
+import za.co.zebrav.smartdoor.database.User;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -23,7 +26,9 @@ public class MainActivity extends FragmentActivity
 	private CustomMenu sliderMenu;
 	private android.app.FragmentManager fm;
 	private android.app.FragmentTransaction ft;
+	private ManualLoginFragment manualFrag;
 	private String currentFragment = "advanced";
+	private AlertDialog.Builder alert;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -36,6 +41,9 @@ public class MainActivity extends FragmentActivity
 		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list),
 							(DrawerLayout) findViewById(R.id.drawer_layout), getResources().getStringArray(
 												R.array.mainMenuOptions));
+		
+		//create alert and textToSpeech
+		alert = new AlertDialog.Builder(this);
 		
 		identifyVoiceFragment = new IdentifyVoiceFragment();
 		searchCameraFragment = new SearchCameraFragment();
@@ -64,18 +72,48 @@ public class MainActivity extends FragmentActivity
 		ft = fm.beginTransaction();
 		if(this.currentFragment.equals("advanced"))
 		{
-			ManualLoginFragment fragment = new ManualLoginFragment();
-			ft.replace(R.id.layoutToReplaceFromMain , fragment);
+			manualFrag = new ManualLoginFragment();
+			ft.replace(R.id.layoutToReplaceFromMain , manualFrag);
 			currentFragment = "manual";
 		}
 		else
 		{
 			searchCameraFragment = new SearchCameraFragment();
 			ft.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
-			currentFragment = "camera";
+			currentFragment = "advanced";
 		}
 		
 		ft.commit();
+	}
+	
+	public void pressedLoginButton(View v) throws InterruptedException
+	{
+		User user = null;
+		if(!currentFragment.equals("advanced"))
+			user = manualFrag.getUser();
+		
+		if(user == null)
+		{
+			alertMessage("Incorrect username or password.");
+		}
+		else
+		{
+			//Pass user that logged in over to LoggedIn activity
+			Intent i = new Intent();
+			Bundle bundle = new Bundle();
+			bundle.putSerializable("user", user);
+			i.putExtras(bundle);
+			i.setClass(this, LoggedIn.class);
+			this.startActivity(i);
+		}
+	}
+	
+	/**
+	 * Alerts the specified message in dialogue box.
+	 */
+	public void alertMessage(String message)
+	{
+		alert.setTitle("Alert").setMessage(message).setNeutralButton("OK", null).show();
 	}
 	
 	IdentifyVoiceFragment identifyVoiceFragment;
