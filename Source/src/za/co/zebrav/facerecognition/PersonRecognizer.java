@@ -24,12 +24,25 @@ public class PersonRecognizer
 	private static final String TAG = "FacailRecognition::PersonRecognizer";
 	FaceRecognizer faceRecognizer;
 	private boolean isTrained = false;
+	private double certainty = Integer.MIN_VALUE;
+	
+	public double getCertainty()
+	{
+		return certainty;
+	}
 
+	PersonRecognizer(String fileName)
+	{
+		faceRecognizer = createLBPHFaceRecognizer();
+		faceRecognizer.load(fileName);
+	}
+	
 	PersonRecognizer(Context context)
 	{
 		//faceRecognizer = createEigenFaceRecognizer();
 		//faceRecognizer = createFisherFaceRecognizer();
 		faceRecognizer = createLBPHFaceRecognizer();
+		faceRecognizer.set("threshold", 150.0);
 		//faceRecognizer = createLBPHFaceRecognizer(2, 8, 8, 8, 200);
 		
 		Db4oAdapter db = new Db4oAdapter(context);
@@ -109,11 +122,21 @@ public class PersonRecognizer
 
 	public int predict(Mat testImage)
 	{
-		//Test precondition 1
-		if(testImage == null || testImage.cols() == 0) return Integer.MIN_VALUE;
-		//Test precondition 2
-		if(!canPredict()) return Integer.MIN_VALUE;
-		//Do the prediction
-		return faceRecognizer.predict(testImage);
+		int n[] = new int[1];
+		double p[] = new double[1];
+		
+		faceRecognizer.predict(testImage, n, p);
+		
+	    certainty = p[0];
+		return n[0];
+		
+		
+//		//Test precondition 1
+//		if(testImage == null || testImage.cols() == 0) return Integer.MIN_VALUE;
+//		//Test precondition 2
+//		if(!canPredict()) return Integer.MIN_VALUE;
+//		//Do the prediction
+//		return faceRecognizer.predict(testImage);
 	}
+	
 }

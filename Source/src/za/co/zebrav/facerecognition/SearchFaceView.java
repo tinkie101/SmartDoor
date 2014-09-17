@@ -179,6 +179,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 		}
 		
 		Log.d(TAG, "Face detected:" + personRecognizer.predict(new Mat(grayImage)));
+		Log.d(TAG, "Certainty:" + personRecognizer.getCertainty());
 		cvClearMemStorage(storage);
 		for (int i = 0; i < threads.length; i++)
 		{
