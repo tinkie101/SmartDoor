@@ -89,9 +89,8 @@ public class AddCameraFragment extends Fragment
 		{
 			public void onClick(View view)
 			{
-				LabeledImage li = new LabeledImage(faceView.getCameraData(), uID, faceView.getDataWidth(), faceView.getDataHeight());
-				Mat m = li.getGreyImage();
-				SaveImage(m, uID + ".png");
+				Mat m = ImageTools.getGreyImage(faceView.getCameraData(), faceView.getDataWidth(), faceView.getDataHeight(), 2);
+				ImageTools.saveImage(m, uID + ".png", context);
 				
 				activity.switchFragToStep3();
 			}
@@ -100,31 +99,6 @@ public class AddCameraFragment extends Fragment
 		addButton.setText("Tap to capture");
 		addButton.setTextSize(30);
 		layout.addView(addButton);
-	}
-
-	public void SaveImage(Mat mat,String fileName)
-	{
-		File path = context.getDir("data", 0);
-		File file = new File(path +"/photos/");
-		
-		if(!file.exists())
-		{
-			Log.d(TAG, "Creating dir");
-			if(!file.mkdir())
-				Log.e(TAG, "Failed Creating dirs");
-				
-		}
-		
-		file = new File(path +"/photos/", fileName);
-
-		Boolean bool = null;
-		fileName = file.toString();
-		bool = imwrite(fileName, mat);
-
-		if (bool == true)
-			Log.d(TAG, "SUCCESS writing image to external storage");
-		else
-			Log.e(TAG, "Fail writing image to external storage");
 	}
 
 	/**
