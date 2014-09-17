@@ -15,7 +15,6 @@ import org.bytedeco.javacpp.opencv_core.MatVector;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
 

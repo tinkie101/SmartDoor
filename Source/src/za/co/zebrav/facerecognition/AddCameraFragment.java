@@ -1,19 +1,12 @@
 package za.co.zebrav.facerecognition;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.bytedeco.javacpp.opencv_core.Mat;
 
-import static org.bytedeco.javacpp.opencv_highgui.*;
 import za.co.zebrav.smartdoor.database.AddUserActivity;
-import za.co.zebrav.smartdoor.database.Db4oAdapter;
-
-import com.db4o.Db4o;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -21,7 +14,6 @@ import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
