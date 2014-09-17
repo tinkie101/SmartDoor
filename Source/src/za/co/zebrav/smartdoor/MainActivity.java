@@ -68,16 +68,6 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 		this.currentFragment = "advanced";
 		this.switchToCamera();
 	}
-
-	/*
-	 * On click button handler.
-	 * Go to the TwitterActivity.
-	 */
-	public void gotoTextToSpeech(View v)
-	{
-		Intent intent = new Intent(this, TextToSpeechActivity.class);
-		startActivity(intent);
-	}
 	
 	/**
 	 * When the user presses the toggle login button, the fragment part underneath the button must change.

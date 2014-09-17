@@ -18,7 +18,7 @@ import android.widget.TextView;
 public class ListViewAdapter extends BaseAdapter
 {
 	private Context mContext;
-	private List<User> useList = null;
+	public List<User> useList = null;
 	private ArrayList<User> arraylist;
 	private LayoutInflater inflater;
 	private Db4oAdapter provider;
@@ -165,6 +165,12 @@ public class ListViewAdapter extends BaseAdapter
 				}
 			}
 		}
+		notifyDataSetChanged();
+	}
+	
+	public void clearDisplay()
+	{
+		useList.clear();
 		notifyDataSetChanged();
 	}
 }

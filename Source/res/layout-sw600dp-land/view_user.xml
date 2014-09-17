@@ -63,6 +63,15 @@
                 </EditText>
             </LinearLayout>
 
+            <Button
+                android:id="@+id/delAllUsersButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button1"
+                android:textColor="#fff"
+                android:onClick="deleteAllUsers"
+                android:text="Delete All Users" />
+            
             <ListView
                 android:id="@+id/list"
                 android:layout_width="607dp"

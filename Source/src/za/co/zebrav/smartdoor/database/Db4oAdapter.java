@@ -129,7 +129,7 @@ public class Db4oAdapter implements DatabaseAdaptee
 		{
 			for(Object o: result)
 			{
-				getDatabase().delete(result.get(0));
+				getDatabase().delete(o);
 				commit();
 			}
 			return true;

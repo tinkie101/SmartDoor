@@ -89,5 +89,14 @@ public class ViewUserActivity extends Activity
 	{
 		this.finish();
 	}
+	
+	public void deleteAllUsers(View v)
+	{
+		provider.open();
+		provider.delete(new User(null, null, null, null, 0, null));
+		provider.close();
+		
+		adapter.clearDisplay();
+	}
 
 }

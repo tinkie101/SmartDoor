@@ -18,7 +18,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="10" >
 
-            <LinearLayout
+           <LinearLayout
                 android:id="@+id/buttonLinear"
                 android:layout_width="fill_parent"
                 android:layout_height="100dp"
@@ -36,12 +36,6 @@
                     android:textColor="#fff"
                     android:onClick="switchLogin" />
 
-                <Button
-                    android:id="@+id/ttsButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="gotoTextToSpeech"
-                    android:text="Go to Text-to-speech" />
 
                 <Button
                     android:id="@+id/stt"
