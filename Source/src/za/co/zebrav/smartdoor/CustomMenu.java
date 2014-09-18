@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
@@ -27,6 +28,7 @@ public class CustomMenu
 	private String title = "";
 	private Activity activity;
 	private String[] options;
+	private SharedPreferences settings = null;
 	
 	private ArrayAdapter<String> adapter;
 	
@@ -35,6 +37,7 @@ public class CustomMenu
 	private String[] themeOptions = {"Goto main menu","Background", "ActionBar", "Exit"};
 	private String[] userOptions = {"Goto main menu", "Add user", "Search user", "Delete user", "Exit"};
 	private AlertDialog.Builder alert;
+	public static final String PREFS_NAME = "MyPrefsFile";
 	
 	/**
 	 * @param activity - the activity using the sliderMenu
@@ -43,6 +46,7 @@ public class CustomMenu
 	 */
 	public CustomMenu(Activity activity, ListView drawerList, DrawerLayout drawerLayout, String[] options)
 	{
+		settings = activity.getSharedPreferences(PREFS_NAME, 0);
 		this.options = options;
 		this.alert  = new AlertDialog.Builder(activity);
 		
@@ -134,87 +138,19 @@ public class CustomMenu
 				//----------------------------------------------------------------Twitter specific Options:
 				else if(selectedName.equals("Twitter key"))
 				{
-					alert.setTitle("Change Twitter key");
-					
-					final EditText input = new EditText(activity.getApplicationContext());
-					alert.setView(input);
-					
-					alert.setNegativeButton("Cancel",null);
-					alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-							String value = input.getText().toString();
-							//do something with value
-							Toast.makeText(getActivity().getApplicationContext(),"Entered " + value, Toast.LENGTH_LONG).show();
-						}
-					});
-					
-					alert.show();
+					saveNewTwitter("Change Twitter key", "key");
 				}
 				else if(selectedName.equals("Twitter secret"))
 				{
-					alert.setTitle("Change Twitter secret");
-					
-					final EditText input = new EditText(activity.getApplicationContext());
-					alert.setView(input);
-					
-					alert.setNegativeButton("Cancel",null);
-					alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-							String value = input.getText().toString();
-							//do something with value
-							Toast.makeText(getActivity().getApplicationContext(),"Entered " + value, Toast.LENGTH_LONG).show();
-						}
-					});
-					
-					alert.show();
+					saveNewTwitter("Change Twitter secret", "secret");
 				}
 				else if(selectedName.equals("Twitter token key"))
 				{
-					alert.setTitle("Change Twitter Token key");
-					
-					final EditText input = new EditText(activity.getApplicationContext());
-					alert.setView(input);
-					
-					alert.setNegativeButton("Cancel",null);
-					alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-							String value = input.getText().toString();
-							//do something with value
-							Toast.makeText(getActivity().getApplicationContext(),"Entered " + value, Toast.LENGTH_LONG).show();
-						}
-					});
-					
-					alert.show();
+					saveNewTwitter("Change Twitter Token Key", "tokenKey");
 				}
 				else if(selectedName.equals("Twitter token secret"))
 				{
-					alert.setTitle("Change Twitter Token secret");
-					
-					final EditText input = new EditText(activity.getApplicationContext());
-					alert.setView(input);
-					
-					alert.setNegativeButton("Cancel",null);
-					alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-							String value = input.getText().toString();
-							//do something with value
-							Toast.makeText(getActivity().getApplicationContext(),"Entered " + value, Toast.LENGTH_LONG).show();
-						}
-					});
-					
-					alert.show();
+					saveNewTwitter("Change Twitter Token Secret", "tokenSecret");
 				}
 				else if(selectedName.equals("update rate"))
 				{
@@ -270,6 +206,33 @@ public class CustomMenu
 				}
 			}
 		});
+	}
+	
+	/**
+	 * 
+	 * @param heading
+	 */
+	private void saveNewTwitter(String heading, final String key)
+	{
+		alert.setTitle(heading);
+		
+		final EditText input = new EditText(activity.getApplicationContext());
+		alert.setView(input);
+		
+		alert.setNegativeButton("Cancel",null);
+		alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				String value = input.getText().toString();
+				SharedPreferences.Editor editor = settings.edit();
+			    editor.putString(key, value);
+			    editor.commit();
+		    }
+		});
+		
+		alert.show();
 	}
 	
 	/**

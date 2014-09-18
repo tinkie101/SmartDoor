@@ -23,6 +23,12 @@
         <item>User options</item>
     </string-array>
     
+    <!--Twitter defaults-->
+    <string name="twitterKey">qcGzp08qWLEZom1x7dxCG5qu0</string>
+    <string name="twitterSecret">ly810vDH1S16Ttw0mpk4ZBYQvLEF9gEO16KSqy9lBqhwRf5XRo</string>
+    <string name="twitterToken">239453626-73H379K274Qfm9KaPfq8C3hKPhq3jqGk04gQXkIw</string>
+    <string name="twitterTokenKey">7ozxcBnoAA4WEocKeUSrFI9iOO9hVqNYwS2xFOeB0osUl</string>
+    
     <string-array name="commandOptions">
         <item>Open door</item>
         <item>Hello</item>

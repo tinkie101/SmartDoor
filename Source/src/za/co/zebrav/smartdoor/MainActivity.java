@@ -133,7 +133,7 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplaceFromMain , t);
 		ft.commit();
-		speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
+		//speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 	}
 	
 	/**
@@ -175,6 +175,7 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 		Intent intent = new Intent(this, SpeechToTextActivity.class);
 		startActivity(intent);
 	}
+	//-------------------------------------------------------------------------------------Speech to text
 	
 	//-------------------------------------------------------------------------------------Text to speech
 	@Override

@@ -28,7 +28,7 @@ public class TwitterHandler
 {
 	private static final String LOG_TAG_TWITTER_HANDLER = "TwitterHandler";
 	private FragmentActivity fragmentContext;
-	private AsynchTwitter asynchTwitter;
+	public AsynchTwitter asynchTwitter;
 	private TwitterArrayAdapter adapter;
 
 	protected Twitter twitter;
@@ -38,7 +38,7 @@ public class TwitterHandler
 	protected ArrayList<String> userProfileImageURL;
 	protected long sinceUserTimelineID;
 	protected long sinceMentionsTimelineID;
-
+	
 	// TODO
 	protected int timelineSize = 20;
 
@@ -50,16 +50,17 @@ public class TwitterHandler
 	// The maximum number of Tweets to display
 	protected int maxTweetCount = 50;
 
-	public TwitterHandler(FragmentActivity fragmentContext, TwitterArrayAdapter adapter)
+	public TwitterHandler(FragmentActivity fragmentContext, TwitterArrayAdapter adapter, String key, String secret, String tokenKey, String tokenSecret)
 	{
 		this.fragmentContext = fragmentContext;
 		this.adapter = adapter;
 
 		// TODO: Get this from somewhere else
-		String API_KEY = "qcGzp08qWLEZom1x7dxCG5qu0";
-		String API_SECRET = "ly810vDH1S16Ttw0mpk4ZBYQvLEF9gEO16KSqy9lBqhwRf5XRo";
-		String ACCESS_TOKEN = "239453626-73H379K274Qfm9KaPfq8C3hKPhq3jqGk04gQXkIw";
-		String TOKEN_SECRET = "7ozxcBnoAA4WEocKeUSrFI9iOO9hVqNYwS2xFOeB0osUl";
+		String API_KEY = key;
+		String API_SECRET = secret;
+		String ACCESS_TOKEN = tokenKey;
+		String TOKEN_SECRET = tokenSecret;
+		
 
 		twitter = constructTwitterAuthority(API_KEY, API_SECRET, ACCESS_TOKEN, TOKEN_SECRET);
 
@@ -133,11 +134,12 @@ public class TwitterHandler
 			asynchTwitter.cancel(true);
 	}
 	
+	
 	/**
 	 * @author tinkie101
 	 * 
 	 */
-	private class AsynchTwitter extends AsyncTask<Void, Void, List<twitter4j.Status>>
+	public class AsynchTwitter extends AsyncTask<Void, Void, List<twitter4j.Status>>
 	{
 		private static final String LOG_TAG_ASYNCH_TWITTER = "AsynchTwitter";
 
@@ -173,13 +175,13 @@ public class TwitterHandler
 				return null;
 			}
 		}
-
+		
 		/**
 		 * Test whether the twitter keys, secrets and tokens are valid before getting timelines
 		 * 
 		 * @return True if twitter credentials are valid else false
 		 */
-		private boolean verifyCredentials()
+		public boolean verifyCredentials()
 		{
 			try
 			{
