@@ -22,6 +22,12 @@
         <item>Switch Login</item>
         <item>User options</item>
     </string-array>
+    
+    <string-array name="commandOptions">
+        <item>Open door</item>
+        <item>Hello</item>
+    </string-array>
+        
 
     <string name="SpeechToText">Speech to Text</string>
     <string name="title_activity_speech_to_text">SpeechToTextActivity</string>

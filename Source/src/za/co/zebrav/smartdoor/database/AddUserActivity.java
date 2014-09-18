@@ -158,22 +158,13 @@ public class AddUserActivity extends Activity
 	public void switchFragToStep2()
 	{
 		AddCameraFragment f = new AddCameraFragment(this);
-
+		
 		Bundle bundle = new Bundle();
 		bundle.putInt("userID", user.getID());
 		f.setArguments(bundle);
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplace, f);
 		ft.commit();
-
-		// AddUserStepTwo fv = new AddUserStepTwo();
-		// Toast.makeText(this, "Before: " + user.getID(), Toast.LENGTH_SHORT).show();
-		// Bundle bundle = new Bundle();
-		// bundle.putLong("userID", user.getID());
-		// fv.setArguments(bundle);
-		// ft = fm.beginTransaction();
-		// ft.replace(R.id.layoutToReplace, fv);
-		// ft.commit();
 	}
 
 	/**
@@ -200,7 +191,7 @@ public class AddUserActivity extends Activity
 	 * 
 	 * @param v
 	 */
-	public void doneStepTwoAddUser(View v)
+	public void doneStepTwoAddUser()
 	{
 		switchFragToStep3();
 		enableStep3Button();

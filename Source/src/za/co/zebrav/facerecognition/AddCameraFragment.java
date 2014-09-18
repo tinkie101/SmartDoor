@@ -84,7 +84,7 @@ public class AddCameraFragment extends Fragment
 				Mat m = ImageTools.getGreyImage(faceView.getCameraData(), faceView.getDataWidth(), faceView.getDataHeight(), 2);
 				ImageTools.saveImage(m, uID + ".png", context);
 				
-				activity.switchFragToStep3();
+				activity.doneStepTwoAddUser();
 			}
 		});
 		

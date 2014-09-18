@@ -9,6 +9,7 @@ package za.co.zebrav.smartdoor;
 
 public final class R {
     public static final class array {
+        public static final int commandOptions=0x7f060002;
         public static final int mainMenuOptions=0x7f060000;
         public static final int manualLoginMenuOptions=0x7f060001;
     }
@@ -38,13 +39,13 @@ public final class R {
         public static final int CustomCameraView_activity_java_surface_view=0x7f090026;
         public static final int FrameLayout1=0x7f090011;
         public static final int GridLayout1=0x7f09001d;
-        public static final int ManualLogin_button1=0x7f09003e;
-        public static final int ManualLogin_et1=0x7f09003b;
-        public static final int ManualLogin_et2=0x7f09003d;
-        public static final int ManualLogin_tv1=0x7f09003a;
-        public static final int ManualLogin_tv2=0x7f09003c;
-        public static final int ManualLogin_tvH=0x7f090039;
-        public static final int action_refresh_tweets=0x7f09004b;
+        public static final int ManualLogin_button1=0x7f09003f;
+        public static final int ManualLogin_et1=0x7f09003c;
+        public static final int ManualLogin_et2=0x7f09003e;
+        public static final int ManualLogin_tv1=0x7f09003b;
+        public static final int ManualLogin_tv2=0x7f09003d;
+        public static final int ManualLogin_tvH=0x7f09003a;
+        public static final int action_refresh_tweets=0x7f09004c;
         public static final int addUserCancel=0x7f09000c;
         public static final int addUser_fname_et=0x7f090013;
         public static final int addUser_fname_tv=0x7f090012;
@@ -56,23 +57,24 @@ public final class R {
         public static final int addUser_sname_tv=0x7f090014;
         public static final int addUser_uname_et=0x7f090017;
         public static final int addUser_uname_tv=0x7f090016;
-        public static final int as=0x7f090042;
+        public static final int as=0x7f090043;
         public static final int btnDone=0x7f09002f;
         public static final int btnIdentify=0x7f090032;
         public static final int btnRecognise=0x7f090031;
-        public static final int btnSpeak=0x7f090045;
+        public static final int btnSpeak=0x7f090046;
         public static final int btnTrain=0x7f090030;
         public static final int buttonBuscar=0x7f09002d;
         public static final int buttonCat=0x7f090025;
         public static final int buttonDel=0x7f090024;
         public static final int buttonLinear=0x7f090002;
+        public static final int commandList=0x7f090039;
         public static final int content_frame=0x7f090001;
-        public static final int delAllUsersButton=0x7f090049;
+        public static final int delAllUsersButton=0x7f09004a;
         public static final int drawer_layout=0x7f090000;
         public static final int drawer_list=0x7f090007;
         public static final int editText1=0x7f09002c;
-        public static final int editTextTextTTS=0x7f090044;
-        public static final int firstnamesTV=0x7f09003f;
+        public static final int editTextTextTTS=0x7f090045;
+        public static final int firstnamesTV=0x7f090040;
         public static final int gallery1=0x7f090021;
         public static final int identify_list=0x7f090033;
         public static final int imageButton1=0x7f090023;
@@ -81,12 +83,12 @@ public final class R {
         public static final int imageView4=0x7f090029;
         public static final int layoutToReplace=0x7f090010;
         public static final int layoutToReplaceFromMain=0x7f090005;
-        public static final int list=0x7f09004a;
+        public static final int list=0x7f09004b;
         public static final int listenSpeech=0x7f090008;
-        public static final int searchCancelButton=0x7f090046;
-        public static final int searchText=0x7f090048;
-        public static final int space=0x7f090040;
-        public static final int speak=0x7f090047;
+        public static final int searchCancelButton=0x7f090047;
+        public static final int searchText=0x7f090049;
+        public static final int space=0x7f090041;
+        public static final int speak=0x7f090048;
         public static final int speechToTextList=0x7f09000a;
         public static final int speech_loadingBar=0x7f090009;
         public static final int speech_soundLevel=0x7f09000b;
@@ -97,7 +99,7 @@ public final class R {
         public static final int stepTwo=0x7f09000e;
         public static final int stepTwoDoneButton=0x7f090020;
         public static final int stt=0x7f090004;
-        public static final int surnamesTV=0x7f090041;
+        public static final int surnamesTV=0x7f090042;
         public static final int switchLoginButton=0x7f090003;
         public static final int switcher=0x7f090022;
         public static final int textView1=0x7f09001e;
@@ -110,7 +112,7 @@ public final class R {
         public static final int twitterUserImage=0x7f090035;
         public static final int twitterUserText=0x7f090037;
         public static final int twitter_refreshBar=0x7f090034;
-        public static final int usernameTV=0x7f090043;
+        public static final int usernameTV=0x7f090044;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -120,17 +122,18 @@ public final class R {
         public static final int add_user_step_three=0x7f030004;
         public static final int add_user_step_two=0x7f030005;
         public static final int catalog_view=0x7f030006;
-        public static final int drawer_list_item=0x7f030007;
-        public static final int face_detect_surface_view=0x7f030008;
-        public static final int fragment_add_voice=0x7f030009;
-        public static final int fragment_identify_voice=0x7f03000a;
-        public static final int fragment_twitter=0x7f03000b;
-        public static final int list_twitter=0x7f03000c;
-        public static final int logged_in=0x7f03000d;
-        public static final int manual_login=0x7f03000e;
-        public static final int search_user_listview_item=0x7f03000f;
-        public static final int texttospeech=0x7f030010;
-        public static final int view_user=0x7f030011;
+        public static final int command_list_item=0x7f030007;
+        public static final int drawer_list_item=0x7f030008;
+        public static final int face_detect_surface_view=0x7f030009;
+        public static final int fragment_add_voice=0x7f03000a;
+        public static final int fragment_identify_voice=0x7f03000b;
+        public static final int fragment_twitter=0x7f03000c;
+        public static final int list_twitter=0x7f03000d;
+        public static final int logged_in=0x7f03000e;
+        public static final int manual_login=0x7f03000f;
+        public static final int search_user_listview_item=0x7f030010;
+        public static final int texttospeech=0x7f030011;
+        public static final int view_user=0x7f030012;
     }
     public static final class menu {
         public static final int twitter=0x7f080000;
