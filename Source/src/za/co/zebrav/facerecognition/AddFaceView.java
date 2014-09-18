@@ -21,6 +21,8 @@ import org.bytedeco.javacpp.opencv_core.CvSeq;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
 
+import za.co.zebrav.smartdoor.database.AddUserActivity;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -168,7 +170,6 @@ class AddFaceView extends View implements Camera.PreviewCallback
 
 	byte[] cameraData;
 
-
 	public byte[] getCameraData()
 	{
 		return cameraData;
@@ -234,19 +235,35 @@ class AddFaceView extends View implements Camera.PreviewCallback
 				e.printStackTrace();
 			}
 		}
-//		if (runnables[0].getObjects().total() == 1)
-//		{
-//			count++;
-//			if(count == 5)
-//			{
-//				
-//			}
-//		}
+		if (runnables[0].getObjects().total() == 1 && runnables[1].getObjects().total() == 2
+							&& runnables[2].getObjects().total() == 1)
+		{
+			ImageTools.saveImageAsPNG(ImageTools.getGreyImage(data, width, height, 1), userID + "-" + count, context);
+			Log.d(TAG, "Saved ID:"+ userID +" Number: " + count + " .");
+			count++;
+			if (count == 5)
+			{
+				activity.doneStepTwoAddUser();
+			}
+
+		}
 		postInvalidate();
 	}
-	
+
 	int count = 0;
+
+	private int userID = -1;
 	
+	AddUserActivity activity;
+	public void setActivity(AddUserActivity activity)
+	{
+		this.activity = activity;
+	}
+	public void setUserID(int ID)
+	{
+		this.userID = ID;
+	}
+
 	private String calculateFPS()
 	{
 		long newTime = System.currentTimeMillis();

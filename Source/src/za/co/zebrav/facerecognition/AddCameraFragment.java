@@ -31,6 +31,7 @@ public class AddCameraFragment extends Fragment
 		try
 		{
 			this.faceView = new AddFaceView(contex);
+			
 		}
 		catch (IOException e)
 		{
@@ -38,7 +39,7 @@ public class AddCameraFragment extends Fragment
 		}
 	}
 
-	private int uID;
+	private int uID = -1;
 	private static final String TAG = "AddCameraFragment";
 	private FrameLayout layout;
 	/**
@@ -75,6 +76,7 @@ public class AddCameraFragment extends Fragment
 		layout.addView(mPreview);
 		layout.addView(faceView);
 		final AddUserActivity activity = (AddUserActivity) getActivity();
+		faceView.setActivity(activity);
 		addButton = new Button(context);
 		addButton.setBackgroundColor(Color.TRANSPARENT);
 		addButton.setOnClickListener(new View.OnClickListener()
@@ -82,7 +84,7 @@ public class AddCameraFragment extends Fragment
 			public void onClick(View view)
 			{
 				Mat m = ImageTools.getGreyImage(faceView.getCameraData(), faceView.getDataWidth(), faceView.getDataHeight(), 1);
-				ImageTools.saveImage(m, uID + ".png", context);
+				ImageTools.saveImageAsPNG(m, uID +"", context);
 				
 				activity.doneStepTwoAddUser();
 			}
@@ -90,7 +92,7 @@ public class AddCameraFragment extends Fragment
 		
 		addButton.setText("Tap to capture");
 		addButton.setTextSize(30);
-		layout.addView(addButton);
+		//layout.addView(addButton);
 	}
 
 	/**
@@ -101,6 +103,7 @@ public class AddCameraFragment extends Fragment
 	{
 		Bundle bundle = this.getArguments();
 		uID = bundle.getInt("userID", -1);
+		faceView.setUserID(uID);
 		return layout;
 	}
 

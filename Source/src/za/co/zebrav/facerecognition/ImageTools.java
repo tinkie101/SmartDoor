@@ -40,8 +40,9 @@ public class ImageTools
 		return new Mat(grayImage);
 	}
 
-	public static boolean saveImage(Mat mat, String fileName, Context context)
+	public static boolean saveImageAsPNG(Mat mat, String fileName, Context context)
 	{
+		fileName = fileName + ".png";
 		File path = context.getDir("data", 0);
 		File file = new File(path + "/photos/");
 
