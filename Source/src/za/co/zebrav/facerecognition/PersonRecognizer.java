@@ -41,7 +41,7 @@ public class PersonRecognizer
 		//faceRecognizer = createEigenFaceRecognizer();
 		//faceRecognizer = createFisherFaceRecognizer();
 		faceRecognizer = createLBPHFaceRecognizer();
-		faceRecognizer.set("threshold", 150.0);
+		faceRecognizer.set("threshold", 220.0);
 		//faceRecognizer = createLBPHFaceRecognizer(2, 8, 8, 8, 200);
 		
 		Db4oAdapter db = new Db4oAdapter(context);
@@ -107,7 +107,7 @@ public class PersonRecognizer
 		//Get end time
 		long endTime = System.currentTimeMillis();
 		//calculate and log training time
-		long temp = startTime - endTime;
+		long temp = endTime - startTime;
 		double timeInSeconds = temp / (double) 1000;
 		Log.d(TAG, "Training on " + images.capacity() + "file[s] took " + timeInSeconds + " seconds.");
 		//Successfully trained

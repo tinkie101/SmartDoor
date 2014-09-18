@@ -81,7 +81,7 @@ public class AddCameraFragment extends Fragment
 		{
 			public void onClick(View view)
 			{
-				Mat m = ImageTools.getGreyImage(faceView.getCameraData(), faceView.getDataWidth(), faceView.getDataHeight(), 2);
+				Mat m = ImageTools.getGreyImage(faceView.getCameraData(), faceView.getDataWidth(), faceView.getDataHeight(), 1);
 				ImageTools.saveImage(m, uID + ".png", context);
 				
 				activity.doneStepTwoAddUser();

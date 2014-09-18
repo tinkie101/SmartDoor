@@ -198,6 +198,8 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 				if(count == DETECTED_IN_A_ROW)
 					activity.switchToVoice(detectedId);
 			}
+			else
+				tempdetected = 0;
 				
 		}
 		postInvalidate();
