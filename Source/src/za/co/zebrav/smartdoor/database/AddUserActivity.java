@@ -30,24 +30,19 @@ public class AddUserActivity extends Activity
 	private Button stepOne;
 	private Button stepTwo;
 	private Button stepThree;
-	private WakeLock wakeLock;
-	// user to be saved
-	private User user;
+	private User user = null;
 
 	private AlertDialog.Builder alert;
 	private AddUserStepOne addUserStepOne;
+	private AddVoiceFragment addVoiceFragment;
 	private Db4oAdapter provider;
 	
-	//back operation
-	private boolean savedUser = false;
-	private boolean validSave = false;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_user);
-	
+		
 		provider = new Db4oAdapter(this);
 
 		alert = new AlertDialog.Builder(this);
@@ -61,55 +56,9 @@ public class AddUserActivity extends Activity
 		// start with
 		fm = getFragmentManager();
 		switchFragToStep1();
-		
-		//back operation
-		savedUser = false;
-		validSave = false;
-	}
-
-	//-----------------------------------------------------------------------------------Prevent partial user staying in database
-	/**
-	 * This function is called the moment the user presses the 'Cancel' button at the top left.
-	 * This function exits the current activity, removing it from the stack.
-	 * 
-	 * @param v
-	 */
-	public void goBack(View v)
-	{
-		cleanupBack();
-		this.finish();
 	}
 	
-	/**
-	 * Deletes user in database if it is partial.
-	 */
-	private  void cleanupBack()
-	{
-		if(savedUser)
-		{
-			if(user != null)
-			{
-				provider.open();
-				provider.delete(user);
-				provider.close();
-			}
-		}
-	} 
-	 
-
-		
-	/**
-	 * If the user presses the backButton one must take care that a partial user in the database is deleted.
-	 */
-	@Override
-	public void onBackPressed() 
-	{ 
-		 cleanupBack();
-		 this.finish();
-    }
-
-	// ----------------------------------------------------------------------------------------step1 - transfer to step
-	// 2
+	//------------------------------------------------------------------------------------------Step One
 	/**
 	 * This function is called the moment the user presses the 'Done' button at step 1
 	 * 
@@ -117,103 +66,37 @@ public class AddUserActivity extends Activity
 	 */
 	public void doneStepOneAddUser(View v)
 	{
-		if (validateStep1())
+		if (addUserStepOne.validate())
 		{
-			getValidUserStep1Info();
-			saveNewUser();// save user to get
+			user = addUserStepOne.getValidUserStep1();
 			addUserStepOne.clearEditBoxes();
 			switchFragToStep2();
-			
-			enableStep2Button();
-			disableStep1Button();
 		}
 	}
 	
-	@Override
-	public void onRestart()
-	{
-		super.onRestart();
-		//back operation
-		savedUser = false;
-		validSave = false;
-	}
-
 	/**
-	 * Creates new user and retrieves id
-	 * Saves the user info to this activity's private variables.
+	 * switch current frameLayout to represent the layout of step 1 - insert basic data such as name etc.
 	 */
-	private void getValidUserStep1Info()
+	public void switchFragToStep1()
 	{
-		user = new User(addUserStepOne.getFirstName(), addUserStepOne.getSurname(), addUserStepOne.getUsername(),
-							addUserStepOne.getPass(), 5, null);
+		ft = fm.beginTransaction();
+		ft.replace(R.id.layoutToReplace, this.addUserStepOne);
+		ft.commit();
+		enableStep1Button();
+		disableStep3Button();
 	}
-
-	/**
-	 * Make sure the user name does not exists already
-	 * check that all fields are filled in
-	 * check that password1 and password2 match
-	 * 
-	 * @return boolean
-	 */
-	public boolean validateStep1()
-	{
-		boolean valid = true;
-
-		// Check if username already exists
-		valid = !usernameExists();
-		if (!valid)
-		{
-			alertMessage("A user with that username already exists!");
-			return false;
-		}
-
-		// Check if all fields are filled
-		valid = addUserStepOne.allFieldsFilled();
-		if (!valid)
-		{
-			alertMessage("Empty field!");
-			return false;
-		}
-
-		// check if the passwords match
-		valid = addUserStepOne.passMatch();
-		if (!valid)
-		{
-			alertMessage("Passwords do not match!");
-			return false;
-		}
-
-		return valid;
-	}
-
-	/**
-	 * checks in the database if entered username already exists
-	 * 
-	 * @return
-	 */
-	public boolean usernameExists()
-	{
-		String username = addUserStepOne.getUsername();
-		boolean exists = false;
-		provider.open();
-		exists = provider.exists(new User(null, null, username, null, 0, null));
-		provider.close();
-		return exists;
-	}
-
-	/**
-	 * Alerts the specified message in dialogue box.
-	 */
-	public void alertMessage(String message)
-	{
-		alert.setTitle("Alert").setMessage(message).setNeutralButton("OK", null).show();
-	}
-
+	
+	
+	//------------------------------------------------------------------------------------------Step Two
 	/**
 	 * switch current frameLayout to represent the layout of step 2 - Camera
 	 */
 	public void switchFragToStep2()
 	{
+		//alter tabs
+		enableStep2Button();
+		disableStep1Button();
+		
 		AddCameraFragment f = new AddCameraFragment();
 		
 		Bundle bundle = new Bundle();
@@ -223,7 +106,82 @@ public class AddUserActivity extends Activity
 		ft.replace(R.id.layoutToReplace, f);
 		ft.commit();
 	}
+	
+	/**
+	 * switch current frameLayout to represent the layout of step 3 - Twitter
+	 */
+	public void switchFragToStep3()
+	{		
+		enableStep3Button();
+		disableStep2Button();
+		
+		addVoiceFragment = new AddVoiceFragment();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("user", user);
+		addVoiceFragment.setArguments(bundle);
+		ft = fm.beginTransaction();
+		ft.replace(R.id.layoutToReplace, addVoiceFragment);
+		ft.commit();
+	}
+	
+	//------------------------------------------------------------------------------------------Step Three
+	/**
+	 * This function is called the moment the user presses the 'Done' button at step 3
+	 * User is saved, inputs are cleared, switch to step 1 for a different new user
+	 * 
+	 * @param v
+	 */
+	public void doneStepThreeAddUser(View v)
+	{
+		saveUser(addVoiceFragment.getUser());
+		Toast.makeText(this.getApplicationContext(), "Saved new user successfully", Toast.LENGTH_SHORT).show();
+		switchFragToStep1();
+	}
+	
+	public void saveUser(User user)
+	{
+		provider.open();
+		provider.save(user);
+		provider.close();
+	}
+	
+	
+	//-------------------------------------------------------------------------------------------OTHER
+	/**
+	 * This function is called the moment the user presses the 'Cancel' button at the top left.
+	 * This function exits the current activity, removing it from the stack.
+	 * 
+	 * @param v
+	 */
+	public void goBack(View v)
+	{
+		this.finish();
+	}
+	
+	/**
+	 * Alerts the specified message in dialogue box.
+	 */
+	public void alertMessage(String message)
+	{
+		alert.setTitle("Alert").setMessage(message).setNeutralButton("OK", null).show();
+	}
+	
+	/**
+	 * Enables tab Step 1 to help the vision of effect of transition to step 1
+	 */
+	public void enableStep1Button()
+	{
+		stepOne.setEnabled(true);
+	}
 
+	/**
+	 * To disable the tab representing step 3 again after a user has been stored.
+	 */
+	public void disableStep3Button()
+	{
+		stepThree.setEnabled(false);
+	}
+	
 	/**
 	 * When the activity starts, tab of step 2 and 3 are disabled
 	 * This is to ensure that step 1 is firsts completed successfully before user is able to proceed
@@ -240,35 +198,7 @@ public class AddUserActivity extends Activity
 	{
 		stepOne.setEnabled(false);
 	}
-
-	// ----------------------------------------------------------------------------------------step2 - transfer to step
-	// 3
-	/**
-	 * This function is called the moment the user presses the 'Done' button at step 2
-	 * 
-	 * @param v
-	 */
-	public void doneStepTwoAddUser()
-	{
-		switchFragToStep3();
-		enableStep3Button();
-		disableStep2Button();
-	}
-
-	/**
-	 * switch current frameLayout to represent the layout of step 3 - Twitter
-	 */
-	public void switchFragToStep3()
-	{		
-		AddVoiceFragment fv = new AddVoiceFragment();
-		Bundle bundle = new Bundle();
-		bundle.putInt("userID", user.getID());
-		fv.setArguments(bundle);
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplace, fv);
-		ft.commit();
-	}
-
+	
 	/**
 	 * When the activity starts, tab of step 2 and 3 are disabled
 	 * This is to ensure that step 1 and 2 is firsts completed successfully before user is able to proceed
@@ -284,82 +214,6 @@ public class AddUserActivity extends Activity
 	public void disableStep2Button()
 	{
 		stepTwo.setEnabled(false);
-	}
-
-	// ----------------------------------------------------------------------------------------step3 - save user
-	/**
-	 * This function is called the moment the user presses the 'Done' button at step 3
-	 * User is saved, inputs are cleared, switch to step 1 for a different new user
-	 * 
-	 * @param v
-	 */
-	public void doneStepThreeAddUser(View v)
-	{
-		// saveNewUser();
-		Toast.makeText(this.getApplicationContext(), "Saved new user successfully", Toast.LENGTH_SHORT).show();
-		this.savedUser = false;
-		switchFragToStep1();
-		enableStep1Button();
-		disableStep3Button();
-		Log.d("user", "Done step 3");
-	}
-
-	/**
-	 * User is saved to database
-	 */
-	private void saveNewUser()
-	{
-		LastPK lastPK = null;
-		int newPK = 0;
-		provider.open();
-
-		List<Object> results = provider.load(new LastPK(0));
-
-		// If list is empty, then PK has not been instantiated yet
-		if (results.isEmpty())
-		{
-			lastPK = new LastPK(1);
-			newPK = 1;
-			provider.save(lastPK);
-		}
-		else
-		{
-			lastPK = (LastPK) results.get(0);
-			newPK = lastPK.getPK() + 1;
-			LastPK temp = new LastPK(newPK);
-			provider.update(lastPK, temp);
-		}
-		user.setID(newPK);
-		provider.save(user);
-		provider.close();
-		savedUser = true;
-	}
-
-	/**
-	 * switch current frameLayout to represent the layout of step 1 - insert basic data such as name etc.
-	 */
-	public void switchFragToStep1()
-	{
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplace, this.addUserStepOne);
-		ft.commit();
-		savedUser = false;
-	}
-
-	/**
-	 * Enables tab Step 1 to help the vision of effect of transition to step 1
-	 */
-	public void enableStep1Button()
-	{
-		stepOne.setEnabled(true);
-	}
-
-	/**
-	 * To disable the tab representing step 3 again after a user has been stored.
-	 */
-	public void disableStep3Button()
-	{
-		stepThree.setEnabled(false);
 	}
 
 }

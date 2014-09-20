@@ -1,7 +1,11 @@
 package za.co.zebrav.smartdoor.database;
 
+import java.util.List;
+
 import za.co.zebrav.smartdoor.R;
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +15,9 @@ import android.widget.Toast;
 
 public class AddUserStepOne extends Fragment 
 {
-
+	private AddUserActivity activity;
+	private Db4oAdapter db;
+	
 	//editTexts
 	private EditText firstname;
 	private EditText surname;
@@ -31,8 +37,105 @@ public class AddUserStepOne extends Fragment
 		  pass1 = (EditText) view.findViewById(R.id.addUser_pass1_et);
 		  pass2 = (EditText) view.findViewById(R.id.addUser_pass2_et);
 		  
+		  activity = (AddUserActivity) getActivity();
+		  db = new Db4oAdapter(activity);
+		  
 		  return view;
 	 }
+	 
+	 
+	 /**
+	  * 
+	  */
+	public User getValidUserStep1()
+	{
+		User user = new User(getFirstName(), getSurname(), getUsername(),
+							getPass(), getPK(), null);
+		return user;
+	}
+	
+	/**
+	 * User is saved to database
+	 */
+	private int getPK()
+	{
+		LastPK lastPK = null;
+		int newPK = 0;
+		db.open();
+
+		List<Object> results = db.load(new LastPK(0));
+
+		// If list is empty, then PK has not been instantiated yet
+		if (results.isEmpty())
+		{
+			lastPK = new LastPK(1);
+			newPK = 1;
+			db.save(lastPK);
+		}
+		else
+		{
+			lastPK = (LastPK) results.get(0);
+			newPK = lastPK.getPK() + 1;
+			LastPK temp = new LastPK(newPK);
+			db.update(lastPK, temp);
+		}
+		db.close();
+		return newPK;
+	}
+	 
+	 
+	 /**
+	 * Make sure the user name does not exists already
+	 * check that all fields are filled in
+	 * check that password1 and password2 match
+	 * 
+	 * @return boolean
+	 */
+	public boolean validate()
+	{
+		boolean valid = true;
+
+		// Check if user name already exists
+		valid = !usernameExists();
+		if (!valid)
+		{
+			activity.alertMessage("A user with that username already exists!");
+			return false;
+		}
+
+		// Check if all fields are filled
+		valid = allFieldsFilled();
+		if (!valid)
+		{
+			activity.alertMessage("Empty field!");
+			return false;
+		}
+
+		// check if the passwords match
+		valid = passMatch();
+		if (!valid)
+		{
+			activity.alertMessage("Passwords do not match!");
+			return false;
+		}
+
+		return valid;
+	}
+	
+	/**
+	 * checks in the database if entered user name already exists
+	 * 
+	 * @return
+	 */
+	public boolean usernameExists()
+	{
+		String username = getUsername();
+		boolean exists = false;
+		db.open();
+		exists = db.exists(new User(null, null, username, null, 0, null));
+		db.close();
+		return exists;
+	}
 	 
 	 /**
 	 * All editText fields where the user enters data to register must contain at least some text.

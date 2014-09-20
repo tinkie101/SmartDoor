@@ -32,13 +32,14 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 	private String activeKey;
 	private Context context;
 	private View view;
+	private User user;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		Bundle bundle = this.getArguments();
-		Integer id = bundle.getInt("userID", -1);
-		activeKey = id.toString();
+		Bundle bundle = getArguments();
+		user = (User) bundle.getSerializable("user");
+		activeKey = user.getID() + "";
 		return inflater.inflate(R.layout.fragment_add_voice, container, false);
 	}
 
@@ -87,6 +88,11 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 			AddUserActivity activity = (AddUserActivity) context;
 			activity.doneStepThreeAddUser(btnDone);
 		}
+	}
+	
+	public User getUser()
+	{
+		return user;
 	}
 
 	/**
@@ -142,15 +148,8 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 	
 	private void saveToDataBase()
 	{
-		Db4oAdapter database = new Db4oAdapter(context);
-		database.open();
-		
-		List<Object> a = database.load(new User(null, null, null, null, Integer.parseInt(this.activeKey),null));
-		Log.d(LOG_TAG, "size = " + a.size() + "; ID = " + activeKey);
-		User user = (User)a.get(0);
 		user.setCodeBook(voiceAuthenticator.getCodeBook());
-		database.save(user);
-		database.close();
+		
 	}
 
 	private void trainVoice()

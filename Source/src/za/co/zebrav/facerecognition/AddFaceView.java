@@ -243,7 +243,7 @@ class AddFaceView extends FaceView
 			count++;
 			if (count == 5)
 			{
-				((AddUserActivity)activity).doneStepTwoAddUser();
+				((AddUserActivity)activity).switchFragToStep3();
 			}
 
 		}
