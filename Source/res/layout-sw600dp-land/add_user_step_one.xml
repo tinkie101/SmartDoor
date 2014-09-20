@@ -32,6 +32,7 @@
 	            android:ems="10"
 	            android:inputType="textPersonName"
 	            android:textSize="25sp"
+	            android:hint="first name"
 	            android:textColor="#FFF"/>
 	
 	        <TextView
@@ -49,6 +50,7 @@
 	            android:ems="10"
 	            android:inputType="textPersonName"
 	            android:textSize="25sp"
+	            android:hint="surname"
 	            android:textColor="#FFF" />
 	
 	        <TextView
@@ -65,6 +67,7 @@
 	            android:layout_height="wrap_content"
 	            android:ems="10"
 	            android:textSize="25sp"
+	            android:hint="username"
 	            android:inputType="text"
 	            android:textColor="#FFF" />
 	
@@ -83,6 +86,7 @@
 	            android:ems="10"
 	            android:inputType="textPassword"
 	            android:textSize="25sp" 
+	            android:hint="password"
 	            android:textColor="#FFF"/>
 	
 	        <TextView
@@ -100,7 +104,8 @@
 	            android:ems="10"
 	            android:inputType="textPassword"
 	            android:textSize="25sp"
-	            android:textColor="#FFF" />
+	            android:textColor="#FFF" 
+	            android:hint="retype password"/>
 	        
 	         <Button
 	             android:id="@+id/stepOneDoneButton"

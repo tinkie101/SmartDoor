@@ -47,7 +47,7 @@ public class AddUserActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_user);
-		
+	
 		provider = new Db4oAdapter(this);
 
 		alert = new AlertDialog.Builder(this);

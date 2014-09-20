@@ -37,6 +37,7 @@
                android:ems="10"
                android:inputType="textPersonName"
                android:textColor="#FFF"
+               android:hint="first name"
                android:textSize="15sp" />
            
            <TextView
@@ -58,6 +59,7 @@
 	            android:ems="10"
 	            android:inputType="textPersonName"
 	            android:textColor="#FFF"
+	            android:hint="surname"
 	            android:textSize="15sp" />
 	        
 	        <TextView
@@ -79,6 +81,7 @@
 	            android:ems="10"
 	            android:inputType="text"
 	            android:textColor="#FFF"
+	            android:hint="username"
 	            android:textSize="15sp" />
 	        
 	        <TextView
@@ -100,6 +103,7 @@
 	            android:ems="10"
 	            android:inputType="textPassword"
 	            android:textColor="#FFF"
+	            android:hint="password"
 	            android:textSize="15sp" />
 	        
 	         <TextView
@@ -120,6 +124,7 @@
 	            android:layout_row="4"
 	            android:ems="10"
 	            android:inputType="textPassword"
+	            android:hint="retype password"
 	            android:textColor="#FFF"
 	            android:textSize="15sp" />
 	        
