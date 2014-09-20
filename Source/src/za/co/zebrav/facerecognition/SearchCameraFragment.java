@@ -72,6 +72,7 @@ public class SearchCameraFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		Log.d(TAG, "Created");
 		return layout;
 	}
 
@@ -111,9 +112,11 @@ public class SearchCameraFragment extends Fragment
 	public void onResume()
 	{
 		super.onResume();
+		Log.d(TAG, "Resume");
 		// Create an instance of Camera
 		mCamera = getFrontCameraInstance();
 		mPreview.setCamera(mCamera);
+		
 	}
 
 	private void releaseCamera()

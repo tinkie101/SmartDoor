@@ -6,10 +6,18 @@ import za.co.zebrav.facerecognition.AddCameraFragment;
 import za.co.zebrav.smartdoor.AddVoiceFragment;
 import za.co.zebrav.smartdoor.R;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,7 +30,7 @@ public class AddUserActivity extends Activity
 	private Button stepOne;
 	private Button stepTwo;
 	private Button stepThree;
-
+	private WakeLock wakeLock;
 	// user to be saved
 	private User user;
 
@@ -39,7 +47,7 @@ public class AddUserActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_user);
-
+		
 		provider = new Db4oAdapter(this);
 
 		alert = new AlertDialog.Builder(this);
@@ -59,6 +67,7 @@ public class AddUserActivity extends Activity
 		validSave = false;
 	}
 
+	//-----------------------------------------------------------------------------------Prevent partial user staying in database
 	/**
 	 * This function is called the moment the user presses the 'Cancel' button at the top left.
 	 * This function exits the current activity, removing it from the stack.
@@ -71,26 +80,44 @@ public class AddUserActivity extends Activity
 		this.finish();
 	}
 	
+	/**
+	 * Deletes user in database if it is partial.
+	 */
 	private  void cleanupBack()
 	{
-		Log.d("user", "Stop Called");
 		if(savedUser)
 		{
-			Log.d("user", "A user has been saved");
 			if(user != null)
 			{
-				Log.d("user", "Atempt to delete user");
 				provider.open();
 				provider.delete(user);
 				provider.close();
-				Log.d("user", "User deleted");
 			}
 		}
-	}
-	
+	} 
+	 
+	/**
+	 * This is called the moment the window goes out of focus.
+	 * This also works for when the homeButton is pressed.
+	 */
+	public void onWindowFocusChanged(boolean hasFocus)
+	{
+		super.onWindowFocusChanged(hasFocus);
+		Log.d("Focus debug", "Focus changed !");
+		if(!hasFocus)
+		{
+			Log.d("Focus debug", "Focus Lost !");
+			cleanupBack();
+			this.finish();
+		}
+    }
+		
+	/**
+	 * If the user presses the backButton one must take care that a partial user in the database is deleted.
+	 */
 	@Override
 	public void onBackPressed() 
-	 { 
+	{ 
 		 cleanupBack();
 		 this.finish();
     }

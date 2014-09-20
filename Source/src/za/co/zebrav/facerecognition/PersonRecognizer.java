@@ -46,6 +46,7 @@ public class PersonRecognizer
 		Db4oAdapter db = new Db4oAdapter(context);
 		db.open();
 		List<Object> tempList = db.load(new User(null, null, null, null, 0, null));
+		Log.d(TAG, "Size:"+tempList.size());
 		if (tempList.size() < 2)
 		{
 			Log.d(TAG, "List less than 2");
