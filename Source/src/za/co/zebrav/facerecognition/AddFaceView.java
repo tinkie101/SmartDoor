@@ -32,9 +32,9 @@ import android.hardware.Camera;
 import android.util.Log;
 import android.view.View;
 
-class AddFaceView extends View implements Camera.PreviewCallback
+class AddFaceView extends FaceView
 {
-	private static final String TAG = "FaceView";
+	private static final String TAG = "AddFaceView";
 	/**
 	 * The factor by which the camera feed needs to be down sampled by.
 	 * Higher number = Higher performance.
@@ -238,12 +238,12 @@ class AddFaceView extends View implements Camera.PreviewCallback
 		if (runnables[0].getObjects().total() == 1 && runnables[1].getObjects().total() == 2
 							&& runnables[2].getObjects().total() == 1)
 		{
-			ImageTools.saveImageAsPNG(ImageTools.getGreyImage(data, width, height, 1), userID + "-" + count, context);
-			Log.d(TAG, "Saved ID:"+ userID +" Number: " + count + " .");
+			ImageTools.saveImageAsPNG(ImageTools.getGreyImage(data, width, height, 1), uID + "-" + count, context);
+			Log.d(TAG, "Saved ID:"+ uID +" Number: " + count + " .");
 			count++;
 			if (count == 5)
 			{
-				activity.doneStepTwoAddUser();
+				((AddUserActivity)activity).doneStepTwoAddUser();
 			}
 
 		}
@@ -251,18 +251,6 @@ class AddFaceView extends View implements Camera.PreviewCallback
 	}
 
 	int count = 0;
-
-	private int userID = -1;
-	
-	AddUserActivity activity;
-	public void setActivity(AddUserActivity activity)
-	{
-		this.activity = activity;
-	}
-	public void setUserID(int ID)
-	{
-		this.userID = ID;
-	}
 
 	private String calculateFPS()
 	{

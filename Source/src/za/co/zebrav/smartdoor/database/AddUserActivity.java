@@ -214,7 +214,7 @@ public class AddUserActivity extends Activity
 	 */
 	public void switchFragToStep2()
 	{
-		AddCameraFragment f = new AddCameraFragment(this);
+		AddCameraFragment f = new AddCameraFragment();
 		
 		Bundle bundle = new Bundle();
 		bundle.putInt("userID", user.getID());

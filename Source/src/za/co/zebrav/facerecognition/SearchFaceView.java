@@ -28,7 +28,7 @@ import android.hardware.Camera;
 import android.util.Log;
 import android.view.View;
 
-class SearchFaceView extends View implements Camera.PreviewCallback
+class SearchFaceView extends FaceView
 {
 	private static final String TAG = "FaceView";
 	/**
@@ -196,7 +196,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 				tempdetected = detectedId;
 				Log.d(TAG, "Count in a row:" + count);
 				if(count == DETECTED_IN_A_ROW)
-					activity.switchToVoice(detectedId);
+					((MainActivity)activity).switchToVoice(detectedId);
 			}
 			else
 				tempdetected = 0;
@@ -208,11 +208,7 @@ class SearchFaceView extends View implements Camera.PreviewCallback
 	private static final int DETECTED_IN_A_ROW = 5;
 	private int count = 0;
 	private int tempdetected = -1;
-	private MainActivity activity;
-	public void setMainActivity(MainActivity a)
-	{
-		activity = a;
-	}
+
 	private String calculateFPS()
 	{
 		long newTime = System.currentTimeMillis();
