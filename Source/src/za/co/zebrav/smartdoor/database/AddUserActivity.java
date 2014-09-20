@@ -8,6 +8,7 @@ import za.co.zebrav.smartdoor.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -28,6 +29,10 @@ public class AddUserActivity extends Activity
 	private AlertDialog.Builder alert;
 	private AddUserStepOne addUserStepOne;
 	private Db4oAdapter provider;
+	
+	//back operation
+	private boolean savedUser = false;
+	private boolean validSave = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -48,6 +53,10 @@ public class AddUserActivity extends Activity
 		// start with
 		fm = getFragmentManager();
 		switchFragToStep1();
+		
+		//back operation
+		savedUser = false;
+		validSave = false;
 	}
 
 	/**
@@ -58,8 +67,33 @@ public class AddUserActivity extends Activity
 	 */
 	public void goBack(View v)
 	{
+		cleanupBack();
 		this.finish();
 	}
+	
+	private  void cleanupBack()
+	{
+		Log.d("user", "Stop Called");
+		if(savedUser)
+		{
+			Log.d("user", "A user has been saved");
+			if(user != null)
+			{
+				Log.d("user", "Atempt to delete user");
+				provider.open();
+				provider.delete(user);
+				provider.close();
+				Log.d("user", "User deleted");
+			}
+		}
+	}
+	
+	@Override
+	public void onBackPressed() 
+	 { 
+		 cleanupBack();
+		 this.finish();
+    }
 
 	// ----------------------------------------------------------------------------------------step1 - transfer to step
 	// 2
@@ -76,9 +110,19 @@ public class AddUserActivity extends Activity
 			saveNewUser();// save user to get
 			addUserStepOne.clearEditBoxes();
 			switchFragToStep2();
+			
 			enableStep2Button();
 			disableStep1Button();
 		}
+	}
+	
+	@Override
+	public void onRestart()
+	{
+		super.onRestart();
+		//back operation
+		savedUser = false;
+		validSave = false;
 	}
 
 	/**
@@ -240,9 +284,11 @@ public class AddUserActivity extends Activity
 	{
 		// saveNewUser();
 		Toast.makeText(this.getApplicationContext(), "Saved new user successfully", Toast.LENGTH_SHORT).show();
+		this.savedUser = false;
 		switchFragToStep1();
 		enableStep1Button();
 		disableStep3Button();
+		Log.d("user", "Done step 3");
 	}
 
 	/**
@@ -273,6 +319,7 @@ public class AddUserActivity extends Activity
 		user.setID(newPK);
 		provider.save(user);
 		provider.close();
+		savedUser = true;
 	}
 
 	/**
@@ -283,6 +330,7 @@ public class AddUserActivity extends Activity
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplace, this.addUserStepOne);
 		ft.commit();
+		savedUser = false;
 	}
 
 	/**
