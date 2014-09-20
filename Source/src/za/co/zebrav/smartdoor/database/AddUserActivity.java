@@ -96,21 +96,7 @@ public class AddUserActivity extends Activity
 		}
 	} 
 	 
-	/**
-	 * This is called the moment the window goes out of focus.
-	 * This also works for when the homeButton is pressed.
-	 */
-	public void onWindowFocusChanged(boolean hasFocus)
-	{
-		super.onWindowFocusChanged(hasFocus);
-		Log.d("Focus debug", "Focus changed !");
-		if(!hasFocus)
-		{
-			Log.d("Focus debug", "Focus Lost !");
-			cleanupBack();
-			this.finish();
-		}
-    }
+
 		
 	/**
 	 * If the user presses the backButton one must take care that a partial user in the database is deleted.
