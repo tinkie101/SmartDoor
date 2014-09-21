@@ -25,7 +25,6 @@ public class AddCameraFragment extends CameraFragment
 			mPreview = new Preview(activity, faceView);
 			layout.addView(mPreview);
 			layout.addView(faceView);
-			faceView.setActivity((AddUserActivity)activity);
 		}
 		catch (IOException e)
 		{

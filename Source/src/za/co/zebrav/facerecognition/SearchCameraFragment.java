@@ -33,7 +33,6 @@ public class SearchCameraFragment extends CameraFragment
 			mPreview = new Preview(activity, faceView);
 			layout.addView(mPreview);
 			layout.addView(faceView);
-			faceView.setActivity(activity);
 		}
 		catch (IOException e)
 		{
