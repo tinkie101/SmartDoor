@@ -36,7 +36,6 @@ public class AddUserActivity extends Activity
 		provider = new Db4oAdapter(this);
 
 		alert = new AlertDialog.Builder(this);
-		addUserStepOne = new AddUserStepOne();
 
 		// initialize GUI - buttons
 		stepOne = (Button) findViewById(R.id.stepOne);
@@ -59,7 +58,6 @@ public class AddUserActivity extends Activity
 		if (addUserStepOne.validate())
 		{
 			user = addUserStepOne.getValidUserStep1();
-			addUserStepOne.clearEditBoxes();
 			switchFragToStep2();
 		}
 	}
@@ -69,6 +67,7 @@ public class AddUserActivity extends Activity
 	 */
 	public void switchFragToStep1()
 	{
+		addUserStepOne = new AddUserStepOne();
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplace, this.addUserStepOne);
 		ft.commit();
@@ -133,6 +132,7 @@ public class AddUserActivity extends Activity
 		provider.open();
 		provider.save(user);
 		provider.close();
+		user = null;
 	}
 	
 	
