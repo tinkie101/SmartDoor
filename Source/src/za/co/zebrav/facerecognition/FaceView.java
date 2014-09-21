@@ -23,6 +23,7 @@ import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
 
 import za.co.zebrav.smartdoor.MainActivity;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -33,7 +34,8 @@ import android.view.View;
 
 public abstract class FaceView extends View implements Camera.PreviewCallback
 {
-	Activity activity;
+	protected Activity activity;
+	protected Fragment fragment;
 	protected int uID;
 	public void setuID(int uID)
 	{
@@ -83,10 +85,11 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 	 */
 	protected PersonRecognizer personRecognizer;
 
-	public FaceView(Activity activity) throws IOException
+	public FaceView(Activity activity, Fragment fragment) throws IOException
 	{
 		super(activity);
 		this.activity = activity;
+		this.fragment = fragment;
 		paint = initialisePaint();
 		personRecognizer = new PersonRecognizer(activity);
 		lastTime = System.currentTimeMillis();

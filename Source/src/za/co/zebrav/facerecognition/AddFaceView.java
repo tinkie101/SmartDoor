@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import za.co.zebrav.smartdoor.database.AddUserActivity;
 import android.app.Activity;
+import android.app.Fragment;
 import android.graphics.Color;
 import android.util.Log;
 
@@ -16,9 +17,9 @@ class AddFaceView extends FaceView
 						"haarcascade_nose.xml" };
 	private static final int colors[] = { Color.RED, Color.GREEN, Color.BLUE };
 
-	public AddFaceView(Activity activity) throws IOException
+	public AddFaceView(Activity activity, Fragment fragment) throws IOException
 	{
-		super(activity);
+		super(activity, fragment);
 		initialiseClassifiers(classifierCount, colors, classifierFiles);
 	}
 
@@ -31,6 +32,7 @@ class AddFaceView extends FaceView
 			ImageTools.saveImageAsPNG(ImageTools.getGreyImage(data, width, height, 1), uID + "-" + count, activity);
 			Log.d(TAG, "Saved ID:" + uID + " Number: " + count + " .");
 			count++;
+			((AddCameraFragment)fragment).setProgress(25*count);
 			if (count == 5)
 			{
 				((AddUserActivity) activity).switchFragToStep3();

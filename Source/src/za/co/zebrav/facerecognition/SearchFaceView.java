@@ -6,6 +6,7 @@ import org.bytedeco.javacpp.opencv_core.Mat;
 
 import za.co.zebrav.smartdoor.MainActivity;
 import android.app.Activity;
+import android.app.Fragment;
 import android.graphics.Color;
 import android.util.Log;
 
@@ -16,9 +17,9 @@ class SearchFaceView extends FaceView
 	private static final int colors[] = {Color.RED};
 	private static final String[] classifierFiles = {"haarcascade_frontalface_alt.xml"};
 
-	public SearchFaceView(Activity activity) throws IOException
+	public SearchFaceView(Activity activity, Fragment fragment) throws IOException
 	{
-		super(activity);
+		super(activity, fragment);
 		initialiseClassifiers(classifierCount, colors, classifierFiles);
 	}
 	
@@ -38,6 +39,7 @@ class SearchFaceView extends FaceView
 				if(tempdetected != detectedId)
 					count = 0;
 				else count++;
+				((SearchCameraFragment)fragment).setProgress(25*count);
 				tempdetected = detectedId;
 				Log.d(TAG, "Count in a row:" + count);
 				if(count == DETECTED_IN_A_ROW)

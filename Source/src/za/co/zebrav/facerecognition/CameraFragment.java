@@ -1,5 +1,6 @@
 package za.co.zebrav.facerecognition;
 
+import za.co.zebrav.smartdoor.R;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public abstract class CameraFragment extends Fragment
@@ -32,6 +34,10 @@ public abstract class CameraFragment extends Fragment
 		// This is so that onCreateView has a view to return
 		// Then onResume we add the camera to the preview
 		layout = new FrameLayout(activity);
+		bar = new ProgressBar(activity,null, android.R.attr.progressBarStyleHorizontal);
+		bar.setProgress(0);
+		bar.setScrollBarStyle(R.style.soundBarStyle);
+		bar.setIndeterminate(false);
 	}
 	/**
 	 * Preview object to display camera content
@@ -116,5 +122,10 @@ public abstract class CameraFragment extends Fragment
 			System.exit(0);
 		}
 		return c; // returns null if camera is unavailable
+	}
+	ProgressBar bar;
+	public void setProgress(int p)
+	{
+		bar.setProgress(p);
 	}
 }

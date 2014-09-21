@@ -29,10 +29,11 @@ public class SearchCameraFragment extends CameraFragment
 		super.onCreate(savedInstanceState);
 		try
 		{
-			this.faceView = new SearchFaceView(activity);
+			this.faceView = new SearchFaceView(activity, this);
 			mPreview = new Preview(activity, faceView);
 			layout.addView(mPreview);
 			layout.addView(faceView);
+			layout.addView(bar);
 		}
 		catch (IOException e)
 		{

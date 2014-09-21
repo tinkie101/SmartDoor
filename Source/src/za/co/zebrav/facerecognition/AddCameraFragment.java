@@ -21,10 +21,11 @@ public class AddCameraFragment extends CameraFragment
 		super.onCreate(savedInstanceState);
 		try
 		{
-			this.faceView = new AddFaceView(activity);
+			this.faceView = new AddFaceView(activity, this);
 			mPreview = new Preview(activity, faceView);
 			layout.addView(mPreview);
 			layout.addView(faceView);
+			layout.addView(bar);
 		}
 		catch (IOException e)
 		{
