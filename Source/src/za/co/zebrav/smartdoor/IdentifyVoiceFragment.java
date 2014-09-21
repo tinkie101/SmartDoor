@@ -5,10 +5,9 @@ import java.util.List;
 
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
-import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,8 +18,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 import at.fhhgb.auth.voice.VoiceAuthenticator;
+import at.fhooe.mcm.smc.math.mfcc.FeatureVector;
 import at.fhooe.mcm.smc.math.vq.Codebook;
 
 public class IdentifyVoiceFragment extends Fragment implements OnClickListener
@@ -33,16 +32,18 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 
 	private VoiceAuthenticator voiceAuthenticator;
 
-	private String activeKey;
+	private int activeID;
 	private Context context;
 	private View view;
+
+	private ProgressDialog soundLevelDialog;
+	private ProgressDialog processingDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		Bundle bundle = this.getArguments();
-		Integer id = bundle.getInt("userID", -1);
-		activeKey = id.toString();
+		activeID = bundle.getInt("userID", -1);
 		return inflater.inflate(R.layout.fragment_identify_voice, container, false);
 	}
 
@@ -55,14 +56,22 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 		context = getActivity();
 		view = getView();
 
-		voiceAuthenticator = new VoiceAuthenticator();
+		soundLevelDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
+		soundLevelDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		soundLevelDialog.setTitle("Listening...");
+		soundLevelDialog.setCancelable(false);
+
+		processingDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
+		processingDialog.setCancelable(false);
+
+		voiceAuthenticator = new VoiceAuthenticator(soundLevelDialog);
 
 		btnIdentify = (Button) view.findViewById(R.id.btnIdentify);
 		btnIdentify.setOnClickListener(this);
 
 		btnDone = (Button) view.findViewById(R.id.btnDone);
 		btnDone.setOnClickListener(this);
-		
+
 		listView = (ListView) view.findViewById(R.id.identify_list);
 	}
 
@@ -98,45 +107,26 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 	 */
 	private void startRecording()
 	{
-		if (activeKey != null && activeKey.length() > 0)
-		{
-			Log.i(LOG_TAG, "Recording to File");
-			voiceAuthenticator.startRecording(activeKey);
+		processingDialog.show();
+		soundLevelDialog.show();
 
-			// Alert user of recording and Stop button
-			new AlertDialog.Builder(context).setTitle("Recording...").setMessage("Stop Recording")
-								.setNeutralButton("Ok", new DialogInterface.OnClickListener()
-								{
-									public void onClick(DialogInterface dialog, int whichButton)
-									{
-										voiceAuthenticator.stopRecording();
-										new identifyTask().execute();
-									}
-
-								}).show();
-		}
-		else
-		{
-			Toast.makeText(context, "No Active Key Set!", Toast.LENGTH_LONG).show();
-		}
+		new identifyTask().execute();
 	}
 
-	private ArrayList<String> calculateDistances()
+	private ArrayList<String> calculateDistances(FeatureVector featureVector)
 	{
 		Db4oAdapter db = new Db4oAdapter(context);
 		db.open();
 		List<Object> tempList = db.load(new User(null, null, null, null, 0, null));
 
-		if (tempList.size() < 2)
+		if (tempList.size() < 1)
 		{
-			Log.d(LOG_TAG, "List has less than 2 elements");
+			Log.d(LOG_TAG, "No valid users in database");
 			db.close();
 			return null;
 		}
 		else
 		{
-			Log.d(LOG_TAG, "List has more than 2 elements");
-
 			ArrayList<String> result = new ArrayList<String>();
 			ArrayList<Double> resultDist = new ArrayList<Double>();
 
@@ -146,29 +136,29 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 
 				User user = (User) o;
 				ArrayList<Codebook> cb = user.getCodeBook();
-				
-				if(cb != null)
+
+				if (cb != null)
 				{
 					voiceAuthenticator.setCodeBook(cb);
-	
-					ArrayList<Double> tempResult = voiceAuthenticator.identify();
-					
-					if(tempResult == null)
+
+					ArrayList<Double> tempResult = voiceAuthenticator.identify(featureVector);
+
+					if (tempResult == null)
 					{
 						Log.d(LOG_TAG, "Error with identify! Check if ActiveFile is set");
 						continue;
 					}
-	
+
 					// caluclate user's average
 					for (int l = 0; l < tempResult.size(); l++)
 					{
 						Log.i(LOG_TAG, l + "= " + tempResult.get(l));
 						tempAvgDist += tempResult.get(l);
 					}
-	
+
 					tempAvgDist = tempAvgDist / (double) tempResult.size();
 					Log.d(LOG_TAG, "user average distance = " + tempAvgDist);
-	
+
 					// Insert new user into sorted list
 					boolean inserted = false;
 					for (int l = 0; l < resultDist.size(); l++)
@@ -182,8 +172,8 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 							break;
 						}
 					}
-					
-					if(!inserted)
+
+					if (!inserted)
 					{
 						resultDist.add(tempAvgDist);
 						Integer id = user.getID();
@@ -212,7 +202,9 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 		@Override
 		protected ArrayList<String> doInBackground(Void... params)
 		{
-			return calculateDistances();
+			voiceAuthenticator.startRecording();
+			soundLevelDialog.dismiss();
+			return calculateDistances(voiceAuthenticator.getCurrentFeatureVector());
 		}
 
 		@Override
@@ -222,14 +214,15 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 			{
 				Log.i(LOG_TAG, string);
 			}
-			
+
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
 								result);
 			listView.setAdapter(adapter);
-			
-			//delete active file from device storage
+
+			//TODO remove this line
 			voiceAuthenticator.deleteActiveFile();
-			
+			processingDialog.dismiss();
+
 			Log.d(LOG_TAG, "Adapter Set to Results");
 		}
 	}
