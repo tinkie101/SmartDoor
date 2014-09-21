@@ -1,23 +1,13 @@
 package za.co.zebrav.smartdoor.database;
 
-import java.util.List;
 
 import za.co.zebrav.facerecognition.AddCameraFragment;
 import za.co.zebrav.smartdoor.AddVoiceFragment;
 import za.co.zebrav.smartdoor.R;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
