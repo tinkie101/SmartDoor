@@ -85,6 +85,7 @@ public class LoggedInFragment extends Fragment
 	
 	private void twitterSetup()
 	{
-		Toast.makeText(getActivity(), "Twitter setup activity must still be created", Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(getActivity(),TwitterSetup.class);
+		startActivity(intent);
 	}
 }

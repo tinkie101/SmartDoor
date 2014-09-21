@@ -133,7 +133,8 @@ public final class R {
         public static final int manual_login=0x7f03000f;
         public static final int search_user_listview_item=0x7f030010;
         public static final int texttospeech=0x7f030011;
-        public static final int view_user=0x7f030012;
+        public static final int twitter_setup=0x7f030012;
+        public static final int view_user=0x7f030013;
     }
     public static final class menu {
         public static final int twitter=0x7f080000;

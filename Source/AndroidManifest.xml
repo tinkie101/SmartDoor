@@ -67,6 +67,10 @@
             android:name=".LoggedIn"
             android:screenOrientation="landscape" >
         </activity>
+        <activity
+            android:name=".TwitterSetup"
+            android:screenOrientation="landscape" >
+        </activity>
         <activity android:name="za.co.zebrav.facerecognition.ImageGallery" >
         </activity>
     </application>
