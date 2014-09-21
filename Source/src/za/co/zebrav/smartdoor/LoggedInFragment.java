@@ -1,6 +1,9 @@
 package za.co.zebrav.smartdoor;
 
+import za.co.zebrav.smartdoor.database.AddUserActivity;
+import za.co.zebrav.smartdoor.database.ViewUserActivity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,16 +42,49 @@ public class LoggedInFragment extends Fragment
 			{	
 				String selectedName = adapter.getItem(position);
 				
-				Toast.makeText(getActivity(), selectedName, Toast.LENGTH_SHORT).show();
 				if(selectedName.equals("Open door"))
 				{
-					
+					openDoor();
 				}
-				else if(selectedName.equals("Hello"))
+				else if(selectedName.equals("Add user"))
 				{
-					
+					addUser();
+				}
+				else if(selectedName.equals("Remove user"))
+				{
+					searchUser();
+				}
+				else if(selectedName.equals("Search user"))
+				{
+					searchUser();
+				}
+				else if(selectedName.equals("Twitter setup"))
+				{
+					twitterSetup();
 				}
 			}
 		});
+	}
+	//----------------------------------------------------------------------------Execution of commands
+	private void openDoor()
+	{
+		Toast.makeText(getActivity(), "Openning the door", Toast.LENGTH_SHORT).show();
+	}
+	
+	private void addUser()
+	{
+		Intent intent = new Intent(getActivity(), AddUserActivity.class);
+		startActivity(intent);
+	}
+	
+	private void searchUser()
+	{
+		Intent intent = new Intent(getActivity(),ViewUserActivity.class);
+		startActivity(intent);
+	}
+	
+	private void twitterSetup()
+	{
+		Toast.makeText(getActivity(), "Twitter setup activity must still be created", Toast.LENGTH_SHORT).show();
 	}
 }

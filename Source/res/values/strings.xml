@@ -31,7 +31,10 @@
     
     <string-array name="commandOptions">
         <item>Open door</item>
-        <item>Hello</item>
+        <item>Add user</item>
+        <item>Remove user</item>
+        <item>Search user</item>
+        <item>Twitter setup</item>
     </string-array>
         
 
