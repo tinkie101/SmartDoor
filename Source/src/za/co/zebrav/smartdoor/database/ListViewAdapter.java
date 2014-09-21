@@ -130,11 +130,14 @@ public class ListViewAdapter extends BaseAdapter
 			public void onClick(DialogInterface dialog, int which)
 			{
 				provider.open();
-				provider.delete(user);
+				if(provider.deleteThisOne(user))
+				{
+					useList.remove(position);
+					notifyDataSetChanged();
+				}
 				provider.close();
 				//update list
-				useList.remove(position);
-				notifyDataSetChanged();
+				
 			}
 		});
 		

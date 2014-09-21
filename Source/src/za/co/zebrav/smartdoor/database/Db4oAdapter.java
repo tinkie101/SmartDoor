@@ -136,6 +136,28 @@ public class Db4oAdapter implements DatabaseAdaptee
 		}
 	}
 	
+	public boolean deleteThisOne(User object)
+	{
+		//get user from database
+		ObjectSet result = getDatabase().queryByExample(new User(null, null, null, null, object.getID(), null));
+		
+		if(result.isEmpty())
+		{
+			Log.d("delete", "empty list. No deleted");
+			return false;
+		}
+		else
+		{
+			Log.d("delete", "delete");
+			for(Object o: result)
+			{
+				getDatabase().delete(o);
+				commit();
+			}
+			return true;
+		}
+	}
+	
 	public boolean update(Object oldO, Object newO)
 	{
 		delete(oldO);
