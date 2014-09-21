@@ -1,14 +1,10 @@
 package za.co.zebrav.smartdoor;
 
-import java.util.List;
-
 import za.co.zebrav.smartdoor.database.AddUserActivity;
-import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
-import android.app.AlertDialog;
 import android.app.ListFragment;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,17 +25,20 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 
 	private VoiceAuthenticator voiceAuthenticator;
 
-	private String activeKey;
+	private int activeID;
 	private Context context;
 	private View view;
 	private User user;
+
+	private ProgressDialog soundLevelDialog;
+	private ProgressDialog processingDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		Bundle bundle = getArguments();
 		user = (User) bundle.getSerializable("user");
-		activeKey = user.getID() + "";
+		activeID = user.getID();
 		return inflater.inflate(R.layout.fragment_add_voice, container, false);
 	}
 
@@ -52,11 +51,19 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 		context = getActivity();
 		view = getView();
 
-		voiceAuthenticator = new VoiceAuthenticator();
+		soundLevelDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
+		soundLevelDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		soundLevelDialog.setTitle("Listening...");
+		soundLevelDialog.setCancelable(false);
+
+		processingDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
+		processingDialog.setCancelable(false);
+
+		voiceAuthenticator = new VoiceAuthenticator(soundLevelDialog);
 
 		btnTrain = (Button) view.findViewById(R.id.btnTrain);
 		btnTrain.setOnClickListener(this);
-		
+
 		btnDone = (Button) view.findViewById(R.id.btnDone);
 		btnDone.setEnabled(false);
 		btnDone.setOnClickListener(this);
@@ -81,15 +88,15 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 	{
 		if (v == btnTrain)
 			trainVoice();
-		else if(v == btnDone)
+		else if (v == btnDone)
 		{
 			saveToDataBase();
-			
+
 			AddUserActivity activity = (AddUserActivity) context;
 			activity.doneStepThreeAddUser(btnDone);
 		}
 	}
-	
+
 	public User getUser()
 	{
 		return user;
@@ -102,28 +109,10 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 	 */
 	private void startRecording()
 	{
-		if (activeKey != null && activeKey.length() > 0)
-		{
-			Log.i(LOG_TAG, "Recording to File");
-			voiceAuthenticator.startRecording(activeKey);
+		processingDialog.show();
+		soundLevelDialog.show();
 
-			// Alert user of recording and Stop button
-			new AlertDialog.Builder(context).setTitle("Recording...").setMessage("Stop Recording")
-								.setNeutralButton("Ok", new DialogInterface.OnClickListener()
-								{
-									public void onClick(DialogInterface dialog, int whichButton)
-									{
-										voiceAuthenticator.stopRecording();
-										btnDone.setEnabled(false);
-										new trainTask().execute();
-									}
-
-								}).show();
-		}
-		else
-		{
-			Toast.makeText(context, "No Active Key Set!", Toast.LENGTH_LONG).show();
-		}
+		new trainTask().execute();
 	}
 
 	private class trainTask extends AsyncTask<Void, Void, Void>
@@ -131,7 +120,11 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 		@Override
 		protected Void doInBackground(Void... params)
 		{
-			if(!voiceAuthenticator.train(activeKey))
+			Log.i(LOG_TAG, "Training new Voice");
+			voiceAuthenticator.startRecording();
+			soundLevelDialog.dismiss();
+
+			if (!voiceAuthenticator.train())
 			{
 				Toast.makeText(context, "Error with Training voice", Toast.LENGTH_LONG).show();
 				Log.d(LOG_TAG, "Error with training voice, check if activeFile is set");
@@ -142,33 +135,22 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 		@Override
 		protected void onPostExecute(Void result)
 		{
+			processingDialog.dismiss();
 			btnDone.setEnabled(true);
+			Log.i(LOG_TAG, "Done Training Voice");
 		}
 	}
-	
+
 	private void saveToDataBase()
 	{
 		user.setCodeBook(voiceAuthenticator.getCodeBook());
-		
+
 	}
 
 	private void trainVoice()
 	{
 		Log.i(LOG_TAG, "Training Voice");
+		startRecording();
 
-		new AlertDialog.Builder(context).setTitle("Train new Voice").setMessage("Press Ok to Start Recording.")
-							.setPositiveButton("Ok", new DialogInterface.OnClickListener()
-							{
-								public void onClick(DialogInterface dialog, int whichButton)
-								{
-									startRecording();
-								}
-							}).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-							{
-								public void onClick(DialogInterface dialog, int whichButton)
-								{
-									// Do nothing.
-								}
-							}).show();
 	}
 }
