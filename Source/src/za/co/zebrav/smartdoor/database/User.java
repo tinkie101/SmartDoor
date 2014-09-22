@@ -14,23 +14,7 @@ public class User implements Serializable
 	private String firstnames = "";
 	private String surname = "";
 	private ArrayList<Codebook> codeBook;
-	
-	
-	
-	/**
-	 * Use this for database queries.
-	 * @param firstnames
-	 * @param surname
-	 * @param username
-	 * @param password
-	 */
-	/*public User(String firstnames, String surname, String username, String password)
-	{
-		this.username = username;
-		this.password = password;
-		this.firstnames = firstnames;
-		this.surname = surname;
-	}*/
+	private boolean adminRights = false;
 	
 	public User(String firstnames, String surname, String username, String password, int pk, ArrayList<Codebook> cb)
 	{
@@ -44,6 +28,7 @@ public class User implements Serializable
 			this.codeBook = new ArrayList<Codebook>(cb);
 	}
 	
+	//------------------------------------------------------------------------getCodeBook
 	public ArrayList<Codebook> getCodeBook()
 	{
 		ArrayList<Codebook> result = null;
@@ -54,6 +39,7 @@ public class User implements Serializable
 		return result;
 	}
 	
+	//------------------------------------------------------------------------setCodeBook
 	public void setCodeBook(ArrayList<Codebook> cb)
 	{
 		this.codeBook = new ArrayList<Codebook>(cb);
@@ -117,5 +103,17 @@ public class User implements Serializable
 	public void setSurname(String surname)
 	{
 		this.surname = surname;
+	}
+	
+	//------------------------------------------------------------------------getAdminRights
+	public boolean getAdminRights()
+	{
+		return this.adminRights;
+	}
+	
+	//-------------------------------------------------------------------------setAdminRights
+	public void setAdminRights(boolean adminRights)
+	{
+		this.adminRights = adminRights;
 	}
 }

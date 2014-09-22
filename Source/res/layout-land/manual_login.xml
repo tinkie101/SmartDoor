@@ -39,6 +39,7 @@
                 android:layout_width="562dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:hint="username"
                 android:textColor="#FFF"
                 android:textSize="25sp" />
 
@@ -57,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:textColor="#FFF"
+                android:hint="password"
                 android:textSize="25sp" />
 
             <Button

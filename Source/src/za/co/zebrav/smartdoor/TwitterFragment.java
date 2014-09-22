@@ -83,11 +83,11 @@ public class TwitterFragment extends ListFragment
 		
 		//Create header displaying that no Twitter settings found
 		TextView header = new TextView(fragmentContext);
-		header.setText("Twitter settings not found:");
+		header.setText("Twitter keys not setup");
 		layout.addView(header);
 		
 		//Default button added
-		Button defaultB = new Button(fragmentContext);
+		/*Button defaultB = new Button(fragmentContext);
 		defaultB.setText("Use defualts");
 		layout.addView(defaultB);
 		defaultB.setOnClickListener(new View.OnClickListener() 
@@ -108,7 +108,7 @@ public class TwitterFragment extends ListFragment
             {
             	setSettings();
             }
-        });
+        });*/
 	}
 	
 	private void setSettings()

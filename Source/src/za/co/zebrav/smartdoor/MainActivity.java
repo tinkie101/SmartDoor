@@ -38,6 +38,7 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 	private AlertDialog.Builder alert;
 	private User user = null;
 	private TextToSpeech tts;
+	private boolean loggedIn = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -64,9 +65,12 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 	protected void onResume()
 	{
 		super.onResume();
-		user = null;
-		this.currentFragment = "advanced";
-		this.switchToCamera();
+		if(!loggedIn)
+		{
+			user = null;
+			this.currentFragment = "advanced";
+			this.switchToCamera();
+		}
 	}
 	
 	/**
@@ -133,7 +137,8 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplaceFromMain , t);
 		ft.commit();
-		//speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
+		this.loggedIn = true;
+		speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 	}
 	
 	/**
@@ -154,6 +159,7 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
 		ft.commit();
+		this.loggedIn = false;
 	}
 	
 	public void switchToVoice(int id)
