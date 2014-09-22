@@ -156,20 +156,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		{
 			grayImage = IplImage.create(width / f, height / f, IPL_DEPTH_8U, 1);
 		}
-		int imageWidth = grayImage.width();
-		int imageHeight = grayImage.height();
-		int dataStride = f * width;
-		int imageStride = grayImage.widthStep();
-		ByteBuffer imageBuffer = grayImage.getByteBuffer();
-		for (int y = 0; y < imageHeight; y++)
-		{
-			int dataLine = y * dataStride;
-			int imageLine = y * imageStride;
-			for (int x = 0; x < imageWidth; x++)
-			{
-				imageBuffer.put(imageLine + x, data[dataLine + f * x]);
-			}
-		}
+		grayImage = ImageTools.getGreyIplImage(data, width, height, f);
 
 		cvClearMemStorage(storage);
 		for (int i = 0; i < threads.length; i++)

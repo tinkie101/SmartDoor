@@ -16,7 +16,13 @@ public class ImageTools
 {
 	private static final String TAG = "ImageTools";
 
-	public static Mat getGreyImage(byte[] data, int width, int height, int samplingFactor)
+	public static Mat getGreyMatImage(byte[] data, int width, int height, int samplingFactor)
+	{
+
+		return new Mat(getGreyIplImage(data,width,height,samplingFactor));
+	}
+	
+	public static IplImage getGreyIplImage(byte[] data, int width, int height, int samplingFactor)
 	{
 		// CvMemStorage storage = CvMemStorage.create();
 
@@ -37,7 +43,7 @@ public class ImageTools
 				imageBuffer.put(imageLine + x, data[dataLine + samplingFactor * x]);
 			}
 		}
-		return new Mat(grayImage);
+		return grayImage;
 	}
 
 	public static boolean saveImageAsPNG(Mat mat, String fileName, Context context)

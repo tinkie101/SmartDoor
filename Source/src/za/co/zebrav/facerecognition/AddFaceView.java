@@ -29,7 +29,7 @@ class AddFaceView extends FaceView
 		if (runnables[0].getObjects().total() == 1 && runnables[1].getObjects().total() == 2
 							&& runnables[2].getObjects().total() == 1)
 		{
-			ImageTools.saveImageAsPNG(ImageTools.getGreyImage(data, width, height, 1), uID + "-" + count, activity);
+			ImageTools.saveImageAsPNG(ImageTools.getGreyMatImage(data, width, height, 1), uID + "-" + count, activity);
 			Log.d(TAG, "Saved ID:" + uID + " Number: " + count + " .");
 			count++;
 			((AddCameraFragment)fragment).setProgress(25*count);
