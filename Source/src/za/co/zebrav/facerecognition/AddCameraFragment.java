@@ -2,7 +2,6 @@ package za.co.zebrav.facerecognition;
 
 import java.io.IOException;
 
-import za.co.zebrav.smartdoor.database.AddUserActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;

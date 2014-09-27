@@ -1,30 +1,24 @@
 package za.co.zebrav.facerecognition;
 
-import static org.bytedeco.javacpp.helper.opencv_objdetect.cvHaarDetectObjects;
 import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
 import static org.bytedeco.javacpp.opencv_core.cvClearMemStorage;
 import static org.bytedeco.javacpp.opencv_core.cvGetSeqElem;
 import static org.bytedeco.javacpp.opencv_core.cvLoad;
-import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_objdetect;
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
 import org.bytedeco.javacpp.opencv_core.CvRect;
-import org.bytedeco.javacpp.opencv_core.CvSeq;
 import org.bytedeco.javacpp.opencv_core.IplImage;
-import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
 
-import za.co.zebrav.smartdoor.MainActivity;
+import za.co.zebrav.smartdoor.database.ClassifierRunnable;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -62,7 +56,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 	 * List of Runnable objects used in threads.
 	 * List is kept to have access to their local variables.
 	 */
-	protected concurrentDetector[] runnables;
+	protected ClassifierRunnable[] runnables;
 	/**
 	 * Used to draw squares around detected objects.
 	 */
@@ -100,7 +94,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		Log.d(TAG, "Classifier count:"+classifierCount);
 		storage = CvMemStorage.create();
 		threads = new Thread[classifierCount];
-		runnables = new concurrentDetector[classifierCount];
+		runnables = new ClassifierRunnable[classifierCount];
 		// Preload the opencv_objdetect module to work around a known bug.
 		Loader.load(opencv_objdetect.class);
 		for (int i = 0; i < classifierCount; i++)
@@ -119,7 +113,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 			{
 				throw new IOException("Could not load the [" + classifierFiles[i] + "] classifier file.");
 			}
-			runnables[i] = new concurrentDetector(classifier, storage);
+			runnables[i] = new ClassifierRunnable(classifier, storage);
 			threads[i] = new Thread(runnables[i], "" + i);
 		}
 	}
@@ -161,6 +155,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		cvClearMemStorage(storage);
 		for (int i = 0; i < threads.length; i++)
 		{
+			runnables[i].setGrayImage(grayImage);
 			threads[i].run();
 		}
 		for (int i = 0; i < threads.length; i++)
@@ -234,32 +229,4 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 	protected abstract int getClassifierCount(); 
 	
 	protected abstract int getColor(int id); 
-	/**
-	 * Private class to do the object detection.
-	 */
-	protected class concurrentDetector implements Runnable
-	{
-		CvHaarClassifierCascade classifier;
-		CvSeq objects;
-
-		public CvSeq getObjects()
-		{
-			return objects;
-		}
-
-		CvMemStorage storage;
-
-		public concurrentDetector(CvHaarClassifierCascade classifier, CvMemStorage storage)
-		{
-			this.classifier = classifier;
-			this.storage = storage;
-		}
-
-		@Override
-		public void run()
-		{
-			objects = cvHaarDetectObjects(grayImage, classifier, this.storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
-		}
-
-	}
 }
