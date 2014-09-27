@@ -36,14 +36,6 @@
                     android:textColor="#fff"
                     android:onClick="switchLogin" />
 
-
-                <Button
-                    android:id="@+id/stt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="gotoSpeechToText"
-                    android:text="Go to Speech-to-Text" />
-
                 <FrameLayout
                     android:id="@+id/layoutToReplaceFromMain"
                     android:layout_width="match_parent"
@@ -60,17 +52,12 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/twitterFragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_marginLeft="17dp"
             android:layout_weight="10"
             android:background="#5FFF" >
-
-            <fragment
-                android:id="@+id/twitterFragment"
-                android:name="za.co.zebrav.smartdoor.TwitterFragment"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
         </RelativeLayout>
     </LinearLayout>
 

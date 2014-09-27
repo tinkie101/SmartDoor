@@ -85,7 +85,7 @@ public class LoggedInFragment extends Fragment
 	
 	private void twitterSetup()
 	{
-		Intent intent = new Intent(getActivity(),TwitterSetup.class);
-		startActivity(intent);
+		MainActivity m = (MainActivity)getActivity();
+		m.switchToTwitterSetup();
 	}
 }

@@ -39,7 +39,8 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 	private User user = null;
 	private TextToSpeech tts;
 	private boolean loggedIn = false;
-
+	private TwitterFragment twitterFragment;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -47,6 +48,8 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 		Log.d(TAG, "onCreate");
 		setContentView(R.layout.activity_main);
 
+		switchToTwitterFragment();
+		
 		tts = new TextToSpeech(this, this);
 		
 		// add slider menu
@@ -141,6 +144,15 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 		speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 	}
 	
+	public void switchBackToLoggedInFrag()
+	{
+		LoggedInFragment t = new LoggedInFragment();
+		fm = getFragmentManager();
+		ft = fm.beginTransaction();
+		ft.replace(R.id.layoutToReplaceFromMain , t);
+		ft.commit();
+	}
+	
 	/**
 	 * Alerts the specified message in dialogue box.
 	 */
@@ -172,6 +184,30 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 		ft.replace(R.id.layoutToReplaceFromMain , identifyVoiceFragment);
 		ft.commit();
 	}
+	
+	public void switchToTwitterSetup()
+	{
+		TwitterSetupFragment t = new TwitterSetupFragment();
+		fm = getFragmentManager();
+		ft = fm.beginTransaction();
+		ft.replace(R.id.layoutToReplaceFromMain , t);
+		ft.commit();
+	}
+	
+	public void switchToTwitterFragment()
+	{
+		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+	    android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+	    twitterFragment = new TwitterFragment();
+	    fragmentTransaction.replace(R.id.twitterFragment, twitterFragment);
+	    fragmentTransaction.commit();
+	}
+	
+	public void tryTwitter()
+	{
+		twitterFragment.tryTwitter();
+	}
+	
 	/*
 	 * On click button handler.
 	 * Go to the SpeechToText.

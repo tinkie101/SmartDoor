@@ -5,9 +5,36 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textview1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20dp"
         android:text="Twitter setup" />
+
+    <Button
+        android:id="@+id/setupTwitterButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:text="Specify Twitter Keys" />
+
+    <Button
+        android:id="@+id/defaultSetupTwitter"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:text="Use Default" />
+
+    <Button
+        android:id="@+id/setupCancelButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:text="Cancel" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </GridLayout>
 
 </LinearLayout>
