@@ -46,7 +46,7 @@ public class ManualLoginFragment extends Fragment
 		String pass = passwordET.getText().toString();
 		
 		if(uName.equals("root") && pass.equals("root"))
-			return new User("Admin", "User", uName, pass, 0, null);
+			return new User("Admin", "User", uName, pass, -2, null);
 		
 		provider.open();
 		List<Object> users = provider.load(new User(null, null, uName, pass, 0, null));

@@ -27,7 +27,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements OnInitListener
+public class MainActivity extends FragmentActivity 
 {
 	private static final String TAG = "MainActivity";
 	private CustomMenu sliderMenu;
@@ -36,8 +36,8 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 	private ManualLoginFragment manualFrag;
 	private String currentFragment = "advanced";
 	private AlertDialog.Builder alert;
+	private TTS tts;
 	//private User user = null;
-	private TextToSpeech tts;
 	private boolean loggedIn = false;
 	private TwitterFragment twitterFragment;
 	
@@ -50,7 +50,7 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 
 		switchToTwitterFragment();
 		
-		tts = new TextToSpeech(this, this);
+		tts = new TTS(this);
 		
 		// add slider menu
 		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list),
@@ -229,28 +229,8 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 	 */
 	public void onDestroy()
 	{	
-		if (tts != null)
-		{
-			tts.stop();
-			tts.shutdown();
-		}
+		tts.destroy();
 		super.onDestroy();
-	}
-	
-	/**
-	 * Sets voice pronunciation 
-	 */
-	public void onInit(int status)
-	{
-		if (status == TextToSpeech.SUCCESS)
-		{
-			int result = tts.setLanguage(Locale.UK);
-
-			if (result == TextToSpeech.LANG_MISSING_DATA|| result == TextToSpeech.LANG_NOT_SUPPORTED)
-			{
-				Toast.makeText(this, "Language not supported",Toast.LENGTH_LONG).show();
-			}
-		}
 	}
 	
 	/**
@@ -258,13 +238,7 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 	 */
 	public void speakOut(String text)
 	{
-		if (text.length() == 0)
-		{
-			tts.speak("You haven't typed text", TextToSpeech.QUEUE_FLUSH, null);
-		} else
-		{
-			tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-		}
+		tts.talk(text);
 	}
 
 	//-------------------------------------------------------------------------------------Menu
