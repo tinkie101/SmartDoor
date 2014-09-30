@@ -133,7 +133,7 @@ public class MainActivity extends FragmentActivity
 		button.setText(text);
 	}
 	
-	private void switchToLoggedInFrag(int id)
+	public void switchToLoggedInFrag(int id)
 	{
 		LoggedInFragment t = new LoggedInFragment();
 		Bundle bundle = new Bundle();

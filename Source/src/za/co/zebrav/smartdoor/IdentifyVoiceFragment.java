@@ -3,6 +3,7 @@ package za.co.zebrav.smartdoor;
 import java.util.ArrayList;
 import java.util.List;
 
+import za.co.zebrav.smartdoor.database.AddUserActivity;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.app.Fragment;
@@ -224,6 +225,23 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 			processingDialog.dismiss();
 
 			Log.d(LOG_TAG, "Adapter Set to Results");
+			
+			//Check if the user identified corresponds to the facial recognition
+			String bestResult = result.get(0);
+			try
+			{
+				Integer bestMatch = Integer.parseInt(bestResult.substring(0, bestResult.indexOf(":")));
+				
+				if(bestMatch.equals(activeID))
+					{
+						MainActivity activity = (MainActivity) context;
+						activity.switchToLoggedInFrag(activeID);
+					}
+			}
+			catch(NumberFormatException e)
+			{
+				Log.d(LOG_TAG, "Incorrect conversion of userID");
+			}
 		}
 	}
 
