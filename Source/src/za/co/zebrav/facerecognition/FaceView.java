@@ -16,7 +16,6 @@ import org.bytedeco.javacpp.opencv_core.CvRect;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
 
-import za.co.zebrav.smartdoor.database.ClassifierRunnable;
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Canvas;

@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor.database;
+package za.co.zebrav.facerecognition;
 
 import static org.bytedeco.javacpp.helper.opencv_objdetect.cvHaarDetectObjects;
 import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
