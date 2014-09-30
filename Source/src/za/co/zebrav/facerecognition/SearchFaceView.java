@@ -22,6 +22,7 @@ class SearchFaceView extends FaceView
 	public SearchFaceView(Activity activity, Fragment fragment) throws IOException
 	{
 		super(activity, fragment);
+		personRecognizer = new PersonRecognizer(activity);
 		initialiseClassifiers();
 	}
 
@@ -54,7 +55,7 @@ class SearchFaceView extends FaceView
 	@Override
 	protected void handleDetected(byte[] data, int width, int height)
 	{
-		if (runnables[0].getObjects().total() == 1 && personRecognizer.canPredict())
+		if (runnables[0].getTotalDetected() == 1 && personRecognizer.canPredict())
 		{
 			int detectedId = personRecognizer.predict(new Mat(grayImage));
 			Log.d(TAG, "Face detected:" + detectedId);

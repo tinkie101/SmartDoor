@@ -53,9 +53,10 @@ class AddFaceView extends FaceView
 	@Override
 	protected void handleDetected(byte[] data, int width, int height)
 	{
-		if (runnables[0].getObjects().total() == 1 && runnables[1].getObjects().total() == 2
-							&& runnables[2].getObjects().total() == 1)
+		if (runnables[0].getTotalDetected() == 1 && runnables[1].getTotalDetected() == 2
+							&& runnables[2].getTotalDetected() == 1)
 		{
+			Log.d(TAG, "Conditions met");
 			ImageTools.saveImageAsPNG(ImageTools.getGreyMatImage(data, width, height, 1), uID + "-" + count, activity);
 			Log.d(TAG, "Saved ID:" + uID + " Number: " + count + " .");
 			count++;

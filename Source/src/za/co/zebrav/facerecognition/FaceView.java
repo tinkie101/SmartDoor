@@ -1,20 +1,13 @@
 package za.co.zebrav.facerecognition;
 
-import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
 import static org.bytedeco.javacpp.opencv_core.cvClearMemStorage;
-import static org.bytedeco.javacpp.opencv_core.cvGetSeqElem;
-import static org.bytedeco.javacpp.opencv_core.cvLoad;
 
-import java.io.File;
+import org.bytedeco.javacpp.opencv_core.Mat;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
-
-import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.opencv_objdetect;
+import org.bytedeco.javacpp.opencv_core.Rect;
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
-import org.bytedeco.javacpp.opencv_core.CvRect;
-import org.bytedeco.javacpp.opencv_core.IplImage;
-import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -22,7 +15,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.View;
 
 public abstract class FaceView extends View implements Camera.PreviewCallback
@@ -58,7 +50,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 	/**
 	 * Grey scale image to detect from.
 	 */
-	protected IplImage grayImage;
+	protected Mat grayImage;
 	/**
 	 * Storage to store temporary image.
 	 */
@@ -79,7 +71,6 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		this.activity = activity;
 		this.fragment = fragment;
 		paint = initialisePaint();
-		personRecognizer = new PersonRecognizer(activity);
 		lastTime = System.currentTimeMillis();
 	}
 
@@ -110,19 +101,14 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 
 	protected void processImage(byte[] data, int width, int height)
 	{
-		// First, downsample our image and convert it into a grayscale IplImage
-		int f = SUBSAMPLING_FACTOR_DETECTION;
-		if (grayImage == null || grayImage.width() != width / f || grayImage.height() != height / f)
-		{
-			grayImage = IplImage.create(width / f, height / f, IPL_DEPTH_8U, 1);
-		}
-		grayImage = ImageTools.getGreyIplImage(data, width, height, f);
+		grayImage = ImageTools.getGreyMatImage(data, width, height, SUBSAMPLING_FACTOR_DETECTION);
 
 		cvClearMemStorage(storage);
+		
 		for (int i = 0; i < threads.length; i++)
 		{
-			getRunnables()[i].setGrayImage(grayImage);
-			threads[i].run();
+				getRunnables()[i].setGrayImage(grayImage);
+				threads[i].run();
 		}
 		for (int i = 0; i < threads.length; i++)
 		{
@@ -140,7 +126,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 	}
 
 	protected abstract void handleDetected(byte[] data, int width, int height);
-	
+
 	protected abstract ClassifierRunnable[] getRunnables();
 
 	protected int count = 0;
@@ -176,18 +162,19 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		paint.setStrokeWidth(2);
 		paint.setColor(Color.WHITE);
 		canvas.drawText(FPS, (getWidth() - textWidth), 15, paint);
+		if(grayImage == null) return;
 		paint.setStrokeWidth(3);
 		for (int i = 0; i < getClassifierCount(); i++)
 		{
 			if (getRunnables()[i].getObjects() != null)
 			{
 				paint.setColor(getColor(i));
-				float scaleX = (float) getWidth() / grayImage.width();
-				float scaleY = (float) getHeight() / grayImage.height();
-				int total = getRunnables()[i].getObjects().total();
+				float scaleX = (float) getWidth() / grayImage.cols();
+				float scaleY = (float) getHeight() / grayImage.rows();
+				int total = getRunnables()[i].getTotalDetected();
 				for (int j = 0; j < total; j++)
 				{
-					CvRect r = new CvRect(cvGetSeqElem(getRunnables()[i].getObjects(), j));
+					Rect r = getRunnables()[i].getObjects().position(j);
 					int x = r.x(), y = r.y(), w = r.width(), h = r.height();
 					canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
 										* scaleY, paint);

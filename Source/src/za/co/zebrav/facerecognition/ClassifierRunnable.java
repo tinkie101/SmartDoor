@@ -1,18 +1,16 @@
 package za.co.zebrav.facerecognition;
-
-import static org.bytedeco.javacpp.helper.opencv_objdetect.cvHaarDetectObjects;
-import static org.bytedeco.javacpp.opencv_core.cvLoad;
 import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacpp.opencv_core.Rect;
+import org.bytedeco.javacpp.opencv_core.Size;
 import org.bytedeco.javacpp.opencv_objdetect;
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
-import org.bytedeco.javacpp.opencv_core.CvSeq;
-import org.bytedeco.javacpp.opencv_core.IplImage;
-import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
+import org.bytedeco.javacpp.opencv_objdetect.*;
+import org.bytedeco.javacpp.opencv_core.Mat;
 
 import android.util.Log;
 
@@ -23,8 +21,9 @@ public abstract class ClassifierRunnable implements Runnable
 {
 	private static final String TAG = "ClassifierRunnable";
 	CvHaarClassifierCascade classifier;
-	CvSeq objects;
-	IplImage grayImage;
+	// CvSeq objects;
+	Rect objects = new Rect();
+	Mat grayImage;
 	/**
 	 * Directory where all the XML classifiers are stored.
 	 */
@@ -32,17 +31,17 @@ public abstract class ClassifierRunnable implements Runnable
 
 	protected abstract String getClassifierfile();
 
-	public IplImage getGrayImage()
+	public Mat getGrayImage()
 	{
 		return grayImage;
 	}
 
-	public void setGrayImage(IplImage grayImage)
+	public void setGrayImage(Mat grayImage)
 	{
 		this.grayImage = grayImage;
 	}
 
-	public CvSeq getObjects()
+	public Rect getObjects()
 	{
 		return objects;
 	}
@@ -63,14 +62,7 @@ public abstract class ClassifierRunnable implements Runnable
 				Log.e(TAG, message);
 				throw new IOException(message);
 			}
-			classifier = new CvHaarClassifierCascade(cvLoad(file.getAbsolutePath()));
-			file.delete();
-			if (classifier.isNull())
-			{
-				String message = "Could not load the [" + getClassifierfile() + "] classifier file.";
-				Log.e(TAG, message);
-				throw new IOException(message);
-			}
+			cascade = new CascadeClassifier(file.getAbsolutePath());
 		}
 		catch (IOException e)
 		{
@@ -79,10 +71,24 @@ public abstract class ClassifierRunnable implements Runnable
 		this.storage = storage;
 	}
 
+	CascadeClassifier cascade;
+	
+	int totalDetected = 0;
+	public int getTotalDetected()
+	{
+		return totalDetected;
+	}
+
 	@Override
 	public void run()
 	{
-		objects = cvHaarDetectObjects(grayImage, classifier, this.storage, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING);
+		objects.deallocate();
+		objects = new Rect();
+		cascade.detectMultiScale(grayImage, objects, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING, new Size(),
+							new Size(grayImage.cols(), grayImage.rows()));
+		if(objects.width() == 0) totalDetected = 0;
+			else totalDetected = objects.capacity();
+		Log.d(TAG, getClassifierfile()+ ":" + totalDetected);
 	}
 
 }
