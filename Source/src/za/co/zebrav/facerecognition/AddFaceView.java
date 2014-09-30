@@ -2,6 +2,10 @@ package za.co.zebrav.facerecognition;
 
 import java.io.IOException;
 
+import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacpp.opencv_objdetect;
+import org.bytedeco.javacpp.opencv_core.CvMemStorage;
+
 import za.co.zebrav.smartdoor.database.AddUserActivity;
 import android.app.Activity;
 import android.app.Fragment;
@@ -13,14 +17,37 @@ class AddFaceView extends FaceView
 	private static final String TAG = "AddFaceView";
 	private int count = 0;
 	private static final int classifierCount = 3;
-	private static final String[] classifierFiles = { "haarcascade_frontalface_alt.xml", "haarcascade_eye.xml",
-						"haarcascade_nose.xml" };
 	private static final int colors[] = { Color.RED, Color.GREEN, Color.BLUE };
 
+	/**
+	 * List of Runnable objects used in threads.
+	 * List is kept to have access to their local variables.
+	 */
+	private ClassifierRunnable[] runnables;
+	
 	public AddFaceView(Activity activity, Fragment fragment) throws IOException
 	{
 		super(activity, fragment);
-		initialiseClassifiers(classifierCount, colors, classifierFiles);
+		initialiseClassifiers();
+	}
+
+	protected void initialiseClassifiers() throws IOException
+	{
+		Log.d(TAG, "Classifier count:" + classifierCount);
+		storage = CvMemStorage.create();
+		threads = new Thread[classifierCount];
+		runnables = new ClassifierRunnable[classifierCount];
+		// Preload the opencv_objdetect module to work around a known bug.
+		Loader.load(opencv_objdetect.class);
+
+		runnables[0] = new FaceClassifierRunnable(storage, activity.getCacheDir());
+		threads[0] = new Thread(runnables[0], "" + 0);
+		
+		runnables[1] = new EyesClassifierRunnable(storage, activity.getCacheDir());
+		threads[1] = new Thread(runnables[1], "" + 1);
+		
+		runnables[2] = new NoseClassifierRunnable(storage, activity.getCacheDir());
+		threads[2] = new Thread(runnables[2], "" + 2);
 	}
 
 	@Override
@@ -50,5 +77,11 @@ class AddFaceView extends FaceView
 	protected int getClassifierCount()
 	{
 		return classifierCount;
+	}
+
+	@Override
+	protected ClassifierRunnable[] getRunnables()
+	{
+		return runnables;
 	}
 }

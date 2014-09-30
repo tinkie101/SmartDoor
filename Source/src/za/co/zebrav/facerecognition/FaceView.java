@@ -30,11 +30,13 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 	protected Activity activity;
 	protected Fragment fragment;
 	protected int uID;
+
 	public void setuID(int uID)
 	{
 		this.uID = uID;
 	}
-//------------------------------------------------------------------------------	
+
+	// ------------------------------------------------------------------------------
 	private static final String TAG = "FaceView";
 	/**
 	 * The factor by which the camera feed needs to be down sampled by.
@@ -43,19 +45,12 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 	 * Typically in the range [1,6]
 	 */
 	protected static final byte SUBSAMPLING_FACTOR_DETECTION = 2;
-	/**
-	 * Directory where all the XML classifiers are stored.
-	 */
-	protected static final String directory = "/za/co/zebrav/facerecognition/";
+
 	/**
 	 * List of threads to run each classifier.
 	 */
 	protected Thread[] threads;
-	/**
-	 * List of Runnable objects used in threads.
-	 * List is kept to have access to their local variables.
-	 */
-	protected ClassifierRunnable[] runnables;
+
 	/**
 	 * Used to draw squares around detected objects.
 	 */
@@ -87,35 +82,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		personRecognizer = new PersonRecognizer(activity);
 		lastTime = System.currentTimeMillis();
 	}
-	
-	protected void initialiseClassifiers(int classifierCount,int colors[],String[] classifierFiles) throws IOException
-	{
-		Log.d(TAG, "Classifier count:"+classifierCount);
-		storage = CvMemStorage.create();
-		threads = new Thread[classifierCount];
-		runnables = new ClassifierRunnable[classifierCount];
-		// Preload the opencv_objdetect module to work around a known bug.
-		Loader.load(opencv_objdetect.class);
-		for (int i = 0; i < classifierCount; i++)
-		{
-			File file = Loader.extractResource(getClass(), directory + classifierFiles[i], activity.getCacheDir(),
-								"classifier", ".xml");
-			if (file == null || file.length() <= 0)
-			{
-				throw new IOException("Could not extract the [" + classifierFiles[i]
-									+ "] classifier file from Java resource.");
-			}
 
-			CvHaarClassifierCascade classifier = new CvHaarClassifierCascade(cvLoad(file.getAbsolutePath()));
-			file.delete();
-			if (classifier.isNull())
-			{
-				throw new IOException("Could not load the [" + classifierFiles[i] + "] classifier file.");
-			}
-			runnables[i] = new ClassifierRunnable(classifier, storage);
-			threads[i] = new Thread(runnables[i], "" + i);
-		}
-	}
 	/**
 	 * Initialises the paint Object
 	 */
@@ -154,7 +121,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		cvClearMemStorage(storage);
 		for (int i = 0; i < threads.length; i++)
 		{
-			runnables[i].setGrayImage(grayImage);
+			getRunnables()[i].setGrayImage(grayImage);
 			threads[i].run();
 		}
 		for (int i = 0; i < threads.length; i++)
@@ -168,11 +135,14 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 				e.printStackTrace();
 			}
 		}
-		handleDetected(data,width,height);
+		handleDetected(data, width, height);
 		postInvalidate();
 	}
-	
+
 	protected abstract void handleDetected(byte[] data, int width, int height);
+	
+	protected abstract ClassifierRunnable[] getRunnables();
+
 	protected int count = 0;
 
 	private String calculateFPS()
@@ -209,15 +179,15 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		paint.setStrokeWidth(3);
 		for (int i = 0; i < getClassifierCount(); i++)
 		{
-			if (runnables[i].getObjects() != null)
+			if (getRunnables()[i].getObjects() != null)
 			{
 				paint.setColor(getColor(i));
 				float scaleX = (float) getWidth() / grayImage.width();
 				float scaleY = (float) getHeight() / grayImage.height();
-				int total = runnables[i].getObjects().total();
+				int total = getRunnables()[i].getObjects().total();
 				for (int j = 0; j < total; j++)
 				{
-					CvRect r = new CvRect(cvGetSeqElem(runnables[i].getObjects(), j));
+					CvRect r = new CvRect(cvGetSeqElem(getRunnables()[i].getObjects(), j));
 					int x = r.x(), y = r.y(), w = r.width(), h = r.height();
 					canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
 										* scaleY, paint);
@@ -225,7 +195,8 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 			}
 		}
 	}
-	protected abstract int getClassifierCount(); 
-	
-	protected abstract int getColor(int id); 
+
+	protected abstract int getClassifierCount();
+
+	protected abstract int getColor(int id);
 }
