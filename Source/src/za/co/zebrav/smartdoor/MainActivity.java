@@ -36,7 +36,7 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 	private ManualLoginFragment manualFrag;
 	private String currentFragment = "advanced";
 	private AlertDialog.Builder alert;
-	private User user = null;
+	//private User user = null;
 	private TextToSpeech tts;
 	private boolean loggedIn = false;
 	private TwitterFragment twitterFragment;
@@ -70,7 +70,7 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 		super.onResume();
 		if(!loggedIn)
 		{
-			user = null;
+			//user = null;
 			this.currentFragment = "advanced";
 			this.switchToCamera();
 		}
@@ -112,7 +112,7 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 	 */
 	public void pressedLoginButton(View v)
 	{
-		user = null;
+		User user = null;
 		if(!currentFragment.equals("advanced"))
 			user = manualFrag.getUser();
 		
@@ -122,7 +122,7 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 		}
 		else
 		{	
-			switchToLoggedInFrag();
+			switchToLoggedInFrag(user.getID());
 			changeOnlyButtonText("Logout");
 		}
 	}
@@ -133,15 +133,18 @@ public class MainActivity extends FragmentActivity implements OnInitListener
 		button.setText(text);
 	}
 	
-	private void switchToLoggedInFrag()
+	private void switchToLoggedInFrag(int id)
 	{
 		LoggedInFragment t = new LoggedInFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt("id", id);
+		t.setArguments(bundle);
 		fm = getFragmentManager();
 		ft = fm.beginTransaction();
 		ft.replace(R.id.layoutToReplaceFromMain , t);
 		ft.commit();
 		this.loggedIn = true;
-		speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
+		//speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 	}
 	
 	public void switchBackToLoggedInFrag()

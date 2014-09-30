@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/TwitterSetupLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -8,33 +9,37 @@
         android:id="@+id/textview1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:text="Twitter setup" />
 
     <Button
         android:id="@+id/setupTwitterButton"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:text="Specify Twitter Keys" />
 
     <Button
         android:id="@+id/defaultSetupTwitter"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:text="Use Default" />
 
+   
+    
     <Button
         android:id="@+id/setupCancelButton"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:text="Cancel" />
-
-    <GridLayout
+    
+    <Button
+        android:id="@+id/tester"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </GridLayout>
+        android:layout_height="wrap_content"
+        android:text="Cancel" />
+    
+    
+
+    
 
 </LinearLayout>

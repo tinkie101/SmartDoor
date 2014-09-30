@@ -29,6 +29,12 @@ public class LoggedInFragment extends Fragment
 		adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.command_list_item, commandOptions);
 		list.setAdapter(adapter);
 		
+		Bundle bundle = this.getArguments();
+		int id = bundle.getInt("id", -6);
+		
+		if(id != -6)
+			Toast.makeText(getActivity(), "id:"+id, Toast.LENGTH_SHORT).show();
+		
 		setOnclickListener();
 		return view;
 	}
