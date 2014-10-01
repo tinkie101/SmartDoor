@@ -114,7 +114,7 @@ public class TwitterFragment extends ListFragment
 		adapter = new TwitterArrayAdapter(fragmentContext, R.layout.list_twitter, new ArrayList<twitter4j.Status>(), new ArrayList<Drawable>(), new ArrayList<Long>());
 		setListAdapter(adapter);
 		
-		twitterHandler = new TwitterHandler(fragmentContext, adapter,key, secret, tokenKey, tokenSecret);
+		twitterHandler = new TwitterHandler(fragmentContext, view, adapter,key, secret, tokenKey, tokenSecret);
 		// Get the tweets
 		twitterHandler.getTweets();
 

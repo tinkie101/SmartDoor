@@ -12,7 +12,6 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import za.co.zebrav.smartdoor.R;
-import android.R.anim;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -20,6 +19,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -28,6 +28,7 @@ public class TwitterHandler
 {
 	private static final String LOG_TAG_TWITTER_HANDLER = "TwitterHandler";
 	private FragmentActivity fragmentContext;
+	private View view;
 	public AsynchTwitter asynchTwitter;
 	private TwitterArrayAdapter adapter;
 
@@ -50,10 +51,11 @@ public class TwitterHandler
 	// The maximum number of Tweets to display
 	protected int maxTweetCount = 50;
 
-	public TwitterHandler(FragmentActivity fragmentContext, TwitterArrayAdapter adapter, String key, String secret, String tokenKey, String tokenSecret)
+	public TwitterHandler(FragmentActivity fragmentContext, View view, TwitterArrayAdapter adapter, String key, String secret, String tokenKey, String tokenSecret)
 	{
 		this.fragmentContext = fragmentContext;
 		this.adapter = adapter;
+		this.view = view;
 
 		// TODO: Get this from somewhere else
 		String API_KEY = key;
@@ -114,6 +116,13 @@ public class TwitterHandler
 		if (networkInfo != null && networkInfo.isConnected())
 		{
 			Toast.makeText(fragmentContext, "Updating Tweets", Toast.LENGTH_LONG).show();
+			ProgressBar v = (ProgressBar) view.findViewById(R.id.twitter_refreshBar);
+			
+			if(v == null)
+				Log.d(LOG_TAG_TWITTER_HANDLER, "Null");
+			else
+				v.setVisibility(ProgressBar.VISIBLE);
+			
 			asynchTwitter = new AsynchTwitter();
 			asynchTwitter.execute();
 		}
@@ -442,7 +451,7 @@ public class TwitterHandler
 				// Add to the top of the list, and scroll the list view to the top position
 				adapter.addTweetsToTop(result);
 				
-				ListView list = (ListView) fragmentContext.findViewById(android.R.id.list);
+				ListView list = (ListView) view.findViewById(android.R.id.list);
 				list.smoothScrollToPosition(0);
 				
 				// Let the user know that the update is complete
@@ -455,7 +464,7 @@ public class TwitterHandler
 
 			Log.d(LOG_TAG_TWITTER_HANDLER, "Update Complete");
 
-			fragmentContext.findViewById(R.id.twitter_refreshBar).setVisibility(ProgressBar.GONE);
+			view.findViewById(R.id.twitter_refreshBar).setVisibility(ProgressBar.GONE);
 		}
 	}
 }

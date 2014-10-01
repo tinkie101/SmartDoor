@@ -1,6 +1,5 @@
 package za.co.zebrav.smartdoor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import za.co.zebrav.smartdoor.database.AddUserActivity;
@@ -14,11 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-import at.fhooe.mcm.smc.math.vq.Codebook;
 
 public class LoggedInFragment extends Fragment
 {
