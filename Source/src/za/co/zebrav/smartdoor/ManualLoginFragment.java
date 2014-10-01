@@ -25,7 +25,7 @@ public class ManualLoginFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		View view = inflater.inflate(R.layout.manual_login, null);
+		View view = inflater.inflate(R.layout.manual_login, container, false);
 		//database provider
 		provider = new Db4oAdapter(getActivity());
 			

@@ -24,7 +24,7 @@ public class SettingsFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		view = inflater.inflate(R.layout.settings_layout, null);
+		view = inflater.inflate(R.layout.settings_layout, container, false);;
 	
 		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
 		

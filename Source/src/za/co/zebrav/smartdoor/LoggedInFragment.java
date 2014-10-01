@@ -29,7 +29,7 @@ public class LoggedInFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		View view = inflater.inflate(R.layout.logged_in, null);
+		View view = inflater.inflate(R.layout.logged_in,container, false);
 		list = (ListView) view.findViewById(R.id.commandList);
 		commandOptions =  getResources().getStringArray(R.array.commandOptions); 
 		adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.command_list_item, commandOptions);
