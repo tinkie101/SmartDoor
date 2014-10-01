@@ -62,7 +62,8 @@ class AddFaceView extends FaceView
 							&& runnables[2].getTotalDetected() == 1)
 		{
 			Log.d(TAG, "Conditions met");
-			ImageTools.saveImageAsPNG(ImageTools.getGreyMatImage(data, width, height, 1), uID + "-" + count, activity);
+			//ImageTools.saveImageAsPNG(ImageTools.getGreyMatImage(data, width, height, 1), uID + "-" + count, activity);
+			ImageTools.saveImageAsPNG(face, uID + "-" + count, activity);
 			Log.d(TAG, "Saved ID:" + uID + " Number: " + count + " .");
 			count++;
 			((AddCameraFragment) fragment).setProgress(25 * count);
@@ -92,7 +93,9 @@ class AddFaceView extends FaceView
 	}
 
 	boolean savedImage = false;
-
+	
+	Mat face;
+	
 	@Override
 	protected void runClassifiers()
 	{
@@ -115,13 +118,13 @@ class AddFaceView extends FaceView
 			int endx = (int) (getRunnables()[0].getObjects().width());
 			int endy = (int) (getRunnables()[0].getObjects().height());
 
-			Mat result = grayImage.rowRange(beginy,beginy + endy);
-			result = result.colRange(beginx, beginx + endx);
+			face = grayImage.rowRange(beginy,beginy + endy);
+			face = face.colRange(beginx, beginx + endx);
 
-			getRunnables()[1].setGrayImage(result);
+			getRunnables()[1].setGrayImage(face);
 			threads[1].run();
 
-			getRunnables()[2].setGrayImage(result);
+			getRunnables()[2].setGrayImage(face);
 			threads[2].run();
 
 			try
