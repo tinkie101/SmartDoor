@@ -17,6 +17,12 @@
             android:layout_height="wrap_content"
             android:text="Training" />
 
+        <Button
+            android:id="@+id/twitterSetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Twitter" />
+
     </LinearLayout>
 
     <GridLayout

@@ -39,6 +39,16 @@ public class SettingsFragment extends Fragment
             	trainSettings();
             }
         });
+		
+		Button twitterSetButton = (Button)view.findViewById(R.id.twitterSetButton);
+		twitterSetButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	MainActivity m = (MainActivity) getActivity();
+            	m.switchToTwitterSetup();
+            }
+        });
 		return view;
 	}
 	
