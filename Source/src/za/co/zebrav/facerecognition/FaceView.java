@@ -35,7 +35,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 	 * The factor by which the camera feed needs to be down sampled by.
 	 * Higher number = Higher performance.
 	 * Higher number = Lower accuracy.
-	 * Typically in the range [1,6]
+	 * Typically in the range [1,4]
 	 */
 	protected static final byte SUBSAMPLING_FACTOR_DETECTION = 2;
 

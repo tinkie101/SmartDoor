@@ -24,8 +24,6 @@ public class ImageTools
 	
 	public static IplImage getGreyIplImage(byte[] data, int width, int height, int samplingFactor)
 	{
-		// CvMemStorage storage = CvMemStorage.create();
-
 		IplImage grayImage = IplImage.create(width / samplingFactor, height / samplingFactor, IPL_DEPTH_8U, 1);
 		grayImage = IplImage.create(width / samplingFactor, height / samplingFactor, IPL_DEPTH_8U, 1);
 

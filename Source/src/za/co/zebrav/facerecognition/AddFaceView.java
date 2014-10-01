@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.Log;
 
 class AddFaceView extends FaceView
@@ -103,33 +104,19 @@ class AddFaceView extends FaceView
 		}
 		catch (InterruptedException e1)
 		{
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		if (getRunnables()[0].getTotalDetected() > 0)
 		{
-			Log.d(TAG, "begin creating result");
-			int beginx = (int) (getRunnables()[0].getObjects().x() - ((getRunnables()[0].getObjects().width()) * 0.1));
-			int beginy = (int) (getRunnables()[0].getObjects().y() - ((getRunnables()[0].getObjects().height()) * 0.1));
-			
-			
-			int endx = (int) (getRunnables()[0].getObjects().width() + ((getRunnables()[0].getObjects().width()) * 0.1));
-			int endy = (int) (getRunnables()[0].getObjects().height() + ((getRunnables()[0].getObjects().height()) * 0.1));
-			
-			
-			Mat result = grayImage.rowRange(beginy, endx);
-			result = result.colRange(beginx, endy);
-			
-			
-			 //Mat result = new Mat(getRunnables()[0].getObjects());
-			 Log.d(TAG, "done creating result");
-//			if (!savedImage)
-//			{
-//				ImageTools.saveImageAsPNG(result, "test", activity);
-//				Log.d(TAG, "done writing image result");
-//				savedImage = true;
-//			}
+			int beginx = (int) (getRunnables()[0].getObjects().x());
+			int beginy = (int) (getRunnables()[0].getObjects().y());
+
+			int endx = (int) (getRunnables()[0].getObjects().width());
+			int endy = (int) (getRunnables()[0].getObjects().height());
+
+			Mat result = grayImage.rowRange(beginy,beginy + endy);
+			result = result.colRange(beginx, beginx + endx);
 
 			getRunnables()[1].setGrayImage(result);
 			threads[1].run();
@@ -148,31 +135,52 @@ class AddFaceView extends FaceView
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
+		// Draw FPS
 		String FPS = calculateFPS();
+		paint.setStyle(Paint.Style.FILL_AND_STROKE);
 		float textWidth = paint.measureText(FPS);
 		paint.setStrokeWidth(2);
 		paint.setColor(Color.WHITE);
 		canvas.drawText(FPS, (getWidth() - textWidth), getDeviceSize(14), paint);
-		if(grayImage == null) return;
+		if (grayImage == null)
+			return;
+		// Change for eyes and nose
+		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeWidth(3);
-		for (int i = 0; i < getClassifierCount(); i++)
+		// Draw faces
+		int total = getRunnables()[0].getTotalDetected();
+		Rect r = getRunnables()[0].getObjects().position(0);
+		paint.setColor(getColor(0));
+		float scaleX = (float) getWidth() / grayImage.cols();
+		float scaleY = (float) getHeight() / grayImage.rows();
+		int x = r.x(), y = r.y(), w = r.width(), h = r.height();
+		canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h) * scaleY, paint);
+		
+		scaleX = (float) grayImage.cols() / r.width();
+		scaleY = (float) grayImage.rows() / r.height();
+		// Draw eyes and nose
+		for (int i = 1; i < getClassifierCount(); i++)
 		{
 			if (getRunnables()[i].getObjects() != null)
 			{
 				paint.setColor(getColor(i));
-				float scaleX = (float) getWidth() / grayImage.cols();
-				float scaleY = (float) getHeight() / grayImage.rows();
-				int total = getRunnables()[i].getTotalDetected();
+				total = getRunnables()[i].getTotalDetected();
 				for (int j = 0; j < total; j++)
 				{
-					Rect r = getRunnables()[i].getObjects().position(j);
-					int x = r.x(), y = r.y(), w = r.width(), h = r.height();
-					canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
-										* scaleY, paint);
+					Rect rect = getRunnables()[i].getObjects().position(j);
+					x = rect.x();
+					y = rect.y();
+					w = rect.width();
+					h = rect.height();
+					int startx = (int) (((r.x() + r.width()) - (x + w)) * scaleX);
+					int starty = (int)( (y + r.y()) * scaleY);
+					int endx = (int) (((r.x() + r.width()) - x) * scaleX);
+					int endy = (int) ((y + r.y() + h) * scaleY);
+					canvas.drawRect(startx, starty,endx, endy, paint);
 				}
 			}
 		}
