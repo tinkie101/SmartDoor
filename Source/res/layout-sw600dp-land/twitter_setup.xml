@@ -10,30 +10,90 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:visibility="gone"
         android:text="Twitter setup" />
 
     <Button
         android:id="@+id/setupTwitterButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+         android:visibility="gone"
         android:text="Specify Twitter Keys" />
 
     <Button
         android:id="@+id/defaultSetupTwitter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+         android:visibility="gone"
         android:text="Use Default" />
-
-   
     
     <Button
         android:id="@+id/setupCancelButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+         android:visibility="gone"
         android:text="Cancel" />
-    
-    
 
-    
+    <GridLayout
+        android:id="@+id/grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:rowCount="5" >
+
+        <TextView
+            android:id="@+id/keyTV"
+            android:layout_gravity="left"
+            android:text="Key:" />
+
+        <EditText
+            android:id="@+id/keyET"
+            android:layout_gravity="fill_horizontal" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/secretTV"
+            android:layout_gravity="left"
+            android:text="Secret:" />
+
+        <EditText
+            android:id="@+id/secretET"
+            android:layout_gravity="fill_horizontal" />
+
+        <TextView
+            android:id="@+id/tokenKeyTV"
+            android:layout_gravity="left"
+            android:text="Token key:" />
+
+        <EditText
+            android:id="@+id/tokenKeyET"
+            android:layout_gravity="fill_horizontal" />
+
+        <TextView
+            android:id="@+id/tokenSecretTV"
+            android:layout_gravity="left"
+            android:text="Token Secret:" />
+
+        <EditText
+            android:id="@+id/tokenSecretET"
+            android:layout_gravity="fill_horizontal" />
+
+        <Button
+            android:id="@+id/cancel01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/saveSettings02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Save Settings" />
+        
+    </GridLayout>
 
 </LinearLayout>

@@ -35,7 +35,6 @@ public class TwitterSetupFragment extends Fragment
 		specifyButton = (Button) view.findViewById(R.id.setupTwitterButton);
 		defaultButton = (Button) view.findViewById(R.id.defaultSetupTwitter);
 		cancelButton = (Button) view.findViewById(R.id.setupCancelButton);
-	 
 		
 		specifyButton.setOnClickListener(new View.OnClickListener() 
 		{
@@ -59,14 +58,19 @@ public class TwitterSetupFragment extends Fragment
             {
             	useDefaults();
             }
-        });		
+        });	
 		
 		return view;
 	}
 	
 	private void inputSettings()
-	{
-	
+	{	
+		GridLayout g = (GridLayout)view.findViewById(R.id.grid);
+		specifyButton.setVisibility(View.GONE);
+		defaultButton.setVisibility(View.GONE);
+		cancelButton.setVisibility(View.GONE);
+		g.setVisibility(View.VISIBLE);
+		
 	}
 	
 	private void useDefaults() 
