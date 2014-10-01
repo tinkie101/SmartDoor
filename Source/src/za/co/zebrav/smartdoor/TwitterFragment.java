@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,6 +93,7 @@ public class TwitterFragment extends ListFragment
 		//Create header displaying that no Twitter settings found
 		warning = new TextView(fragmentContext);
 		warning.setText("Twitter keys not setup");
+		warning.setGravity(Gravity.CENTER);
 		layout.addView(warning);
 		
 		

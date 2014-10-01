@@ -114,7 +114,6 @@ public class TwitterHandler
 		if (networkInfo != null && networkInfo.isConnected())
 		{
 			Toast.makeText(fragmentContext, "Updating Tweets", Toast.LENGTH_LONG).show();
-			fragmentContext.findViewById(R.id.twitter_refreshBar).setVisibility(ProgressBar.VISIBLE);
 			asynchTwitter = new AsynchTwitter();
 			asynchTwitter.execute();
 		}

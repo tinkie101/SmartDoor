@@ -46,7 +46,7 @@ public final class R {
         public static final int ManualLogin_tv2=0x7f09003c;
         public static final int ManualLogin_tvH=0x7f090039;
         public static final int TwitterSetupLayout=0x7f090046;
-        public static final int action_refresh_tweets=0x7f090051;
+        public static final int action_refresh_tweets=0x7f090050;
         public static final int addUserCancel=0x7f09000b;
         public static final int addUser_fname_et=0x7f090012;
         public static final int addUser_fname_tv=0x7f090011;
@@ -71,7 +71,7 @@ public final class R {
         public static final int commandList=0x7f090038;
         public static final int content_frame=0x7f090001;
         public static final int defaultSetupTwitter=0x7f090049;
-        public static final int delAllUsersButton=0x7f09004f;
+        public static final int delAllUsersButton=0x7f09004e;
         public static final int drawer_layout=0x7f090000;
         public static final int drawer_list=0x7f090006;
         public static final int editText1=0x7f09002b;
@@ -85,14 +85,14 @@ public final class R {
         public static final int imageView4=0x7f090028;
         public static final int layoutToReplace=0x7f09000f;
         public static final int layoutToReplaceFromMain=0x7f090004;
-        public static final int list=0x7f090050;
+        public static final int list=0x7f09004f;
         public static final int listenSpeech=0x7f090007;
-        public static final int searchCancelButton=0x7f09004c;
-        public static final int searchText=0x7f09004e;
+        public static final int searchCancelButton=0x7f09004b;
+        public static final int searchText=0x7f09004d;
         public static final int setupCancelButton=0x7f09004a;
         public static final int setupTwitterButton=0x7f090048;
         public static final int space=0x7f090040;
-        public static final int speak=0x7f09004d;
+        public static final int speak=0x7f09004c;
         public static final int speechToTextList=0x7f090009;
         public static final int speech_loadingBar=0x7f090008;
         public static final int speech_soundLevel=0x7f09000a;
@@ -105,7 +105,6 @@ public final class R {
         public static final int surnamesTV=0x7f090041;
         public static final int switchLoginButton=0x7f090003;
         public static final int switcher=0x7f090021;
-        public static final int tester=0x7f09004b;
         public static final int textView1=0x7f09001d;
         public static final int textViewState=0x7f090026;
         public static final int textview1=0x7f090047;
