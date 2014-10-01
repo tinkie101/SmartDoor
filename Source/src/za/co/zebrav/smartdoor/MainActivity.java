@@ -188,6 +188,15 @@ public class MainActivity extends FragmentActivity
 		ft.commit();
 	}
 	
+	public void switchToSettingsFragment()
+	{
+		SettingsFragment t = new SettingsFragment();
+		fm = getFragmentManager();
+		ft = fm.beginTransaction();
+		ft.replace(R.id.layoutToReplaceFromMain , t);
+		ft.commit();
+	}
+	
 	public void switchToTwitterFragment()
 	{
 		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();

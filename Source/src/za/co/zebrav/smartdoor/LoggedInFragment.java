@@ -90,6 +90,10 @@ public class LoggedInFragment extends Fragment
 				{
 					twitterSetup();
 				}
+				else if(selectedName.equals("Settings"))
+				{
+					settings();
+				}
 			}
 		});
 	}
@@ -115,5 +119,11 @@ public class LoggedInFragment extends Fragment
 	{
 		MainActivity m = (MainActivity)getActivity();
 		m.switchToTwitterSetup();
+	}
+	
+	private void settings()
+	{
+		MainActivity m = (MainActivity)getActivity();
+		m.switchToSettingsFragment();
 	}
 }

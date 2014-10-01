@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/TwitterSetupLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/chooseSettings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/trainingSetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Training" />
+
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/trainSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/NumberOfPhotosTV"
+            android:layout_gravity="left"
+            android:text="Number of photo's:" />
+
+        <EditText
+            android:id="@+id/NumberOfPhotosET"
+            android:layout_gravity="fill_horizontal"
+            android:inputType="number" >
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/saveTrainButton"
+            android:layout_gravity="left"
+            android:text="Save" />
+
+    </GridLayout>
+
+</RelativeLayout>
