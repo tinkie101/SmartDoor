@@ -1,13 +1,14 @@
 package za.co.zebrav.facerecognition;
 import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
-
 import java.io.File;
 import java.io.IOException;
 
+import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_core.Rect;
 import org.bytedeco.javacpp.opencv_core.Size;
 import org.bytedeco.javacpp.opencv_objdetect;
+import static org.bytedeco.javacpp.opencv_objdetect.groupRectangles;
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
 import org.bytedeco.javacpp.opencv_objdetect.*;
 import org.bytedeco.javacpp.opencv_core.Mat;
@@ -88,7 +89,13 @@ public abstract class ClassifierRunnable implements Runnable
 							new Size(grayImage.cols(), grayImage.rows()));
 		if(objects.width() == 0) totalDetected = 0;
 			else totalDetected = objects.capacity();
-		Log.d(TAG, getClassifierfile()+ ":" + totalDetected);
+		if(totalDetected > 0)
+		{
+			IntPointer rweights = new IntPointer(1);
+			Log.d(TAG, "Before grouping");
+			groupRectangles(objects, rweights, 2, 0.5);
+			Log.d(TAG, "After grouping");
+		}
 	}
 
 }
