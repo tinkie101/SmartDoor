@@ -5,12 +5,14 @@ import java.io.IOException;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_objdetect;
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
+import org.bytedeco.javacpp.opencv_core.Rect;
 
 import org.bytedeco.javacpp.opencv_core.Mat;
 
 import za.co.zebrav.smartdoor.database.AddUserActivity;
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
 
@@ -143,6 +145,35 @@ class AddFaceView extends FaceView
 			catch (InterruptedException e)
 			{
 				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+	protected void onDraw(Canvas canvas)
+	{
+		String FPS = calculateFPS();
+		float textWidth = paint.measureText(FPS);
+		paint.setStrokeWidth(2);
+		paint.setColor(Color.WHITE);
+		canvas.drawText(FPS, (getWidth() - textWidth), getDeviceSize(14), paint);
+		if(grayImage == null) return;
+		paint.setStrokeWidth(3);
+		for (int i = 0; i < getClassifierCount(); i++)
+		{
+			if (getRunnables()[i].getObjects() != null)
+			{
+				paint.setColor(getColor(i));
+				float scaleX = (float) getWidth() / grayImage.cols();
+				float scaleY = (float) getHeight() / grayImage.rows();
+				int total = getRunnables()[i].getTotalDetected();
+				for (int j = 0; j < total; j++)
+				{
+					Rect r = getRunnables()[i].getObjects().position(j);
+					int x = r.x(), y = r.y(), w = r.width(), h = r.height();
+					canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
+										* scaleY, paint);
+				}
 			}
 		}
 	}

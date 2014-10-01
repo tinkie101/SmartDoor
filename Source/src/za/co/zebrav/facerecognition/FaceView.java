@@ -15,6 +15,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Camera;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 public abstract class FaceView extends View implements Camera.PreviewCallback
@@ -80,11 +81,17 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 	private Paint initialisePaint()
 	{
 		Paint result = new Paint();
-		result.setTextSize(20);
-		result.setStyle(Paint.Style.STROKE);
+		result.setTextSize(getDeviceSize(14));
 		return result;
 	}
-
+	
+	protected int getDeviceSize(int size)
+	{
+		DisplayMetrics dm = new DisplayMetrics();
+		activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		return (int) (size * dm.scaledDensity);
+	}
+	
 	public void onPreviewFrame(final byte[] data, final Camera camera)
 	{
 		try
@@ -117,7 +124,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 
 	protected int count = 0;
 
-	private String calculateFPS()
+	protected String calculateFPS()
 	{
 		long newTime = System.currentTimeMillis();
 		String result = "FPS: ";
@@ -140,34 +147,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		return result;
 	}
 
-	@Override
-	protected void onDraw(Canvas canvas)
-	{
-		String FPS = calculateFPS();
-		float textWidth = paint.measureText(FPS);
-		paint.setStrokeWidth(2);
-		paint.setColor(Color.WHITE);
-		canvas.drawText(FPS, (getWidth() - textWidth), 15, paint);
-		if(grayImage == null) return;
-		paint.setStrokeWidth(3);
-		for (int i = 0; i < getClassifierCount(); i++)
-		{
-			if (getRunnables()[i].getObjects() != null)
-			{
-				paint.setColor(getColor(i));
-				float scaleX = (float) getWidth() / grayImage.cols();
-				float scaleY = (float) getHeight() / grayImage.rows();
-				int total = getRunnables()[i].getTotalDetected();
-				for (int j = 0; j < total; j++)
-				{
-					Rect r = getRunnables()[i].getObjects().position(j);
-					int x = r.x(), y = r.y(), w = r.width(), h = r.height();
-					canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h)
-										* scaleY, paint);
-				}
-			}
-		}
-	}
+	
 
 	protected abstract int getClassifierCount();
 

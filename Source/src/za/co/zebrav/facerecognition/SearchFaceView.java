@@ -6,12 +6,18 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_objdetect;
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
 import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacpp.opencv_core.Rect;
 
 import za.co.zebrav.smartdoor.MainActivity;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 
 class SearchFaceView extends FaceView
 {
@@ -44,11 +50,12 @@ class SearchFaceView extends FaceView
 	 * List is kept to have access to their local variables.
 	 */
 	private ClassifierRunnable[] runnables;
-	
+
 	protected ClassifierRunnable[] getRunnables()
 	{
 		return runnables;
 	}
+
 	private static final int DETECTED_IN_A_ROW = 5;
 	private int tempdetected = -1;
 
@@ -88,14 +95,14 @@ class SearchFaceView extends FaceView
 	{
 		return classifierCount;
 	}
-	
+
 	@Override
 	protected void runClassifiers()
 	{
 		for (int i = 0; i < threads.length; i++)
 		{
-				getRunnables()[i].setGrayImage(grayImage);
-				threads[i].run();
+			getRunnables()[i].setGrayImage(grayImage);
+			threads[i].run();
 		}
 		for (int i = 0; i < threads.length; i++)
 		{
@@ -108,5 +115,37 @@ class SearchFaceView extends FaceView
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas)
+	{
+		String FPS = calculateFPS();
+		paint.setStyle(Paint.Style.FILL_AND_STROKE);
+		float textWidth = paint.measureText(FPS);
+		paint.setStrokeWidth(2);
+		paint.setColor(Color.WHITE);
+		
+		canvas.drawText(FPS, (getWidth() - textWidth), getDeviceSize(14), paint);
+		if (grayImage == null)
+			return;
+		
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setStrokeWidth(3);
+
+		int total = getRunnables()[0].getTotalDetected();
+		Rect rect = getRunnables()[0].getObjects();
+		paint.setColor(getColor(0));
+		float scaleX = (float) getWidth() / grayImage.cols();
+		float scaleY = (float) getHeight() / grayImage.rows();
+
+		for (int j = 0; j < total; j++)
+		{
+			Rect r = rect.position(j);
+			int x = r.x(), y = r.y(), w = r.width(), h = r.height();
+			canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h) * scaleY,
+								paint);
+		}
+
 	}
 }
