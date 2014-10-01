@@ -44,7 +44,7 @@ public class PersonRecognizer
 		// faceRecognizer = createEigenFaceRecognizer();
 		// faceRecognizer = createFisherFaceRecognizer();
 		faceRecognizer = createLBPHFaceRecognizer();
-		faceRecognizer.set("threshold", 200.0);
+		faceRecognizer.set("threshold", 180.0);
 		// faceRecognizer = createLBPHFaceRecognizer(2, 8, 8, 8, 200);
 		isTrained = initialiseRecogniserFromDatabase(context);
 

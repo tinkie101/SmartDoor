@@ -92,9 +92,7 @@ public abstract class ClassifierRunnable implements Runnable
 		if(totalDetected > 0)
 		{
 			IntPointer rweights = new IntPointer(1);
-			Log.d(TAG, "Before grouping");
 			groupRectangles(objects, rweights, 2, 0.5);
-			Log.d(TAG, "After grouping");
 		}
 	}
 
