@@ -144,17 +144,8 @@ public class MainActivity extends FragmentActivity
 		ft.replace(R.id.layoutToReplaceFromMain , t);
 		ft.commit();
 		this.loggedIn = true;
-		//speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 	}
 	
-	public void switchBackToLoggedInFrag()
-	{
-		LoggedInFragment t = new LoggedInFragment();
-		fm = getFragmentManager();
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplaceFromMain , t);
-		ft.commit();
-	}
 	
 	/**
 	 * Alerts the specified message in dialogue box.

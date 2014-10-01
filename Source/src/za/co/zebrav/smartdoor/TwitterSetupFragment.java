@@ -37,10 +37,7 @@ public class TwitterSetupFragment extends Fragment
 		defaultButton = (Button) view.findViewById(R.id.defaultSetupTwitter);
 		cancelButton = (Button) view.findViewById(R.id.setupCancelButton);
 		saveButton = (Button) view.findViewById(R.id.saveSettings02);
-		if(saveButton == null)
-			Toast.makeText(getActivity(), "Is NULL", Toast.LENGTH_SHORT);
-		else
-			Toast.makeText(getActivity(), "not NULL", Toast.LENGTH_SHORT);
+		cancelButton2 = (Button) view.findViewById(R.id.cancel01);
 		
 		specifyButton.setOnClickListener(new View.OnClickListener() 
 		{
@@ -66,7 +63,21 @@ public class TwitterSetupFragment extends Fragment
             }
         });	
 		
+		saveButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	saveSpecifiedDetails();
+            }
+        });	
 		
+		cancelButton2.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	done();
+            }
+        });	
 		
 		return view;
 	}
@@ -102,9 +113,32 @@ public class TwitterSetupFragment extends Fragment
 		m.tryTwitter();
 	}
 	
+	private void saveSpecifiedDetails()
+	{
+		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+		String key = ((EditText)view.findViewById(R.id.keyET)).getText().toString();
+		String secret = ((EditText)view.findViewById(R.id.secretET)).getText().toString();
+		String tokenKey = ((EditText)view.findViewById(R.id.tokenKeyET)).getText().toString();
+		String tokenSecret = ((EditText)view.findViewById(R.id.tokenSecretET)).getText().toString();
+		
+		SharedPreferences.Editor editor = settings.edit();
+	    editor.putString("key", key);
+	    editor.commit();
+	    editor.putString("secret", secret);
+	    editor.commit();
+	    editor.putString("tokenKey", tokenKey);
+	    editor.commit();
+	    editor.putString("tokenSecret", tokenSecret);
+	    editor.commit();
+	    
+		MainActivity m = (MainActivity) getActivity();
+		m.tryTwitter();
+		
+	}
+	
 	private void done()
 	{
 		MainActivity m = (MainActivity) getActivity();
-		m.switchBackToLoggedInFrag();
+		m.switchToLoggedInFrag(-6);
 	}
 }

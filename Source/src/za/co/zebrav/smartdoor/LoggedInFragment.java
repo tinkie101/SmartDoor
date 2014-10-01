@@ -40,17 +40,24 @@ public class LoggedInFragment extends Fragment
 		//get Logged in user
 		Bundle bundle = this.getArguments();
 		int id = bundle.getInt("id", -6);
-		provider = new Db4oAdapter(getActivity());
-		provider.open();
-		List temp = provider.load(new User(null, null, null, null, id, null));
-		if(temp.size() > 0)
-			user = (User)temp.get(0);
-		else
-			user = new User("Admin", "User", null, null, -2, null);
-		provider.close();
 		
-		MainActivity m = (MainActivity) getActivity();
-		m.speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
+		if(id != -6)
+		{
+			if(id > 0)
+			{
+				provider = new Db4oAdapter(getActivity());
+				provider.open();
+				List temp = provider.load(new User(null, null, null, null, id, null));
+				User t = (User)temp.get(0);
+				user = new User(t.getFirstnames(), t.getSurname(), t.getUsername(), t.getPassword(), t.getID(), t.getCodeBook());
+				provider.close();
+			}
+			else if(id == -2)
+				user = new User("Admin", "User", null, null, -2, null);
+		
+			MainActivity m = (MainActivity) getActivity();
+			//m.speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
+		}
 		
 		setOnclickListener();
 		return view;

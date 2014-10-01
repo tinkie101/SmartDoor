@@ -38,6 +38,19 @@
         android:visibility="invisible"
         android:rowCount="5" >
 
+        <Button
+            android:id="@+id/cancel01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/saveSettings02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Save Settings" />
         <TextView
             android:id="@+id/keyTV"
             android:layout_gravity="left"
@@ -76,20 +89,6 @@
         <EditText
             android:id="@+id/tokenSecretET"
             android:layout_gravity="fill_horizontal" />
-
-        <Button
-            android:id="@+id/cancel01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="Cancel" />
-
-        <Button
-            android:id="@+id/saveSettings02"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="Save Settings" />
         
     </GridLayout>
 
