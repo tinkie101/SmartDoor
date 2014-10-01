@@ -19,19 +19,15 @@
            	android:background="@drawable/button1"
            	android:text="Switch Login"
            	android:layout_marginBottom="17dp"
-           	android:layout_weight="1"
            	android:textColor="#fff"
            	android:onClick="switchLogin" />
 	    
 	     <LinearLayout
 	         android:id="@+id/buttonLinear"
              android:layout_width="fill_parent"
-             android:layout_height="100dp"
-             android:layout_alignParentBottom="true"
-             android:layout_alignParentRight="true"
-             android:layout_alignParentTop="true"
+             android:layout_height="fill_parent"
              android:orientation="horizontal"
-             android:layout_weight="4" >
+             android:layout_weight="1" >
              
 	         <RelativeLayout
             android:id="@+id/layoutToReplaceFromMain"
@@ -56,7 +52,6 @@
              android:id="@+id/progressBar1"
              style="?android:attr/progressBarStyleHorizontal"
              android:layout_width="match_parent"
-             android:layout_weight="1"
              android:layout_height="wrap_content" />
 
     </LinearLayout>
