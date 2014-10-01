@@ -1,4 +1,5 @@
 package za.co.zebrav.facerecognition;
+
 import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
 import java.io.File;
 import java.io.IOException;
@@ -73,8 +74,9 @@ public abstract class ClassifierRunnable implements Runnable
 	}
 
 	CascadeClassifier cascade;
-	
+
 	int totalDetected = 0;
+
 	public int getTotalDetected()
 	{
 		return totalDetected;
@@ -87,13 +89,24 @@ public abstract class ClassifierRunnable implements Runnable
 		objects = new Rect();
 		cascade.detectMultiScale(grayImage, objects, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING, new Size(),
 							new Size(grayImage.cols(), grayImage.rows()));
-		if(objects.width() == 0) totalDetected = 0;
-			else totalDetected = objects.capacity();
-		if(totalDetected > 0)
-		{
-			IntPointer rweights = new IntPointer(1);
-			groupRectangles(objects, rweights, 2, 0.5);
-		}
+		if (objects.width() == 0)
+			totalDetected = 0;
+		else
+			totalDetected = objects.capacity();
+//		int temp = totalDetected;
+//		if (totalDetected > 0)
+//		{
+//
+//			//IntPointer rweights = new IntPointer(1);
+//			//groupRectangles(objects, 100);
+//			groupRectangles(objects, 1, Double.MAX_VALUE);
+//		}
+//		if (objects.width() == 0)
+//			totalDetected = 0;
+//		else
+//			totalDetected = objects.capacity();
+//		Log.d(TAG, "change:" + (temp - totalDetected));
+
 	}
 
 }

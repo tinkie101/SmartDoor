@@ -104,27 +104,13 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		grayImage = ImageTools.getGreyMatImage(data, width, height, SUBSAMPLING_FACTOR_DETECTION);
 
 		cvClearMemStorage(storage);
-		
-		for (int i = 0; i < threads.length; i++)
-		{
-				getRunnables()[i].setGrayImage(grayImage);
-				threads[i].run();
-		}
-		for (int i = 0; i < threads.length; i++)
-		{
-			try
-			{
-				threads[i].join();
-			}
-			catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		runClassifiers();
+
 		handleDetected(data, width, height);
 		postInvalidate();
 	}
 
+	protected abstract void runClassifiers();
 	protected abstract void handleDetected(byte[] data, int width, int height);
 
 	protected abstract ClassifierRunnable[] getRunnables();

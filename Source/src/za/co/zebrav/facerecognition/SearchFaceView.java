@@ -88,4 +88,25 @@ class SearchFaceView extends FaceView
 	{
 		return classifierCount;
 	}
+	
+	@Override
+	protected void runClassifiers()
+	{
+		for (int i = 0; i < threads.length; i++)
+		{
+				getRunnables()[i].setGrayImage(grayImage);
+				threads[i].run();
+		}
+		for (int i = 0; i < threads.length; i++)
+		{
+			try
+			{
+				threads[i].join();
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
 }
