@@ -20,8 +20,9 @@ public class TwitterSetupFragment extends Fragment
 	private Button specifyButton;
 	private Button defaultButton;
 	private Button cancelButton;
-	private Button tester;
-	private TextView keyTV;
+	private Button saveButton;
+	private Button cancelButton2;
+	
 	private SharedPreferences settings = null;
 	private static final String PREFS_NAME = "MyPrefsFile";
 	private View view;
@@ -35,6 +36,11 @@ public class TwitterSetupFragment extends Fragment
 		specifyButton = (Button) view.findViewById(R.id.setupTwitterButton);
 		defaultButton = (Button) view.findViewById(R.id.defaultSetupTwitter);
 		cancelButton = (Button) view.findViewById(R.id.setupCancelButton);
+		saveButton = (Button) view.findViewById(R.id.saveSettings02);
+		if(saveButton == null)
+			Toast.makeText(getActivity(), "Is NULL", Toast.LENGTH_SHORT);
+		else
+			Toast.makeText(getActivity(), "not NULL", Toast.LENGTH_SHORT);
 		
 		specifyButton.setOnClickListener(new View.OnClickListener() 
 		{
@@ -60,6 +66,8 @@ public class TwitterSetupFragment extends Fragment
             }
         });	
 		
+		
+		
 		return view;
 	}
 	
@@ -70,7 +78,6 @@ public class TwitterSetupFragment extends Fragment
 		defaultButton.setVisibility(View.GONE);
 		cancelButton.setVisibility(View.GONE);
 		g.setVisibility(View.VISIBLE);
-		
 	}
 	
 	private void useDefaults() 
