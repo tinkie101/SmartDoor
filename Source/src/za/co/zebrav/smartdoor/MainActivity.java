@@ -7,17 +7,13 @@
 package za.co.zebrav.smartdoor;
 
 
-import java.util.Locale;
-
 import za.co.zebrav.facerecognition.SearchCameraFragment;
 import za.co.zebrav.smartdoor.R.id;
+import za.co.zebrav.smartdoor.SpeechRecognition.SpeechToTextAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -25,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity 
 {
@@ -41,6 +36,8 @@ public class MainActivity extends FragmentActivity
 	private boolean loggedIn = false;
 	private TwitterFragment twitterFragment;
 	
+	private SpeechToTextAdapter speechToText;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -51,6 +48,10 @@ public class MainActivity extends FragmentActivity
 		switchToTwitterFragment();
 		
 		tts = new TTS(this);
+		
+		//TODO
+		speechToText = new SpeechToTextAdapter(this);
+		speechToText.listenToSpeech();
 		
 		// add slider menu
 		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list),
@@ -211,15 +212,6 @@ public class MainActivity extends FragmentActivity
 		twitterFragment.tryTwitter();
 	}
 	
-	/*
-	 * On click button handler.
-	 * Go to the SpeechToText.
-	 */
-	public void gotoSpeechToText(View v)
-	{
-		Intent intent = new Intent(this, SpeechToTextActivity.class);
-		startActivity(intent);
-	}
 	//-------------------------------------------------------------------------------------Speech to text
 	
 	//-------------------------------------------------------------------------------------Text to speech
