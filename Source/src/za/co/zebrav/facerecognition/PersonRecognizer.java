@@ -45,9 +45,9 @@ public class PersonRecognizer
 		// faceRecognizer = createEigenFaceRecognizer();
 		// faceRecognizer = createFisherFaceRecognizer();
 		faceRecognizer = createLBPHFaceRecognizer();
-		String settinsFile = getResources().getString(R.string.settingsFileName);
-		trainNumPhotos = Integer.parseInt(activity.getSharedPreferences(settinsFile, 0).getString("face_TrainPhotoNum", "0"));
-		faceRecognizer.set("threshold", 180.0);
+		String settinsFile = context.getResources().getString(R.string.settingsFileName);
+		int threshold = Integer.parseInt(context.getSharedPreferences(settinsFile, 0).getString("face_TrainPhotoNum", "0"));
+		faceRecognizer.set("threshold", threshold);
 		// faceRecognizer = createLBPHFaceRecognizer(2, 8, 8, 8, 200);
 		isTrained = initialiseRecogniserFromDatabase(context);
 
