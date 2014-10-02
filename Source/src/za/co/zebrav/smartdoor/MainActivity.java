@@ -85,12 +85,12 @@ public class MainActivity extends FragmentActivity
 		String PREFS_NAME = getResources().getString((R.string.settingsFileName));
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		
+		//Training settings
 		String face_TrainPhotoNum = settings.getString("face_TrainPhotoNum", "NOT");
 		if(face_TrainPhotoNum.equals("NOT"))//not set, set
 		{
 			SharedPreferences.Editor editor = settings.edit();
 			
-			//Training settings
 		    editor.putString("face_TrainPhotoNum", getResources().getString((R.string.face_TrainPhotoNum)));
 		    editor.commit();
 		    
@@ -110,6 +110,25 @@ public class MainActivity extends FragmentActivity
 		    editor.commit();
 		    
 		    editor.putString("face_detectNose", getResources().getString((R.string.face_detectNose)));
+		    editor.commit();
+		}
+		
+		//Twitter settings
+		String twitter_Key = settings.getString("twitter_Key", "NOT");
+		if(twitter_Key.equals("NOT"))//not set, set
+		{
+			SharedPreferences.Editor editor = settings.edit();
+			
+		    editor.putString("twitter_Key", getResources().getString((R.string.twitter_Key)));
+		    editor.commit();
+		    
+		    editor.putString("twitter_Secret", getResources().getString((R.string.twitter_Key)));
+		    editor.commit();
+		    
+		    editor.putString("twitter_Token", getResources().getString((R.string.twitter_Key)));
+		    editor.commit();
+		    
+		    editor.putString("twitter_TokenKey", getResources().getString((R.string.twitter_Key)));
 		    editor.commit();
 		}
 	}
