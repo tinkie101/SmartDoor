@@ -1,11 +1,7 @@
 package za.co.zebrav.smartdoor;
 
-import za.co.zebrav.smartdoor.database.AddUserActivity;
-import za.co.zebrav.smartdoor.database.ViewUserActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -13,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,9 +28,6 @@ public class CustomMenu
 	private ArrayAdapter<String> adapter;
 	
 	//menu content related variable declarations:
-	private String[] twitterOptions = {"Goto main menu", "Twitter key", "Twitter secret", "Twitter token key", "Twitter token secret", "update rate", "Exit"};
-	private String[] themeOptions = {"Goto main menu","Background", "ActionBar", "Exit"};
-	private String[] userOptions = {"Goto main menu", "Add user", "Search user", "Delete user", "Exit"};
 	private AlertDialog.Builder alert;
 	public static final String PREFS_NAME = "MyPrefsFile";
 	
@@ -103,21 +95,7 @@ public class CustomMenu
 				String selectedName = adapter.getItem(position);
 				
 				//------------------------------------------------------------------Main Menu Options:
-				if(selectedName.equals("User options"))
-				{
-					editMenuOptions(userOptions, "Menu");
-				}
-				else if(selectedName.equals("Twitter prefrences"))
-				{
-					//menu.setDrawerListOnclickListener();
-					editMenuOptions(twitterOptions, "Menu");
-				}
-				else if(selectedName.equals("Theme prefrences"))
-				{
-					//menu.setDrawerListOnclickListener();
-					editMenuOptions(themeOptions, "Menu");
-				}
-				else if(selectedName.equals("About"))
+				if(selectedName.equals("About"))
 				{
 					Toast.makeText(getActivity().getApplicationContext(),selectedName, Toast.LENGTH_LONG).show();
 				}
@@ -130,109 +108,8 @@ public class CustomMenu
 				{
 					System.exit(0);
 				}
-				//----------------------------------------------------------------All except Main Menu Options
-				else if(selectedName.equals("Goto main menu"))
-				{
-					editMenuOptions(options, "Menu");
-				}
-				//----------------------------------------------------------------Twitter specific Options:
-				else if(selectedName.equals("Twitter key"))
-				{
-					saveNewTwitter("Change Twitter key", "key");
-				}
-				else if(selectedName.equals("Twitter secret"))
-				{
-					saveNewTwitter("Change Twitter secret", "secret");
-				}
-				else if(selectedName.equals("Twitter token key"))
-				{
-					saveNewTwitter("Change Twitter Token Key", "tokenKey");
-				}
-				else if(selectedName.equals("Twitter token secret"))
-				{
-					saveNewTwitter("Change Twitter Token Secret", "tokenSecret");
-				}
-				else if(selectedName.equals("update rate"))
-				{
-					alert.setTitle("Change Twitter update rate");
-					
-					final EditText input = new EditText(activity.getApplicationContext());
-					alert.setView(input);
-					
-					alert.setNegativeButton("Cancel",null);
-					alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-							String value = input.getText().toString();
-							//do something with value
-							Toast.makeText(getActivity().getApplicationContext(),"Entered " + value, Toast.LENGTH_LONG).show();
-						}
-					});
-					
-					alert.show();
-				}
-				//----------------------------------------------------------------Theme specific Options:
-				else if(selectedName.equals("Background"))
-				{
-					
-				}
-				else if(selectedName.equals("ActionBar"))
-				{
-					
-				}
-				//---------------------------------------------------------------User Options:
-				else if(selectedName.equals("Add user"))
-				{
-					editMenuOptions(options, "Menu");
-					getDrawerlayout().closeDrawer(getDrawerList());
-					Intent intent = new Intent(getActivity(), AddUserActivity.class);
-					activity.startActivity(intent);
-				}
-				else if(selectedName.equals("Search user"))
-				{
-					editMenuOptions(options, "Menu");
-					getDrawerlayout().closeDrawer(getDrawerList());
-					Intent intent = new Intent(getActivity(), ViewUserActivity.class);
-					activity.startActivity(intent);
-				}
-				else if(selectedName.equals("Delete user"))
-				{
-					editMenuOptions(options, "Menu");
-					getDrawerlayout().closeDrawer(getDrawerList());
-					Intent intent = new Intent(getActivity(), ViewUserActivity.class);
-					activity.startActivity(intent);
-				}
 			}
 		});
-	}
-	
-	/**
-	 * 
-	 * @param heading
-	 */
-	private void saveNewTwitter(String heading, final String key)
-	{
-		alert.setTitle(heading);
-		
-		final EditText input = new EditText(activity.getApplicationContext());
-		alert.setView(input);
-		
-		alert.setNegativeButton("Cancel",null);
-		alert.setPositiveButton("Save", new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				String value = input.getText().toString();
-				SharedPreferences.Editor editor = settings.edit();
-			    editor.putString(key, value);
-			    editor.commit();
-		    }
-		});
-		
-		alert.show();
 	}
 	
 	/**

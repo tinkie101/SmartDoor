@@ -65,8 +65,8 @@ class AddFaceView extends FaceView
 							&& runnables[2].getTotalDetected() == 1)
 		{
 			Log.d(TAG, "Conditions met");
-			//ImageTools.saveImageAsPNG(ImageTools.getGreyMatImage(data, width, height, 1), uID + "-" + count, activity);
-			ImageTools.saveImageAsPNG(face, uID + "-" + count, activity);
+			ImageTools.saveImageAsPNG(ImageTools.getGreyMatImage(data, width, height, 1), uID + "-" + count, activity);
+			//ImageTools.saveImageAsPNG(face, uID + "-" + count, activity);
 			Log.d(TAG, "Saved ID:" + uID + " Number: " + count + " .");
 			count++;
 			((AddCameraFragment) fragment).setProgress((100/trainNumPhotos) * count);

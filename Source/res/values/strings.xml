@@ -12,12 +12,10 @@
     <string name="drawer_close">Close navigation drawer</string>
 
     <string-array name="mainMenuOptions">
-        <item>User options</item>
-        <item>Twitter prefrences</item>
-        <item>Theme prefrences</item>
         <item>About</item>
         <item>Exit</item>
     </string-array>
+    
     <string-array name="manualLoginMenuOptions">
         <item>Switch Login</item>
         <item>User options</item>
@@ -34,7 +32,6 @@
         <item>Add user</item>
         <item>Remove user</item>
         <item>Search user</item>
-        <item>Twitter setup</item>
         <item>Settings</item>
     </string-array>
     
