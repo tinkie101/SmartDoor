@@ -42,7 +42,7 @@ public class TwitterFragment extends ListFragment
 	private Handler updateThreadHandler = new Handler();
 	private boolean feedSet = false;
 	private SharedPreferences settings = null;
-	public static final String PREFS_NAME = "MyPrefsFile";
+	public String PREFS_NAME;
 	private AlertDialog.Builder alert;
 	private View view;
 	private TextView warning;
@@ -55,6 +55,8 @@ public class TwitterFragment extends ListFragment
 	{
 		view = inflater.inflate(R.layout.fragment_twitter, container, false);
 		fragmentContext = (FragmentActivity) getActivity();
+		
+		PREFS_NAME = getResources().getString((R.string.settingsFileName));
 		this.alert  = new AlertDialog.Builder(fragmentContext);
 		
 		tryTwitter();

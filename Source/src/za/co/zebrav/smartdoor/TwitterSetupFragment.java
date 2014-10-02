@@ -24,7 +24,7 @@ public class TwitterSetupFragment extends Fragment
 	private Button cancelButton2;
 	
 	private SharedPreferences settings = null;
-	private static final String PREFS_NAME = "MyPrefsFile";
+	private String PREFS_NAME;
 	private View view;
 	private TextView flipper;
 	
@@ -33,6 +33,7 @@ public class TwitterSetupFragment extends Fragment
 	{
 		view = inflater.inflate(R.layout.twitter_setup, container, false);
 		
+		PREFS_NAME = getResources().getString((R.string.settingsFileName));
 		specifyButton = (Button) view.findViewById(R.id.setupTwitterButton);
 		defaultButton = (Button) view.findViewById(R.id.defaultSetupTwitter);
 		cancelButton = (Button) view.findViewById(R.id.setupCancelButton);

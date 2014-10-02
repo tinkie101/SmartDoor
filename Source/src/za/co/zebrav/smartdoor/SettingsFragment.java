@@ -19,13 +19,13 @@ public class SettingsFragment extends Fragment
 	private View view;
 	
 	private SharedPreferences settings = null;
-	private static final String PREFS_NAME = "MyPrefsFile";
+	private static String PREFS_NAME;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		view = inflater.inflate(R.layout.settings_layout, container, false);;
-	
+		view = inflater.inflate(R.layout.settings_layout, container, false);
+		PREFS_NAME =  getResources().getString((R.string.settingsFileName));
 		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
 		
 		chooseSettingsLayout = (LinearLayout)view.findViewById(R.id.chooseSettings);

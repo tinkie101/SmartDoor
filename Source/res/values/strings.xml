@@ -37,6 +37,12 @@
         <item>Twitter setup</item>
         <item>Settings</item>
     </string-array>
+    
+    <string name="settingsFileName">SmartDoor_settings</string>
+    
+    <string-array name="defaultFaceSettings">
+        <item></item>
+    </string-array>
         
 
     <string name="SpeechToText">Speech to Text</string>
