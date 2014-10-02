@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ public class AddUserStepOne extends Fragment
 	private EditText username;
 	private EditText pass1;
 	private EditText pass2;
-	private Boolean adminRights= false;
+	private CheckBox adminRights;
 	 
 	 @Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
@@ -37,6 +38,7 @@ public class AddUserStepOne extends Fragment
 		  username = (EditText) view.findViewById(R.id.addUser_uname_et);
 		  pass1 = (EditText) view.findViewById(R.id.addUser_pass1_et);
 		  pass2 = (EditText) view.findViewById(R.id.addUser_pass2_et);
+		  adminRights = (CheckBox) view.findViewById(R.id.giveAdminRights);
 		  
 		  activity = (AddUserActivity) getActivity();
 		  db = new Db4oAdapter(activity);
@@ -184,7 +186,7 @@ public class AddUserStepOne extends Fragment
 	
 	public Boolean getAminRights()
 	{
-		return adminRights;
+		return adminRights.isChecked();
 	}
 	
 	/**
@@ -224,5 +226,6 @@ public class AddUserStepOne extends Fragment
 		this.username.setText("");
 		this.pass1.setText("");
 		this.pass2.setText("");
+		this.adminRights.setChecked(false);
 	}
 }

@@ -28,11 +28,6 @@ public class LoggedInFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
 		View view = inflater.inflate(R.layout.logged_in,container, false);
-		list = (ListView) view.findViewById(R.id.commandList);
-		commandOptions =  getResources().getStringArray(R.array.commandOptions); 
-		adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.command_list_item, commandOptions);
-		list.setAdapter(adapter);
-		
 
 		mainActivity = (MainActivity) getActivity();
 		
@@ -55,6 +50,14 @@ public class LoggedInFragment extends Fragment
 				user = new User("Admin", "User", null, null, true, -2, null);
 			mainActivity.speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 		}
+		
+		if(user.getAdminRights())
+			commandOptions =  getResources().getStringArray(R.array.commandOptions);
+		else
+			commandOptions = getResources().getStringArray(R.array.basicCommandOptions);
+		list = (ListView) view.findViewById(R.id.commandList);
+		adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.command_list_item, commandOptions);
+		list.setAdapter(adapter);
 		
 		setOnclickListener();
 		return view;

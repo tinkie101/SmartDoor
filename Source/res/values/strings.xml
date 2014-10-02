@@ -35,6 +35,10 @@
         <item>Settings</item>
     </string-array>
     
+    <string-array name="basicCommandOptions">
+        <item>Open door</item>
+    </string-array>
+    
     <string name="settingsFileName">SmartDoor_settings</string>
     
     <!--"defaultFaceSettings-->
