@@ -14,14 +14,15 @@ public class User implements Serializable
 	private String firstnames = "";
 	private String surname = "";
 	private ArrayList<Codebook> codeBook;
-	private boolean adminRights = false;
+	private Boolean adminRights = false;
 	
-	public User(String firstnames, String surname, String username, String password, int pk, ArrayList<Codebook> cb)
+	public User(String firstnames, String surname, String username, String password, Boolean adminRights, int pk, ArrayList<Codebook> cb)
 	{
 		this.username = username;
 		this.password = password;
 		this.firstnames = firstnames;
 		this.surname = surname;
+		this.adminRights = adminRights;
 		this.id = pk;
 		
 		if(cb != null)
@@ -106,13 +107,13 @@ public class User implements Serializable
 	}
 	
 	//------------------------------------------------------------------------getAdminRights
-	public boolean getAdminRights()
+	public Boolean getAdminRights()
 	{
 		return this.adminRights;
 	}
 	
 	//-------------------------------------------------------------------------setAdminRights
-	public void setAdminRights(boolean adminRights)
+	public void setAdminRights(Boolean adminRights)
 	{
 		this.adminRights = adminRights;
 	}

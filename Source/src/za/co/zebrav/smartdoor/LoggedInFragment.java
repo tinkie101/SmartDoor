@@ -46,13 +46,13 @@ public class LoggedInFragment extends Fragment
 			{
 				provider = new Db4oAdapter(getActivity());
 				provider.open();
-				List temp = provider.load(new User(null, null, null, null, id, null));
+				List temp = provider.load(new User(null, null, null, null,null, id, null));
 				User t = (User)temp.get(0);
-				user = new User(t.getFirstnames(), t.getSurname(), t.getUsername(), t.getPassword(), t.getID(), t.getCodeBook());
+				user = new User(t.getFirstnames(), t.getSurname(), t.getUsername(), t.getPassword(),t.getAdminRights() ,t.getID(), t.getCodeBook());
 				provider.close();
 			}
 			else if(id == -2)
-				user = new User("Admin", "User", null, null, -2, null);
+				user = new User("Admin", "User", null, null, true, -2, null);
 			mainActivity.speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 		}
 		

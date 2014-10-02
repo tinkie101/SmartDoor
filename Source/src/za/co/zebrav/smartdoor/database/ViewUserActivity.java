@@ -45,7 +45,7 @@ public class ViewUserActivity extends Activity
 
 		// get database info
 		provider.open();
-		List<Object> result = provider.load(new User(null, null, null, null, 0, null));
+		List<Object> result = provider.load(new User(null, null, null, null, null, 0, null));
 
 		for (int i = 0; i < result.size(); i++)
 		{
@@ -99,7 +99,7 @@ public class ViewUserActivity extends Activity
 	public void deleteAllUsers(View v)
 	{
 		provider.open();
-		provider.delete(new User(null, null, null, null, 0, null));
+		provider.delete(new User(null, null, null, null, null, 0, null));
 		provider.close();
 		File path = getDir("data", 0);
 		File dir = new File(path + "/photos/");

@@ -24,6 +24,7 @@ public class AddUserStepOne extends Fragment
 	private EditText username;
 	private EditText pass1;
 	private EditText pass2;
+	private Boolean adminRights= false;
 	 
 	 @Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
@@ -50,7 +51,7 @@ public class AddUserStepOne extends Fragment
 	public User getValidUserStep1()
 	{
 		User user = new User(getFirstName(), getSurname(), getUsername(),
-							getPass(), getPK(), null);
+							getPass(), getAminRights(),getPK(), null);
 		return user;
 	}
 	
@@ -132,7 +133,7 @@ public class AddUserStepOne extends Fragment
 		String username = getUsername();
 		boolean exists = false;
 		db.open();
-		exists = db.exists(new User(null, null, username, null, 0, null));
+		exists = db.exists(new User(null, null, username, null, null, 0, null));
 		db.close();
 		return exists;
 	}
@@ -179,6 +180,11 @@ public class AddUserStepOne extends Fragment
 	public String getFirstName()
 	{
 		return firstname.getText().toString();
+	}
+	
+	public Boolean getAminRights()
+	{
+		return adminRights;
 	}
 	
 	/**

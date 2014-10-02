@@ -139,7 +139,7 @@ public class Db4oAdapter implements DatabaseAdaptee
 	public boolean deleteThisOne(User object)
 	{
 		//get user from database
-		ObjectSet result = getDatabase().queryByExample(new User(null, null, null, null, object.getID(), null));
+		ObjectSet result = getDatabase().queryByExample(new User(null, null, null, null,null, object.getID(), null));
 		
 		if(result.isEmpty())
 		{

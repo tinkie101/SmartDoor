@@ -85,7 +85,7 @@ public class PersonRecognizer
 		// Create Database connection and find all users
 		Db4oAdapter db = new Db4oAdapter(context);
 		db.open();
-		List<Object> tempList = db.load(new User(null, null, null, null, 0, null));
+		List<Object> tempList = db.load(new User(null, null, null, null, null, 0, null));
 		Log.d(TAG, "Size:" + tempList.size());
 		// Check Precondition 1
 		if (tempList.size() < 2)

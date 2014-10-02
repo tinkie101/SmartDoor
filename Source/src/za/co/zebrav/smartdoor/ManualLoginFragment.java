@@ -46,10 +46,10 @@ public class ManualLoginFragment extends Fragment
 		String pass = passwordET.getText().toString();
 		
 		if(uName.equals("root") && pass.equals("root"))
-			return new User("Admin", "User", uName, pass, -2, null);
+			return new User("Admin", "User", uName, pass, true,-2, null);
 		
 		provider.open();
-		List<Object> users = provider.load(new User(null, null, uName, pass, 0, null));
+		List<Object> users = provider.load(new User(null, null, uName, pass,null, 0, null));
 	
 		if(users.isEmpty())
 		{
@@ -58,7 +58,7 @@ public class ManualLoginFragment extends Fragment
 		}
 		
 		User temp = (User) users.get(0);
-		User user = new User(temp.getFirstnames(), temp.getSurname(), temp.getUsername(), temp.getPassword(), temp.getID(), null);
+		User user = new User(temp.getFirstnames(), temp.getSurname(), temp.getUsername(), temp.getPassword(), temp.getAdminRights(),temp.getID(), null);
 		provider.close();
 		return user;
 	}
