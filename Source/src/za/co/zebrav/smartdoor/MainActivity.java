@@ -79,9 +79,27 @@ public class MainActivity extends FragmentActivity
 		{
 			SharedPreferences.Editor editor = settings.edit();
 			
+			//Training settings
 		    editor.putString("face_TrainPhotoNum", getResources().getString((R.string.face_TrainPhotoNum)));
 		    editor.commit();
-			
+		    
+		    editor.putString("face_RecogPhotoNum", getResources().getString((R.string.face_RecogPhotoNum)));
+		    editor.commit();
+		    
+		    editor.putString("face_recognizerThreshold", getResources().getString((R.string.face_recognizerThreshold)));
+		    editor.commit();
+		    
+		    editor.putString("face_ImageScale", getResources().getString((R.string.face_ImageScale)));
+		    editor.commit();
+		    
+		    editor.putString("face_ChooseAlgorithm", getResources().getString((R.string.face_ChooseAlgorithm)));
+		    editor.commit();
+		    
+		    editor.putString("face_detectEyes", getResources().getString((R.string.face_detectEyes)));
+		    editor.commit();
+		    
+		    editor.putString("face_detectNose", getResources().getString((R.string.face_detectNose)));
+		    editor.commit();
 		}
 	}
 	
