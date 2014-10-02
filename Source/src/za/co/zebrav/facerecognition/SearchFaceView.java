@@ -9,6 +9,7 @@ import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.Rect;
 
 import za.co.zebrav.smartdoor.MainActivity;
+import za.co.zebrav.smartdoor.R;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.res.Resources;
@@ -29,9 +30,13 @@ class SearchFaceView extends FaceView
 	{
 		super(activity, fragment);
 		personRecognizer = new PersonRecognizer(activity);
+		String settinsFile = getResources().getString(R.string.settingsFileName);
+		recognisePhotos = Integer.parseInt(activity.getSharedPreferences(settinsFile, 0).getString("face_recognizerThreshold", "180"));
+
 		initialiseClassifiers();
 	}
-
+	
+	private int recognisePhotos;
 	protected void initialiseClassifiers() throws IOException
 	{
 		Log.d(TAG, "Classifier count:" + classifierCount);
@@ -56,7 +61,6 @@ class SearchFaceView extends FaceView
 		return runnables;
 	}
 
-	private static final int DETECTED_IN_A_ROW = 5;
 	private int tempdetected = -1;
 
 	@Override
@@ -73,10 +77,10 @@ class SearchFaceView extends FaceView
 					count = 0;
 				else
 					count++;
-				((SearchCameraFragment) fragment).setProgress(25 * count);
+				((SearchCameraFragment) fragment).setProgress((100/recognisePhotos) * count);
 				tempdetected = detectedId;
 				Log.d(TAG, "Count in a row:" + count);
-				if (count == DETECTED_IN_A_ROW)
+				if (count == recognisePhotos)
 					((MainActivity) activity).switchToVoice(detectedId);
 			}
 			else

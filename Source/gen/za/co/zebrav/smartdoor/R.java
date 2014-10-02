@@ -202,12 +202,12 @@ public final class R {
         public static final int face_ChooseAlgorithm=0x7f050012;
         public static final int face_ImageScale=0x7f050011;
         public static final int face_RecogPhotoNum=0x7f05000f;
-        public static final int face_ThresholdAlg=0x7f050010;
         /** "defaultFaceSettings
          */
         public static final int face_TrainPhotoNum=0x7f05000e;
         public static final int face_detectEyes=0x7f050013;
         public static final int face_detectNose=0x7f050014;
+        public static final int face_recognizerThreshold=0x7f050010;
         public static final int goto_twitter=0x7f050002;
         public static final int hello_world=0x7f050001;
         public static final int placeholder=0x7f050004;
