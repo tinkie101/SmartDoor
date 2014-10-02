@@ -38,6 +38,7 @@ public class MainActivity extends FragmentActivity
 	private TwitterFragment twitterFragment;
 	
 	private SpeechToTextAdapter speechToText;
+	public UserCommands userCommands;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -54,6 +55,7 @@ public class MainActivity extends FragmentActivity
 		
 		//TODO
 		speechToText = new SpeechToTextAdapter(this);
+		userCommands = new UserCommands(this);
 		
 		// add slider menu
 		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list),
@@ -68,9 +70,9 @@ public class MainActivity extends FragmentActivity
 		switchToCamera();
 	}
 	
-	protected void startListeningForCommands()
+	protected void startListeningForCommands(String[] possibleCommands)
 	{
-		speechToText.listenToSpeech();
+		speechToText.listenToSpeech(possibleCommands);
 	}
 	
 	protected void stopListeningForCommands()

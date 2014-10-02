@@ -2,6 +2,8 @@ package za.co.zebrav.smartdoor.SpeechRecognition;
 
 import java.util.ArrayList;
 
+import za.co.zebrav.smartdoor.MainActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,13 +17,15 @@ import android.widget.Toast;
 public class SpeechToTextAdapter
 {
 	private static final String LOG_TAG = "SpeechToTextAdapter";
-	private Activity context;
+	private MainActivity context;
 	private SpeechRecognizer speechRecogniser;
 	private boolean stopListening;
 
+	private String[] possibleCommands;
+
 	// private ProgressBar soundLevel;
 
-	public SpeechToTextAdapter(Activity context)
+	public SpeechToTextAdapter(MainActivity context)
 	{
 		this.context = context;
 		stopListening = true;
@@ -52,10 +56,13 @@ public class SpeechToTextAdapter
 		}
 	}
 
-	public void listenToSpeech()
+	public void listenToSpeech(String[] possibleCommands)
 	{
 		if (isAvailable())
 		{
+
+			this.possibleCommands = possibleCommands;
+
 			// soundLevel.setVisibility(ProgressBar.VISIBLE);
 
 			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -144,66 +151,66 @@ public class SpeechToTextAdapter
 			switch (error)
 			{
 				case 1:
-					Toast.makeText(context, "Network operation timed out", Toast.LENGTH_LONG).show();
+					// Toast.makeText(context, "Network operation timed out", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Network operation timed out");
 					// soundLevel.setVisibility(ProgressBar.GONE);
 					break;
 
 				case 2:
-					Toast.makeText(context, "Other network related errors", Toast.LENGTH_LONG).show();
+					// Toast.makeText(context, "Other network related errors", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Other network related errors");
 					// soundLevel.setVisibility(ProgressBar.GONE);
 					break;
 
 				case 3:
-					Toast.makeText(context, "Audio recording error", Toast.LENGTH_LONG).show();
+					// Toast.makeText(context, "Audio recording error", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Audio recording error");
 					// soundLevel.setVisibility(ProgressBar.GONE);
 					break;
 
 				case 4:
-					Toast.makeText(context, "Server sends error status", Toast.LENGTH_LONG).show();
+					// Toast.makeText(context, "Server sends error status", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Server sends error status");
 					// soundLevel.setVisibility(ProgressBar.GONE);
 					break;
 
 				case 5:
-					Toast.makeText(context, "Other client side errors", Toast.LENGTH_LONG).show();
+					// Toast.makeText(context, "Other client side errors", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Other client side errors");
 					// soundLevel.setVisibility(ProgressBar.GONE);
 					break;
 
 				case 6:
-					Toast.makeText(context, "Speech Listner Timed Out", Toast.LENGTH_LONG).show();
+					// Toast.makeText(context, "Speech Listner Timed Out", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Speech Listner Timed Out");
 					// soundLevel.setVisibility(ProgressBar.GONE);
 					break;
 
 				case 7:
-					Toast.makeText(context, "No Match Found", Toast.LENGTH_LONG).show();
+					// Toast.makeText(context, "No Match Found", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "No Match Found");
 					// soundLevel.setVisibility(ProgressBar.GONE);
 					break;
 
 				case 8:
-					Toast.makeText(context, "Recognition service is busy", Toast.LENGTH_LONG).show();
+					// Toast.makeText(context, "Recognition service is busy", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Recognition service is busy");
 					break;
 
 				case 9:
-					Toast.makeText(context, "Insufficient permissions", Toast.LENGTH_LONG).show();
+					// Toast.makeText(context, "Insufficient permissions", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Insufficient permissions");
 					// soundLevel.setVisibility(ProgressBar.GONE);
 					break;
 
 				default:
-					Toast.makeText(context, "I'm also not sure what happened...", Toast.LENGTH_LONG).show();
+					// Toast.makeText(context, "I'm also not sure what happened...", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "I'm also not sure what happened...");
 					// soundLevel.setVisibility(ProgressBar.GONE);
 					break;
 			}
 			if (!stopListening)
-				listenToSpeech();
+				listenToSpeech(possibleCommands);
 		}
 
 		/**
@@ -242,11 +249,26 @@ public class SpeechToTextAdapter
 			Log.d(LOG_TAG, "onResults");
 
 			ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-			Toast.makeText(context, data.get(0), Toast.LENGTH_LONG).show();
-			Log.d(LOG_TAG, data.get(0));
 
-			if (!stopListening)
-				listenToSpeech();
+			for (int i = 0; i < data.size(); i++)
+			{
+				data.set(i, data.get(i).toLowerCase());
+			}
+
+			String command = getCommand(data);
+
+			if (command != null)
+			{
+				context.userCommands.executeCommand(command);
+				Toast.makeText(context, command, Toast.LENGTH_LONG).show();
+			}
+			else
+			{
+				Log.d(LOG_TAG, data.get(0));
+
+				if (!stopListening)
+					listenToSpeech(possibleCommands);
+			}
 		}
 
 		/**
@@ -276,6 +298,22 @@ public class SpeechToTextAdapter
 			Log.d(LOG_TAG, "onRmsChanged " + rmsdB + ";" + level);
 		}
 
+	}
+
+	private String getCommand(ArrayList<String> data)
+	{
+		String resultCommand = null;
+
+		for (int i = 0; i < possibleCommands.length; i++)
+		{
+			if (data.contains(possibleCommands[i].toLowerCase()))
+			{
+				resultCommand = possibleCommands[i].toLowerCase();
+				break;
+			}
+		}
+
+		return resultCommand;
 	}
 
 }

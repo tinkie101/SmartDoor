@@ -26,6 +26,7 @@ public class LoggedInFragment extends Fragment
 	private String[] commandOptions;
 	private User user;
 	private Db4oAdapter provider;
+	private MainActivity mainActivity;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
@@ -35,6 +36,9 @@ public class LoggedInFragment extends Fragment
 		commandOptions =  getResources().getStringArray(R.array.commandOptions); 
 		adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.command_list_item, commandOptions);
 		list.setAdapter(adapter);
+		
+
+		mainActivity = (MainActivity) getActivity();
 		
 		//get Logged in user
 		Bundle bundle = this.getArguments();
@@ -53,10 +57,7 @@ public class LoggedInFragment extends Fragment
 			}
 			else if(id == -2)
 				user = new User("Admin", "User", null, null, -2, null);
-		
-			MainActivity m = (MainActivity) getActivity();
-			m.startListeningForCommands();
-			//m.speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
+			mainActivity.speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 		}
 		
 		setOnclickListener();
@@ -64,11 +65,18 @@ public class LoggedInFragment extends Fragment
 	}
 	
 	@Override
+	public void onResume()
+	{
+		super.onResume();
+		mainActivity.startListeningForCommands(commandOptions);
+		Log.d("LoggedInFragment", "onResume");
+	}
+	
+	@Override
 	public void onStop()
 	{
 		super.onStop();
-		MainActivity m = (MainActivity) getActivity();
-		m.stopListeningForCommands();
+		mainActivity.stopListeningForCommands();
 		Log.d("LoggedInFragment", "onStop");
 	}
 	
@@ -81,63 +89,9 @@ public class LoggedInFragment extends Fragment
 			{	
 				String selectedName = adapter.getItem(position);
 				
-				if(selectedName.equals("Open door"))
-				{
-					openDoor();
-				}
-				else if(selectedName.equals("Add user"))
-				{
-					addUser();
-				}
-				else if(selectedName.equals("Remove user"))
-				{
-					searchUser();
-				}
-				else if(selectedName.equals("Search user"))
-				{
-					searchUser();
-				}
-				else if(selectedName.equals("Twitter setup"))
-				{
-					twitterSetup();
-				}
-				else if(selectedName.equals("Settings"))
-				{
-					settings();
-				}
+				mainActivity.userCommands.executeCommand(selectedName);
 			}
 		});
 	}
-	//----------------------------------------------------------------------------Execution of commands
-	private void openDoor()
-	{
-
-		ClientSocket clientSocket = new ClientSocket();
-		clientSocket.execute("Open Door");
-		Toast.makeText(getActivity(), "Openning the door", Toast.LENGTH_SHORT).show();
-	}
 	
-	private void addUser()
-	{
-		Intent intent = new Intent(getActivity(), AddUserActivity.class);
-		startActivity(intent);
-	}
-	
-	private void searchUser()
-	{
-		Intent intent = new Intent(getActivity(),ViewUserActivity.class);
-		startActivity(intent);
-	}
-	
-	private void twitterSetup()
-	{
-		MainActivity m = (MainActivity)getActivity();
-		m.switchToTwitterSetup();
-	}
-	
-	private void settings()
-	{
-		MainActivity m = (MainActivity)getActivity();
-		m.switchToSettingsFragment();
-	}
 }
