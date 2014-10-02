@@ -1,55 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/TwitterSetupLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
 
-    <LinearLayout
-        android:id="@+id/chooseSettings"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/trainingSetButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Training" />
-
-        <Button
-            android:id="@+id/twitterSetButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Twitter" />
-
-    </LinearLayout>
-
-    <GridLayout
-        android:id="@+id/trainSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/NumberOfPhotosTV"
-            android:layout_gravity="left"
-            android:text="Number of photo's:" />
-
-        <EditText
-            android:id="@+id/NumberOfPhotosET"
-            android:layout_gravity="fill_horizontal"
-            android:inputType="number" >
-
-            <requestFocus />
-        </EditText>
-
-        <Button
-            android:id="@+id/saveTrainButton"
-            android:layout_gravity="left"
-            android:text="Save" />
-
-    </GridLayout>
-
-</RelativeLayout>
+	<RelativeLayout 
+	    android:id="@+id/TwitterSetupLayout"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical" >
+	
+	    
+	    <LinearLayout
+	        android:id="@+id/chooseSettings"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:orientation="vertical"
+	       
+	         >
+	
+	        <Button
+	            android:id="@+id/trainingSetButton"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Training" />
+	
+	        <Button
+	            android:id="@+id/twitterSetButton"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Twitter" />
+	        
+	         <Button
+	            android:id="@+id/cancelButton1"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Cancel" />
+	        
+	        
+	    </LinearLayout>
+	
+	    <TableLayout
+	        android:id="@+id/trainSettings"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:visibility="gone"
+	         >
+	
+	        <TextView
+	            android:id="@+id/textView1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Face Settings:"
+	            android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	        <TableRow
+	            android:id="@+id/tableRow1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/TrainPhotoNumTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Photo num (Tain):" />
+	
+	            <EditText
+	                android:id="@+id/TrainPhotoNumET"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:inputType="number" >
+	
+	                <requestFocus />
+	            </EditText>
+	
+	        </TableRow>
+	        
+	        <TableRow
+	            android:id="@+id/tableRow2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/RecogPhotoNumTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Photo num (Recog):" />
+	
+	            <EditText
+	                android:id="@+id/RecogPhotoNumET"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:inputType="number" >
+	                <requestFocus />
+	            </EditText>
+	
+	        </TableRow>
+	        
+	        <TableRow
+	            android:id="@+id/tableRow3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/recognizerThresholdTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Threshold:" />
+	
+	            <EditText
+	                android:id="@+id/recognizerThresholdET"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:inputType="number|numberDecimal" >
+	                <requestFocus />
+	            </EditText>
+	
+	        </TableRow>
+	        
+	        <TableRow
+	            android:id="@+id/tableRow4"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/ImageScaleTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Image scale:" />
+	            
+	            <Spinner
+			        android:id="@+id/ImageScaleSP"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:entries="@array/ImageScaleOptions" />
+	
+	        </TableRow>
+	        
+	        <TableRow
+	            android:id="@+id/tableRow5"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/faceRecognizerAlgorithmTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Algorithm:" />
+	            
+	            <Spinner
+			        android:id="@+id/faceRecognizerAlgorithmSP"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:entries="@array/faceAlgorithmOptions" />
+	
+	        </TableRow>
+	        
+	        <TableRow
+	            android:id="@+id/tableRow6"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	            
+	            <CheckBox
+			        android:id="@+id/faceDetectEyes"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="Detect Eyes" />
+	        </TableRow>
+	        
+	         <TableRow
+	            android:id="@+id/tableRow7"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	            
+	            <CheckBox
+			        android:id="@+id/faceDetectNose"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="Detect Nose" />
+	        </TableRow>
+	
+	        <Button
+	            android:id="@+id/saveTrainButton"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Save" />
+	        
+	        <Button
+	            android:id="@+id/cancelButton2"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Cancel" />
+	
+	    </TableLayout>
+	
+	</RelativeLayout>
+</ScrollView>
