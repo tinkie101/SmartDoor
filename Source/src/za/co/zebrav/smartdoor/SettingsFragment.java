@@ -59,7 +59,7 @@ public class SettingsFragment extends Fragment
 		chooseSettingsLayout.setVisibility(View.GONE);
 		
 		//getPreferences
-		String photoNum = settings.getString("Train/photoNum", "Not");
+		String photoNum = settings.getString("face_TrainPhotoNum", "Not");
 		if(!photoNum.equals("Not"))
 		{
 			EditText photoNumET = (EditText) view.findViewById(R.id.NumberOfPhotosET);
@@ -84,7 +84,7 @@ public class SettingsFragment extends Fragment
 		if(!numOfPhotos.equals(""))
 		{
 			SharedPreferences.Editor editor = settings.edit();
-		    editor.putString("Train/photoNum", numOfPhotos);
+		    editor.putString("face_TrainPhotoNum", numOfPhotos);
 		    editor.commit();
 			Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
 		}

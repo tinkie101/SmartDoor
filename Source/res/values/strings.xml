@@ -40,9 +40,15 @@
     
     <string name="settingsFileName">SmartDoor_settings</string>
     
-    <string-array name="defaultFaceSettings">
-        <item></item>
-    </string-array>
+    <!--"defaultFaceSettings-->
+    <string name="face_TrainPhotoNum">5</string>
+    <string name="face_RecogPhotoNum">5</string>
+    <string name="face_ThresholdAlg">2.2</string>
+    <string name="face_ImageScale">1</string>
+    <string name="face_ChooseAlgorithm">1</string>
+    <string name="face_detectEyes">true</string>
+    <string name="face_detectNose">true</string>
+    
         
 
     <string name="SpeechToText">Speech to Text</string>

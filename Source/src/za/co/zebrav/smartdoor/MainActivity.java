@@ -12,6 +12,7 @@ import za.co.zebrav.smartdoor.R.id;
 import za.co.zebrav.smartdoor.SpeechRecognition.SpeechToTextAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -45,6 +46,8 @@ public class MainActivity extends FragmentActivity
 		Log.d(TAG, "onCreate");
 		setContentView(R.layout.activity_main);
 
+		loadDefaultSettings();
+		
 		switchToTwitterFragment();
 		
 		tts = new TTS(this);
@@ -64,6 +67,22 @@ public class MainActivity extends FragmentActivity
 		identifyVoiceFragment = new IdentifyVoiceFragment();
 		searchCameraFragment = new SearchCameraFragment();
 		switchToCamera();
+	}
+	
+	private void loadDefaultSettings()
+	{
+		String PREFS_NAME = getResources().getString((R.string.settingsFileName));
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		
+		String face_TrainPhotoNum = settings.getString("face_TrainPhotoNum", "NOT");
+		if(face_TrainPhotoNum.equals("NOT"))//not set, set
+		{
+			SharedPreferences.Editor editor = settings.edit();
+			
+		    editor.putString("face_TrainPhotoNum", getResources().getString((R.string.face_TrainPhotoNum)));
+		    editor.commit();
+			
+		}
 	}
 	
 	protected void onResume()
