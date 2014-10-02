@@ -24,7 +24,7 @@ public class SettingsFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		view = inflater.inflate(R.layout.settings_layout, null);
+		view = inflater.inflate(R.layout.settings_layout, container, false);;
 	
 		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
 		
@@ -37,6 +37,16 @@ public class SettingsFragment extends Fragment
             public void onClick(View v) 
             {
             	trainSettings();
+            }
+        });
+		
+		Button twitterSetButton = (Button)view.findViewById(R.id.twitterSetButton);
+		twitterSetButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	MainActivity m = (MainActivity) getActivity();
+            	m.switchToTwitterSetup();
             }
         });
 		return view;
