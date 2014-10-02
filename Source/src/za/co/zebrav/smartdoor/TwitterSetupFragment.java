@@ -95,19 +95,19 @@ public class TwitterSetupFragment extends Fragment
 	private void useDefaults() 
 	{
 		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
-		String key = getResources().getString(R.string.twitterKey);
-		String secret = getResources().getString(R.string.twitterSecret);
-		String tokenKey = getResources().getString(R.string.twitterToken);
-		String tokenSecret = getResources().getString(R.string.twitterTokenKey);
+		String key = getResources().getString(R.string.twitter_Key);
+		String secret = getResources().getString(R.string.twitter_Secret);
+		String tokenKey = getResources().getString(R.string.twitter_Token);
+		String tokenSecret = getResources().getString(R.string.twitter_TokenKey);
 		
 		SharedPreferences.Editor editor = settings.edit();
-	    editor.putString("key", key);
+	    editor.putString("twitter_Key", key);
 	    editor.commit();
-	    editor.putString("secret", secret);
+	    editor.putString("twitter_Secret", secret);
 	    editor.commit();
-	    editor.putString("tokenKey", tokenKey);
+	    editor.putString("twitter_Token", tokenKey);
 	    editor.commit();
-	    editor.putString("tokenSecret", tokenSecret);
+	    editor.putString("twitter_TokenKey", tokenSecret);
 	    editor.commit();
 	    
 		MainActivity m = (MainActivity) getActivity();
@@ -123,13 +123,13 @@ public class TwitterSetupFragment extends Fragment
 		String tokenSecret = ((EditText)view.findViewById(R.id.tokenSecretET)).getText().toString();
 		
 		SharedPreferences.Editor editor = settings.edit();
-	    editor.putString("key", key);
+	    editor.putString("twitter_Key", key);
 	    editor.commit();
-	    editor.putString("secret", secret);
+	    editor.putString("twitter_Secret", secret);
 	    editor.commit();
-	    editor.putString("tokenKey", tokenKey);
+	    editor.putString("twitter_Token", tokenKey);
 	    editor.commit();
-	    editor.putString("tokenSecret", tokenSecret);
+	    editor.putString("twitter_TokenKey", tokenSecret);
 	    editor.commit();
 	    
 		MainActivity m = (MainActivity) getActivity();

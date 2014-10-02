@@ -218,10 +218,10 @@ public final class R {
         public static final int title_activity_voice_identification=0x7f050017;
         /** Twitter defaults
          */
-        public static final int twitterKey=0x7f050009;
-        public static final int twitterSecret=0x7f05000a;
-        public static final int twitterToken=0x7f05000b;
-        public static final int twitterTokenKey=0x7f05000c;
+        public static final int twitter_Key=0x7f050009;
+        public static final int twitter_Secret=0x7f05000a;
+        public static final int twitter_Token=0x7f05000b;
+        public static final int twitter_TokenKey=0x7f05000c;
     }
     public static final class style {
         /** 
