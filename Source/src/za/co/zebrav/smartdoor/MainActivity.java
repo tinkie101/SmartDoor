@@ -53,8 +53,8 @@ public class MainActivity extends FragmentActivity
 		tts = new TTS(this);
 		
 		//TODO
-		speechToText = new SpeechToTextAdapter(this);
-		speechToText.listenToSpeech();
+		//speechToText = new SpeechToTextAdapter(this);
+		//speechToText.listenToSpeech();
 		
 		// add slider menu
 		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list),

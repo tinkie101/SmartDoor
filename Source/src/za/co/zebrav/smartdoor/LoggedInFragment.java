@@ -100,6 +100,9 @@ public class LoggedInFragment extends Fragment
 	//----------------------------------------------------------------------------Execution of commands
 	private void openDoor()
 	{
+
+		ClientSocket clientSocket = new ClientSocket();
+		clientSocket.execute("Open Door");
 		Toast.makeText(getActivity(), "Openning the door", Toast.LENGTH_SHORT).show();
 	}
 	
