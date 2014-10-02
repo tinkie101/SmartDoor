@@ -81,6 +81,11 @@ public abstract class ClassifierRunnable implements Runnable
 	{
 		return totalDetected;
 	}
+	
+	public void setTotalDeteced(int total)
+	{
+		totalDetected = total;
+	}
 
 	@Override
 	public void run()

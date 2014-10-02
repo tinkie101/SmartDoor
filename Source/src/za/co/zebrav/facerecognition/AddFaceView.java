@@ -137,6 +137,11 @@ class AddFaceView extends FaceView
 				e.printStackTrace();
 			}
 		}
+		else
+		{
+			runnables[1].setTotalDeteced(0);
+			runnables[2].setTotalDeteced(0);
+		}
 	}
 
 	@Override
@@ -156,15 +161,23 @@ class AddFaceView extends FaceView
 		paint.setStrokeWidth(3);
 		// Draw faces
 		int total = getRunnables()[0].getTotalDetected();
-		Rect r = getRunnables()[0].getObjects().position(0);
+		Rect faceRectangle = getRunnables()[0].getObjects().position(0);
 		paint.setColor(getColor(0));
 		float scaleX = (float) getWidth() / grayImage.cols();
 		float scaleY = (float) getHeight() / grayImage.rows();
-		int x = r.x(), y = r.y(), w = r.width(), h = r.height();
-		canvas.drawRect(getWidth() - ((x + w) * scaleX), y * scaleY, getWidth() - (x * scaleX), (y + h) * scaleY, paint);
+		int x = faceRectangle.x(), y = faceRectangle.y(), w = faceRectangle.width(), h = faceRectangle.height();
 		
-		scaleX = (float) grayImage.cols() / r.width();
-		scaleY = (float) grayImage.rows() / r.height();
+		
+		int startx = (int) (getWidth() - ((x + w) * scaleX));
+		int starty = (int) (y * scaleY);
+		int endx = (int) (getWidth() - (x * scaleX));
+		int endy = (int) ((y + h) * scaleY);
+		
+		
+		canvas.drawRect(startx, starty,endx , endy, paint);
+		
+		//scaleX = (float) grayImage.cols() / faceRectangle.width();
+		//scaleY = (float) grayImage.rows() / faceRectangle.height();
 		// Draw eyes and nose
 		for (int i = 1; i < getClassifierCount(); i++)
 		{
@@ -179,10 +192,14 @@ class AddFaceView extends FaceView
 					y = rect.y();
 					w = rect.width();
 					h = rect.height();
-					int startx = (int) (((r.x() + r.width()) - (x + w)) * scaleX);
-					int starty = (int)( (y + r.y()) * scaleY);
-					int endx = (int) (((r.x() + r.width()) - x) * scaleX);
-					int endy = (int) ((y + r.y() + h) * scaleY);
+					
+					startx = (int) (getWidth() - (faceRectangle.x() + x + w) * scaleX);
+					endx = (int) (getWidth() - (faceRectangle.x() + x) * scaleX);
+					//startx = (int) (((faceRectangle.x() + faceRectangle.width()) - (x + w)) * scaleX);
+					//endx = (int) (((faceRectangle.x() + faceRectangle.width()) - x) * scaleX);
+					
+					starty = (int)( (y + faceRectangle.y()) * scaleY);
+					endy = (int) ((y + faceRectangle.y() + h) * scaleY);
 					canvas.drawRect(startx, starty,endx, endy, paint);
 				}
 			}
