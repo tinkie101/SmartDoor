@@ -97,10 +97,6 @@ public class LoggedInFragment extends Fragment
 				{
 					searchUser();
 				}
-				else if(selectedName.equals("Twitter setup"))
-				{
-					twitterSetup();
-				}
 				else if(selectedName.equals("Settings"))
 				{
 					settings();
