@@ -9,6 +9,7 @@ import org.bytedeco.javacpp.opencv_core.Rect;
 
 import org.bytedeco.javacpp.opencv_core.Mat;
 
+import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.database.AddUserActivity;
 import android.app.Activity;
 import android.app.Fragment;
@@ -34,6 +35,8 @@ class AddFaceView extends FaceView
 	{
 		super(activity, fragment);
 		initialiseClassifiers();
+		String settinsFile = getResources().getString(R.string.settingsFileName);
+		trainNumPhotos = Integer.parseInt(activity.getSharedPreferences(settinsFile, 0).getString("face_TrainPhotoNum", "0"));
 	}
 
 	protected void initialiseClassifiers() throws IOException
@@ -66,14 +69,16 @@ class AddFaceView extends FaceView
 			ImageTools.saveImageAsPNG(face, uID + "-" + count, activity);
 			Log.d(TAG, "Saved ID:" + uID + " Number: " + count + " .");
 			count++;
-			((AddCameraFragment) fragment).setProgress(25 * count);
-			if (count == 5)
+			((AddCameraFragment) fragment).setProgress((100/trainNumPhotos) * count);
+			if (count == trainNumPhotos)
 			{
 				((AddUserActivity) activity).switchFragToStep3();
 			}
 		}
 	}
-
+	
+	private int trainNumPhotos;
+	
 	@Override
 	protected int getColor(int id)
 	{
