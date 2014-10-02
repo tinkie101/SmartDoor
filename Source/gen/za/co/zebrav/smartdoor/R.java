@@ -88,18 +88,18 @@ public final class R {
         public static final int imageView2=0x7f090026;
         public static final int imageView3=0x7f090024;
         public static final int imageView4=0x7f090025;
-        public static final int keyET=0x7f090053;
-        public static final int keyTV=0x7f090052;
+        public static final int keyET=0x7f090052;
+        public static final int keyTV=0x7f090051;
         public static final int layoutToReplace=0x7f09000c;
         public static final int layoutToReplaceFromMain=0x7f090004;
         public static final int list=0x7f09005e;
         public static final int progressBar1=0x7f090006;
-        public static final int saveSettings02=0x7f090051;
+        public static final int saveSettings02=0x7f090059;
         public static final int saveTrainButton=0x7f090048;
         public static final int searchCancelButton=0x7f09005a;
         public static final int searchText=0x7f09005c;
-        public static final int secretET=0x7f090055;
-        public static final int secretTV=0x7f090054;
+        public static final int secretET=0x7f090054;
+        public static final int secretTV=0x7f090053;
         public static final int setupCancelButton=0x7f09004e;
         public static final int setupTwitterButton=0x7f09004c;
         public static final int space=0x7f09003d;
@@ -118,10 +118,10 @@ public final class R {
         public static final int textview1=0x7f09004b;
         public static final int toggleButton1=0x7f090027;
         public static final int toggleButtonGrabar=0x7f09002a;
-        public static final int tokenKeyET=0x7f090057;
-        public static final int tokenKeyTV=0x7f090056;
-        public static final int tokenSecretET=0x7f090059;
-        public static final int tokenSecretTV=0x7f090058;
+        public static final int tokenKeyET=0x7f090056;
+        public static final int tokenKeyTV=0x7f090055;
+        public static final int tokenSecretET=0x7f090058;
+        public static final int tokenSecretTV=0x7f090057;
         public static final int trainSettings=0x7f090045;
         public static final int trainingSetButton=0x7f090043;
         public static final int twitterFragment=0x7f090005;
@@ -220,8 +220,8 @@ public final class R {
          */
         public static final int twitter_Key=0x7f050009;
         public static final int twitter_Secret=0x7f05000a;
-        public static final int twitter_Token=0x7f05000b;
-        public static final int twitter_TokenKey=0x7f05000c;
+        public static final int twitter_TokenKey=0x7f05000b;
+        public static final int twitter_TokenSecret=0x7f05000c;
     }
     public static final class style {
         /** 

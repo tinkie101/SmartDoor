@@ -89,6 +89,21 @@ public class TwitterSetupFragment extends Fragment
 		specifyButton.setVisibility(View.GONE);
 		defaultButton.setVisibility(View.GONE);
 		cancelButton.setVisibility(View.GONE);
+		
+		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+		EditText keyET = (EditText)view.findViewById(R.id.keyET);
+		keyET.setText(settings.getString("twitter_Key", ""));
+		
+		EditText secretET = (EditText)view.findViewById(R.id.secretET);
+		secretET.setText(settings.getString("twitter_Secret", ""));
+		
+		EditText tokenKeyET = (EditText)view.findViewById(R.id.tokenKeyET);
+		tokenKeyET.setText(settings.getString("twitter_TokenKey", ""));
+		
+		EditText tokenSecretET = (EditText)view.findViewById(R.id.tokenSecretET);
+		tokenSecretET.setText(settings.getString("twitter_TokenSecret", ""));
+		
+		
 		g.setVisibility(View.VISIBLE);
 	}
 	
@@ -97,17 +112,17 @@ public class TwitterSetupFragment extends Fragment
 		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
 		String key = getResources().getString(R.string.twitter_Key);
 		String secret = getResources().getString(R.string.twitter_Secret);
-		String tokenKey = getResources().getString(R.string.twitter_Token);
-		String tokenSecret = getResources().getString(R.string.twitter_TokenKey);
+		String tokenKey = getResources().getString(R.string.twitter_TokenKey);
+		String tokenSecret = getResources().getString(R.string.twitter_TokenSecret);
 		
 		SharedPreferences.Editor editor = settings.edit();
 	    editor.putString("twitter_Key", key);
 	    editor.commit();
 	    editor.putString("twitter_Secret", secret);
 	    editor.commit();
-	    editor.putString("twitter_Token", tokenKey);
+	    editor.putString("twitter_TokenKey", tokenKey);
 	    editor.commit();
-	    editor.putString("twitter_TokenKey", tokenSecret);
+	    editor.putString("twitter_TokenSecret", tokenSecret);
 	    editor.commit();
 	    
 		MainActivity m = (MainActivity) getActivity();
@@ -127,9 +142,9 @@ public class TwitterSetupFragment extends Fragment
 	    editor.commit();
 	    editor.putString("twitter_Secret", secret);
 	    editor.commit();
-	    editor.putString("twitter_Token", tokenKey);
+	    editor.putString("twitter_TokenKey", tokenKey);
 	    editor.commit();
-	    editor.putString("twitter_TokenKey", tokenSecret);
+	    editor.putString("twitter_TokenSecret", tokenSecret);
 	    editor.commit();
 	    
 		MainActivity m = (MainActivity) getActivity();

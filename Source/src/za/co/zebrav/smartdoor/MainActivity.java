@@ -125,10 +125,10 @@ public class MainActivity extends FragmentActivity
 		    editor.putString("twitter_Secret", getResources().getString((R.string.twitter_Secret)));
 		    editor.commit();
 		    
-		    editor.putString("twitter_Token", getResources().getString((R.string.twitter_Token)));
+		    editor.putString("twitter_TokenKey", getResources().getString((R.string.twitter_TokenKey)));
 		    editor.commit();
 		    
-		    editor.putString("twitter_TokenKey", getResources().getString((R.string.twitter_TokenKey)));
+		    editor.putString("twitter_TokenSecret", getResources().getString((R.string.twitter_TokenSecret)));
 		    editor.commit();
 		}
 	}

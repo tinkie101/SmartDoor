@@ -69,8 +69,8 @@ public class TwitterFragment extends ListFragment
 		settings = fragmentContext.getSharedPreferences(PREFS_NAME, 0);
 		String key = settings.getString("twitter_Key", "Not");
 		String secret = settings.getString("twitter_Secret", "Not");
-		String tokenKey = settings.getString("twitter_Token", "Not");
-		String tokenSecret = settings.getString("twitter_TokenKey", "Not");
+		String tokenKey = settings.getString("twitter_TokenKey", "Not");
+		String tokenSecret = settings.getString("twitter_TokenSecret", "Not");
 		
 		if(!key.equals("Not") && !secret.equals("Not") && !tokenKey.equals("Not") && !tokenSecret.equals("Not"))
 		{
