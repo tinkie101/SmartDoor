@@ -35,8 +35,8 @@ class AddFaceView extends FaceView
 	{
 		super(activity, fragment);
 		initialiseClassifiers();
-		String settinsFile = getResources().getString(R.string.settingsFileName);
-		trainNumPhotos = Integer.parseInt(activity.getSharedPreferences(settinsFile, 0).getString("face_TrainPhotoNum", "0"));
+		String settingsFile = getResources().getString(R.string.settingsFileName);
+		trainNumPhotos = Integer.parseInt(activity.getSharedPreferences(settingsFile, 0).getString("face_TrainPhotoNum", "0"));
 	}
 
 	protected void initialiseClassifiers() throws IOException

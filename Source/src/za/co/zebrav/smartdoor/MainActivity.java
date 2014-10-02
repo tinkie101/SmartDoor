@@ -92,7 +92,7 @@ public class MainActivity extends FragmentActivity
 		    editor.putString("face_ImageScale", getResources().getString((R.string.face_ImageScale)));
 		    editor.commit();
 		    
-		    editor.putString("face_ChooseAlgorithm", getResources().getString((R.string.face_ChooseAlgorithm)));
+		    editor.putString("face_ChooseAlgorithm", getResources().getString((R.string.face_faceRecognizerAlgorithm)));
 		    editor.commit();
 		    
 		    editor.putString("face_detectEyes", getResources().getString((R.string.face_detectEyes)));

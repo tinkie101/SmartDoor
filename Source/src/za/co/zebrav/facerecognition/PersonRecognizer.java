@@ -34,23 +34,40 @@ public class PersonRecognizer
 	 */
 	private double certainty = -1;
 
+	private int photosPerPerson = 0;
+
 	/**
 	 * Default constructor. Will attempt to train from the database.
 	 * 
 	 * @param context
 	 *            Context for this PersonRecogniser. Needed for File IO.
+	 * @param photosPerPerson
+	 *            The amount of photos per person stored in database
+	 * @param algorithm
+	 *            Type of algorithm to use. 1 : LBPHFaceRecognizer, 2 : FisherFaceRecognizer, 3: EigenFaceRecognizer.
+	 *            Default 1.
 	 */
-	PersonRecognizer(Context context)
+	PersonRecognizer(Context context, int photosPerPerson, int algorithm, int threshold)
 	{
-		// faceRecognizer = createEigenFaceRecognizer();
-		// faceRecognizer = createFisherFaceRecognizer();
-		faceRecognizer = createLBPHFaceRecognizer();
-		String settinsFile = context.getResources().getString(R.string.settingsFileName);
-		int threshold = Integer.parseInt(context.getSharedPreferences(settinsFile, 0).getString("face_TrainPhotoNum", "0"));
-		faceRecognizer.set("threshold", threshold);
-		// faceRecognizer = createLBPHFaceRecognizer(2, 8, 8, 8, 200);
-		isTrained = initialiseRecogniserFromDatabase(context);
+		this.photosPerPerson = photosPerPerson;
+		switch (algorithm)
+		{
+			case 1:
+				faceRecognizer = createLBPHFaceRecognizer();
+				break;
+			case 2:
+				faceRecognizer = createFisherFaceRecognizer();
+				break;
+			case 3:
+				faceRecognizer = createEigenFaceRecognizer();
+				break;
+			default:
+				faceRecognizer = createLBPHFaceRecognizer();
+				break;
+		}
 
+		faceRecognizer.set("threshold", threshold);
+		isTrained = initialiseRecogniserFromDatabase(context);
 	}
 
 	/**
@@ -78,9 +95,9 @@ public class PersonRecognizer
 			return false;
 		}
 		// Create labels and images
-		Mat labels = new Mat(tempList.size() * 5, 1, CV_32SC1);
+		Mat labels = new Mat(tempList.size() * photosPerPerson, 1, CV_32SC1);
 		IntBuffer labelsBuf = labels.getIntBuffer();
-		MatVector images = new MatVector(tempList.size() * 5);
+		MatVector images = new MatVector(tempList.size() * photosPerPerson);
 		// Path where files are located
 		File path = context.getDir("data", 0);
 		// loop through each user in database
@@ -90,7 +107,7 @@ public class PersonRecognizer
 			// get current user
 			User u = (User) o;
 			// loop through each photo of the specific user
-			for (int j = 0; j < 5; j++)
+			for (int j = 0; j < photosPerPerson; j++)
 			{
 				// add the user's id to the back
 				labelsBuf.put(i, u.getID());

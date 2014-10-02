@@ -12,13 +12,10 @@ import za.co.zebrav.smartdoor.MainActivity;
 import za.co.zebrav.smartdoor.R;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 
 class SearchFaceView extends FaceView
 {
@@ -29,7 +26,11 @@ class SearchFaceView extends FaceView
 	public SearchFaceView(Activity activity, Fragment fragment) throws IOException
 	{
 		super(activity, fragment);
-		personRecognizer = new PersonRecognizer(activity);
+		String settingsFile = getResources().getString(R.string.settingsFileName);
+		int photosPerPerson = Integer.parseInt(activity.getSharedPreferences(settingsFile, 0).getString("face_TrainPhotoNum", "5"));
+		int algorithm = Integer.parseInt(activity.getSharedPreferences(settingsFile, 0).getString("face_faceRecognizerAlgorithm", "1"));
+		int threshold = Integer.parseInt(activity.getSharedPreferences(settingsFile, 0).getString("face_recognizerThreshold", "0"));
+		personRecognizer = new PersonRecognizer(activity, photosPerPerson,algorithm, threshold);
 		String settinsFile = getResources().getString(R.string.settingsFileName);
 		recognisePhotos = Integer.parseInt(activity.getSharedPreferences(settinsFile, 0).getString("face_recognizerThreshold", "180"));
 

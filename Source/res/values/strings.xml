@@ -45,7 +45,7 @@
     <string name="face_RecogPhotoNum">5</string>
     <string name="face_recognizerThreshold">180</string>
     <string name="face_ImageScale">2</string>
-    <string name="face_ChooseAlgorithm">1</string>
+    <string name="face_faceRecognizerAlgorithm">1</string>
     <string name="face_detectEyes">true</string>
     <string name="face_detectNose">true</string>
     

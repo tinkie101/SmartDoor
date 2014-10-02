@@ -199,7 +199,6 @@ public final class R {
         public static final int app_name=0x7f050000;
         public static final int drawer_close=0x7f050008;
         public static final int drawer_open=0x7f050007;
-        public static final int face_ChooseAlgorithm=0x7f050012;
         public static final int face_ImageScale=0x7f050011;
         public static final int face_RecogPhotoNum=0x7f05000f;
         /** "defaultFaceSettings
@@ -207,6 +206,7 @@ public final class R {
         public static final int face_TrainPhotoNum=0x7f05000e;
         public static final int face_detectEyes=0x7f050013;
         public static final int face_detectNose=0x7f050014;
+        public static final int face_faceRecognizerAlgorithm=0x7f050012;
         public static final int face_recognizerThreshold=0x7f050010;
         public static final int goto_twitter=0x7f050002;
         public static final int hello_world=0x7f050001;
