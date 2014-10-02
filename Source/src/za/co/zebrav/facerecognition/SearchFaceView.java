@@ -32,7 +32,7 @@ class SearchFaceView extends FaceView
 		int threshold = Integer.parseInt(activity.getSharedPreferences(settingsFile, 0).getString("face_recognizerThreshold", "0"));
 		personRecognizer = new PersonRecognizer(activity, photosPerPerson,algorithm, threshold);
 		String settinsFile = getResources().getString(R.string.settingsFileName);
-		recognisePhotos = Integer.parseInt(activity.getSharedPreferences(settinsFile, 0).getString("face_recognizerThreshold", "180"));
+		recognisePhotos = Integer.parseInt(activity.getSharedPreferences(settinsFile, 0).getString("face_RecogPhotoNum", "5"));
 
 		initialiseClassifiers();
 	}
