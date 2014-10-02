@@ -9,6 +9,7 @@ import za.co.zebrav.smartdoor.database.ViewUserActivity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,11 +55,21 @@ public class LoggedInFragment extends Fragment
 				user = new User("Admin", "User", null, null, -2, null);
 		
 			MainActivity m = (MainActivity) getActivity();
+			m.startListeningForCommands();
 			//m.speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 		}
 		
 		setOnclickListener();
 		return view;
+	}
+	
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		MainActivity m = (MainActivity) getActivity();
+		m.stopListeningForCommands();
+		Log.d("LoggedInFragment", "onStop");
 	}
 	
 	public void setOnclickListener()

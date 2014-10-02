@@ -53,8 +53,7 @@ public class MainActivity extends FragmentActivity
 		tts = new TTS(this);
 		
 		//TODO
-		//speechToText = new SpeechToTextAdapter(this);
-		//speechToText.listenToSpeech();
+		speechToText = new SpeechToTextAdapter(this);
 		
 		// add slider menu
 		sliderMenu = new CustomMenu(this, (ListView) findViewById(R.id.drawer_list),
@@ -67,6 +66,16 @@ public class MainActivity extends FragmentActivity
 		identifyVoiceFragment = new IdentifyVoiceFragment();
 		searchCameraFragment = new SearchCameraFragment();
 		switchToCamera();
+	}
+	
+	protected void startListeningForCommands()
+	{
+		speechToText.listenToSpeech();
+	}
+	
+	protected void stopListeningForCommands()
+	{
+		speechToText.stopListening();
 	}
 	
 	private void loadDefaultSettings()
