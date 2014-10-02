@@ -191,7 +191,6 @@ public class MainActivity extends FragmentActivity
 		else
 		{	
 			switchToLoggedInFrag(user.getID());
-			changeOnlyButtonText("Logout");
 		}
 	}
 	
@@ -203,6 +202,7 @@ public class MainActivity extends FragmentActivity
 	
 	public void switchToLoggedInFrag(int id)
 	{
+		changeOnlyButtonText("Logout");
 		LoggedInFragment t = new LoggedInFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt("id", id);
