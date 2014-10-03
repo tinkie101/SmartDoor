@@ -20,7 +20,7 @@ public class LoggedInFragment extends Fragment
 	private ListView list;
 	private ArrayAdapter<String> adapter;
 	private String[] commandOptions;
-	private User user;
+	private static User user;
 	private Db4oAdapter provider;
 	private MainActivity mainActivity;
 	
@@ -50,7 +50,10 @@ public class LoggedInFragment extends Fragment
 				user = new User("Admin", "User", null, null, true, -2, null);
 			mainActivity.speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
 		}
-		
+		if(user == null)
+			Log.d("User", "user null");
+		else
+			Log.d("User", "user NOT null");
 		if(user.getAdminRights())
 			commandOptions =  getResources().getStringArray(R.array.commandOptions);
 		else
