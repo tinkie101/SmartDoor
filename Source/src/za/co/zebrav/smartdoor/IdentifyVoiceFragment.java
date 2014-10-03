@@ -48,7 +48,7 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 
 		Db4oAdapter db = new Db4oAdapter(getActivity());
 		db.open();
-		List<Object> tempList = db.load(new User(null, null, null, null, null, 0, null));
+		List<Object> tempList = db.load(new User(null, null, null, null, null, activeID, null));
 		
 		User tempUser = (User) tempList.get(0);
 		
