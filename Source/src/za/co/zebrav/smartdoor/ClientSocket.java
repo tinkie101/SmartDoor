@@ -18,7 +18,7 @@ public class ClientSocket extends AsyncTask<String, Void, String>
 
 	// TODO
 	private static final int SERVERPORT = 2653;
-	private static final String SERVER_IP = "192.168.43.79";
+	private static final String SERVER_IP = "10.0.0.101";
 
 	private PrintWriter out;
 	private BufferedReader inFromServer;

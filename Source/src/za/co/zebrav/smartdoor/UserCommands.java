@@ -37,6 +37,10 @@ public class UserCommands
 			{
 				settings();
 			}
+			else
+			{
+				Toast.makeText(mainContext, "No such command", Toast.LENGTH_LONG);
+			}
 		}
 	
 		//----------------------------------------------------------------------------Execution of commands

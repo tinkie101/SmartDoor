@@ -3,6 +3,7 @@ package za.co.zebrav.smartdoor.SpeechRecognition;
 import java.util.ArrayList;
 
 import za.co.zebrav.smartdoor.MainActivity;
+import za.co.zebrav.smartdoor.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+import android.webkit.WebView.FindListener;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -23,12 +25,13 @@ public class SpeechToTextAdapter
 
 	private String[] possibleCommands;
 
-	// private ProgressBar soundLevel;
+	private ProgressBar soundLevel;
 
 	public SpeechToTextAdapter(MainActivity context)
 	{
 		this.context = context;
 		stopListening = true;
+		soundLevel = (ProgressBar) context.findViewById(R.id.progressBar1);
 		if (isAvailable())
 		{
 			speechRecogniser = SpeechRecognizer.createSpeechRecognizer(context);
@@ -277,25 +280,16 @@ public class SpeechToTextAdapter
 		@Override
 		public void onRmsChanged(float rmsdB)
 		{
-			// calculate progressbar value, Log10(0) = undefined!
-			float tempCalc = rmsdB;
-			if (tempCalc < 1)
-				tempCalc = 1;
-			/*
-			 * Scale the values from between 1 and 3.9 to 0 and 100 to fit into progressbar
-			 * ts = scaled value
-			 * tu = unscaled value
-			 * tumin = minimum that tu can be
-			 * tumax = maximum that tu can be
-			 * tsmax = the maximum that ts should be
-			 * tsmin = the mimimum that ts should be
-			 * ts = (tu - tumin)/(tumax - tumin)*(tsmax - tsmin)-(tsmin);
-			 */
-			double level = (Math.log10(tempCalc) - 1d) / (2.8d) * 100; // shortened known constants
+			int level = 0;
+			
+			if(rmsdB < -1)
+				level = -10;
+			else
+				level = (int)rmsdB;
+			
+			soundLevel.incrementProgressBy(level);
 
-			// soundLevel.setProgress((int) level);
-
-			Log.d(LOG_TAG, "onRmsChanged " + rmsdB + ";" + level);
+			Log.d(LOG_TAG, "onRmsChanged " + level);
 		}
 
 	}

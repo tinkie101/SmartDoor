@@ -88,7 +88,7 @@ public class LoggedInFragment extends Fragment
 			{	
 				String selectedName = adapter.getItem(position);
 				
-				mainActivity.userCommands.executeCommand(selectedName);
+				mainActivity.userCommands.executeCommand(selectedName.toLowerCase());
 			}
 		});
 	}
