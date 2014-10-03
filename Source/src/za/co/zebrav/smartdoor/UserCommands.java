@@ -37,6 +37,12 @@ public class UserCommands
 			{
 				settings();
 			}
+			else if(command.equals("logout"))
+			{
+
+				System.out.println("calling log out");
+				logout();
+			}
 			else
 			{
 				Toast.makeText(mainContext, "No such command", Toast.LENGTH_LONG);
@@ -51,6 +57,12 @@ public class UserCommands
 			ClientSocket clientSocket = new ClientSocket();
 			clientSocket.execute("Open Door");
 			Toast.makeText(mainContext, "Openning the door", Toast.LENGTH_SHORT).show();
+		}
+		
+		private void logout()
+		{
+			System.out.println("Lougout Called");
+			mainContext.logout();
 		}
 		
 		private void addUser()

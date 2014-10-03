@@ -173,6 +173,17 @@ public class MainActivity extends FragmentActivity
 		ft.commit();
 	}
 	
+	public void logout()
+	{
+		Button button = (Button) findViewById(id.switchLoginButton);
+		fm = getFragmentManager();
+		ft = fm.beginTransaction();
+		button.setText("Switch Login");
+		searchCameraFragment = new SearchCameraFragment();
+		ft.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
+		currentFragment = "advanced";
+	}
+	
 	/**
 	 * Function called when Login button from the manual login fragment is pressed.
 	 * @param v

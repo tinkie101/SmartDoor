@@ -3,7 +3,6 @@ package za.co.zebrav.smartdoor;
 import java.util.ArrayList;
 import java.util.List;
 
-import za.co.zebrav.smartdoor.database.AddUserActivity;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.app.Fragment;
@@ -16,9 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import at.fhhgb.auth.voice.VoiceAuthenticator;
 import at.fhooe.mcm.smc.math.mfcc.FeatureVector;
 import at.fhooe.mcm.smc.math.vq.Codebook;
@@ -28,7 +29,6 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 	private static final String LOG_TAG = "AuthTest";
 
 	private Button btnIdentify;
-	private Button btnDone;
 	private ListView listView;
 
 	private VoiceAuthenticator voiceAuthenticator;
@@ -44,8 +44,20 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		Bundle bundle = this.getArguments();
-		activeID = bundle.getInt("userID", -1);
-		return inflater.inflate(R.layout.fragment_identify_voice, container, false);
+		activeID = bundle.getInt("userID", -1);		
+
+		Db4oAdapter db = new Db4oAdapter(getActivity());
+		db.open();
+		List<Object> tempList = db.load(new User(null, null, null, null, null, 0, null));
+		
+		User tempUser = (User) tempList.get(0);
+		
+		View view = inflater.inflate(R.layout.fragment_identify_voice, container, false);
+		
+		TextView text = (TextView) view.findViewById(R.id.txtPossiblePerson);
+		text.setText(tempUser.getFirstnames());
+		db.close();
+		return view;
 	}
 
 	@Override
@@ -70,9 +82,6 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 		btnIdentify = (Button) view.findViewById(R.id.btnIdentify);
 		btnIdentify.setOnClickListener(this);
 
-		btnDone = (Button) view.findViewById(R.id.btnDone);
-		btnDone.setOnClickListener(this);
-
 		listView = (ListView) view.findViewById(R.id.identify_list);
 	}
 
@@ -95,10 +104,6 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 	{
 		if (v == btnIdentify)
 			identifySpeaker();
-		else if (v == btnDone)
-		{
-			// TODO Goto next fragment
-		}
 	}
 
 	/**

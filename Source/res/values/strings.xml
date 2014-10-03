@@ -33,10 +33,12 @@
         <item>Remove user</item>
         <item>Search user</item>
         <item>Settings</item>
+        <item>Logout</item>
     </string-array>
     
     <string-array name="basicCommandOptions">
         <item>Open door</item>
+        <item>Logout</item>
     </string-array>
     
     <string name="settingsFileName">SmartDoor_settings</string>
