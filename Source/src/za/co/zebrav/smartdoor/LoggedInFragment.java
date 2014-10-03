@@ -41,7 +41,7 @@ public class LoggedInFragment extends Fragment
 			{
 				provider = new Db4oAdapter(getActivity());
 				provider.open();
-				List temp = provider.load(new User(null, null, null, null,null, id, null));
+				List<Object> temp = provider.load(new User(null, null, null, null,null, id, null));
 				User t = (User)temp.get(0);
 				user = new User(t.getFirstnames(), t.getSurname(), t.getUsername(), t.getPassword(),t.getAdminRights() ,t.getID(), t.getCodeBook());
 				provider.close();

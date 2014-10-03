@@ -4,15 +4,12 @@ import java.util.ArrayList;
 
 import za.co.zebrav.smartdoor.MainActivity;
 import za.co.zebrav.smartdoor.R;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
-import android.webkit.WebView.FindListener;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
