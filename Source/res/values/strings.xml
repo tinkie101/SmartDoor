@@ -43,7 +43,7 @@
     
     <string name="settingsFileName">SmartDoor_settings</string>
     
-    <!--"defaultFaceSettings-->
+    <!--defaultFaceSettings-->
     <string name="face_TrainPhotoNum">5</string>
     <string name="face_RecogPhotoNum">5</string>
     <string name="face_recognizerThreshold">200</string>
@@ -67,7 +67,9 @@
         <item>EigenFace</item>
     </string-array>
     
-        
+      <string name="face_FaceColor">-65536</string> <!--Red-->
+      <string name="face_EyesColor">-16711936</string> <!-- Green -->
+        <string name="face_NoseColor">-16776961</string> <!--Blue-->
 
     <string name="SpeechToText">Speech to Text</string>
     <string name="title_activity_speech_to_text">SpeechToTextActivity</string>
