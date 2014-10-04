@@ -56,7 +56,7 @@ class SearchFaceView extends FaceView
 	{
 		if (faceRunnable.getTotalDetected() == 1 && personRecognizer.canPredict())
 		{
-			int detectedId = personRecognizer.predict(new Mat(grayImage));
+			int detectedId = personRecognizer.predict(ImageTools.getGreyMatImage(data, width, height, 1));
 			Log.d(TAG, "Face detected:" + detectedId);
 			Log.d(TAG, "Certainty:" + personRecognizer.getCertainty());
 			if (detectedId != -1)
