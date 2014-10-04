@@ -3,11 +3,10 @@ package za.co.zebrav.facerecognition;
 import java.io.IOException;
 
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.opencv_objdetect;
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
-import org.bytedeco.javacpp.opencv_core.Rect;
-
 import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacpp.opencv_core.Rect;
+import org.bytedeco.javacpp.opencv_objdetect;
 
 import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.database.AddUserActivity;

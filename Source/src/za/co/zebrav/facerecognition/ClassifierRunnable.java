@@ -1,18 +1,18 @@
 package za.co.zebrav.facerecognition;
 
 import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacpp.opencv_core.CvMemStorage;
+import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.Rect;
 import org.bytedeco.javacpp.opencv_core.Size;
 import org.bytedeco.javacpp.opencv_objdetect;
-import static org.bytedeco.javacpp.opencv_objdetect.groupRectangles;
-import org.bytedeco.javacpp.opencv_core.CvMemStorage;
-import org.bytedeco.javacpp.opencv_objdetect.*;
-import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
+import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
 
 import android.util.Log;
 

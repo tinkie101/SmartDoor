@@ -2,17 +2,14 @@ package za.co.zebrav.facerecognition;
 
 import static org.bytedeco.javacpp.opencv_core.cvClearMemStorage;
 
-import org.bytedeco.javacpp.opencv_core.Mat;
-
 import java.io.IOException;
 import java.text.DecimalFormat;
-import org.bytedeco.javacpp.opencv_core.Rect;
+
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
+import org.bytedeco.javacpp.opencv_core.Mat;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Camera;
 import android.util.DisplayMetrics;

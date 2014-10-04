@@ -7,8 +7,8 @@ import android.util.Log;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
-import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.ObjectSet;
+import com.db4o.config.EmbeddedConfiguration;
 
 public class Db4oAdapter implements DatabaseAdaptee
 {

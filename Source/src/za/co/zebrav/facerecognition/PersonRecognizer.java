@@ -1,7 +1,9 @@
 package za.co.zebrav.facerecognition;
 
-import static org.bytedeco.javacpp.opencv_contrib.*;
-import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_contrib.createEigenFaceRecognizer;
+import static org.bytedeco.javacpp.opencv_contrib.createFisherFaceRecognizer;
+import static org.bytedeco.javacpp.opencv_contrib.createLBPHFaceRecognizer;
+import static org.bytedeco.javacpp.opencv_core.CV_32SC1;
 import static org.bytedeco.javacpp.opencv_highgui.CV_LOAD_IMAGE_GRAYSCALE;
 import static org.bytedeco.javacpp.opencv_highgui.imread;
 
@@ -9,10 +11,10 @@ import java.io.File;
 import java.nio.IntBuffer;
 import java.util.List;
 
+import org.bytedeco.javacpp.opencv_contrib.FaceRecognizer;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.MatVector;
 
-import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.content.Context;
@@ -20,6 +22,9 @@ import android.util.Log;
 
 public class PersonRecognizer
 {
+	public static final int  LBPHFaceRecognizer = 1;
+	public static final int  FisherFaceRecognizer = 2;
+	public static final int  EigenFaceRecognizer = 3;
 	private static final String TAG = "FacailRecognition::PersonRecognizer";
 	/**
 	 * JavaCV FaceRegocniser object being wrapped.
@@ -44,8 +49,7 @@ public class PersonRecognizer
 	 * @param photosPerPerson
 	 *            The amount of photos per person stored in database
 	 * @param algorithm
-	 *            Type of algorithm to use. 1 : LBPHFaceRecognizer, 2 : FisherFaceRecognizer, 3: EigenFaceRecognizer.
-	 *            Default 1.
+	 *            Type of algorithm to use. Use PersonRecognizer.LBPHFaceRecognizer or PersonRecognizer.FisherFaceRecognizer or PersonRecognizer.EigenFaceRecognizer
 	 */
 	PersonRecognizer(Context context, int photosPerPerson, int algorithm, int threshold)
 	{
@@ -65,7 +69,7 @@ public class PersonRecognizer
 				faceRecognizer = createLBPHFaceRecognizer();
 				break;
 		}
-
+		Log.d(TAG,"Threshold:" + threshold);
 		faceRecognizer.set("threshold", threshold);
 		isTrained = initialiseRecogniserFromDatabase(context);
 	}

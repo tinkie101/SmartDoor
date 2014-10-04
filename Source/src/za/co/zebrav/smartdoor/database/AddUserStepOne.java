@@ -3,16 +3,13 @@ package za.co.zebrav.smartdoor.database;
 import java.util.List;
 
 import za.co.zebrav.smartdoor.R;
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class AddUserStepOne extends Fragment 
 {
