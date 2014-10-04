@@ -65,7 +65,6 @@ class AddFaceView extends FaceView
 			if (faceRunnable.getTotalDetected() == 1 && eyesRunnable.getTotalDetected() == 2
 								&& noseRunnable.getTotalDetected() == 1)
 			{
-				Log.d(TAG, "Here1");
 				return true;
 			}
 		}
@@ -73,7 +72,6 @@ class AddFaceView extends FaceView
 		{
 			if (faceRunnable.getTotalDetected() == 1 && noseRunnable.getTotalDetected() == 1)
 			{
-				Log.d(TAG, "Here2");
 				return true;
 			}
 		}
@@ -81,13 +79,11 @@ class AddFaceView extends FaceView
 		{
 			if (faceRunnable.getTotalDetected() == 1 && eyesRunnable.getTotalDetected() == 2)
 			{
-				Log.d(TAG, "Here3");
 				return true;
 			}
 		}
 		else if (faceRunnable.getTotalDetected() == 1)
 		{
-			Log.d(TAG, "Here4");
 			return true;
 		}
 		return false;

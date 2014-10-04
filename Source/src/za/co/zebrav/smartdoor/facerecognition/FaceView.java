@@ -68,7 +68,6 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		String settingsFile = getResources().getString(R.string.settingsFileName);
 		SUBSAMPLING_FACTOR_DETECTION = Integer.parseInt(activity.getSharedPreferences(settingsFile, 0).getString(
 							"face_ImageScale", "2"));
-		Log.d(TAG, "Factor: " + SUBSAMPLING_FACTOR_DETECTION);
 	}
 
 	/**
