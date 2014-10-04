@@ -40,6 +40,12 @@ public class SpeechToTextAdapter
 			Log.d(LOG_TAG, "Speech Recognition not Available on this Device!");
 		}
 	}
+	
+
+	public void destroy()
+	{
+		speechRecogniser.destroy();		
+	}
 
 	public boolean isAvailable()
 	{
@@ -93,6 +99,23 @@ public class SpeechToTextAdapter
 			Toast.makeText(context, "Speech Recognition not Available on this Device!", Toast.LENGTH_LONG).show();
 			Log.d(LOG_TAG, "Speech Recognition not Available on this Device!");
 		}
+	}
+	
+
+	private String getCommand(ArrayList<String> data)
+	{
+		String resultCommand = null;
+
+		for (int i = 0; i < possibleCommands.length; i++)
+		{
+			if (data.contains(possibleCommands[i].toLowerCase()))
+			{
+				resultCommand = possibleCommands[i].toLowerCase();
+				break;
+			}
+		}
+
+		return resultCommand;
 	}
 
 	private class SpeechListner implements RecognitionListener
@@ -290,21 +313,4 @@ public class SpeechToTextAdapter
 		}
 
 	}
-
-	private String getCommand(ArrayList<String> data)
-	{
-		String resultCommand = null;
-
-		for (int i = 0; i < possibleCommands.length; i++)
-		{
-			if (data.contains(possibleCommands[i].toLowerCase()))
-			{
-				resultCommand = possibleCommands[i].toLowerCase();
-				break;
-			}
-		}
-
-		return resultCommand;
-	}
-
 }

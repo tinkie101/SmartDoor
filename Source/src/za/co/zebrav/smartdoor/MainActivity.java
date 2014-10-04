@@ -300,6 +300,7 @@ public class MainActivity extends FragmentActivity
 	public void onDestroy()
 	{	
 		tts.destroy();
+		speechToText.destroy();
 		super.onDestroy();
 	}
 	

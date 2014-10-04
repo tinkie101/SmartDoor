@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 public class LoggedInFragment extends Fragment
 {
+	private static final String LOG_TAG = "LoggedInFragment";
 	private ListView list;
 	private ArrayAdapter<String> adapter;
 	private String[] commandOptions;
@@ -71,7 +72,7 @@ public class LoggedInFragment extends Fragment
 	{
 		super.onResume();
 		mainActivity.startListeningForCommands(commandOptions);
-		Log.d("LoggedInFragment", "onResume");
+		Log.d(LOG_TAG, "onResume");
 	}
 	
 	@Override
@@ -79,7 +80,7 @@ public class LoggedInFragment extends Fragment
 	{
 		super.onStop();
 		mainActivity.stopListeningForCommands();
-		Log.d("LoggedInFragment", "onStop");
+		Log.d(LOG_TAG, "onStop");
 	}
 	
 	public void setOnclickListener()

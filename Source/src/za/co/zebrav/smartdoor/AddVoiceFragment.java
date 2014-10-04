@@ -53,10 +53,11 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 
 		soundLevelDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
 		soundLevelDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		soundLevelDialog.setTitle("Listening...");
+		soundLevelDialog.setMessage("Listening...");
 		soundLevelDialog.setCancelable(false);
 
 		processingDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
+		processingDialog.setMessage("Processing");
 		processingDialog.setCancelable(false);
 
 		voiceAuthenticator = new VoiceAuthenticator(soundLevelDialog);

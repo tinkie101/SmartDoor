@@ -10,6 +10,5 @@
 	<classpathentry exported="true" kind="lib" path="libs/db4o-8.0.249.16098-all-java5.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry exported="true" kind="lib" path="libs/voiceIdent.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
