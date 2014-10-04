@@ -52,7 +52,7 @@ public class UserCommands
 		{
 			mainContext.speakOut("Opening the Door");
 			
-			ClientSocket clientSocket = new ClientSocket();
+			ClientSocket clientSocket = new ClientSocket(mainContext);
 			clientSocket.execute("Open Door");
 			Toast.makeText(mainContext, "Openning the door", Toast.LENGTH_SHORT).show();
 		}

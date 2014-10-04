@@ -18,6 +18,7 @@ public class SettingsFragment extends Fragment
 {
 	private LinearLayout chooseSettingsLayout;
 	private TableLayout trainSettings;
+	private TableLayout serverSettings;
 	private View view;
 	
 	private SharedPreferences settings = null;
@@ -32,6 +33,7 @@ public class SettingsFragment extends Fragment
 		
 		chooseSettingsLayout = (LinearLayout)view.findViewById(R.id.chooseSettings);
 		trainSettings = (TableLayout) view.findViewById(R.id.trainSettings);
+		serverSettings = (TableLayout) view.findViewById(R.id.ServerSettings);
 		
 		Button trainSettingsButton = (Button) view.findViewById(R.id.trainingSetButton);
 		trainSettingsButton.setOnClickListener(new View.OnClickListener() 
@@ -39,6 +41,15 @@ public class SettingsFragment extends Fragment
             public void onClick(View v) 
             {
             	trainSettings();
+            }
+        });
+		
+		Button serverSettigsButton = (Button) view.findViewById(R.id.ServerSetButton);
+		serverSettigsButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	serverSettings();
             }
         });
 		
@@ -79,7 +90,7 @@ public class SettingsFragment extends Fragment
 		m.switchToLoggedInFrag(-6);
 	}
 	
-	//-------------------------------------------------------------------------------------settings
+	//-------------------------------------------------------------------------------------train settings
 	private void trainSettings()
 	{
 		trainSettings.setVisibility(View.VISIBLE);
@@ -126,8 +137,7 @@ public class SettingsFragment extends Fragment
 	
 	private void saveTrainingData()
 	{
-		//Number of photo's during training
-		if(noneEmpty())
+		if(trainNoneEmpty())
 		{
 			SharedPreferences.Editor editor = settings.edit();
 			
@@ -177,7 +187,7 @@ public class SettingsFragment extends Fragment
 		
 	}
 	
-	private boolean noneEmpty()
+	private boolean trainNoneEmpty()
 	{
 		if(((EditText) view.findViewById(R.id.TrainPhotoNumET)).getText().toString().equals(""))
 			return false;
@@ -190,7 +200,68 @@ public class SettingsFragment extends Fragment
 		else if(((Spinner) view.findViewById(R.id.ImageScaleSP)).getSelectedItem().toString().equals(""))
 			return false;
 		return true;
-			
 	}
+	
+	//-------------------------------------------------------------------------------------server settings
+	private void serverSettings()
+	{
+		serverSettings.setVisibility(View.VISIBLE);
+		chooseSettingsLayout.setVisibility(View.GONE);
+		
+		//getPreferences and display current settings
+		String ip = settings.getString("server_IP", "");
+		((EditText) view.findViewById(R.id.IP_ET)).setText(ip);
+		
+		String port = settings.getString("server_Port", "");
+		((EditText) view.findViewById(R.id.Port_ET)).setText(port);
+		
+		//configure buttons
+		Button saveServerSettings = (Button) view.findViewById(R.id.saveServerSettingsButton);
+		saveServerSettings.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	saveServerData();
+            }
+        });
+		
+		Button cancelServerSettingsButton = (Button) view.findViewById(R.id.cancelServerSettingsButton);
+		cancelServerSettingsButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	done();
+            }
+        });
+	}
+	
+	public void saveServerData()
+	{
+		if(serverNoneEmpty())
+		{
+			SharedPreferences.Editor editor = settings.edit();
+			
+			String ip = ((EditText) view.findViewById(R.id.IP_ET)).getText().toString();
+		    editor.putString("server_IP", ip);
+		    editor.commit();
+		    
+		    String port = ((EditText) view.findViewById(R.id.Port_ET)).getText().toString();
+		    editor.putString("server_Port", port);
+		    editor.commit();
+		    Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+		}
+		else
+			Toast.makeText(getActivity(), "Empty field", Toast.LENGTH_SHORT).show();
+	}
+	
+	public boolean serverNoneEmpty()
+	{
+		if(((EditText) view.findViewById(R.id.IP_ET)).getText().toString().equals(""))
+			return false;
+		else if(((EditText) view.findViewById(R.id.Port_ET)).getText().toString().equals(""))
+			return false;
+		return true;
+	}
+
 	
 }

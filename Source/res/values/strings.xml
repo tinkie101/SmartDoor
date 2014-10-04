@@ -27,6 +27,10 @@
     <string name="twitter_TokenKey">239453626-73H379K274Qfm9KaPfq8C3hKPhq3jqGk04gQXkIw</string>
     <string name="twitter_TokenSecret">7ozxcBnoAA4WEocKeUSrFI9iOO9hVqNYwS2xFOeB0osUl</string>
     
+    <!--Server defaults-->
+    <string name="server_IP">10.0.0.101</string>
+    <string name="server_Port">2653</string>
+    
     <string-array name="commandOptions">
         <item>Open door</item>
         <item>Add user</item>

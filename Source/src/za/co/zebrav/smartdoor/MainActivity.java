@@ -132,6 +132,19 @@ public class MainActivity extends FragmentActivity
 		    editor.putString("twitter_TokenSecret", getResources().getString((R.string.twitter_TokenSecret)));
 		    editor.commit();
 		}
+		
+		//serverSettings
+		String server_IP = settings.getString("server_IP", "NOT");
+		if(server_IP.equals("NOT"))//not set, set
+		{
+			SharedPreferences.Editor editor = settings.edit();
+			
+		    editor.putString("server_IP", getResources().getString((R.string.server_IP)));
+		    editor.commit();
+		    
+		    editor.putString("server_Port", getResources().getString((R.string.server_Port)));
+		    editor.commit();
+		}
 	}
 	
 	protected void onResume()

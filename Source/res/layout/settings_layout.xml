@@ -5,7 +5,6 @@
   android:layout_height="fill_parent">
 
 	<RelativeLayout 
-	    android:id="@+id/TwitterSetupLayout"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:orientation="vertical" >
@@ -16,8 +15,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:orientation="vertical"
-	       
-	         >
+	       >
 	
 	        <Button
 	            android:id="@+id/trainingSetButton"
@@ -31,14 +29,91 @@
 	            android:layout_height="wrap_content"
 	            android:text="Twitter" />
 	        
+	        <Button
+	            android:id="@+id/ServerSetButton"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Server" />
+	        
 	         <Button
 	            android:id="@+id/cancelButton1"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:text="Cancel" />
-	        
-	        
 	    </LinearLayout>
+	    
+	    <TableLayout
+	        android:id="@+id/ServerSettings"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:visibility="gone"
+	         >
+	
+	        <TextView
+	            android:id="@+id/textView2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="IP Settings:"
+	            android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	        <TableRow
+	            android:id="@+id/tableRow1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/IP_TV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="IP adress:" />
+	
+	            <EditText
+	                android:id="@+id/IP_ET"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" >
+	                <requestFocus />
+	            </EditText>
+	
+	        </TableRow>
+	        
+	        <TableRow
+	            android:id="@+id/tableRow2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/Port_TV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="IPort:" />
+	
+	            <EditText
+	                android:id="@+id/Port_ET"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:inputType="number" >
+	                <requestFocus />
+	            </EditText>
+	
+	        </TableRow>
+	        <TableRow
+	            android:id="@+id/tableRow3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	        <Button
+	            android:id="@+id/saveServerSettingsButton"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Save" />
+	        
+	        <Button
+	            android:id="@+id/cancelServerSettingsButton"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Cancel" />
+	        </TableRow>
+	
+        </TableLayout>
 	
 	    <TableLayout
 	        android:id="@+id/trainSettings"

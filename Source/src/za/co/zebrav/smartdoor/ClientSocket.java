@@ -8,6 +8,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 public class ClientSocket extends AsyncTask<String, Void, String>
@@ -17,11 +19,25 @@ public class ClientSocket extends AsyncTask<String, Void, String>
 	private Socket socket;
 
 	// TODO
-	private static final int SERVERPORT = 2653;
-	private static final String SERVER_IP = "10.0.0.101";
+	private static int SERVERPORT;
+	private static String SERVER_IP;
 
 	private PrintWriter out;
 	private BufferedReader inFromServer;
+	
+	public ClientSocket(Activity act)
+	{
+		String PREFS_NAME = act.getResources().getString((R.string.settingsFileName));
+		SharedPreferences settings = act.getSharedPreferences(PREFS_NAME, 0);
+		SERVERPORT = Integer.parseInt(settings.getString("server_Port", "0"));
+		if(SERVERPORT == 0)//not set, use defaults
+		{
+			SERVERPORT = Integer.parseInt(act.getResources().getString((R.string.server_Port)));
+			SERVER_IP = act.getResources().getString((R.string.server_IP));
+		}
+		else
+			SERVER_IP = settings.getString("server_IP", "0");
+	}
 
 	public void sendCommand(String command)
 	{
