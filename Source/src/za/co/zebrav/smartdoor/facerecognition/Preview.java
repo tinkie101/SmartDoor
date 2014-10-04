@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -15,6 +16,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback
 	SurfaceHolder mHolder;
 	Camera mCamera;
 	Camera.PreviewCallback previewCallback;
+	private static final String TAG = "Preview";
 
 	public void setCamera(Camera camera)
 	{
@@ -107,7 +109,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback
 		Camera.Parameters parameters = mCamera.getParameters();
 
 		List<Size> sizes = parameters.getSupportedPreviewSizes();
-		Size optimalSize = getOptimalPreviewSize(sizes, w, h);
+		//Size optimalSize = getOptimalPreviewSize(sizes, w, h);
+		Size optimalSize = sizes.get(1);
+		Log.d(TAG,"width:" + optimalSize.width + " height: " + optimalSize.height);
 		parameters.setPreviewSize(optimalSize.width, optimalSize.height);
 
 		mCamera.setParameters(parameters);

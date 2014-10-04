@@ -92,6 +92,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		try
 		{
 			Camera.Size size = camera.getParameters().getPreviewSize();
+			Log.d(TAG,"width:"+ size.width + " height:" + size.height);
 			processImage(data, size.width, size.height);
 			camera.addCallbackBuffer(data);
 		}

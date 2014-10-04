@@ -58,15 +58,19 @@ public class PersonRecognizer
 		{
 			case 1:
 				faceRecognizer = createLBPHFaceRecognizer();
+				Log.d(TAG, "Created LBPHFaceRecognizer");
 				break;
 			case 2:
 				faceRecognizer = createFisherFaceRecognizer();
+				Log.d(TAG, "Created FisherFaceRecognizer");
 				break;
 			case 3:
 				faceRecognizer = createEigenFaceRecognizer();
+				Log.d(TAG, "Created EigenFaceRecognizer");
 				break;
 			default:
 				faceRecognizer = createLBPHFaceRecognizer();
+				Log.d(TAG, "Created LBPHFaceRecognizer");
 				break;
 		}
 		Log.d(TAG,"Threshold:" + threshold);
@@ -127,6 +131,7 @@ public class PersonRecognizer
 				// load image and add to back
 				Mat m = imread(file.getAbsolutePath(), CV_LOAD_IMAGE_GRAYSCALE);
 				images.put(i, m);
+				Log.d(TAG, "m width:" + m.cols() + "; m height:"+m.rows());
 				// increment counter for image count
 				i++;
 			}
