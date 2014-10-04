@@ -157,12 +157,12 @@ public class SettingsFragment extends Fragment
 		    editor.putString("face_ImageScale", imageScale);
 		    editor.commit();
 		    
-		    String algorithm = ((Spinner) view.findViewById(R.id.ImageScaleSP)).getSelectedItem().toString();
+		    String algorithm = ((Spinner) view.findViewById(R.id.faceRecognizerAlgorithmSP)).getSelectedItem().toString();
 		    if(algorithm.equals("LBPFace"))
 		    	editor.putString("face_faceRecognizerAlgorithm", "1");
 		    else if(algorithm.equals("FisherFace"))
 		    	editor.putString("face_faceRecognizerAlgorithm", "2");
-		    else
+		    else if(algorithm.equals("EigenFace"))
 		    	editor.putString("face_faceRecognizerAlgorithm", "3");
 		    editor.commit();
 		    
@@ -183,8 +183,6 @@ public class SettingsFragment extends Fragment
 		}
 		else
 			Toast.makeText(getActivity(), "Empty field", Toast.LENGTH_SHORT).show();
-		
-		
 	}
 	
 	private boolean trainNoneEmpty()
