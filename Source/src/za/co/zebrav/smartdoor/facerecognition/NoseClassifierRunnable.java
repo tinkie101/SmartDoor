@@ -1,5 +1,4 @@
-package za.co.zebrav.facerecognition;
-
+package za.co.zebrav.smartdoor.facerecognition;
 import java.io.File;
 
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;

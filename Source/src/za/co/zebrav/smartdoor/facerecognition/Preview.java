@@ -1,4 +1,4 @@
-package za.co.zebrav.facerecognition;
+package za.co.zebrav.smartdoor.facerecognition;
 
 import java.io.IOException;
 import java.util.List;

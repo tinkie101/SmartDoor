@@ -1,4 +1,4 @@
-package za.co.zebrav.facerecognition;
+package za.co.zebrav.smartdoor.facerecognition;
 
 import za.co.zebrav.smartdoor.R;
 import android.app.Activity;

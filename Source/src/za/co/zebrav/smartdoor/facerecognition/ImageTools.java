@@ -1,4 +1,4 @@
-package za.co.zebrav.facerecognition;
+package za.co.zebrav.smartdoor.facerecognition;
 
 import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
 import static org.bytedeco.javacpp.opencv_highgui.imwrite;

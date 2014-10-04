@@ -1,4 +1,4 @@
-package za.co.zebrav.facerecognition;
+package za.co.zebrav.smartdoor.facerecognition;
 
 import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
 
@@ -29,7 +29,7 @@ public abstract class ClassifierRunnable implements Runnable
 	/**
 	 * Directory where all the XML classifiers are stored.
 	 */
-	protected static final String directory = "/za/co/zebrav/facerecognition/";
+	protected static final String directory = "/za/co/zebrav/smartdoor/facerecognition/";
 
 	protected abstract String getClassifierfile();
 

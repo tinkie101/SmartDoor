@@ -7,10 +7,10 @@
 package za.co.zebrav.smartdoor;
 
 
-import za.co.zebrav.facerecognition.SearchCameraFragment;
 import za.co.zebrav.smartdoor.R.id;
 import za.co.zebrav.smartdoor.SpeechRecognition.SpeechToTextAdapter;
 import za.co.zebrav.smartdoor.database.User;
+import za.co.zebrav.smartdoor.facerecognition.SearchCameraFragment;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;

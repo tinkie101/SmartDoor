@@ -1,4 +1,4 @@
-package za.co.zebrav.facerecognition;
+package za.co.zebrav.smartdoor.facerecognition;
 
 import static org.bytedeco.javacpp.opencv_contrib.createEigenFaceRecognizer;
 import static org.bytedeco.javacpp.opencv_contrib.createFisherFaceRecognizer;
