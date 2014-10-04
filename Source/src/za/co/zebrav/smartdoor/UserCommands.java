@@ -39,8 +39,6 @@ public class UserCommands
 			}
 			else if(command.equals("logout"))
 			{
-
-				System.out.println("calling log out");
 				logout();
 			}
 			else
@@ -61,7 +59,7 @@ public class UserCommands
 		
 		private void logout()
 		{
-			System.out.println("Lougout Called");
+			mainContext.speakOut("Logging out");
 			mainContext.logout();
 		}
 		

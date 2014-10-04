@@ -33,6 +33,7 @@ public class MainActivity extends FragmentActivity
 	private String currentFragment = "advanced";
 	private AlertDialog.Builder alert;
 	private TTS tts;
+	private LoggedInFragment loggedInFragment;
 	//private User user = null;
 	private boolean loggedIn = false;
 	private TwitterFragment twitterFragment;
@@ -175,6 +176,8 @@ public class MainActivity extends FragmentActivity
 	
 	public void logout()
 	{
+		if(loggedInFragment != null)
+			loggedInFragment.logout();
 		Button button = (Button) findViewById(id.switchLoginButton);
 		fm = getFragmentManager();
 		ft = fm.beginTransaction();
@@ -182,6 +185,7 @@ public class MainActivity extends FragmentActivity
 		searchCameraFragment = new SearchCameraFragment();
 		ft.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
 		currentFragment = "advanced";
+		ft.commit();
 	}
 	
 	/**
@@ -214,13 +218,13 @@ public class MainActivity extends FragmentActivity
 	public void switchToLoggedInFrag(int id)
 	{
 		changeOnlyButtonText("Logout");
-		LoggedInFragment t = new LoggedInFragment();
+		loggedInFragment = new LoggedInFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt("id", id);
-		t.setArguments(bundle);
+		loggedInFragment.setArguments(bundle);
 		fm = getFragmentManager();
 		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplaceFromMain , t);
+		ft.replace(R.id.layoutToReplaceFromMain , loggedInFragment);
 		ft.commit();
 		this.loggedIn = true;
 	}

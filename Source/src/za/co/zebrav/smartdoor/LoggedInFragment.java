@@ -5,6 +5,7 @@ import java.util.List;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ public class LoggedInFragment extends Fragment
 	private static User user;
 	private Db4oAdapter provider;
 	private MainActivity mainActivity;
+	private ProgressDialog progress;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
@@ -30,6 +32,7 @@ public class LoggedInFragment extends Fragment
 		View view = inflater.inflate(R.layout.logged_in,container, false);
 
 		mainActivity = (MainActivity) getActivity();
+		progress = new ProgressDialog(mainActivity);
 		
 		//get Logged in user
 		Bundle bundle = this.getArguments();
@@ -80,6 +83,15 @@ public class LoggedInFragment extends Fragment
 		super.onStop();
 		mainActivity.stopListeningForCommands();
 		Log.d("LoggedInFragment", "onStop");
+		progress.dismiss();
+	}
+	
+	public void logout()
+	{
+		progress.setMessage("Logging out");
+	    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	    progress.setIndeterminate(true);
+	    progress.show();
 	}
 	
 	public void setOnclickListener()
