@@ -46,7 +46,7 @@
     <!--"defaultFaceSettings-->
     <string name="face_TrainPhotoNum">5</string>
     <string name="face_RecogPhotoNum">5</string>
-    <string name="face_recognizerThreshold">220</string>
+    <string name="face_recognizerThreshold">200</string>
     <string name="face_ImageScale">2</string>
     <string name="face_faceRecognizerAlgorithm">1</string>
     <string name="face_detectEyes">true</string>
