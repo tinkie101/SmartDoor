@@ -55,6 +55,7 @@
     <string name="face_faceRecognizerAlgorithm">1</string>
     <string name="face_detectEyes">true</string>
     <string name="face_detectNose">true</string>
+    <string name="face_resolution">0</string><!-- index of list with resolutions -->
     
     <!--  -->
      <string-array name="ImageScaleOptions">

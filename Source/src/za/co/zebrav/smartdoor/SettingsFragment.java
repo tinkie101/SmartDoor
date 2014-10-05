@@ -1,20 +1,29 @@
 package za.co.zebrav.smartdoor;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
+import android.hardware.Camera.Parameters;
+import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import at.fhhgb.auth.voice.VoiceAuthenticator;
 
@@ -127,6 +136,24 @@ public class SettingsFragment extends Fragment
 		int algorithm = Integer.parseInt(settings.getString("face_faceRecognizerAlgorithm", "1"));
 		((Spinner) view.findViewById(R.id.faceRecognizerAlgorithmSP)).setSelection(algorithm - 1);
 		
+		//get device available resolutions
+		Camera c = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
+		Parameters parameters = c.getParameters();
+		List<Size> sizes = parameters.getSupportedPictureSizes();
+		c.release();
+		String[] data = new String[sizes.size()];
+		for(int i = 0; i < sizes.size(); i++)
+		{
+			String temp = sizes.get(i).width + " x " + sizes.get(i).height;
+			data[i] = temp;
+		}
+        final Spinner resolutionSpinner = (Spinner) view.findViewById(R.id.face_resolutionSP);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_spinner_item, data);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        resolutionSpinner.setAdapter(adapter);
+        int resIndex = Integer.parseInt(settings.getString("face_resolution", "0"));
+		resolutionSpinner.setSelection(resIndex);
+		
 		String detectEyes = settings.getString("face_detectEyes", "");
 		if(detectEyes.equals("true"))
 			((CheckBox) view.findViewById(R.id.faceDetectEyes)).setChecked(true);
@@ -180,6 +207,11 @@ public class SettingsFragment extends Fragment
 		    else if(algorithm.equals("EigenFace"))
 		    	editor.putString("face_faceRecognizerAlgorithm", "3");
 		    editor.commit();
+		    
+		    int resolutionIndex = ((Spinner) view.findViewById(R.id.face_resolutionSP)).getSelectedItemPosition();
+		    editor.putString("face_resolution", resolutionIndex+"");
+		    editor.commit();
+		    
 		    
 		    if(((CheckBox) view.findViewById(R.id.faceDetectEyes)).isChecked())
 		    	editor.putString("face_detectEyes", "true");
@@ -365,4 +397,6 @@ public class SettingsFragment extends Fragment
 			return false;
 		return true;
 	}
+	
+	//-
 }
