@@ -49,6 +49,14 @@ public class VoiceAuthenticator
 		waveRecorder = new WaveRecorder(sampleRate, this.dialog);
 		codeBook = new ArrayList<Codebook>();
 	}
+	
+	public VoiceAuthenticator()
+	{
+		this.dialog = null;
+
+		waveRecorder = new WaveRecorder(sampleRate, this.dialog);
+		codeBook = new ArrayList<Codebook>();
+	}
 
 	public void setCodeBook(ArrayList<Codebook> cb)
 	{

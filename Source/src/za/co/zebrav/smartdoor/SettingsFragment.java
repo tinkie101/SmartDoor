@@ -1,6 +1,9 @@
 package za.co.zebrav.smartdoor;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,12 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.Toast;
+import at.fhhgb.auth.voice.VoiceAuthenticator;
 
 public class SettingsFragment extends Fragment
 {
 	private LinearLayout chooseSettingsLayout;
 	private TableLayout trainSettings;
 	private TableLayout serverSettings;
+	private TableLayout voiceSettings;
 	private View view;
 	
 	private SharedPreferences settings = null;
@@ -34,6 +39,7 @@ public class SettingsFragment extends Fragment
 		chooseSettingsLayout = (LinearLayout)view.findViewById(R.id.chooseSettings);
 		trainSettings = (TableLayout) view.findViewById(R.id.trainSettings);
 		serverSettings = (TableLayout) view.findViewById(R.id.ServerSettings);
+		voiceSettings = (TableLayout) view.findViewById(R.id.VoiceSettings);
 		
 		Button trainSettingsButton = (Button) view.findViewById(R.id.trainingSetButton);
 		trainSettingsButton.setOnClickListener(new View.OnClickListener() 
@@ -60,6 +66,15 @@ public class SettingsFragment extends Fragment
             {
             	MainActivity m = (MainActivity) getActivity();
             	m.switchToTwitterSetup();
+            }
+        });
+		
+		Button voiceSetButton = (Button)view.findViewById(R.id.voiceSetButton);
+		voiceSetButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceSettings();
             }
         });
 		
@@ -260,6 +275,94 @@ public class SettingsFragment extends Fragment
 			return false;
 		return true;
 	}
-
 	
+	//--------------------------------------------------------------------------------------voiceSettings
+	private void voiceSettings()
+	{
+		voiceSettings.setVisibility(View.VISIBLE);
+		chooseSettingsLayout.setVisibility(View.GONE);
+		
+		final EditText autoCalibrateET = (EditText) view.findViewById(R.id.voice_calibration_ET);
+		String voice_calibration = settings.getString("voice_Calibration", "");
+		autoCalibrateET.setText(voice_calibration);
+		
+		//configure buttons
+		Button autoCalibrateButton = (Button) view.findViewById(R.id.voice_autoCalibrateButton);
+		autoCalibrateButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	final ProgressDialog progress = new ProgressDialog(getActivity());
+            	progress.setMessage("Wait for auto calibration.");
+        	    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        	    progress.setIndeterminate(true);
+        	    
+        	    progress.show();
+            	final AtomicInteger value= new AtomicInteger(-1);
+            	boolean valueSet = false;
+            	
+        	    
+        	    Thread mThread = new Thread() 
+        	    {
+        	        @Override
+        	        public void run() 
+        	        {
+        	        	VoiceAuthenticator voiceAuthenticator = new VoiceAuthenticator();
+                    	value.compareAndSet(-1, voiceAuthenticator.autoCalibrateActivation());
+                    	progress.dismiss();
+        	        }
+    	        };
+    	        mThread.start();
+    	        while(!valueSet)
+    	        {
+    	        	if(value.get() != -1)
+    	        	{
+    	        		valueSet = true;
+    	        		autoCalibrateET.setText(value.get()+"");
+    	        	}
+    	        }
+            }
+        });
+		
+		Button saveSettingsButton  = (Button) view.findViewById(R.id.voice_saveSettings);
+		saveSettingsButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	saveVoiceData();
+            }
+        });
+		
+		Button cancelSettingsButton  = (Button) view.findViewById(R.id.voice_cancelSettings);
+		cancelSettingsButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	done();
+            }
+        });
+	}
+	
+	private void saveVoiceData()
+	{
+		if(voiceNoneEmpty())
+		{
+			SharedPreferences.Editor editor = settings.edit();
+			
+			String voiceCalibration = ((EditText) view.findViewById(R.id.voice_calibration_ET)).getText().toString();
+		    editor.putString("voice_Calibration", voiceCalibration);
+		    editor.commit();
+		    Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+		}
+		else
+			Toast.makeText(getActivity(), "Empty field", Toast.LENGTH_SHORT).show();
+		
+	}
+	
+	private boolean voiceNoneEmpty()
+	{
+		if(((EditText) view.findViewById(R.id.voice_calibration_ET)).getText().toString().equals(""))
+			return false;
+		return true;
+	}
 }

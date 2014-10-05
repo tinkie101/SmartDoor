@@ -5,6 +5,7 @@ import za.co.zebrav.smartdoor.database.User;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -61,6 +62,17 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 		processingDialog.setCancelable(false);
 
 		voiceAuthenticator = new VoiceAuthenticator(soundLevelDialog);
+		String PREFS_NAME =  getResources().getString((R.string.settingsFileName));
+		SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+		String voice_calibration_threshold = settings.getString("voice_Calibration", "");
+		
+		if(!voice_calibration_threshold.equals(""))
+		{
+			int threshold = Integer.parseInt(voice_calibration_threshold); 
+			voiceAuthenticator.setMicThreshold(threshold);
+		}
+		
+
 
 		btnTrain = (Button) view.findViewById(R.id.btnTrain);
 		btnTrain.setOnClickListener(this);
