@@ -115,6 +115,10 @@ public class MainActivity extends FragmentActivity
 		    
 		    editor.putString("face_resolution", getResources().getString((R.string.face_resolution)));
 		    editor.commit();
+		    
+		    Log.d("missing", "main: "+ getResources().getString((R.string.face_GroupRectangleThreshold)));
+		    editor.putString("face_GroupRectangleThreshold", getResources().getString((R.string.face_GroupRectangleThreshold)));
+		    editor.commit();
 		}
 		
 		//Twitter settings

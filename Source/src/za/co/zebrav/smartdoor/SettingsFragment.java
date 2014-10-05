@@ -11,6 +11,7 @@ import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,6 +131,10 @@ public class SettingsFragment extends Fragment
 		String saveTrainThres = settings.getString("face_recognizerThreshold", "");
 		((EditText) view.findViewById(R.id.recognizerThresholdET)).setText(saveTrainThres);
 		
+		String groupRectangleThreshold = settings.getString("face_GroupRectangleThreshold", "");
+		Log.d("missing", "text: " + groupRectangleThreshold);
+		((EditText) view.findViewById(R.id.GroupRectangleET)).setText(groupRectangleThreshold);
+		
 		int imageScale = Integer.parseInt(settings.getString("face_ImageScale", "1"));
 		((Spinner) view.findViewById(R.id.ImageScaleSP)).setSelection(imageScale - 1);
 		
@@ -189,6 +194,10 @@ public class SettingsFragment extends Fragment
 		    
 		    String recogPhotosNum = ((EditText) view.findViewById(R.id.RecogPhotoNumET)).getText().toString();
 		    editor.putString("face_RecogPhotoNum", recogPhotosNum);
+		    editor.commit();
+		    
+		    String groupRecThres = ((EditText) view.findViewById(R.id.GroupRectangleET)).getText().toString();
+		    editor.putString("face_GroupRectangleThreshold", groupRecThres);
 		    editor.commit();
 		    
 		    String recognizerThreshold = ((EditText) view.findViewById(R.id.recognizerThresholdET)).getText().toString();

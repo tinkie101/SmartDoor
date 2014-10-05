@@ -314,9 +314,29 @@
 	
 	        </TableRow>
 	        
+	         <TableRow
+	            android:id="@+id/tableRow7"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/GroupRectangleTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Group rectangle threshold:" />
+	
+	            <EditText
+	                android:id="@+id/GroupRectangleET"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:inputType="numberDecimal" >
+	            </EditText>
+	
+	        </TableRow>
+	        
 	        
 	        <TableRow
-	            android:id="@+id/tableRow7"
+	            android:id="@+id/tableRow8"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content" >
 	            
@@ -328,7 +348,7 @@
 	        </TableRow>
 	        
 	         <TableRow
-	            android:id="@+id/tableRow8"
+	            android:id="@+id/tableRow9"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content" >
 	            
