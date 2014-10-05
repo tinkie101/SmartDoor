@@ -16,12 +16,18 @@
 	        android:layout_height="match_parent"
 	        android:orientation="vertical"
 	       >
+	       
+	        <Button
+	            android:id="@+id/ServerSetButton"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Server" />
 	
 	        <Button
 	            android:id="@+id/trainingSetButton"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:text="Training" />
+	            android:text="Face" />
 	
 	        <Button
 	            android:id="@+id/twitterSetButton"
@@ -29,11 +35,11 @@
 	            android:layout_height="wrap_content"
 	            android:text="Twitter" />
 	        
-	        <Button
-	            android:id="@+id/ServerSetButton"
+	         <Button
+	            android:id="@+id/voiceSetButton"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:text="Server" />
+	            android:text="Voice" />
 	        
 	         <Button
 	            android:id="@+id/cancelButton1"
@@ -41,6 +47,64 @@
 	            android:layout_height="wrap_content"
 	            android:text="Cancel" />
 	    </LinearLayout>
+	    
+	     <TableLayout
+	        android:id="@+id/VoiceSettings"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:visibility="gone"
+	         >
+	
+	        <TextView
+	            android:id="@+id/textView3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Voice Settings:"
+	            android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	        <TableRow
+	            android:id="@+id/tableRow1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/voice_calibration_TV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Voice calibration:" />
+	            
+	            <EditText
+	                android:id="@+id/voice_calibration_ET"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" >
+	                <requestFocus />
+	            </EditText>
+	
+	            <Button
+	            android:id="@+id/voice_autoCalibrateButton"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Auto Calibrate" />
+	        </TableRow>
+	        
+	         <TableRow
+	            android:id="@+id/tableRow2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <Button
+	            android:id="@+id/voice_saveSettings"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Save" />
+	            
+	            <Button
+	            android:id="@+id/voice_cancelSettings"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Cancel" />
+	        </TableRow>
+        </TableLayout>
 	    
 	    <TableLayout
 	        android:id="@+id/ServerSettings"
@@ -235,6 +299,46 @@
 	            android:id="@+id/tableRow6"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/face_resolutionTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Resolution:" />
+	            
+	            <Spinner
+			        android:id="@+id/face_resolutionSP"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        />
+	
+	        </TableRow>
+	        
+	         <TableRow
+	            android:id="@+id/tableRow7"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/GroupRectangleTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Group rectangle threshold:" />
+	
+	            <EditText
+	                android:id="@+id/GroupRectangleET"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:inputType="numberDecimal" >
+	            </EditText>
+	
+	        </TableRow>
+	        
+	        
+	        <TableRow
+	            android:id="@+id/tableRow8"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
 	            
 	            <CheckBox
 			        android:id="@+id/faceDetectEyes"
@@ -244,7 +348,7 @@
 	        </TableRow>
 	        
 	         <TableRow
-	            android:id="@+id/tableRow7"
+	            android:id="@+id/tableRow9"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content" >
 	            
@@ -254,7 +358,7 @@
 			        android:layout_height="wrap_content"
 			        android:text="Detect Nose" />
 	        </TableRow>
-	
+	        
 	        <Button
 	            android:id="@+id/saveTrainButton"
 	            android:layout_width="match_parent"

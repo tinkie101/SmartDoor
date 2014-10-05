@@ -76,7 +76,7 @@ public class MainActivity extends AbstractActivity
 		String PREFS_NAME = getResources().getString((R.string.settingsFileName));
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		
-		//Training settings
+		//Face settings
 		String face_TrainPhotoNum = settings.getString("face_TrainPhotoNum", "NOT");
 		if(face_TrainPhotoNum.equals("NOT"))//not set, set
 		{
@@ -101,6 +101,13 @@ public class MainActivity extends AbstractActivity
 		    editor.commit();
 		    
 		    editor.putString("face_detectNose", getResources().getString((R.string.face_detectNose)));
+		    editor.commit();
+		    
+		    editor.putString("face_resolution", getResources().getString((R.string.face_resolution)));
+		    editor.commit();
+		    
+		    Log.d("missing", "main: "+ getResources().getString((R.string.face_GroupRectangleThreshold)));
+		    editor.putString("face_GroupRectangleThreshold", getResources().getString((R.string.face_GroupRectangleThreshold)));
 		    editor.commit();
 		}
 		

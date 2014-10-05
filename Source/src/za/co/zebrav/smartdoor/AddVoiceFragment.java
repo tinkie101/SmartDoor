@@ -1,6 +1,7 @@
 package za.co.zebrav.smartdoor;
 
 import za.co.zebrav.smartdoor.database.AddUserActivity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
