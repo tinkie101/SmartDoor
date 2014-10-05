@@ -2,7 +2,7 @@ package za.co.zebrav.smartdoor.SpeechRecognition;
 
 import java.util.ArrayList;
 
-import za.co.zebrav.smartdoor.MainActivity;
+import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.R;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,13 +10,14 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class SpeechToTextAdapter
 {
 	private static final String LOG_TAG = "SpeechToTextAdapter";
-	private MainActivity context;
+	private AbstractActivity context;
 	private SpeechRecognizer speechRecogniser;
 	private boolean stopListening;
 
@@ -24,10 +25,11 @@ public class SpeechToTextAdapter
 
 	private ProgressBar soundLevel;
 
-	public SpeechToTextAdapter(MainActivity context)
+	public SpeechToTextAdapter(AbstractActivity context)
 	{
 		this.context = context;
 		stopListening = true;
+
 		soundLevel = (ProgressBar) context.findViewById(R.id.progressBar1);
 		if (isAvailable())
 		{
@@ -282,7 +284,7 @@ public class SpeechToTextAdapter
 
 			if (command != null)
 			{
-				context.userCommands.executeCommand(command);
+				context.getUserCommands().executeCommand(command);
 				Toast.makeText(context, command, Toast.LENGTH_LONG).show();
 			}
 			else
@@ -307,7 +309,10 @@ public class SpeechToTextAdapter
 			else
 				level = (int)rmsdB;
 			
+			if(soundLevel != null)
 			soundLevel.incrementProgressBy(level);
+			else
+				Log.d(LOG_TAG, "soundLevel is Null");
 
 			Log.d(LOG_TAG, "onRmsChanged " + level);
 		}

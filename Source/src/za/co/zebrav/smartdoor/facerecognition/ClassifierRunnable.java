@@ -90,6 +90,7 @@ public abstract class ClassifierRunnable implements Runnable
 	@Override
 	public void run()
 	{
+		Log.d(TAG, "startRun");
 		objects.deallocate();
 		objects = new Rect();
 		cascade.detectMultiScale(grayImage, objects, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING, new Size(),
@@ -98,6 +99,7 @@ public abstract class ClassifierRunnable implements Runnable
 			totalDetected = 0;
 		else
 			totalDetected = objects.capacity();
+		Log.d(TAG, "endRun");
 //		int temp = totalDetected;
 //		if (totalDetected > 0)
 //		{

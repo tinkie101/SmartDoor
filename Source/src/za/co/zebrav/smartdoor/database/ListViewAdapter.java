@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.R;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,11 +21,10 @@ import android.widget.TextView;
 public class ListViewAdapter extends BaseAdapter
 {
 	private static final String TAG = "Database::ListViewAdapter";
-	private Context mContext;
+	private AbstractActivity mContext;
 	public List<User> useList = null;
 	private ArrayList<User> arraylist;
 	private LayoutInflater inflater;
-	private Db4oAdapter provider;
 	private AlertDialog.Builder alert;
 
 	/**
@@ -33,7 +33,7 @@ public class ListViewAdapter extends BaseAdapter
 	 * @param context
 	 * @param userList
 	 */
-	public ListViewAdapter(Context context, List<User> userList)
+	public ListViewAdapter(AbstractActivity context, List<User> userList)
 	{
 		mContext = context;
 		alert = new AlertDialog.Builder(mContext);
@@ -41,8 +41,6 @@ public class ListViewAdapter extends BaseAdapter
 		inflater = LayoutInflater.from(mContext);
 		this.arraylist = new ArrayList<User>();
 		this.arraylist.addAll(userList);
-
-		provider = new Db4oAdapter(mContext);
 	}
 
 	/**
@@ -134,17 +132,13 @@ public class ListViewAdapter extends BaseAdapter
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				provider.open();
 				int id = user.getID();
-				if (provider.deleteThisOne(user))
+				if (mContext.getDatabase().deleteThisOne(user))
 				{
 					deletePhotos(id);
 					useList.remove(position);
 					notifyDataSetChanged();
 				}
-				provider.close();
-				// update list
-
 			}
 		});
 

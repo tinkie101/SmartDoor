@@ -68,7 +68,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="25dip"
                 android:background="@drawable/button1"
-                android:onClick="pressedLoginButton"
                 android:padding="10dp"
                 android:text="@string/ManualLogin_b1"
                 android:textSize="25sp" />

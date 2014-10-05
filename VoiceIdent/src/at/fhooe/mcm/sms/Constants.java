@@ -19,7 +19,7 @@ public final class Constants {
 			+ File.separator + SD_SUBDIRNAME;
 
 	public static final int CLUSTER_MAX_ITERATIONS = 10;
-	public static final int CLUSTER_COUNT = 128;//64
+	public static final int CLUSTER_COUNT = 64;//64
 
 	public static final int LONG_SAMPLE_DURATION = 15 * 1000;
 	public static final int SHORT_SAMPLE_DURATION = 5 * 1000;

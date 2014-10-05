@@ -2,6 +2,7 @@ package za.co.zebrav.smartdoor.facerecognition;
 
 import java.io.IOException;
 
+import za.co.zebrav.smartdoor.MainActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +31,13 @@ public class SearchCameraFragment extends CameraFragment
 			e.printStackTrace();
 		}
 	}
-
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		faceView.setPersonRecognizer(((MainActivity)activity).getPersonRecognizer());
+	}
 	/**
 	 * Sets the whole preview to a CameraPreview
 	 */

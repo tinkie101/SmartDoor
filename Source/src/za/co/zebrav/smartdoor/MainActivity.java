@@ -7,15 +7,20 @@
 package za.co.zebrav.smartdoor;
 
 
+import java.util.List;
+
 import za.co.zebrav.smartdoor.R.id;
-import za.co.zebrav.smartdoor.SpeechRecognition.SpeechToTextAdapter;
+import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
+import za.co.zebrav.smartdoor.facerecognition.PersonRecognizer;
 import za.co.zebrav.smartdoor.facerecognition.SearchCameraFragment;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,39 +28,34 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class MainActivity extends FragmentActivity 
+public class MainActivity extends AbstractActivity 
 {
 	private static final String TAG = "MainActivity";
 	private CustomMenu sliderMenu;
-	private android.app.FragmentManager fm;
-	private android.app.FragmentTransaction ft;
 	private ManualLoginFragment manualFrag;
 	private String currentFragment = "advanced";
 	private AlertDialog.Builder alert;
-	private TTS tts;
 	private LoggedInFragment loggedInFragment;
 	//private User user = null;
 	private boolean loggedIn = false;
-	private TwitterFragment twitterFragment;
-	
-	private SpeechToTextAdapter speechToText;
-	public UserCommands userCommands;
-	
+	private Fragment twitterFragment;
+	private PersonRecognizer personRecognizer;
+	public PersonRecognizer getPersonRecognizer()
+	{
+		return personRecognizer;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);	
 		Log.d(TAG, "onCreate");
 		setContentView(R.layout.activity_main);
 
 		loadDefaultSettings();
 		
 		switchToTwitterFragment();
-		
-		tts = new TTS(this);
-		
-		//TODO
-		speechToText = new SpeechToTextAdapter(this);
+
 		userCommands = new UserCommands(this);
 		
 		// add slider menu
@@ -63,22 +63,12 @@ public class MainActivity extends FragmentActivity
 							(DrawerLayout) findViewById(R.id.drawer_layout), getResources().getStringArray(
 												R.array.mainMenuOptions));
 		
-		//create alert and textToSpeech
+		//create alert
 		alert = new AlertDialog.Builder(this);
 		
 		identifyVoiceFragment = new IdentifyVoiceFragment();
 		searchCameraFragment = new SearchCameraFragment();
 		switchToCamera();
-	}
-	
-	protected void startListeningForCommands(String[] possibleCommands)
-	{
-		speechToText.listenToSpeech(possibleCommands);
-	}
-	
-	protected void stopListeningForCommands()
-	{
-		speechToText.stopListening();
 	}
 	
 	private void loadDefaultSettings()
@@ -150,6 +140,14 @@ public class MainActivity extends FragmentActivity
 	protected void onResume()
 	{
 		super.onResume();
+		String settingsFile = getResources().getString(R.string.settingsFileName);
+		int photosPerPerson = Integer.parseInt(getSharedPreferences(settingsFile, 0).getString(
+							"face_TrainPhotoNum", "5"));
+		int algorithm = Integer.parseInt(getSharedPreferences(settingsFile, 0).getString(
+							"face_faceRecognizerAlgorithm", "1"));
+		int threshold = Integer.parseInt(getSharedPreferences(settingsFile, 0).getString(
+							"face_recognizerThreshold", "0"));
+		personRecognizer = new PersonRecognizer(this, photosPerPerson, algorithm, threshold);
 		if(!loggedIn)
 		{
 			//user = null;
@@ -167,24 +165,23 @@ public class MainActivity extends FragmentActivity
 	public void switchLogin(View v)
 	{
 		Button button = (Button) findViewById(id.switchLoginButton);
-		fm = getFragmentManager();
-		ft = fm.beginTransaction();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		
 		if(button.getText().equals("Logout") || currentFragment.equals("manual"))
 		{
 			button.setText("Switch Login");
 			searchCameraFragment = new SearchCameraFragment();
-			ft.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
+			fragmentTransaction.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
 			currentFragment = "advanced";
 		}
 		else if(this.currentFragment.equals("advanced"))
 		{
 			manualFrag = new ManualLoginFragment();
-			ft.replace(R.id.layoutToReplaceFromMain , manualFrag);
+			fragmentTransaction.replace(R.id.layoutToReplaceFromMain , manualFrag);
 			currentFragment = "manual";
 		}
 		
-		ft.commit();
+		fragmentTransaction.commit();
 	}
 	
 	public void logout()
@@ -192,34 +189,12 @@ public class MainActivity extends FragmentActivity
 		if(loggedInFragment != null)
 			loggedInFragment.logout();
 		Button button = (Button) findViewById(id.switchLoginButton);
-		fm = getFragmentManager();
-		ft = fm.beginTransaction();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		button.setText("Switch Login");
 		searchCameraFragment = new SearchCameraFragment();
-		ft.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
+		fragmentTransaction.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
 		currentFragment = "advanced";
-		ft.commit();
-	}
-	
-	/**
-	 * Function called when Login button from the manual login fragment is pressed.
-	 * @param v
-	 * @throws InterruptedException
-	 */
-	public void pressedLoginButton(View v)
-	{
-		User user = null;
-		if(!currentFragment.equals("advanced"))
-			user = manualFrag.getUser();
-		
-		if(user == null)
-		{
-			alertMessage("Incorrect username or password.");
-		}
-		else
-		{	
-			switchToLoggedInFrag(user.getID());
-		}
+		fragmentTransaction.commit();
 	}
 	
 	private void changeOnlyButtonText(String text)
@@ -228,17 +203,14 @@ public class MainActivity extends FragmentActivity
 		button.setText(text);
 	}
 	
-	public void switchToLoggedInFrag(int id)
+	public void switchToLoggedInFrag()
 	{
 		changeOnlyButtonText("Logout");
 		loggedInFragment = new LoggedInFragment();
-		Bundle bundle = new Bundle();
-		bundle.putInt("id", id);
-		loggedInFragment.setArguments(bundle);
-		fm = getFragmentManager();
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplaceFromMain , loggedInFragment);
-		ft.commit();
+
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.layoutToReplaceFromMain , loggedInFragment);
+		fragmentTransaction.commit();
 		this.loggedIn = true;
 	}
 	
@@ -257,46 +229,45 @@ public class MainActivity extends FragmentActivity
 	public void switchToCamera()
 	{
 		searchCameraFragment = new SearchCameraFragment();
-		fm = getFragmentManager();
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
-		ft.commit();
+
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
+		fragmentTransaction.commit();
 		this.loggedIn = false;
 	}
 	
 	public void switchToVoice(int id)
 	{
-		Bundle bundle = new Bundle();
-		bundle.putInt("userID", id);
-		identifyVoiceFragment.setArguments(bundle);
-		fm = getFragmentManager();
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplaceFromMain , identifyVoiceFragment);
-		ft.commit();
+		List<Object> users = getDatabase().load(new User(null, null, null, null, null, id, null));
+		activityUser = (User) users.get(0);
+		
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.layoutToReplaceFromMain , identifyVoiceFragment);
+		fragmentTransaction.commit();
 	}
 	
 	public void switchToTwitterSetup()
 	{
 		TwitterSetupFragment t = new TwitterSetupFragment();
-		fm = getFragmentManager();
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplaceFromMain , t);
-		ft.commit();
+
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.layoutToReplaceFromMain , t);
+		fragmentTransaction.commit();
 	}
 	
 	public void switchToSettingsFragment()
 	{
 		SettingsFragment t = new SettingsFragment();
-		fm = getFragmentManager();
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplaceFromMain , t);
-		ft.commit();
+
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.layoutToReplaceFromMain , t);
+		fragmentTransaction.commit();
 	}
 	
 	public void switchToTwitterFragment()
 	{
-		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-	    android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		FragmentManager fragmentManager = getFragmentManager();
+	    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 	    twitterFragment = new TwitterFragment();
 	    fragmentTransaction.replace(R.id.twitterFragment, twitterFragment);
 	    fragmentTransaction.commit();
@@ -304,29 +275,7 @@ public class MainActivity extends FragmentActivity
 	
 	public void tryTwitter()
 	{
-		twitterFragment.tryTwitter();
-	}
-	
-	//-------------------------------------------------------------------------------------Speech to text
-	
-	//-------------------------------------------------------------------------------------Text to speech
-	@Override
-	/**
-	 * ShutDown TextToSpeech when activity is destroyed
-	 */
-	public void onDestroy()
-	{	
-		tts.destroy();
-		speechToText.destroy();
-		super.onDestroy();
-	}
-	
-	/**
-	 * @param text, The text to be spoken out loud by the device
-	 */
-	public void speakOut(String text)
-	{
-		tts.talk(text);
+		((TwitterFragment) twitterFragment).tryTwitter();
 	}
 
 	//-------------------------------------------------------------------------------------Menu

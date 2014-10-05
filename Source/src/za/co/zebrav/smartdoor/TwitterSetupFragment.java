@@ -151,6 +151,6 @@ public class TwitterSetupFragment extends Fragment
 	private void done()
 	{
 		MainActivity m = (MainActivity) getActivity();
-		m.switchToLoggedInFrag(-6);
+		m.switchToLoggedInFrag();
 	}
 }

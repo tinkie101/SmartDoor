@@ -4,18 +4,18 @@ import java.util.ArrayList;
 
 import za.co.zebrav.smartdoor.twitter.TwitterArrayAdapter;
 import za.co.zebrav.smartdoor.twitter.TwitterHandler;
-import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -23,10 +23,10 @@ import android.widget.TextView;
  * @author tinkie101
  * 
  */
-public class TwitterFragment extends ListFragment
+public class TwitterFragment extends Fragment
 {
-	private static final String LOG_TAG_TWITTER_FRAGMENT = "TwitterFragment";
-	private FragmentActivity fragmentContext;
+	private static final String LOG_TAG = "TwitterFragment";
+	private AbstractActivity fragmentContext;
 
 	private TwitterArrayAdapter adapter;
 
@@ -37,9 +37,9 @@ public class TwitterFragment extends ListFragment
 	private boolean feedSet = false;
 	private SharedPreferences settings = null;
 	public String PREFS_NAME;
-	private AlertDialog.Builder alert;
 	private View view;
 	private TextView warning;
+	private ListView list;
 
 	// Auto-update time delay
 	final int updateTime = 60000;
@@ -48,11 +48,11 @@ public class TwitterFragment extends ListFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		view = inflater.inflate(R.layout.fragment_twitter, container, false);
-		fragmentContext = (FragmentActivity) getActivity();
+		fragmentContext = (AbstractActivity) getActivity();
 		
 		PREFS_NAME = getResources().getString((R.string.settingsFileName));
-		this.alert  = new AlertDialog.Builder(fragmentContext);
 		
+		list = (ListView) view.findViewById(R.id.twitter_list);
 		tryTwitter();
 		
 		return view;
@@ -108,7 +108,7 @@ public class TwitterFragment extends ListFragment
 		feedSet = true;
 		// Initialise the ArrayAdapter for the ListView
 		adapter = new TwitterArrayAdapter(fragmentContext, R.layout.list_twitter, new ArrayList<twitter4j.Status>(), new ArrayList<Drawable>(), new ArrayList<Long>());
-		setListAdapter(adapter);
+		list.setAdapter(adapter);
 		
 		twitterHandler = new TwitterHandler(fragmentContext, view, adapter,key, secret, tokenKey, tokenSecret);
 		// Get the tweets

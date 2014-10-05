@@ -39,8 +39,7 @@ public class AddCameraFragment extends CameraFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		Bundle bundle = this.getArguments();
-		uID = bundle.getInt("userID", -1);
+		uID = activity.getUser().getID();
 		faceView.setuID(uID);
 		return layout;
 	}

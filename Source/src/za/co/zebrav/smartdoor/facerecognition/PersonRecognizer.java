@@ -15,6 +15,7 @@ import org.bytedeco.javacpp.opencv_contrib.FaceRecognizer;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.MatVector;
 
+import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.content.Context;
@@ -51,7 +52,7 @@ public class PersonRecognizer
 	 * @param algorithm
 	 *            Type of algorithm to use. Use PersonRecognizer.LBPHFaceRecognizer or PersonRecognizer.FisherFaceRecognizer or PersonRecognizer.EigenFaceRecognizer
 	 */
-	PersonRecognizer(Context context, int photosPerPerson, int algorithm, int threshold)
+	public PersonRecognizer(Context context, int photosPerPerson, int algorithm, int threshold)
 	{
 		this.photosPerPerson = photosPerPerson;
 		switch (algorithm)
@@ -91,15 +92,13 @@ public class PersonRecognizer
 	private boolean initialiseRecogniserFromDatabase(Context context)
 	{
 		// Create Database connection and find all users
-		Db4oAdapter db = new Db4oAdapter(context);
-		db.open();
+		Db4oAdapter db = ((AbstractActivity)context).getDatabase();
 		List<Object> tempList = db.load(new User(null, null, null, null, null, 0, null));
 		Log.d(TAG, "Size:" + tempList.size());
 		// Check Precondition 1
 		if (tempList.size() < 2)
 		{
 			Log.e(TAG, "List less than 2");
-			db.close();
 			return false;
 		}
 		// Create labels and images
@@ -138,8 +137,6 @@ public class PersonRecognizer
 		}
 		// Train on all the loaded images
 		boolean result = train(images, labels);
-		// close database
-		db.close();
 		return result;
 	}
 

@@ -1,5 +1,7 @@
 package za.co.zebrav.smartdoor.facerecognition;
 
+import za.co.zebrav.smartdoor.AbstractActivity;
+import za.co.zebrav.smartdoor.MainActivity;
 import za.co.zebrav.smartdoor.R;
 import android.app.Activity;
 import android.app.Fragment;
@@ -27,7 +29,7 @@ public abstract class CameraFragment extends Fragment
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		this.activity = getActivity();
+		this.activity = (AbstractActivity) getActivity();
 		// check that the hardware does indeed have a camera
 		checkFrontCamera(activity);
 		// Create the view with nothing to show
@@ -51,7 +53,7 @@ public abstract class CameraFragment extends Fragment
 	 * Check if this device has a camera
 	 */
 	
-	protected Activity activity;
+	protected AbstractActivity activity;
 	protected boolean checkFrontCamera(Context context)
 	{
 		if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT))
@@ -89,7 +91,6 @@ public abstract class CameraFragment extends Fragment
 		mCamera = getFrontCameraInstance();
 		mPreview.setCamera(mCamera);
 		// TODO: add loadPersonRecognizer call once db is fixed.
-		// faceView.loadPersonRecognizer();
 	}
 
 	protected void releaseCamera()

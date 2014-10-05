@@ -1,9 +1,5 @@
 package za.co.zebrav.smartdoor;
 
-import java.util.List;
-
-import za.co.zebrav.smartdoor.database.Db4oAdapter;
-import za.co.zebrav.smartdoor.database.User;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -22,54 +18,32 @@ public class LoggedInFragment extends Fragment
 	private ListView list;
 	private ArrayAdapter<String> adapter;
 	private String[] commandOptions;
-	private static User user;
-	private Db4oAdapter provider;
-	private MainActivity mainActivity;
+	private AbstractActivity mainActivity;
 	private ProgressDialog progress;
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
-	{
-		View view = inflater.inflate(R.layout.logged_in,container, false);
 
-		mainActivity = (MainActivity) getActivity();
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
+		View view = inflater.inflate(R.layout.logged_in, container, false);
+
+		mainActivity = (AbstractActivity) getActivity();
 		progress = new ProgressDialog(mainActivity);
-		
-		//get Logged in user
-		Bundle bundle = this.getArguments();
-		int id = bundle.getInt("id", -6);
-		
-		if(id != -6)
-		{
-			if(id > 0)
-			{
-				provider = new Db4oAdapter(getActivity());
-				provider.open();
-				List<Object> temp = provider.load(new User(null, null, null, null,null, id, null));
-				User t = (User)temp.get(0);
-				user = new User(t.getFirstnames(), t.getSurname(), t.getUsername(), t.getPassword(),t.getAdminRights() ,t.getID(), t.getCodeBook());
-				provider.close();
-			}
-			else if(id == -2)
-				user = new User("Admin", "User", null, null, true, -2, null);
-			mainActivity.speakOut("Welcome, " + user.getFirstnames() + " " + user.getSurname());
-		}
-		if(user == null)
-			Log.d("User", "user null");
-		else
-			Log.d("User", "user NOT null");
-		if(user.getAdminRights())
-			commandOptions =  getResources().getStringArray(R.array.commandOptions);
+
+		mainActivity.speakOut("Welcome, " + mainActivity.getUser().getFirstnames() + " "
+							+ mainActivity.getUser().getSurname());
+
+		if (mainActivity.getUser().getAdminRights())
+			commandOptions = getResources().getStringArray(R.array.commandOptions);
 		else
 			commandOptions = getResources().getStringArray(R.array.basicCommandOptions);
 		list = (ListView) view.findViewById(R.id.commandList);
 		adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.command_list_item, commandOptions);
 		list.setAdapter(adapter);
-		
+
 		setOnclickListener();
 		return view;
 	}
-	
+
 	@Override
 	public void onResume()
 	{
@@ -77,7 +51,7 @@ public class LoggedInFragment extends Fragment
 		mainActivity.startListeningForCommands(commandOptions);
 		Log.d(LOG_TAG, "onResume");
 	}
-	
+
 	@Override
 	public void onStop()
 	{
@@ -86,27 +60,27 @@ public class LoggedInFragment extends Fragment
 		Log.d(LOG_TAG, "onStop");
 		progress.dismiss();
 	}
-	
+
 	public void logout()
 	{
 		progress.setMessage("Logging out");
-	    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-	    progress.setIndeterminate(true);
-	    progress.show();
+		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progress.setIndeterminate(true);
+		progress.show();
 	}
-	
+
 	public void setOnclickListener()
 	{
 		list.setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-			{	
+			{
 				String selectedName = adapter.getItem(position);
-				
+
 				mainActivity.userCommands.executeCommand(selectedName.toLowerCase());
 			}
 		});
 	}
-	
+
 }

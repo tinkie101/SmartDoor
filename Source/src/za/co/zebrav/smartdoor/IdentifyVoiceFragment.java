@@ -5,89 +5,53 @@ import java.util.List;
 
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
-import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import at.fhhgb.auth.voice.VoiceAuthenticator;
 import at.fhooe.mcm.smc.math.mfcc.FeatureVector;
 import at.fhooe.mcm.smc.math.vq.Codebook;
 
-public class IdentifyVoiceFragment extends Fragment implements OnClickListener
+public class IdentifyVoiceFragment extends VoiceFragment
 {
 	private static final String LOG_TAG = "AuthTest";
-
-	private Button btnIdentify;
-	private ListView listView;
-
-	private VoiceAuthenticator voiceAuthenticator;
-
-	private int activeID;
-	private Context context;
-	private View view;
-
-	private ProgressDialog soundLevelDialog;
-	private ProgressDialog processingDialog;
 	
 	private IdentifyTask identifyTask; 
 	private int loopCounter;
+	
+	private TextView txtTempUser;
+	private ListView listView;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		Log.d(LOG_TAG, "onCreate");
+		super.onCreate(savedInstanceState);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		Bundle bundle = this.getArguments();
-		activeID = bundle.getInt("userID", -1);
-
-		Db4oAdapter db = new Db4oAdapter(getActivity());
-		db.open();
-		List<Object> tempList = db.load(new User(null, null, null, null, null, activeID, null));
-
-		User tempUser = (User) tempList.get(0);
-
-		View view = inflater.inflate(R.layout.fragment_identify_voice, container, false);
-
-		TextView text = (TextView) view.findViewById(R.id.txtPossiblePerson);
-		text.setText(tempUser.getFirstnames());
-		db.close();
+	{		
+		LinearLayout layout = new LinearLayout(activity);
 		
-		return view;
+		txtTempUser = new TextView(activity);		
+		txtTempUser.setText(activity.getUser().getFirstnames());
+		
+		listView = new ListView(activity);
+		
+		layout.addView(txtTempUser);
+		layout.addView(listView);
+		
+		return layout;
 	}
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
-		super.onCreate(savedInstanceState);
-
-		context = getActivity();
-		view = getView();
-
-		soundLevelDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
-		soundLevelDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		soundLevelDialog.setTitle("Listening...");
-		soundLevelDialog.setCancelable(false);
-
-		processingDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
-		processingDialog.setMessage("Processing");
-		processingDialog.setCancelable(false);
-
-		voiceAuthenticator = new VoiceAuthenticator(soundLevelDialog);
-
-		btnIdentify = (Button) view.findViewById(R.id.btnIdentify);
-		btnIdentify.setOnClickListener(this);
-
-		listView = (ListView) view.findViewById(R.id.identify_list);
-	}
+	//TODO 	soundLevelDialog.setMessage("Say: \"The quick brown fox jumps over the lazy dog\"");
 
 	@Override
 	public void onStart()
@@ -101,25 +65,9 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 	public void onPause()
 	{
 		super.onPause();
-
-		// Stop recording
-		voiceAuthenticator.cancelRecording();
-
+		
 		if(identifyTask != null)
 			identifyTask.cancel(true);
-		
-	}
-
-	/**
-	 * Handle the button pressed
-	 * 
-	 * @param v
-	 */
-	@Override
-	public void onClick(View v)
-	{
-		if (v == btnIdentify)
-			identifySpeaker();
 	}
 
 	/**
@@ -138,14 +86,12 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 
 	private ArrayList<String> calculateDistances(FeatureVector featureVector)
 	{
-		Db4oAdapter db = new Db4oAdapter(context);
-		db.open();
+		Db4oAdapter db = activity.getDatabase();
 		List<Object> tempList = db.load(new User(null, null, null, null, null, 0, null));
 
 		if (tempList.size() < 1)
 		{
 			Log.d(LOG_TAG, "No valid users in database");
-			db.close();
 			return null;
 		}
 		else
@@ -214,7 +160,6 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 			{
 				result.set(l, result.get(l) + ": " + resultDist.get(l));
 			}
-			db.close();
 
 			return result;
 		}
@@ -238,12 +183,13 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 				Log.i(LOG_TAG, string);
 			}
 
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1,
 								result);
 			listView.setAdapter(adapter);
 
-			// TODO remove this line
+			// TODO read in from buffer
 			voiceAuthenticator.deleteActiveFile();
+			
 			processingDialog.dismiss();
 
 			Log.d(LOG_TAG, "Adapter Set to Results");
@@ -254,10 +200,11 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 			{
 				Integer bestMatch = Integer.parseInt(bestResult.substring(0, bestResult.indexOf(":")));
 
+				int activeID = activity.getUser().getID();
+				
 				if (bestMatch.equals(activeID))
 				{
-					MainActivity activity = (MainActivity) context;
-					activity.switchToLoggedInFrag(activeID);
+					((MainActivity) activity).switchToLoggedInFrag();
 				}
 				else
 				{
@@ -265,6 +212,11 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 					
 					if(loopCounter > 0)
 						identifySpeaker();
+					else
+					{
+						activity.setActiveUser(null);
+						((MainActivity) activity).switchToCamera();
+					}
 				}
 			}
 			catch (NumberFormatException e)

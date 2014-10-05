@@ -57,6 +57,12 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 	 * Used to recognize faces.
 	 */
 	protected PersonRecognizer personRecognizer;
+	
+	
+	public void setPersonRecognizer(PersonRecognizer personRecognizer)
+	{
+		this.personRecognizer = personRecognizer;
+	}
 
 	public FaceView(Activity activity, Fragment fragment) throws IOException
 	{
@@ -89,6 +95,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 
 	public void onPreviewFrame(final byte[] data, final Camera camera)
 	{
+		Log.d(TAG, "onPreviewFrame1");
 		try
 		{
 			Camera.Size size = camera.getParameters().getPreviewSize();
@@ -100,6 +107,7 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		{
 			// The camera has probably just been released, ignore.
 		}
+		Log.d(TAG, "onPreviewFrame2");
 	}
 
 	protected ClassifierRunnable faceRunnable;

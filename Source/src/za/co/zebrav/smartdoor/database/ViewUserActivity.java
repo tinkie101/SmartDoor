@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.R;
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,13 +15,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class ViewUserActivity extends Activity
+public class ViewUserActivity extends AbstractActivity
 {
 	private static final String TAG = "Database::ViewUserActivity";
 	protected EditText searchText;
 	protected ListView userList;
 	protected ArrayList<User> users = new ArrayList<User>();
-	protected Db4oAdapter provider;
 
 	ListViewAdapter adapter;
 
@@ -30,17 +29,18 @@ public class ViewUserActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.view_user);
+	}
 
-		// create new database userProvider
-		provider = new Db4oAdapter(this);
-
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
 		// get GUI components
 		searchText = (EditText) findViewById(R.id.searchText);
 		userList = (ListView) findViewById(R.id.list);
 
 		// get database info
-		provider.open();
-		List<Object> result = provider.load(new User(null, null, null, null, null, 0, null));
+		List<Object> result = activityDatabase.load(new User(null, null, null, null, null, 0, null));
 
 		for (int i = 0; i < result.size(); i++)
 		{
@@ -76,7 +76,6 @@ public class ViewUserActivity extends Activity
 			{
 			}
 		});
-		provider.close();
 	}
 
 	/**
@@ -93,24 +92,26 @@ public class ViewUserActivity extends Activity
 
 	public void deleteAllUsers(View v)
 	{
-		provider.open();
-		provider.delete(new User(null, null, null, null, null, 0, null));
-		provider.close();
+		activityDatabase.delete(new User(null, null, null, null, null, 0, null));
+
 		File path = getDir("data", 0);
 		File dir = new File(path + "/photos/");
-		String[] children = dir.list();
-		for (int i = 0; i < children.length; i++)
+		if (dir.exists())
 		{
-			File file = new File(path + "/photos/" + children[i]);
-			Log.d(TAG, "file name:" + file.toString());
-			if(file.exists())
+			String[] children = dir.list();
+			for (int i = 0; i < children.length; i++)
 			{
-				file.delete();
-				Log.d(TAG, "file found");
+				File file = new File(path + "/photos/" + children[i]);
+				Log.d(TAG, "file name:" + file.toString());
+				if (file.exists())
+				{
+					file.delete();
+					Log.d(TAG, "file found");
+				}
 			}
+			// The directory is now empty so delete it
+			dir.delete();
 		}
-		// The directory is now empty so delete it
-		dir.delete();
 
 		adapter.clearDisplay();
 	}

@@ -1,10 +1,6 @@
 package za.co.zebrav.smartdoor;
 
 import za.co.zebrav.smartdoor.database.AddUserActivity;
-import za.co.zebrav.smartdoor.database.User;
-import android.app.ListFragment;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,94 +9,83 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-import at.fhhgb.auth.voice.VoiceAuthenticator;
 
-public class AddVoiceFragment extends ListFragment implements OnClickListener
+public class AddVoiceFragment extends VoiceFragment
 {
-	private static final String LOG_TAG = "AuthTest";
-
-	private Button btnTrain;
+	private static final String LOG_TAG = "AddVoiceFragment";
 	private Button btnDone;
+	private Button btnTrain;
+	private TrainTask trainTask;
 
-	private VoiceAuthenticator voiceAuthenticator;
-
-	private int activeID;
-	private Context context;
-	private View view;
-	private User user;
-
-	private ProgressDialog soundLevelDialog;
-	private ProgressDialog processingDialog;
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		Log.d(LOG_TAG, "onCreate");
+		super.onCreate(savedInstanceState);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		Bundle bundle = getArguments();
-		user = (User) bundle.getSerializable("user");
-		activeID = user.getID();
-		return inflater.inflate(R.layout.fragment_add_voice, container, false);
+		Log.d(LOG_TAG, "onCreateView");
+		LinearLayout layout = new LinearLayout(activity);
+		
+		btnTrain = new Button(activity);
+		btnTrain.setText("Train");
+		
+		btnTrain.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View arg0)
+			{
+				trainVoice();			
+			}
+		});
+		
+		
+		btnDone = new Button(activity);
+		btnDone.setText("Done");
+		
+		btnDone.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				if (activity.getUser() != null)
+				{
+					activity.getUser().setCodeBook(voiceAuthenticator.getCodeBook());
+				}
+				else
+				{
+					Toast.makeText(activity, "user is NULL", Toast.LENGTH_LONG).show();
+				}				
+				
+				((AddUserActivity) activity).doneStepThreeAddUser();			
+			}
+		});
+		
+		layout.addView(btnTrain);
+		layout.addView(btnDone);
+		
+		return layout;
 	}
-
+	
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
+	public void onStart()
 	{
-		super.onActivityCreated(savedInstanceState);
-		super.onCreate(savedInstanceState);
-
-		context = getActivity();
-		view = getView();
-
-		soundLevelDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
-		soundLevelDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		soundLevelDialog.setMessage("Listening...");
-		soundLevelDialog.setCancelable(false);
-
-		processingDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
-		processingDialog.setMessage("Processing");
-		processingDialog.setCancelable(false);
-
-		voiceAuthenticator = new VoiceAuthenticator(soundLevelDialog);
-
-		btnTrain = (Button) view.findViewById(R.id.btnTrain);
-		btnTrain.setOnClickListener(this);
-
-		btnDone = (Button) view.findViewById(R.id.btnDone);
-		btnDone.setEnabled(false);
-		btnDone.setOnClickListener(this);
+		super.onStart();
+		trainVoice();
 	}
-
+	
 	@Override
 	public void onPause()
 	{
 		super.onPause();
-
-		// Stop recording
-		voiceAuthenticator.cancelRecording();
-	}
-
-	/**
-	 * Handle the button pressed
-	 * 
-	 * @param v
-	 */
-	@Override
-	public void onClick(View v)
-	{
-		if (v == btnTrain)
-			trainVoice();
-		else if (v == btnDone)
-		{
-			saveToDataBase();
-
-			AddUserActivity activity = (AddUserActivity) context;
-			activity.doneStepThreeAddUser(btnDone);
-		}
-	}
-
-	public User getUser()
-	{
-		return user;
+		
+		if(trainTask != null)
+			trainTask.cancel(true);
 	}
 
 	/**
@@ -113,10 +98,11 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 		processingDialog.show();
 		soundLevelDialog.show();
 
-		new trainTask().execute();
+		trainTask = new TrainTask();
+		trainTask.execute();
 	}
 
-	private class trainTask extends AsyncTask<Void, Void, Void>
+	private class TrainTask extends AsyncTask<Void, Void, Void>
 	{
 		@Override
 		protected Void doInBackground(Void... params)
@@ -127,7 +113,7 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 
 			if (!voiceAuthenticator.train())
 			{
-				Toast.makeText(context, "Error with Training voice", Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, "Error Training voice", Toast.LENGTH_LONG).show();
 				Log.d(LOG_TAG, "Error with training voice, check if activeFile is set");
 			}
 			return null;
@@ -142,16 +128,9 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 		}
 	}
 
-	private void saveToDataBase()
-	{
-		user.setCodeBook(voiceAuthenticator.getCodeBook());
-
-	}
-
 	private void trainVoice()
 	{
 		Log.i(LOG_TAG, "Training Voice");
 		startRecording();
-
 	}
 }

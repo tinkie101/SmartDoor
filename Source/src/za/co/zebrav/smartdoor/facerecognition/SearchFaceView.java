@@ -22,14 +22,7 @@ class SearchFaceView extends FaceView
 	public SearchFaceView(Activity activity, Fragment fragment) throws IOException
 	{
 		super(activity, fragment);
-		String settingsFile = getResources().getString(R.string.settingsFileName);
-		int photosPerPerson = Integer.parseInt(activity.getSharedPreferences(settingsFile, 0).getString(
-							"face_TrainPhotoNum", "5"));
-		int algorithm = Integer.parseInt(activity.getSharedPreferences(settingsFile, 0).getString(
-							"face_faceRecognizerAlgorithm", "1"));
-		int threshold = Integer.parseInt(activity.getSharedPreferences(settingsFile, 0).getString(
-							"face_recognizerThreshold", "0"));
-		personRecognizer = new PersonRecognizer(activity, photosPerPerson, algorithm, threshold);
+		
 		String settinsFile = getResources().getString(R.string.settingsFileName);
 		recognisePhotos = Integer.parseInt(activity.getSharedPreferences(settinsFile, 0).getString(
 							"face_RecogPhotoNum", "5"));
@@ -50,7 +43,7 @@ class SearchFaceView extends FaceView
 	}
 
 	private int tempdetected = -1;
-
+		
 	@Override
 	protected void handleDetected(byte[] data, int width, int height)
 	{
@@ -92,6 +85,7 @@ class SearchFaceView extends FaceView
 			e.printStackTrace();
 		}
 	}
+	
 
 	@Override
 	protected void onDraw(Canvas canvas)

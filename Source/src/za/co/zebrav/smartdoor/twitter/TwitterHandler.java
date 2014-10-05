@@ -11,13 +11,13 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
+import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.R;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -27,7 +27,7 @@ import android.widget.Toast;
 public class TwitterHandler
 {
 	private static final String LOG_TAG_TWITTER_HANDLER = "TwitterHandler";
-	private FragmentActivity fragmentContext;
+	private AbstractActivity fragmentContext;
 	private View view;
 	public AsynchTwitter asynchTwitter;
 	private TwitterArrayAdapter adapter;
@@ -51,7 +51,7 @@ public class TwitterHandler
 	// The maximum number of Tweets to display
 	protected int maxTweetCount = 50;
 
-	public TwitterHandler(FragmentActivity fragmentContext, View view, TwitterArrayAdapter adapter, String key, String secret, String tokenKey, String tokenSecret)
+	public TwitterHandler(AbstractActivity fragmentContext, View view, TwitterArrayAdapter adapter, String key, String secret, String tokenKey, String tokenSecret)
 	{
 		this.fragmentContext = fragmentContext;
 		this.adapter = adapter;
@@ -451,7 +451,7 @@ public class TwitterHandler
 				// Add to the top of the list, and scroll the list view to the top position
 				adapter.addTweetsToTop(result);
 				
-				ListView list = (ListView) view.findViewById(android.R.id.list);
+				ListView list = (ListView) view.findViewById(R.id.twitter_list);
 				list.smoothScrollToPosition(0);
 				
 				// Let the user know that the update is complete

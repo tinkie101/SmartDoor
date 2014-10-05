@@ -1,39 +1,35 @@
 package za.co.zebrav.smartdoor.database;
 
 
+import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.AddVoiceFragment;
 import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.facerecognition.AddCameraFragment;
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class AddUserActivity extends Activity
+public class AddUserActivity extends AbstractActivity
 {
-	private android.app.FragmentManager fm;
-	private android.app.FragmentTransaction ft;
-
+	private static final String LOG_TAG = "AddUserActivity";
 	// tabs (buttons)
 	private Button stepOne;
 	private Button stepTwo;
 	private Button stepThree;
-	private User user = null;
 
 	private AlertDialog.Builder alert;
 	private AddUserStepOne addUserStepOne;
-	private AddVoiceFragment addVoiceFragment;
-	private Db4oAdapter provider;
+	private AddVoiceFragment addVoiceFragment;	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);	
 		setContentView(R.layout.add_user);
-		
-		provider = new Db4oAdapter(this);
 
 		alert = new AlertDialog.Builder(this);
 
@@ -42,25 +38,9 @@ public class AddUserActivity extends Activity
 		stepTwo = (Button) findViewById(R.id.stepTwo);
 		stepThree = (Button) findViewById(R.id.stepThree);
 
-		// start with
-		fm = getFragmentManager();
 		switchFragToStep1();
 	}
 	
-	//------------------------------------------------------------------------------------------Step One
-	/**
-	 * This function is called the moment the user presses the 'Done' button at step 1
-	 * 
-	 * @param v
-	 */
-	public void doneStepOneAddUser(View v)
-	{
-		if (addUserStepOne.validate())
-		{
-			user = addUserStepOne.getValidUserStep1();
-			switchFragToStep2();
-		}
-	}
 	
 	/**
 	 * switch current frameLayout to represent the layout of step 1 - insert basic data such as name etc.
@@ -68,9 +48,9 @@ public class AddUserActivity extends Activity
 	public void switchFragToStep1()
 	{
 		addUserStepOne = new AddUserStepOne();
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplace, this.addUserStepOne);
-		ft.commit();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.layoutToReplace, this.addUserStepOne);
+		fragmentTransaction.commit();
 		enableStep1Button();
 		disableStep3Button();
 	}
@@ -82,18 +62,15 @@ public class AddUserActivity extends Activity
 	 */
 	public void switchFragToStep2()
 	{
+		Log.d(LOG_TAG, "Switch to step 2");
 		//alter tabs
 		enableStep2Button();
 		disableStep1Button();
 		
 		AddCameraFragment f = new AddCameraFragment();
-		
-		Bundle bundle = new Bundle();
-		bundle.putInt("userID", user.getID());
-		f.setArguments(bundle);
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplace, f);
-		ft.commit();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.layoutToReplace, f);
+		fragmentTransaction.commit();
 	}
 	
 	/**
@@ -105,12 +82,10 @@ public class AddUserActivity extends Activity
 		disableStep2Button();
 		
 		addVoiceFragment = new AddVoiceFragment();
-		Bundle bundle = new Bundle();
-		bundle.putSerializable("user", user);
-		addVoiceFragment.setArguments(bundle);
-		ft = fm.beginTransaction();
-		ft.replace(R.id.layoutToReplace, addVoiceFragment);
-		ft.commit();
+
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.layoutToReplace, addVoiceFragment);
+		fragmentTransaction.commit();
 	}
 	
 	//------------------------------------------------------------------------------------------Step Three
@@ -120,19 +95,11 @@ public class AddUserActivity extends Activity
 	 * 
 	 * @param v
 	 */
-	public void doneStepThreeAddUser(View v)
+	public void doneStepThreeAddUser()
 	{
-		saveUser(addVoiceFragment.getUser());
+		saveUser();
 		Toast.makeText(this.getApplicationContext(), "Saved new user successfully", Toast.LENGTH_SHORT).show();
 		switchFragToStep1();
-	}
-	
-	public void saveUser(User user)
-	{
-		provider.open();
-		provider.save(user);
-		provider.close();
-		user = null;
 	}
 	
 	
