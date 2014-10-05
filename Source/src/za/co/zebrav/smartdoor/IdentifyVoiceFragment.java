@@ -38,24 +38,28 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 
 	private ProgressDialog soundLevelDialog;
 	private ProgressDialog processingDialog;
+	
+	private IdentifyTask identifyTask; 
+	private int loopCounter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		Bundle bundle = this.getArguments();
-		activeID = bundle.getInt("userID", -1);		
+		activeID = bundle.getInt("userID", -1);
 
 		Db4oAdapter db = new Db4oAdapter(getActivity());
 		db.open();
 		List<Object> tempList = db.load(new User(null, null, null, null, null, activeID, null));
-		
+
 		User tempUser = (User) tempList.get(0);
-		
+
 		View view = inflater.inflate(R.layout.fragment_identify_voice, container, false);
-		
+
 		TextView text = (TextView) view.findViewById(R.id.txtPossiblePerson);
 		text.setText(tempUser.getFirstnames());
 		db.close();
+		
 		return view;
 	}
 
@@ -74,6 +78,7 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 		soundLevelDialog.setCancelable(false);
 
 		processingDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
+		processingDialog.setMessage("Processing");
 		processingDialog.setCancelable(false);
 
 		voiceAuthenticator = new VoiceAuthenticator(soundLevelDialog);
@@ -85,12 +90,24 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 	}
 
 	@Override
+	public void onStart()
+	{
+		super.onStart();
+		loopCounter = 3;
+		identifySpeaker();
+	}
+
+	@Override
 	public void onPause()
 	{
 		super.onPause();
 
-		// Stop play/record
+		// Stop recording
 		voiceAuthenticator.cancelRecording();
+
+		if(identifyTask != null)
+			identifyTask.cancel(true);
+		
 	}
 
 	/**
@@ -115,7 +132,8 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 		processingDialog.show();
 		soundLevelDialog.show();
 
-		new identifyTask().execute();
+		identifyTask = new IdentifyTask();
+		identifyTask.execute();
 	}
 
 	private ArrayList<String> calculateDistances(FeatureVector featureVector)
@@ -202,11 +220,11 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 		}
 	}
 
-	private class identifyTask extends AsyncTask<Void, Void, ArrayList<String>>
+	private class IdentifyTask extends AsyncTask<Void, Void, ArrayList<String>>
 	{
 		@Override
 		protected ArrayList<String> doInBackground(Void... params)
-		{
+		{			
 			voiceAuthenticator.startRecording();
 			soundLevelDialog.dismiss();
 			return calculateDistances(voiceAuthenticator.getCurrentFeatureVector());
@@ -224,28 +242,36 @@ public class IdentifyVoiceFragment extends Fragment implements OnClickListener
 								result);
 			listView.setAdapter(adapter);
 
-			//TODO remove this line
+			// TODO remove this line
 			voiceAuthenticator.deleteActiveFile();
 			processingDialog.dismiss();
 
 			Log.d(LOG_TAG, "Adapter Set to Results");
-			
-			//Check if the user identified corresponds to the facial recognition
+
+			// Check if the user identified corresponds to the facial recognition
 			String bestResult = result.get(0);
 			try
 			{
 				Integer bestMatch = Integer.parseInt(bestResult.substring(0, bestResult.indexOf(":")));
-				
-				if(bestMatch.equals(activeID))
-					{
-						MainActivity activity = (MainActivity) context;
-						activity.switchToLoggedInFrag(activeID);
-					}
+
+				if (bestMatch.equals(activeID))
+				{
+					MainActivity activity = (MainActivity) context;
+					activity.switchToLoggedInFrag(activeID);
+				}
+				else
+				{
+					loopCounter--;
+					
+					if(loopCounter > 0)
+						identifySpeaker();
+				}
 			}
-			catch(NumberFormatException e)
+			catch (NumberFormatException e)
 			{
 				Log.d(LOG_TAG, "Incorrect conversion of userID");
 			}
+			
 		}
 	}
 

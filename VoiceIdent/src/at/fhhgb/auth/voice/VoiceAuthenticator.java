@@ -187,7 +187,7 @@ public class VoiceAuthenticator
 		for (int i = 0, pos = 0; pos < samples.length - hopSize; i++, pos += hopSize)
 		{
 			mfcc[i] = mfccCalculator.processWindow(samples, pos);
-			if (i % 20 == 0)
+			if (i % 50 == 0)
 			{
 				Log.i(LOG_TAG, "Calculating features..." + i + "/" + mfccCount);
 			}
@@ -198,6 +198,7 @@ public class VoiceAuthenticator
 		return mfcc;
 	}
 
+	//TODO read in from buffer, not file
 	private double[] readSamples(WavReader wavReader)
 	{
 		int sampleSize = wavReader.getFrameSize();
@@ -341,6 +342,18 @@ public class VoiceAuthenticator
 	{
 		if (activeFile != null && activeFile.exists())
 			activeFile.delete();
+	}
+	
+	public void setMicThreshold(int threshold)
+	{
+		if(threshold > 0)
+		{		
+			waveRecorder.setStartThreshold(threshold);
+		}
+		else
+		{
+			threshold = 1;
+		}
 	}
 
 	public int autoCalibrateActivation()

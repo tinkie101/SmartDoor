@@ -75,7 +75,7 @@ public class AddVoiceFragment extends ListFragment implements OnClickListener
 	{
 		super.onPause();
 
-		// Stop play/record
+		// Stop recording
 		voiceAuthenticator.cancelRecording();
 	}
 

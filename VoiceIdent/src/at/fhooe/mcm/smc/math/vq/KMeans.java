@@ -61,6 +61,7 @@ public class KMeans {
 		double diff = oldMQE - MQE;
 		double percentage = diff / oldMQE * 100;
 
+		//TODO
 		while (MQE < oldMQE && i < maxIterations /* && percentage >= 0.5d */) {
 			oldMQE = MQE;
 			MQE = 0;
