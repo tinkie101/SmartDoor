@@ -27,10 +27,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends AbstractActivity 
 {
 	private static final String TAG = "MainActivity";
+	private long back_pressed;
 	private CustomMenu sliderMenu;
 	private ManualLoginFragment manualFrag;
 	private String currentFragment = "advanced";
@@ -68,6 +70,16 @@ public class MainActivity extends AbstractActivity
 		identifyVoiceFragment = new IdentifyVoiceFragment();
 		searchCameraFragment = new SearchCameraFragment();
 		switchToCamera();
+	}
+	
+	@Override
+	public void onBackPressed()
+	{
+		if (back_pressed + 2000 > System.currentTimeMillis())
+			super.onBackPressed();
+		else
+			Toast.makeText(getBaseContext(), "Press again to exit", Toast.LENGTH_SHORT).show();
+		back_pressed = System.currentTimeMillis();
 	}
 	
 	private void loadDefaultSettings()
@@ -146,6 +158,7 @@ public class MainActivity extends AbstractActivity
 	protected void onResume()
 	{
 		super.onResume();
+		back_pressed = System.currentTimeMillis();
 		String settingsFile = getResources().getString(R.string.settingsFileName);
 		int photosPerPerson = Integer.parseInt(getSharedPreferences(settingsFile, 0).getString(
 							"face_TrainPhotoNum", "5"));

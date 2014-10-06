@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 public abstract class AbstractActivity extends Activity
 {
@@ -18,32 +19,32 @@ public abstract class AbstractActivity extends Activity
 	protected SpeechToTextAdapter speechToText;
 	protected UserCommands userCommands;
 	protected View view;
-	
+
 	public void startListeningForCommands(String[] possibleCommands)
 	{
 		speechToText.listenToSpeech(possibleCommands);
 	}
-	
+
 	public void stopListeningForCommands()
 	{
 		speechToText.stopListening();
 	}
-	
+
 	public UserCommands getUserCommands()
 	{
 		return userCommands;
 	}
-	
+
 	public User getUser()
 	{
 		return activityUser;
 	}
-	
+
 	public Db4oAdapter getDatabase()
 	{
 		return activityDatabase;
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -53,22 +54,22 @@ public abstract class AbstractActivity extends Activity
 		textToSpeech = new TTS(this);
 		speechToText = new SpeechToTextAdapter(this);
 	}
-	
+
 	@Override
 	protected void onStart()
 	{
 		super.onStart();
 		activityDatabase.open();
 	}
-	
+
 	@Override
 	protected void onPause()
 	{
 		super.onPause();
-		
+
 		activityDatabase.close();
 	}
-	
+
 	@Override
 	protected void onDestroy()
 	{
@@ -80,27 +81,28 @@ public abstract class AbstractActivity extends Activity
 
 	public void setActiveUser(User user)
 	{
-		this.activityUser = user;		
+		this.activityUser = user;
 	}
-	
+
 	/**
-	 * @param text, The text to be spoken out loud by the device
+	 * @param text
+	 *            , The text to be spoken out loud by the device
 	 */
 	public void speakOut(String text)
 	{
 		textToSpeech.talk(text);
 	}
-	
+
 	public void saveUser()
 	{
-		if(activityDatabase == null)
+		if (activityDatabase == null)
 			Log.d(LOG_TAG, "activity database is bull");
-		
-		if(activityUser == null)
+
+		if (activityUser == null)
 			Log.d(LOG_TAG, "activityUser is bull");
-		
+
 		activityDatabase.save(activityUser);
 		activityUser = null;
 	}
-	
+
 }
