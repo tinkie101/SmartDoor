@@ -3,6 +3,7 @@ package za.co.zebrav.smartdoor;
 import za.co.zebrav.smartdoor.database.AddUserActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,13 +38,18 @@ public class AddVoiceFragment extends VoiceFragment
 		Log.d(LOG_TAG, "onCreateView");
 		LinearLayout layout = new LinearLayout(activity);
 		layout.setOrientation(LinearLayout.VERTICAL);
+		
+		
+		DisplayMetrics dm = new DisplayMetrics();
+		activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-		float density = getResources().getDisplayMetrics().density;
-		int widthDPS = 300;
-		int widthPixels = (int) (widthDPS * density);
+		int widthDPS = 600;
+		int widthPixels = (int) (widthDPS * dm.scaledDensity);
 
-		int heightDPS = 40;
-		int heightPixels = (int) (heightDPS * density);
+		int heightDPS = 80;
+		int heightPixels = (int) (heightDPS * dm.scaledDensity);
+		
+		int textSize = 40;
 		
 		LayoutParams params = new LayoutParams(widthPixels, heightPixels);
 		params.setMargins(0, heightDPS/6, 0, heightDPS/6);
@@ -51,7 +57,17 @@ public class AddVoiceFragment extends VoiceFragment
 		
 		btnTrain = new Button(activity);
 		btnTrain.setText("Train");
-		btnTrain.setBackground(getResources().getDrawable(R.drawable.button1));
+		btnTrain.setTextSize(textSize);
+
+		if(Integer.valueOf(android.os.Build.VERSION.SDK_INT) < 16)
+		{
+			btnTrain.setBackgroundDrawable(getResources().getDrawable(R.drawable.button1));			
+		}
+		else
+		{
+			btnTrain.setBackground(getResources().getDrawable(R.drawable.button1));
+		}
+		
 		btnTrain.setLayoutParams(params);
 
 		btnTrain.setOnClickListener(new OnClickListener()
@@ -65,7 +81,16 @@ public class AddVoiceFragment extends VoiceFragment
 
 		btnDone = new Button(activity);
 		btnDone.setText("Done");
-		btnDone.setBackground(getResources().getDrawable(R.drawable.button1));
+		btnDone.setTextSize(textSize);
+		
+		if(Integer.valueOf(android.os.Build.VERSION.SDK_INT) < 16)
+		{
+			btnDone.setBackgroundDrawable(getResources().getDrawable(R.drawable.button1));			
+		}
+		else
+		{
+			btnDone.setBackground(getResources().getDrawable(R.drawable.button1));
+		}
 		btnDone.setLayoutParams(params);
 
 		btnDone.setOnClickListener(new OnClickListener()
@@ -92,7 +117,7 @@ public class AddVoiceFragment extends VoiceFragment
 		
 		txtCounter = new TextView(activity);
 		txtCounter.setLayoutParams(params);
-		txtCounter.setTextSize(heightPixels/6);
+		txtCounter.setTextSize(textSize);
 
 		layout.addView(txtCounter);
 		layout.addView(btnTrain);

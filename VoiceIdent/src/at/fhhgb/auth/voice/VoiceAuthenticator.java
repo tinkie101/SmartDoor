@@ -417,6 +417,11 @@ public class VoiceAuthenticator
 			threshold = 1;
 		}
 	}
+	
+	public int getMicThreshold()
+	{
+		return waveRecorder.getStartThreshold();
+	}
 
 	public int autoCalibrateActivation()
 	{

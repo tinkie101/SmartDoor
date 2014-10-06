@@ -117,6 +117,11 @@ public class WaveRecorder
 		else
 			StartThreshold = threshold;
 	}
+	
+	public int getStartThreshold()
+	{
+		return StartThreshold;
+	}
 
 	/**
 	 * Default constructor. Leaves the recorder in {@link State#INITIALIZING}, except if some kind
