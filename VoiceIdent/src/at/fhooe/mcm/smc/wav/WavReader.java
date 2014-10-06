@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import android.util.Log;
+
 public class WavReader {
 
 	private String filePath;
@@ -32,6 +34,7 @@ public class WavReader {
 			length = Integer.reverseBytes(raf.readInt());
 			raf.seek(40);
 			payloadLength = Integer.reverseBytes(raf.readInt());
+			Log.d("READER", "payloadLength: " + payloadLength);
 			
 			// get other metadata
 			// channel count
@@ -40,6 +43,8 @@ public class WavReader {
 			sampleRate = Integer.reverseBytes(raf.readInt());
 			byteRate =  Integer.reverseBytes(raf.readInt());
 			frameSize = Short.reverseBytes(raf.readShort());
+			Log.d("READER", "FrameSize: " + frameSize);
+			
 			resolution = Short.reverseBytes(raf.readShort());
 			
 			// set at start of data part

@@ -42,18 +42,19 @@ class AddFaceView extends FaceView
 		storage = CvMemStorage.create();
 		// Preload the opencv_objdetect module to work around a known bug.
 		Loader.load(opencv_objdetect.class);
-
-		faceRunnable = new FaceClassifierRunnable(storage, activity.getCacheDir());
+		double groupThreshold =  Double.parseDouble(activity.getSharedPreferences(settingsFile, 0).getString("face_GroupRectangleThreshold", "0"));
+		
+		faceRunnable = new FaceClassifierRunnable(storage, activity.getCacheDir(),groupThreshold);
 		faceThread = new Thread(faceRunnable, "" + 0);
 
 		if ((activity.getSharedPreferences(settingsFile, 0).getString("face_detectNose", "0")).equals("true"))
 		{
-			noseRunnable = new NoseClassifierRunnable(storage, activity.getCacheDir());
+			noseRunnable = new NoseClassifierRunnable(storage, activity.getCacheDir(),groupThreshold);
 			noseThread = new Thread(noseRunnable, "" + 0);
 		}
 		if ((activity.getSharedPreferences(settingsFile, 0).getString("face_detectEyes", "0")).equals("true"))
 		{
-			eyesRunnable = new EyesClassifierRunnable(storage, activity.getCacheDir());
+			eyesRunnable = new EyesClassifierRunnable(storage, activity.getCacheDir(),groupThreshold);
 			eyesThread = new Thread(eyesRunnable, "" + 0);
 		}
 	}

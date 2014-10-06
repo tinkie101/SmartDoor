@@ -24,7 +24,7 @@ import android.util.Log;
 public class WaveRecorder
 {
 	/** Tag for logging. */
-	private static final String TAG = "WaveRecorder";
+	private static final String LOG_TAG = "WaveRecorder";
 
 	/**
 	 * INITIALIZING : recorder is initializing; READY : recorder has been initialized, recorder not
@@ -93,6 +93,10 @@ public class WaveRecorder
 	private int StartThreshold = 350;// Set default value
 	private ProgressDialog dialog;
 
+	private int sampleSize;
+	private int payload;
+	private byte[] finalBuffer;
+
 	/**
 	 * Number of bytes written to file after header(only in uncompressed mode) after stop() is
 	 * called, this size is written to the header/data chunk in the wave file.
@@ -148,7 +152,7 @@ public class WaveRecorder
 									AudioFormat.ENCODING_PCM_16BIT);
 				// Set frame period and timer interval accordingly
 				framePeriod = bufferSize / (2 * bitsPerSample * numChannels / 8);
-				Log.w(TAG, "Increasing buffer size to " + bufferSize);
+				Log.w(LOG_TAG, "Increasing buffer size to " + bufferSize);
 			}
 
 			aRecorder = new AudioRecord(audioSource, sampleRate, AudioFormat.CHANNEL_IN_MONO,
@@ -166,11 +170,11 @@ public class WaveRecorder
 		{
 			if (e.getMessage() != null)
 			{
-				Log.e(TAG, e.getMessage());
+				Log.e(LOG_TAG, e.getMessage());
 			}
 			else
 			{
-				Log.e(TAG, "Unknown error occured while initializing recording");
+				Log.e(LOG_TAG, "Unknown error occured while initializing recording");
 			}
 			state = State.ERROR;
 		}
@@ -206,7 +210,7 @@ public class WaveRecorder
 									AudioFormat.ENCODING_PCM_16BIT);
 				// Set frame period and timer interval accordingly
 				framePeriod = bufferSize / (2 * bitsPerSample * numChannels / 8);
-				Log.w(TAG, "Increasing buffer size to " + bufferSize);
+				Log.w(LOG_TAG, "Increasing buffer size to " + bufferSize);
 			}
 
 			aRecorder = new AudioRecord(audioSource, sampleRate, AudioFormat.CHANNEL_IN_MONO,
@@ -224,11 +228,11 @@ public class WaveRecorder
 		{
 			if (e.getMessage() != null)
 			{
-				Log.e(TAG, e.getMessage());
+				Log.e(LOG_TAG, e.getMessage());
 			}
 			else
 			{
-				Log.e(TAG, "Unknown error occured while initializing recording");
+				Log.e(LOG_TAG, "Unknown error occured while initializing recording");
 			}
 			state = State.ERROR;
 		}
@@ -259,7 +263,7 @@ public class WaveRecorder
 		}
 		else
 		{
-			Log.e(TAG, "Output file can only be set in State=INITIALIZING, current state=" + state);
+			Log.e(LOG_TAG, "Output file can only be set in State=INITIALIZING, current state=" + state);
 		}
 	}
 
@@ -298,16 +302,22 @@ public class WaveRecorder
 					// "1" says we're writing PCM coded data
 					fWriter.writeShort(Short.reverseBytes((short) 1));
 					// channels
+					Log.d(LOG_TAG, "numChannels: " + numChannels);
 					fWriter.writeShort(Short.reverseBytes(numChannels));
 					// sample rate
+					Log.d(LOG_TAG, "sampleRate: " + sampleRate);
 					fWriter.writeInt(Integer.reverseBytes(sampleRate));
 					// byte rate
+					Log.d(LOG_TAG, "byte rate: " + (sampleRate * bitsPerSample * numChannels / 8));
 					fWriter.writeInt(Integer.reverseBytes(sampleRate * bitsPerSample * numChannels / 8));
 					// block align: how many bytes make up a single
 					// frame in the data block
+					Log.d(LOG_TAG, "blockAlign: " + blockAlign);
 					blockAlign = (numChannels * bitsPerSample / 8);
+					sampleSize = blockAlign;
 					fWriter.writeShort(Short.reverseBytes((short) blockAlign));
 					// bits per sample
+					Log.d(LOG_TAG, "bitsPerSample: " + bitsPerSample);
 					fWriter.writeShort(Short.reverseBytes(bitsPerSample));
 
 					// begin data block
@@ -316,19 +326,20 @@ public class WaveRecorder
 					fWriter.writeInt(0);
 
 					buffer = new byte[framePeriod * bitsPerSample / 8 * numChannels];
+					finalBuffer = new byte[0];
 					state = State.READY;
 
 					payloadSize = 0;
 				}
 				else
 				{
-					Log.e(TAG, "prepare() method called on uninitialized recorder");
+					Log.e(LOG_TAG, "prepare() method called on uninitialized recorder");
 					state = State.ERROR;
 				}
 			}
 			else
 			{
-				Log.e(TAG, "prepare() method called on illegal state");
+				Log.e(LOG_TAG, "prepare() method called on illegal state");
 				release();
 				state = State.ERROR;
 			}
@@ -337,11 +348,11 @@ public class WaveRecorder
 		{
 			if (e.getMessage() != null)
 			{
-				Log.e(TAG, e.getMessage(), e);
+				Log.e(LOG_TAG, e.getMessage(), e);
 			}
 			else
 			{
-				Log.e(TAG, "Unknown error occured in prepare()");
+				Log.e(LOG_TAG, "Unknown error occured in prepare()");
 			}
 			state = State.ERROR;
 		}
@@ -367,7 +378,7 @@ public class WaveRecorder
 				}
 				catch (IOException e)
 				{
-					Log.e(TAG, "I/O exception occured while closing output file");
+					Log.e(LOG_TAG, "I/O exception occured while closing output file");
 				}
 				(new File(fPath)).delete();
 			}
@@ -445,7 +456,7 @@ public class WaveRecorder
 		if (state == State.READY)
 		{
 			aRecorder.startRecording();
-			Log.i(TAG, "Started to record to " + fPath);
+			Log.i(LOG_TAG, "Started to record to " + fPath);
 			state = State.RECORDING;
 
 			float tempFloatBuffer[] = new float[3];
@@ -509,7 +520,6 @@ public class WaveRecorder
 					double level = (Math.log10(tempCalc) - tuMin) / (tuMax - tuMin) * 100; // shortened known constants
 
 					int oldValue = dialog.getProgress();
-					
 
 					// scale to make the changes look more smooth
 					int newValue;
@@ -524,7 +534,7 @@ public class WaveRecorder
 					dialog.setProgress((int) newValue);
 				}
 
-				Log.i(TAG, temp + "");
+				Log.i(LOG_TAG, temp + "");
 
 				if (temp > StartThreshold)
 				{
@@ -536,19 +546,38 @@ public class WaveRecorder
 				{
 					try
 					{
-						Log.i(TAG, "Recording Voice");
+						Log.i(LOG_TAG, "Recording Voice");
 						fWriter.write(buffer); // Write buffer to file
+						int oldLength = finalBuffer.length;
+						int newLength = oldLength + buffer.length;
+						byte[] tempFinalBuffer = new byte[newLength];
+
+						for (int b = 0; b < oldLength; b++)
+						{
+							tempFinalBuffer[b] = finalBuffer[b];
+						}
+
+						int pos = oldLength;
+						for (int b = 0; b < buffer.length; b++)
+						{
+							tempFinalBuffer[pos] = buffer[b];
+							pos++;
+						}
+
+						finalBuffer = tempFinalBuffer;
+
 						payloadSize += buffer.length;
 					}
 					catch (IOException e)
 					{
-						Log.w(TAG, "IOException occured in updateListener, state=" + state);
+						Log.w(LOG_TAG, "IOException occured in updateListener, state=" + state);
 					}
 
-					Log.i(TAG, "time: " + (System.currentTimeMillis() - startTime));
+					Log.i(LOG_TAG, "time: " + (System.currentTimeMillis() - startTime));
 
 					if (System.currentTimeMillis() - startTime > StopThreshold)
 					{
+						Log.d(LOG_TAG, "Payload: " + payloadSize);
 						stop();
 					}
 				}
@@ -557,7 +586,7 @@ public class WaveRecorder
 		}
 		else
 		{
-			Log.e(TAG, "start() called on illegal state");
+			Log.e(LOG_TAG, "start() called on illegal state");
 			state = State.ERROR;
 		}
 	}
@@ -569,7 +598,7 @@ public class WaveRecorder
 		if (state == State.READY)
 		{
 			aRecorder.startRecording();
-			Log.i(TAG, "Started to listen");
+			Log.i(LOG_TAG, "Started to listen");
 			state = State.RECORDING;
 
 			byte[] tempBuffer = buffer.clone();
@@ -620,7 +649,7 @@ public class WaveRecorder
 					dialog.setProgress((int) level);
 
 				result += temp;
-				Log.i(TAG, temp + ";" + result);
+				Log.i(LOG_TAG, temp + ";" + result);
 				countReads++;
 			}
 
@@ -637,7 +666,7 @@ public class WaveRecorder
 		}
 		else
 		{
-			Log.e(TAG, "start() called on illegal state");
+			Log.e(LOG_TAG, "start() called on illegal state");
 			state = State.ERROR;
 		}
 
@@ -660,6 +689,8 @@ public class WaveRecorder
 				dialog.setProgress(0);
 			}
 
+			payload = payloadSize;
+
 			try
 			{
 				fWriter.seek(4); // Write filesize to header
@@ -667,7 +698,7 @@ public class WaveRecorder
 
 				fWriter.seek(40); // Write payload size to header
 				fWriter.writeInt(Integer.reverseBytes(payloadSize));
-				Log.d(TAG, "Stopped recording with payloadSize=" + payloadSize + ", was inserting? " + mIsInserting);
+				Log.d(LOG_TAG, "Stopped recording with payloadSize=" + payloadSize + ", was inserting? " + mIsInserting);
 				// if we have been inserting, copy back the second part
 				// of the file and correct the filesize values
 				if (mIsInserting)
@@ -681,7 +712,7 @@ public class WaveRecorder
 					int totalSize = (int) fWriter.length();
 					int fileSize = totalSize - 8;
 					int dataSize = totalSize - 44;
-					Log.i(TAG, "Appended file " + secondPart + " to record, totalSize=" + totalSize);
+					Log.i(LOG_TAG, "Appended file " + secondPart + " to record, totalSize=" + totalSize);
 					fWriter.seek(4); // Write filesize to header
 					fWriter.writeInt(Integer.reverseBytes(fileSize));
 
@@ -692,19 +723,19 @@ public class WaveRecorder
 					payloadSize = dataSize;
 				}
 
-				Log.i(TAG, "Stopped recording, total payloadsize=" + payloadSize);
+				Log.i(LOG_TAG, "Stopped recording, total payloadsize=" + payloadSize);
 
 			}
 			catch (IOException e)
 			{
-				Log.e(TAG, "I/O exception occured writing to output file in stop()");
+				Log.e(LOG_TAG, "I/O exception occured writing to output file in stop()");
 				state = State.ERROR;
 			}
 			state = State.STOPPED;
 		}
 		else
 		{
-			Log.e(TAG, "stop() called on illegal state");
+			Log.e(LOG_TAG, "stop() called on illegal state");
 			state = State.ERROR;
 		}
 	}
@@ -756,5 +787,27 @@ public class WaveRecorder
 		out.flush();
 		out.close();
 		in.close();
+	}
+
+	public int getFrameSize()
+	{
+		return sampleSize;
+	}
+
+	public int getPayloadLength()
+	{
+		return payload;
+	}
+
+	public int readFromBuffer(byte[] buffer2, int currentPos, int sampleSize3)
+	{
+		int pos = currentPos;
+		for (int i = 0; i < sampleSize3; i++)
+		{
+			buffer2[i] = finalBuffer[i+pos];
+		}
+		pos += sampleSize3;
+		
+		return pos;
 	}
 }

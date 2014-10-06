@@ -210,8 +210,13 @@ public class VoiceAuthenticator
 	private double[] readSamples(WavReader wavReader)
 	{
 		int sampleSize = wavReader.getFrameSize();
+		Log.d(LOG_TAG, "sampleSize: " + sampleSize);
+		
 		int sampleCount = wavReader.getPayloadLength() / sampleSize;
+		Log.d(LOG_TAG, "sampleCount: " + sampleCount);
+		
 		int windowCount = (int) Math.floor(sampleCount / Constants.WINDOWSIZE);
+		
 		byte[] buffer = new byte[sampleSize];
 		double[] samples = new double[windowCount * Constants.WINDOWSIZE];
 
@@ -232,6 +237,29 @@ public class VoiceAuthenticator
 		{
 			Log.e(LOG_TAG, "Exception in reading samples", e);
 		}
+		return samples;
+	}
+	
+	private double[] readSamplesFromBuffer()
+	{
+		int sampleSize = waveRecorder.getFrameSize();
+		Log.d(LOG_TAG, "sampleBufferSize: " + sampleSize);
+		
+		int sampleCount = waveRecorder.getPayloadLength() / sampleSize;
+		Log.d(LOG_TAG, "sampleBufferCount: " + sampleCount);
+		
+		int windowCount = (int) Math.floor(sampleCount / Constants.WINDOWSIZE);
+		
+		double[] samples = new double[windowCount * Constants.WINDOWSIZE];
+		byte[] buffer = new byte[sampleSize];
+		int currentPos = 0;
+		
+		for (int i = 0; i < samples.length; i++)
+		{
+			currentPos = waveRecorder.readFromBuffer(buffer, currentPos, sampleSize);
+			samples[i] = createSample(buffer);
+		}
+		
 		return samples;
 	}
 
@@ -277,7 +305,8 @@ public class VoiceAuthenticator
 			WavReader wavReader = new WavReader(filename);
 
 			Log.i(LOG_TAG, "Starting to read from file " + filename);
-			double[] samples = readSamples(wavReader);
+			//double[] samples = readSamples(wavReader);
+			double[] samples = readSamplesFromBuffer();
 
 			Log.i(LOG_TAG, "Starting to calculate MFCC");
 			double[][] mfcc = calculateMfcc(samples);
@@ -318,7 +347,32 @@ public class VoiceAuthenticator
 			WavReader wavReader = new WavReader(filename);
 
 			Log.i(LOG_TAG, "Starting to read from file " + filename);
-			double[] samples = readSamples(wavReader);
+			//double[] samples = readSamples(wavReader);
+			
+			double[] samples = readSamplesFromBuffer();
+			
+			/*if(samples.length == samples2.length)
+			{
+				Log.d(LOG_TAG, "They are the SAME!!!");
+				boolean same = true;
+				for(int i = 0; i < samples2.length; i++)
+				{
+					if(samples2[i] != samples[i])
+					{
+						same = false;
+						break;
+					}
+				}
+				
+				if(same)
+					Log.d(LOG_TAG, "The same!!!");
+				else
+					Log.d(LOG_TAG, "Not the same");
+				
+			}
+			else
+				Log.d(LOG_TAG, "They are NOT the same");*/
+			
 
 			Log.i(LOG_TAG, "Starting to calculate MFCC");
 			double[][] mfcc = calculateMfcc(samples);
