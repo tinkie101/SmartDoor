@@ -52,7 +52,6 @@ public abstract class ClassifierRunnable implements Runnable
 	}
 
 	CvMemStorage storage;
-
 	double groupRectangleThreshold;
 
 	public ClassifierRunnable(CvMemStorage storage, File cacheDir, double groupRectangleThreshold)
