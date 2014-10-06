@@ -3,8 +3,10 @@ package za.co.zebrav.smartdoor;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
@@ -22,6 +24,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -30,10 +34,10 @@ import at.fhhgb.auth.voice.VoiceAuthenticator;
 
 public class SettingsFragment extends Fragment
 {
-	private LinearLayout chooseSettingsLayout;
+	private ScrollView chooseSettingsLayout;
 	private TableLayout trainSettings;
 	private TableLayout serverSettings;
-	private TableLayout voiceSettings;
+	private LinearLayout voiceSettings;
 	private View view;
 	
 	private SharedPreferences settings = null;
@@ -46,10 +50,10 @@ public class SettingsFragment extends Fragment
 		PREFS_NAME =  getResources().getString((R.string.settingsFileName));
 		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
 		
-		chooseSettingsLayout = (LinearLayout)view.findViewById(R.id.chooseSettings);
+		chooseSettingsLayout = (ScrollView)view.findViewById(R.id.chooseSettings);
 		trainSettings = (TableLayout) view.findViewById(R.id.trainSettings);
 		serverSettings = (TableLayout) view.findViewById(R.id.ServerSettings);
-		voiceSettings = (TableLayout) view.findViewById(R.id.VoiceSettings);
+		voiceSettings = (LinearLayout) view.findViewById(R.id.VoiceSettings);
 		
 		Button trainSettingsButton = (Button) view.findViewById(R.id.trainingSetButton);
 		trainSettingsButton.setOnClickListener(new View.OnClickListener() 
@@ -365,6 +369,24 @@ public class SettingsFragment extends Fragment
             }
         });
 		
+		Button IP_HelpButton = (Button) view.findViewById(R.id.voice_CalibrationHelpButton);
+		IP_HelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("IPSetting");
+            }
+        });
+		
+		Button IP_VoiceHelpButton = (Button) view.findViewById(R.id.voice_CalibrationHelpVoiceButton);
+		IP_VoiceHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("IPSetting");
+            }
+        });
+		
 		Button saveSettingsButton  = (Button) view.findViewById(R.id.voice_saveSettings);
 		saveSettingsButton.setOnClickListener(new View.OnClickListener() 
 		{
@@ -382,6 +404,37 @@ public class SettingsFragment extends Fragment
             	done();
             }
         });
+		
+	}
+	
+	private void voiceHelp(String settingType)
+	{
+		String help = "";
+		if(settingType.equals("IPSetting"))
+			help = getResources().getString((R.string.Help_voiceCalibration));
+		
+		MainActivity m = (MainActivity) getActivity();
+		m.speakOut(help);
+	}
+	
+	private void displayHelp(String settingType)
+	{
+		String help = "";
+		if(settingType.equals("IPSetting"))
+			help = getResources().getString((R.string.Help_voiceCalibration));
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(help)
+		       .setCancelable(false)
+		       .setPositiveButton("OK", new DialogInterface.OnClickListener() 
+		       {
+		           public void onClick(DialogInterface dialog, int id) 
+		           {
+		                //do things
+		           }
+		       });
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 	
 	private void saveVoiceData()
@@ -406,6 +459,4 @@ public class SettingsFragment extends Fragment
 			return false;
 		return true;
 	}
-	
-	//-
 }

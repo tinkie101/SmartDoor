@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
-
-	<RelativeLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:orientation="vertical" >
+<RelativeLayout 
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent" >
 	
-	    
+    <!-- ______________________________________________________________setting type buttons -->
+    <ScrollView
+        android:id="@+id/chooseSettings"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
 	    <LinearLayout
-	        android:id="@+id/chooseSettings"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:orientation="vertical"
@@ -47,65 +45,101 @@
 	            android:layout_height="wrap_content"
 	            android:text="Cancel" />
 	    </LinearLayout>
+    </ScrollView>
 	    
-	     <TableLayout
-	        android:id="@+id/VoiceSettings"
+   	<!-- ______________________________________________________________voice settings -->
+    <LinearLayout
+       	android:id="@+id/VoiceSettings"
+ 	   	android:visibility="gone"
+   	   	android:layout_width="match_parent"
+	   	android:layout_height="match_parent"
+	   	android:orientation="vertical">
+	         
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Voice Settings:"
+            android:textColor="#449DEF"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+   	        
+  	    <LinearLayout
+  	        android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="horizontal">
+		    
+        <Button
+           	android:id="@+id/voice_saveSettings"
+           	android:layout_width="match_parent"
+           	android:layout_height="wrap_content"
+           	android:layout_weight="1"
+           	android:background="@drawable/button1"
+           	android:textColor="#fff"
+           	android:text="Save" />
+        
+        <Button
+            android:id="@+id/voice_cancelSettings"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:visibility="gone"
-	         >
-	
-	        <TextView
-	            android:id="@+id/textView3"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="Voice Settings:"
-	            android:textAppearance="?android:attr/textAppearanceLarge" />
-	
-	        <TableRow
-	            android:id="@+id/tableRow1"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content" >
-	
-	            <TextView
-	                android:id="@+id/voice_calibration_TV"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="Voice calibration:" />
-	            
-	            <EditText
-	                android:id="@+id/voice_calibration_ET"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content" >
-	                <requestFocus />
-	            </EditText>
-	
-	            <Button
-	            android:id="@+id/voice_autoCalibrateButton"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Auto Calibrate" />
-	        </TableRow>
-	        
-	         <TableRow
-	            android:id="@+id/tableRow2"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content" >
-	
-	            <Button
-	            android:id="@+id/voice_saveSettings"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Save" />
-	            
-	            <Button
-	            android:id="@+id/voice_cancelSettings"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Cancel" />
-	        </TableRow>
-        </TableLayout>
-	    
+	        android:layout_weight="1"
+	        android:textColor="#fff"
+	        android:background="@drawable/button1"
+	        android:text="Back" />
+   		</LinearLayout>
+   		<View
+   	    	android:layout_width="fill_parent"
+        	android:layout_height="2dp"
+        	android:background="#449DEF"
+        	android:layout_margin="5dp"/>
+   	
+   		<!-- Voice Calibration -->
+   		<LinearLayout 
+   		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+        	<TextView
+        	    android:id="@+id/voice_calibration_TV"
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:text="Voice calibration:" />
+        	
+        	<Button
+        	    android:id="@+id/voice_CalibrationHelpButton"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:text="Help" />
+        
+        	<Button
+        	    android:id="@+id/voice_CalibrationHelpVoiceButton"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:text="Voice Help" />
+   		</LinearLayout>
+   		<LinearLayout 
+   	    	android:layout_width="wrap_content"
+   	    	android:layout_height="wrap_content"
+   	    	android:orientation="horizontal">
+        	<EditText
+            	android:id="@+id/voice_calibration_ET"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content" >
+	        	<requestFocus />
+	    	</EditText>
+        	<Button
+        	    android:id="@+id/voice_autoCalibrateButton"
+            	android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	android:text="Auto Calibrate" />
+   		</LinearLayout>
+   		<View
+   	    	android:layout_width="fill_parent"
+   	    	android:layout_height="2dp"
+   	    	android:background="#449DEF"
+        	android:layout_margin="5dp"/>
+   		
+   	</LinearLayout>
+   	    
+   	<!-- ______________________________________________________________voice settings -->
 	    <TableLayout
 	        android:id="@+id/ServerSettings"
 	        android:layout_width="match_parent"
@@ -202,7 +236,7 @@
 	                android:id="@+id/TrainPhotoNumTV"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:text="Photo num (Tain):" />
+	                android:text="Photo num (Train):" />
 	
 	            <EditText
 	                android:id="@+id/TrainPhotoNumET"
@@ -373,5 +407,5 @@
 	
 	    </TableLayout>
 	
-	</RelativeLayout>
-</ScrollView>
+</RelativeLayout>
+
