@@ -20,9 +20,9 @@ import at.fhooe.mcm.sms.Constants;
 
 public class VoiceAuthenticator
 {
-	private static final int calibrate_time = 5000;
-
 	private static final String TEMP_WAV_FILE = "TempVoiceAuth.wav";
+	
+	private static final int calibrate_time = 5000;
 
 	private static final String LOG_TAG = "VoiceAuthenticator";
 
