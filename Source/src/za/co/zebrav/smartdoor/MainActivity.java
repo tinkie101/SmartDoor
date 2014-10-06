@@ -36,7 +36,6 @@ public class MainActivity extends AbstractActivity
 	private String currentFragment = "advanced";
 	private AlertDialog.Builder alert;
 	private LoggedInFragment loggedInFragment;
-	//private User user = null;
 	private boolean loggedIn = false;
 	private Fragment twitterFragment;
 	private PersonRecognizer personRecognizer;
@@ -171,12 +170,10 @@ public class MainActivity extends AbstractActivity
 	 */
 	public void switchLogin(View v)
 	{
-		Button button = (Button) findViewById(id.switchLoginButton);
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		
-		if(button.getText().equals("Logout") || currentFragment.equals("manual"))
+		if(currentFragment.equals("manual"))
 		{
-			button.setText("Switch Login");
 			searchCameraFragment = new SearchCameraFragment();
 			fragmentTransaction.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
 			currentFragment = "advanced";
@@ -193,26 +190,19 @@ public class MainActivity extends AbstractActivity
 	
 	public void logout()
 	{
-		if(loggedInFragment != null)
-			loggedInFragment.logout();
-		Button button = (Button) findViewById(id.switchLoginButton);
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		button.setText("Switch Login");
 		searchCameraFragment = new SearchCameraFragment();
 		fragmentTransaction.replace(R.id.layoutToReplaceFromMain , searchCameraFragment);
 		currentFragment = "advanced";
 		fragmentTransaction.commit();
-	}
-	
-	private void changeOnlyButtonText(String text)
-	{
 		Button button = (Button) findViewById(id.switchLoginButton);
-		button.setText(text);
+		button.setVisibility(View.VISIBLE);
 	}
 	
 	public void switchToLoggedInFrag()
 	{
-		changeOnlyButtonText("Logout");
+		Button button = (Button) findViewById(R.id.switchLoginButton);
+		button.setVisibility(View.GONE);
 		loggedInFragment = new LoggedInFragment();
 
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

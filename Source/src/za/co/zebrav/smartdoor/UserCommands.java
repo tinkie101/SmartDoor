@@ -3,6 +3,7 @@ package za.co.zebrav.smartdoor;
 import za.co.zebrav.smartdoor.database.AddUserActivity;
 import za.co.zebrav.smartdoor.database.ViewUserActivity;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 public class UserCommands
@@ -60,6 +61,7 @@ public class UserCommands
 		private void logout()
 		{
 			mainContext.speakOut("Logging out");
+			Log.d("herre", "here");
 			mainContext.logout();
 		}
 		

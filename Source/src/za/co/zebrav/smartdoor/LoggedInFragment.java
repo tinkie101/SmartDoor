@@ -19,7 +19,6 @@ public class LoggedInFragment extends Fragment
 	private ArrayAdapter<String> adapter;
 	private String[] commandOptions;
 	private AbstractActivity mainActivity;
-	private ProgressDialog progress;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -27,7 +26,6 @@ public class LoggedInFragment extends Fragment
 		View view = inflater.inflate(R.layout.logged_in, container, false);
 
 		mainActivity = (AbstractActivity) getActivity();
-		progress = new ProgressDialog(mainActivity);
 
 		mainActivity.speakOut("Welcome, " + mainActivity.getUser().getFirstnames() + " "
 							+ mainActivity.getUser().getSurname());
@@ -58,15 +56,6 @@ public class LoggedInFragment extends Fragment
 		super.onStop();
 		mainActivity.stopListeningForCommands();
 		Log.d(LOG_TAG, "onStop");
-		progress.dismiss();
-	}
-
-	public void logout()
-	{
-		progress.setMessage("Logging out");
-		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		progress.setIndeterminate(true);
-		progress.show();
 	}
 
 	public void setOnclickListener()
