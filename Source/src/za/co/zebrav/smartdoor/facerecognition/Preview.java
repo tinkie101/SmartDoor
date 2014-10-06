@@ -3,6 +3,9 @@ package za.co.zebrav.smartdoor.facerecognition;
 import java.io.IOException;
 import java.util.List;
 
+import za.co.zebrav.smartdoor.AbstractActivity;
+import za.co.zebrav.smartdoor.R;
+
 import android.content.Context;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
@@ -16,6 +19,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback
 	SurfaceHolder mHolder;
 	Camera mCamera;
 	Camera.PreviewCallback previewCallback;
+	AbstractActivity context;
 	private static final String TAG = "Preview";
 
 	public void setCamera(Camera camera)
@@ -26,6 +30,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback
 	Preview(Context context, Camera.PreviewCallback previewCallback)
 	{
 		super(context);
+		this.context = (AbstractActivity) context;
 		this.previewCallback = previewCallback;
 
 		// Install a SurfaceHolder.Callback so we get notified when the
@@ -110,7 +115,10 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback
 
 		List<Size> sizes = parameters.getSupportedPreviewSizes();
 		//Size optimalSize = getOptimalPreviewSize(sizes, w, h);
-		Size optimalSize = sizes.get(1);
+		String settingsFile = getResources().getString(R.string.settingsFileName);
+		int pos = Integer.parseInt(context.getSharedPreferences(settingsFile, 0).getString(
+							"face_resolution", "1"));
+		Size optimalSize = sizes.get(pos);
 		Log.d(TAG,"width:" + optimalSize.width + " height: " + optimalSize.height);
 		parameters.setPreviewSize(optimalSize.width, optimalSize.height);
 
