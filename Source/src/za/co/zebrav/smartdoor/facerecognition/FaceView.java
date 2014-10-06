@@ -95,11 +95,9 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 
 	public void onPreviewFrame(final byte[] data, final Camera camera)
 	{
-		Log.d(TAG, "onPreviewFrame1");
 		try
 		{
 			Camera.Size size = camera.getParameters().getPreviewSize();
-			Log.d(TAG,"width:"+ size.width + " height:" + size.height);
 			processImage(data, size.width, size.height);
 			camera.addCallbackBuffer(data);
 		}
@@ -107,7 +105,6 @@ public abstract class FaceView extends View implements Camera.PreviewCallback
 		{
 			// The camera has probably just been released, ignore.
 		}
-		Log.d(TAG, "onPreviewFrame2");
 	}
 
 	protected ClassifierRunnable faceRunnable;

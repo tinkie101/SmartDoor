@@ -12,9 +12,9 @@ public class FaceClassifierRunnable extends ClassifierRunnable
 	{
 		return classifierFile;
 	}
-	public FaceClassifierRunnable(CvMemStorage storage, File cacheDir)
+	public FaceClassifierRunnable(CvMemStorage storage, File cacheDir,double groupRectangleThreshold)
 	{
-		super(storage,cacheDir);
+		super(storage,cacheDir,groupRectangleThreshold);
 		
 	}
 

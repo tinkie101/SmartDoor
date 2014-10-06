@@ -1,7 +1,7 @@
 package za.co.zebrav.smartdoor.facerecognition;
 
 import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
-
+import static org.bytedeco.javacpp.opencv_objdetect.groupRectangles;
 import java.io.File;
 import java.io.IOException;
 
@@ -14,6 +14,9 @@ import org.bytedeco.javacpp.opencv_objdetect;
 import org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
 
+import za.co.zebrav.smartdoor.R;
+
+import android.content.SharedPreferences;
 import android.util.Log;
 
 /**
@@ -50,9 +53,11 @@ public abstract class ClassifierRunnable implements Runnable
 
 	CvMemStorage storage;
 
-	public ClassifierRunnable(CvMemStorage storage, File cacheDir)
+	double groupRectangleThreshold;
+
+	public ClassifierRunnable(CvMemStorage storage, File cacheDir, double groupRectangleThreshold)
 	{
-		Loader.load(opencv_objdetect.class);
+		this.groupRectangleThreshold = groupRectangleThreshold;
 		try
 		{
 			File file;
@@ -81,7 +86,7 @@ public abstract class ClassifierRunnable implements Runnable
 	{
 		return totalDetected;
 	}
-	
+
 	public void setTotalDeteced(int total)
 	{
 		totalDetected = total;
@@ -90,7 +95,6 @@ public abstract class ClassifierRunnable implements Runnable
 	@Override
 	public void run()
 	{
-		Log.d(TAG, "startRun");
 		objects.deallocate();
 		objects = new Rect();
 		cascade.detectMultiScale(grayImage, objects, 1.1, 3, CV_HAAR_DO_CANNY_PRUNING, new Size(),
@@ -98,22 +102,31 @@ public abstract class ClassifierRunnable implements Runnable
 		if (objects.width() == 0)
 			totalDetected = 0;
 		else
-			totalDetected = objects.capacity();
-		Log.d(TAG, "endRun");
-//		int temp = totalDetected;
-//		if (totalDetected > 0)
-//		{
-//
-//			//IntPointer rweights = new IntPointer(1);
-//			//groupRectangles(objects, 100);
-//			groupRectangles(objects, 1, Double.MAX_VALUE);
-//		}
-//		if (objects.width() == 0)
-//			totalDetected = 0;
-//		else
-//			totalDetected = objects.capacity();
-//		Log.d(TAG, "change:" + (temp - totalDetected));
-
+			totalDetected = objects.limit();
+	}
+	
+	protected void rectangleGroup()
+	{
+		int size = objects.limit();
+		Rect tempRect = new Rect(objects.limit() * 2);
+		for (int i = 0; i < size; i++)
+		{
+			tempRect.position(i).x(objects.position(i).x());
+			tempRect.position(i).y(objects.position(i).y());
+			tempRect.position(i).width(objects.position(i).width());
+			tempRect.position(i).height(objects.position(i).height());
+		}
+		for (int i = 0; i < size; i++)
+		{
+			tempRect.position(size + i).x(objects.position(i).x());
+			tempRect.position(size + i).y(objects.position(i).y());
+			tempRect.position(size + i).width(objects.position(i).width());
+			tempRect.position(size + i).height(objects.position(i).height());
+		}
+		groupRectangles(tempRect.position(0), 1, groupRectangleThreshold);
+		totalDetected = tempRect.limit();
+		objects.deallocate();
+		objects = tempRect;
 	}
 
 }
