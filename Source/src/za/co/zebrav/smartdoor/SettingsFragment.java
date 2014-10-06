@@ -36,7 +36,7 @@ public class SettingsFragment extends Fragment
 {
 	private ScrollView chooseSettingsLayout;
 	private TableLayout trainSettings;
-	private TableLayout serverSettings;
+	private LinearLayout serverSettings;
 	private LinearLayout voiceSettings;
 	private View view;
 	
@@ -52,7 +52,7 @@ public class SettingsFragment extends Fragment
 		
 		chooseSettingsLayout = (ScrollView)view.findViewById(R.id.chooseSettings);
 		trainSettings = (TableLayout) view.findViewById(R.id.trainSettings);
-		serverSettings = (TableLayout) view.findViewById(R.id.ServerSettings);
+		serverSettings = (LinearLayout) view.findViewById(R.id.ServerSettings);
 		voiceSettings = (LinearLayout) view.findViewById(R.id.VoiceSettings);
 		
 		Button trainSettingsButton = (Button) view.findViewById(R.id.trainingSetButton);
