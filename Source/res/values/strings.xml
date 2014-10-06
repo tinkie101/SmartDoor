@@ -47,6 +47,8 @@
     
     <!-- Settings Help Strings-->
     <string name="Help_voiceCalibration">Bleh. Albert.</string>
+    <string name="Help_serverIPAddress">Bleh. Albert.</string>
+    <string name="Help_serverIPort">Bleh. Albert.</string>
     <string name="Help_facePhotoNumTrain">Ble. Eduan.</string>
     <string name="Help_facePhotoNumRecog">Bleh Eduan</string>
     <string name="Help_faceThreshold">Bleh Eduan</string>
