@@ -10,7 +10,6 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -30,7 +29,6 @@ public class SpeechToTextAdapter
 		this.context = context;
 		stopListening = true;
 
-		soundLevel = (ProgressBar) context.findViewById(R.id.progressBar1);
 		if (isAvailable())
 		{
 			speechRecogniser = SpeechRecognizer.createSpeechRecognizer(context);
@@ -68,7 +66,7 @@ public class SpeechToTextAdapter
 	{
 		if (isAvailable())
 		{
-
+			soundLevel = (ProgressBar) context.findViewById(R.id.progressBar1);
 			this.possibleCommands = possibleCommands;
 
 			// soundLevel.setVisibility(ProgressBar.VISIBLE);
