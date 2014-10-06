@@ -1,11 +1,13 @@
 package za.co.zebrav.smartdoor;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
-import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import at.fhooe.mcm.smc.math.mfcc.FeatureVector;
 import at.fhooe.mcm.smc.math.vq.Codebook;
@@ -22,13 +25,13 @@ import at.fhooe.mcm.smc.math.vq.Codebook;
 public class IdentifyVoiceFragment extends VoiceFragment
 {
 	private static final String LOG_TAG = "AuthTest";
-	
-	private IdentifyTask identifyTask; 
+
+	private IdentifyTask identifyTask;
 	private int loopCounter;
-	
+
 	private TextView txtTempUser;
-	private ListView listView;
-	
+	//private ListView listView;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -38,21 +41,42 @@ public class IdentifyVoiceFragment extends VoiceFragment
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{		
+	{
 		LinearLayout layout = new LinearLayout(activity);
+		layout.setOrientation(LinearLayout.VERTICAL);
+
+		User user = activity.getUser();
 		
-		txtTempUser = new TextView(activity);		
-		txtTempUser.setText(activity.getUser().getFirstnames());
-		
-		listView = new ListView(activity);
-		
+		float density = getResources().getDisplayMetrics().density;
+		int DPS = 150;
+		int Pixels = (int) (DPS * density);
+
+		LayoutParams params = new LayoutParams(Pixels, Pixels);
+		params.setMargins(1, 1, 1, 1);
+
+		txtTempUser = new TextView(activity);
+		txtTempUser.setText(user.getUsername());
+		txtTempUser.setTextSize(Pixels/20);
+
+		// get user image
+		File path = activity.getDir("data", 0);
+
+		Bitmap image = BitmapFactory.decodeFile(path + "/photos/" + user.getID() + "-0.png");
+
+		ImageView imgUser = new ImageView(activity);
+		imgUser.setImageBitmap(image);
+		imgUser.setLayoutParams(params);
+
+		//listView = new ListView(activity);
+
 		layout.addView(txtTempUser);
-		layout.addView(listView);
-		
+		layout.addView(imgUser);
+		//layout.addView(listView);
+
 		return layout;
 	}
 
-	//TODO 	soundLevelDialog.setMessage("Say: \"The quick brown fox jumps over the lazy dog\"");
+	// TODO soundLevelDialog.setMessage("Say: \"The quick brown fox jumps over the lazy dog\"");
 
 	@Override
 	public void onStart()
@@ -66,8 +90,8 @@ public class IdentifyVoiceFragment extends VoiceFragment
 	public void onPause()
 	{
 		super.onPause();
-		
-		if(identifyTask != null)
+
+		if (identifyTask != null)
 			identifyTask.cancel(true);
 	}
 
@@ -170,7 +194,7 @@ public class IdentifyVoiceFragment extends VoiceFragment
 	{
 		@Override
 		protected ArrayList<String> doInBackground(Void... params)
-		{			
+		{
 			voiceAuthenticator.startRecording();
 			soundLevelDialog.dismiss();
 			return calculateDistances(voiceAuthenticator.getCurrentFeatureVector());
@@ -184,13 +208,12 @@ public class IdentifyVoiceFragment extends VoiceFragment
 				Log.i(LOG_TAG, string);
 			}
 
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1,
-								result);
-			listView.setAdapter(adapter);
+			//ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, result);
+			//listView.setAdapter(adapter);
 
 			// TODO read in from buffer
 			voiceAuthenticator.deleteActiveFile();
-			
+
 			processingDialog.dismiss();
 
 			Log.d(LOG_TAG, "Adapter Set to Results");
@@ -202,7 +225,7 @@ public class IdentifyVoiceFragment extends VoiceFragment
 				Integer bestMatch = Integer.parseInt(bestResult.substring(0, bestResult.indexOf(":")));
 
 				int activeID = activity.getUser().getID();
-				
+
 				if (bestMatch.equals(activeID))
 				{
 					((MainActivity) activity).switchToLoggedInFrag();
@@ -210,8 +233,8 @@ public class IdentifyVoiceFragment extends VoiceFragment
 				else
 				{
 					loopCounter--;
-					
-					if(loopCounter > 0)
+
+					if (loopCounter > 0)
 						identifySpeaker();
 					else
 					{
@@ -224,7 +247,7 @@ public class IdentifyVoiceFragment extends VoiceFragment
 			{
 				Log.d(LOG_TAG, "Incorrect conversion of userID");
 			}
-			
+
 		}
 	}
 
