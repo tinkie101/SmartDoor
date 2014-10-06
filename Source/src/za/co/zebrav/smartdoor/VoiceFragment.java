@@ -4,10 +4,13 @@ import za.co.zebrav.smartdoor.database.User;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import at.fhhgb.auth.voice.VoiceAuthenticator;
 
 public class VoiceFragment extends Fragment
 {
+	private static final String LOG_TAG = "VoiceFragment";
+
 	protected AbstractActivity activity;
 
 	protected VoiceAuthenticator voiceAuthenticator;
@@ -32,6 +35,18 @@ public class VoiceFragment extends Fragment
 		this.processingDialog.setCancelable(false);
 
 		this.voiceAuthenticator = new VoiceAuthenticator(soundLevelDialog);
+		String settingsFile = getResources().getString(R.string.settingsFileName);
+		try
+		{
+			Integer threshold = Integer.parseInt(activity.getSharedPreferences(settingsFile, 0).getString(
+								"voice_Calibration", "350"));
+
+			this.voiceAuthenticator.setMicThreshold(threshold);
+		}
+		catch (NumberFormatException e)
+		{
+			Log.d(LOG_TAG, "Error, Mic threshold not set!");
+		}
 	}
 
 	@Override

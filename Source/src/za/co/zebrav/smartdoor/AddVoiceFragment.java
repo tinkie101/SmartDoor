@@ -139,6 +139,7 @@ public class AddVoiceFragment extends VoiceFragment
 		protected Void doInBackground(Void... params)
 		{
 			Log.i(LOG_TAG, "Training new Voice");
+			Log.d(LOG_TAG, "Mic threshold: " + voiceAuthenticator.getMicThreshold());
 			voiceAuthenticator.startRecording();
 			soundLevelDialog.dismiss();
 
