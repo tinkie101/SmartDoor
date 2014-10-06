@@ -1,7 +1,6 @@
 package za.co.zebrav.smartdoor;
 
 import za.co.zebrav.smartdoor.database.AddUserActivity;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -131,7 +130,7 @@ public class AddVoiceFragment extends VoiceFragment
 		soundLevelDialog.show();
 
 		trainTask = new TrainTask();
-		trainTask.execute();
+		trainTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 
 	private class TrainTask extends AsyncTask<Void, Void, Void>

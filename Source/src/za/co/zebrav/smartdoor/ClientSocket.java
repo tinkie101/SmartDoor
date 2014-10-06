@@ -49,7 +49,7 @@ public class ClientSocket extends AsyncTask<String, Void, String>
 				// send
 				out.println(command);
 
-				new Recieve().execute();
+				new Recieve().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 			}
 			catch (Exception e)

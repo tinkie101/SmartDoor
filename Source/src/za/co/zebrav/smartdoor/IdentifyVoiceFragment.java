@@ -106,7 +106,7 @@ public class IdentifyVoiceFragment extends VoiceFragment
 		soundLevelDialog.show();
 
 		identifyTask = new IdentifyTask();
-		identifyTask.execute();
+		identifyTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 
 	private ArrayList<String> calculateDistances(FeatureVector featureVector)

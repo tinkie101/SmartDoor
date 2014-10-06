@@ -124,7 +124,7 @@ public class TwitterHandler
 				v.setVisibility(ProgressBar.VISIBLE);
 			
 			asynchTwitter = new AsynchTwitter();
-			asynchTwitter.execute();
+			asynchTwitter.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		}
 		else
 		{
