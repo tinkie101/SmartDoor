@@ -261,6 +261,7 @@ public class MainActivity extends AbstractActivity
 		Log.d(TAG, "Logout called.");
 		loggedIn = false;
 		logoutTimer.cancel();
+		brightnessTimer.start();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		searchCameraFragment = new SearchCameraFragment();
 		fragmentTransaction.replace(R.id.layoutToReplaceFromMain, searchCameraFragment);
@@ -283,6 +284,7 @@ public class MainActivity extends AbstractActivity
 		fragmentTransaction.commit();
 		this.loggedIn = true;
 		logoutTimer.start();
+		brightnessTimer.cancel();
 	}
 
 	/**
