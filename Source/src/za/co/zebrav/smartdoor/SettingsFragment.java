@@ -635,6 +635,14 @@ public class SettingsFragment extends Fragment
 			help = getResources().getString(R.string.Help_faceDetectEyes);
 		else if(settingType.equals("Help_faceDetectNose"))
 			help = getResources().getString(R.string.Help_faceDetectNose);
+		else if(settingType.equals("Help_twitterKey"))
+			help = getResources().getString(R.string.Help_twitterKey);
+		else if(settingType.equals("Help_twitterSecret"))
+			help = getResources().getString(R.string.Help_twitterSecret);
+		else if(settingType.equals("Help_twitterTokenKey"))
+			help = getResources().getString(R.string.Help_twitterTokenKey);
+		else if(settingType.equals("Help_twitterTokenString"))
+			help = getResources().getString(R.string.Help_twitterTokenString);
 		
 		MainActivity m = (MainActivity) getActivity();
 		m.speakOut(help);
@@ -667,6 +675,14 @@ public class SettingsFragment extends Fragment
 			help = getResources().getString(R.string.Help_faceDetectEyes);
 		else if(settingType.equals("Help_faceDetectNose"))
 			help = getResources().getString(R.string.Help_faceDetectNose);
+		else if(settingType.equals("Help_twitterKey"))
+			help = getResources().getString(R.string.Help_twitterKey);
+		else if(settingType.equals("Help_twitterSecret"))
+			help = getResources().getString(R.string.Help_twitterSecret);
+		else if(settingType.equals("Help_twitterTokenKey"))
+			help = getResources().getString(R.string.Help_twitterTokenKey);
+		else if(settingType.equals("Help_twitterTokenString"))
+			help = getResources().getString(R.string.Help_twitterTokenString);
 		
 		
 		
@@ -727,9 +743,165 @@ public class SettingsFragment extends Fragment
 		String tokenKey = settings.getString("twitter_TokenKey", "");
 		((EditText) view.findViewById(R.id.twitter_TokenKeyET)).setText(tokenKey);
 		
-		String tokenSecret = settings.getString("twitter_Secret", "");
-		((EditText) view.findViewById(R.id.twitter_SecretET)).setText(tokenSecret);
+		String tokenSecret = settings.getString("twitter_TokenSecret", "");
+		((EditText) view.findViewById(R.id.twitter_TokenSecretET)).setText(tokenSecret);
 		
+		//configure buttons
+		Button twitterKey_HelpButton = (Button) view.findViewById(R.id.twitter_keyHelpButton);
+		twitterKey_HelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_twitterKey");
+            }
+        });
+				
+		Button twitter_keyHelpVoiceButton = (Button) view.findViewById(R.id.twitter_keyHelpVoiceButton);
+		twitter_keyHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_twitterKey");
+            }
+        });
 		
+		Button twitter_SecretHelpButton = (Button) view.findViewById(R.id.twitter_SecretHelpButton);
+		twitter_SecretHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_twitterSecret");
+            }
+        });
+				
+		Button twitter_SecretHelpVoiceButton = (Button) view.findViewById(R.id.twitter_SecretHelpVoiceButton);
+		twitter_SecretHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_twitterSecret");
+            }
+        });
+		
+		Button twitter_TokenKeyHelpButton = (Button) view.findViewById(R.id.twitter_TokenKeyHelpButton);
+		twitter_TokenKeyHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_twitterTokenKey");
+            }
+        });
+				
+		Button twitter_TokenKeyHelpVoiceButton = (Button) view.findViewById(R.id.twitter_TokenKeyHelpVoiceButton);
+		twitter_TokenKeyHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_twitterTokenKey");
+            }
+        });
+		
+		Button twitter_TokenSecretHelpButton = (Button) view.findViewById(R.id.twitter_TokenSecretHelpButton);
+		twitter_TokenSecretHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_twitterTokenString");
+            }
+        });
+				
+		Button twitter_TokenSecretHelpVoiceButton = (Button) view.findViewById(R.id.twitter_TokenSecretHelpVoiceButton);
+		twitter_TokenSecretHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_twitterTokenString");
+            }
+        });
+				
+				
+				
+		Button saveTwitterSettings = (Button) view.findViewById(R.id.saveTwitterButton);
+		saveTwitterSettings.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	saveTwitterData();
+            }
+        });
+				
+		Button cancelTwitterSettingsButton = (Button) view.findViewById(R.id.cancelButtonTwitter);
+		cancelTwitterSettingsButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	done();
+            }
+        });
+		
+		Button loadDefaultsTwitterButton = (Button) view.findViewById(R.id.defaultTwitter);
+		loadDefaultsTwitterButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	loadTwitterDefaults();
+            }
+        });
+	}
+	
+	private void saveTwitterData()
+	{
+		if(twitterNoneEmpty())
+		{
+			SharedPreferences.Editor editor = settings.edit();
+			
+			String key = ((EditText) view.findViewById(R.id.twitter_KeyET)).getText().toString();
+		    editor.putString("twitter_Key", key);
+		    editor.commit();
+		    
+		    String secret = ((EditText) view.findViewById(R.id.twitter_SecretET)).getText().toString();
+		    editor.putString("twitter_Secret", secret);
+		    editor.commit();
+		    
+		    String tokenKey = ((EditText) view.findViewById(R.id.twitter_TokenKeyET)).getText().toString();
+		    editor.putString("twitter_TokenKey", tokenKey);
+		    editor.commit();
+		    
+		    String tokenSecret = ((EditText) view.findViewById(R.id.twitter_TokenSecretET)).getText().toString();
+		    editor.putString("twitter_TokenSecret", tokenSecret);
+		    editor.commit();
+		    
+		    Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+		}
+		else
+			Toast.makeText(getActivity(), "Empty field", Toast.LENGTH_SHORT).show();
+	}
+	
+	private boolean twitterNoneEmpty()
+	{
+		if(((EditText) view.findViewById(R.id.twitter_KeyET)).getText().toString().equals(""))
+			return false;
+		else if(((EditText) view.findViewById(R.id.twitter_SecretET)).getText().toString().equals(""))
+			return false;
+		else if(((EditText) view.findViewById(R.id.twitter_TokenKeyET)).getText().toString().equals(""))
+			return false;
+		else if(((EditText) view.findViewById(R.id.twitter_TokenSecretET)).getText().toString().equals(""))
+			return false;
+		return true;
+	}
+	
+	private void loadTwitterDefaults()
+	{
+		String key = getResources().getString(R.string.twitter_Key);
+		String secret = getResources().getString(R.string.twitter_Secret);
+		String tokenKey = getResources().getString(R.string.twitter_TokenKey);
+		String tokenSecret = getResources().getString(R.string.twitter_TokenSecret);
+		
+		((EditText) view.findViewById(R.id.twitter_KeyET)).setText(key);
+		((EditText) view.findViewById(R.id.twitter_SecretET)).setText(secret);
+		((EditText) view.findViewById(R.id.twitter_TokenKeyET)).setText(tokenKey);
+		((EditText) view.findViewById(R.id.twitter_TokenSecretET)).setText(tokenSecret);
+	    
+	    
 	}
 }
