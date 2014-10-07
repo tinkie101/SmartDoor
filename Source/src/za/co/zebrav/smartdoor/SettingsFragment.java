@@ -718,7 +718,18 @@ public class SettingsFragment extends Fragment
 		chooseSettingsLayout.setVisibility(View.GONE);
 		
 		//getPreferences and display current settings
-		//String key = settings.getString("face_TrainPhotoNum", "");
-		//((EditText) view.findViewById(R.id.TrainPhotoNumET)).setText(trainPhotoNum);
+		String key = settings.getString("twitter_Key", "");
+		((EditText) view.findViewById(R.id.twitter_KeyET)).setText(key);
+		
+		String secret = settings.getString("twitter_Secret", "");
+		((EditText) view.findViewById(R.id.twitter_SecretET)).setText(secret);
+		
+		String tokenKey = settings.getString("twitter_TokenKey", "");
+		((EditText) view.findViewById(R.id.twitter_TokenKeyET)).setText(tokenKey);
+		
+		String tokenSecret = settings.getString("twitter_Secret", "");
+		((EditText) view.findViewById(R.id.twitter_SecretET)).setText(tokenSecret);
+		
+		
 	}
 }
