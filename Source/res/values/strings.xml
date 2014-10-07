@@ -55,6 +55,7 @@
     <string name="Help_facePhotoNumRecog">Bleh Eduan</string>
     <string name="Help_faceThreshold">Bleh Eduan</string>
     <string name="Help_faceImageScale">Bleh Eduan</string>
+    <string name="Help_faceAlgorithm">Bleh Eduan</string>
     <string name="Help_faceResolution">Bleh Eduan</string>
     <string name="Help_faceGroupRectangle">Bleh Eduan</string>
     <string name="Help_faceDetectEyes">Bleh Eduan</string>
