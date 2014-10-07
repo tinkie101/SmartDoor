@@ -45,7 +45,10 @@ public class UserCommands
 			else
 			{
 				Toast.makeText(mainContext, "No such command", Toast.LENGTH_LONG);
+				return;
 			}
+			mainContext.getLogoutTimer().cancel();
+			mainContext.getLogoutTimer().start();
 		}
 	
 		//----------------------------------------------------------------------------Execution of commands
@@ -83,7 +86,7 @@ public class UserCommands
 		
 		private void settings()
 		{
-			mainContext.speakOut("settings");
+			mainContext.speakOut("Going to settings");
 			
 			mainContext.switchToSettingsFragment();
 		}

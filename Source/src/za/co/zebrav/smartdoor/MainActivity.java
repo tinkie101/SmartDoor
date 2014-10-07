@@ -43,6 +43,11 @@ public class MainActivity extends AbstractActivity
 	private Fragment twitterFragment;
 	private PersonRecognizer personRecognizer;
 	private CountDownTimer logoutTimer;
+	public CountDownTimer getLogoutTimer() 
+	{
+		return logoutTimer;
+	}
+
 	private CountDownTimer brightnessTimer;
 
 	public CountDownTimer getBrightnessTimer()
