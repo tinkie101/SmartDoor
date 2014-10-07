@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 public abstract class AbstractActivity extends Activity
@@ -60,6 +61,7 @@ public abstract class AbstractActivity extends Activity
 	{
 		super.onStart();
 		activityDatabase.open();
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
 	@Override
@@ -68,6 +70,8 @@ public abstract class AbstractActivity extends Activity
 		super.onPause();
 
 		activityDatabase.close();
+		
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
 	@Override
