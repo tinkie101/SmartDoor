@@ -1,6 +1,5 @@
 package za.co.zebrav.smartdoor;
 
-import za.co.zebrav.smartdoor.database.User;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;

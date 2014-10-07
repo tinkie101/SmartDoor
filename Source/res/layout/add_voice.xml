@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/txtCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Counter"
+        android:layout_gravity="center"
+        android:textSize="30dp" 
+        android:layout_margin="3dp"/>
+
+    <Button
+        android:id="@+id/btnTrain"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:text="Train"
+        android:layout_gravity="center"
+        android:textSize="30dp"
+        android:background="@drawable/button1" 
+        android:layout_margin="3dp"/>
+
+    <Button
+        android:id="@+id/btnDone"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:text="Done" 
+        android:layout_gravity="center"
+        android:textSize="30dp" 
+        android:background="@drawable/button1"
+        android:layout_margin="3dp"/>
+
+</LinearLayout>

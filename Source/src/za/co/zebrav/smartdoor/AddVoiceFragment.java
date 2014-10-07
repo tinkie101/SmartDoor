@@ -3,20 +3,16 @@ package za.co.zebrav.smartdoor;
 import za.co.zebrav.smartdoor.database.AddUserActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AddVoiceFragment extends VoiceFragment
+public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 {
 	private static final String LOG_TAG = "AddVoiceFragment";
 	private Button btnDone;
@@ -36,95 +32,18 @@ public class AddVoiceFragment extends VoiceFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		Log.d(LOG_TAG, "onCreateView");
-		LinearLayout layout = new LinearLayout(activity);
-		layout.setOrientation(LinearLayout.VERTICAL);
+		View view = inflater.inflate(R.layout.add_voice, container, false);
 		
-		
-		DisplayMetrics dm = new DisplayMetrics();
-		activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		btnTrain = (Button) view.findViewById(R.id.btnTrain);
+		btnTrain.setOnClickListener(this);
 
-		int widthDPS = 600;
-		int widthPixels = (int) (widthDPS * dm.scaledDensity);
-
-		int heightDPS = 80;
-		int heightPixels = (int) (heightDPS * dm.scaledDensity);
+		btnDone = (Button) view.findViewById(R.id.btnDone);
+		btnDone.setOnClickListener(this);
 		
-		int textSize = 40;
-		
-		LayoutParams params = new LayoutParams(widthPixels, heightPixels);
-		params.setMargins(0, heightDPS/6, 0, heightDPS/6);
-		params.gravity = Gravity.CENTER;
-		
-		btnTrain = new Button(activity);
-		btnTrain.setText("Train");
-		btnTrain.setTextSize(textSize);
-
-		if(Integer.valueOf(android.os.Build.VERSION.SDK_INT) < 16)
-		{
-			btnTrain.setBackgroundDrawable(getResources().getDrawable(R.drawable.button1));			
-		}
-		else
-		{
-			btnTrain.setBackground(getResources().getDrawable(R.drawable.button1));
-		}
-		
-		btnTrain.setLayoutParams(params);
-
-		btnTrain.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View arg0)
-			{
-				trainVoice();
-			}
-		});
-
-		btnDone = new Button(activity);
-		btnDone.setText("Done");
-		btnDone.setTextSize(textSize);
-		
-		if(Integer.valueOf(android.os.Build.VERSION.SDK_INT) < 16)
-		{
-			btnDone.setBackgroundDrawable(getResources().getDrawable(R.drawable.button1));			
-		}
-		else
-		{
-			btnDone.setBackground(getResources().getDrawable(R.drawable.button1));
-		}
-		btnDone.setLayoutParams(params);
-
-		btnDone.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				if (activity.getUser() != null)
-				{
-					activity.getUser().setCodeBook(voiceAuthenticator.getCodeBook());
-				}
-				else
-				{
-					Toast.makeText(activity, "user is NULL", Toast.LENGTH_LONG).show();
-				}
-
-				((AddUserActivity) activity).doneStepThreeAddUser();
-			}
-		});
-		
-		params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(0, heightDPS/6, 0, heightDPS/6);
-		params.gravity = Gravity.CENTER;
-		
-		txtCounter = new TextView(activity);
-		txtCounter.setLayoutParams(params);
-		txtCounter.setTextSize(textSize);
-
-		layout.addView(txtCounter);
-		layout.addView(btnTrain);
-		layout.addView(btnDone);
+		txtCounter = (TextView) view.findViewById(R.id.txtCounter);
 
 		trainCounter = 0;
-		return layout;
+		return view;
 	}
 
 	@Override
@@ -191,5 +110,24 @@ public class AddVoiceFragment extends VoiceFragment
 	{
 		Log.i(LOG_TAG, "Training Voice");
 		startRecording();
+	}
+
+	@Override
+	public void onClick(View v)
+	{
+		if(v.equals(btnTrain))
+			trainVoice();
+		else if(v.equals(btnDone))
+		{
+			if (activity.getUser() != null)
+			{
+				activity.getUser().setCodeBook(voiceAuthenticator.getCodeBook());
+				((AddUserActivity) activity).doneStepThreeAddUser();
+			}
+			else
+			{
+				Toast.makeText(activity, "user is NULL", Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 }
