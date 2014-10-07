@@ -82,7 +82,7 @@ public class MainActivity extends AbstractActivity
 		{
 			public void onFinish()
 			{
-				speakOut("Logging out after due to inactivity.");
+				speakOut("Logging out due to inactivity.");
 				logout();
 			}
 
