@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout 
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent" >
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
 	
     <!-- ______________________________________________________________setting type buttons -->
     <ScrollView
@@ -48,7 +48,6 @@ android:layout_height="match_parent" >
     </ScrollView>
 	    
    	<!-- ______________________________________________________________voice settings -->
-   	
     <LinearLayout
        	android:id="@+id/VoiceSettings"
  	   	android:visibility="gone"
@@ -271,7 +270,7 @@ android:layout_height="match_parent" >
        	</ScrollView>
 	</LinearLayout>
 	
-	<!-- ______________________________________________________________setting type buttons -->
+	<!-- ______________________________________________________________face Settings -->
 	<LinearLayout
         android:id="@+id/FaceSettings"
  	   	android:visibility="gone"
@@ -683,11 +682,243 @@ android:layout_height="match_parent" >
         			android:layout_height="2dp"
         			android:background="#449DEF"
         			android:layout_margin="5dp"/>
+   			</LinearLayout>
+		</ScrollView>
+   	</LinearLayout>
+   	<!-- ______________________________________________________________twitter Settings -->
+	<LinearLayout
+        android:id="@+id/TwitterSettings"
+ 	   	android:visibility="gone"
+   	   	android:layout_width="match_parent"
+	   	android:layout_height="match_parent"
+	   	android:orientation="vertical">
+       	
+	    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Twitter Settings:"
+            android:textColor="#449DEF"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+   	        
+  	    <LinearLayout
+  	        android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="horizontal">
+        	
+  	        <Button
+           		android:id="@+id/saveTwitterButton"
+           		android:layout_width="match_parent"
+	           	android:layout_height="wrap_content"
+	           	android:layout_weight="1"
+	           	android:background="@drawable/button1"
+	           	android:textColor="#fff"
+	           	android:text="Save" />
+        
+        	<Button
+        	    android:id="@+id/cancelButtonTwitter"
+	        	android:layout_width="match_parent"
+	        	android:layout_height="wrap_content"
+	        	android:layout_weight="1"
+	        	android:textColor="#fff"
+	        	android:background="@drawable/button1"
+	        	android:text="Back" />
+       	</LinearLayout>
+        	
+       	<LinearLayout
+        	android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:orientation="horizontal">
+      			
+       	    <Button
+       	    android:id="@+id/defaultTwitter"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_weight="1"
+        	android:textColor="#fff"
+        	android:background="@drawable/button1"
+        	android:text="Load Defaults" />
+   		</LinearLayout>
+       	<View
+   	    	android:layout_width="fill_parent"
+        	android:layout_height="2dp"
+        	android:background="#449DEF"
+        	android:layout_margin="5dp"/>
+       	
+       	<ScrollView 
+   		    android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+       		<LinearLayout 
+   			    android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+   				<!-- ________________________________Key -->
+   				<LinearLayout 
+   		    		android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+        			
+   				    <TextView
+	                android:id="@+id/twitter_KeyTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Key:" />
+   				    
+   				    <Button
+        	    		android:id="@+id/twitter_keyHelpButton"
+			    		android:layout_width="match_parent"
+			    		android:layout_height="wrap_content"
+			    		android:text="Help" />
+        
+        			<Button
+	        	    	android:id="@+id/twitter_keyHelpVoiceButton"
+				    	android:layout_width="match_parent"
+				    	android:layout_height="wrap_content"
+				    	android:text="Voice Help" />
+       			</LinearLayout>
+   				<LinearLayout 
+   		    		android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+        			<EditText
+	               		android:id="@+id/twitter_KeyET"
+	                	android:layout_width="wrap_content"
+	                	android:layout_height="wrap_content" >
+	            	</EditText>
+       			</LinearLayout>
+       			<View
+		   	    	android:layout_width="fill_parent"
+		        	android:layout_height="2dp"
+		        	android:background="#449DEF"
+		        	android:layout_margin="5dp"/>
+       			
+       			<!-- ________________________________Secret -->
+   				<LinearLayout 
+   		    		android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+        			
+   				    <TextView
+	                android:id="@+id/twitter_SecretTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Secret:" />
+   				    
+   				    <Button
+        	    		android:id="@+id/twitter_SecretHelpButton"
+			    		android:layout_width="match_parent"
+			    		android:layout_height="wrap_content"
+			    		android:text="Help" />
+        
+        			<Button
+	        	    	android:id="@+id/twitter_SecretHelpVoiceButton"
+				    	android:layout_width="match_parent"
+				    	android:layout_height="wrap_content"
+				    	android:text="Voice Help" />
+       			</LinearLayout>
+       			<LinearLayout 
+   		    		android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+        			<EditText
+	               		android:id="@+id/twitter_SecretET"
+	                	android:layout_width="wrap_content"
+	                	android:layout_height="wrap_content" >
+	            	</EditText>
+       			</LinearLayout>
+   				
+       			<View
+		   	    	android:layout_width="fill_parent"
+		        	android:layout_height="2dp"
+		        	android:background="#449DEF"
+		        	android:layout_margin="5dp"/>
+       			
+       			<!-- ________________________________Token Key -->
+   				<LinearLayout 
+   		    		android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+        			
+   				    <TextView
+	                android:id="@+id/twitter_TokenKeyTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Token key:" />
+   				    
+   				    <Button
+        	    		android:id="@+id/twitter_TokenKeyHelpButton"
+			    		android:layout_width="match_parent"
+			    		android:layout_height="wrap_content"
+			    		android:text="Help" />
+        
+        			<Button
+	        	    	android:id="@+id/twitter_TokenKeyHelpVoiceButton"
+				    	android:layout_width="match_parent"
+				    	android:layout_height="wrap_content"
+				    	android:text="Voice Help" />
+       			</LinearLayout>
+       			<LinearLayout 
+   		    		android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+        			<EditText
+	               		android:id="@+id/twitter_TokenKeyET"
+	                	android:layout_width="wrap_content"
+	                	android:layout_height="wrap_content" >
+	            	</EditText>
+       			</LinearLayout>
+   				
+       			<View
+		   	    	android:layout_width="fill_parent"
+		        	android:layout_height="2dp"
+		        	android:background="#449DEF"
+		        	android:layout_margin="5dp"/>
+       			
+       			<!-- ________________________________TokenSecret -->
+   				<LinearLayout 
+   		    		android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+        			
+   				    <TextView
+	                android:id="@+id/twitter_TokenSecretTV"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Token Secret:" />
+   				    
+   				    <Button
+        	    		android:id="@+id/twitter_TokenSecretHelpButton"
+			    		android:layout_width="match_parent"
+			    		android:layout_height="wrap_content"
+			    		android:text="Help" />
+        
+        			<Button
+	        	    	android:id="@+id/twitter_TokenSecretHelpVoiceButton"
+				    	android:layout_width="match_parent"
+				    	android:layout_height="wrap_content"
+				    	android:text="Voice Help" />
+       			</LinearLayout>
+       			<LinearLayout 
+   		    		android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+        			<EditText
+	               		android:id="@+id/twitter_TokenSecretET"
+	                	android:layout_width="match_parent"
+	                	android:layout_height="wrap_content" >
+	            	</EditText>
+       			</LinearLayout>
+   				
+       			<View
+		   	    	android:layout_width="fill_parent"
+		        	android:layout_height="2dp"
+		        	android:background="#449DEF"
+		        	android:layout_margin="5dp"/>
        			
        			
        			
    			</LinearLayout>
 		</ScrollView>
-   	</LinearLayout>
+	</LinearLayout>
+	
 </RelativeLayout>
 

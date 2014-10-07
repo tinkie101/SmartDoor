@@ -22,7 +22,6 @@ public class TwitterSetupFragment extends Fragment
 	private SharedPreferences settings = null;
 	private String PREFS_NAME;
 	private View view;
-	private TextView flipper;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

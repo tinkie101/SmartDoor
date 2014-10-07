@@ -256,15 +256,6 @@ public class MainActivity extends AbstractActivity
 		fragmentTransaction.commit();
 	}
 	
-	public void switchToTwitterSetup()
-	{
-		TwitterSetupFragment t = new TwitterSetupFragment();
-
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.replace(R.id.layoutToReplaceFromMain , t);
-		fragmentTransaction.commit();
-	}
-	
 	public void switchToSettingsFragment()
 	{
 		SettingsFragment t = new SettingsFragment();

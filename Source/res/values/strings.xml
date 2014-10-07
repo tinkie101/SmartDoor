@@ -60,6 +60,7 @@
     <string name="Help_faceGroupRectangle">The threshold used for the group rectangle algorithm. A higher value will group more rectangles. A value of 0 will group no rectangles.</string>
     <string name="Help_faceDetectEyes">Disables or Enables eye detection. When enabled a user will only be added when 2 eyes are detected.</string>
     <string name="Help_faceDetectNose">Disables or Enables nose detection. When enabled a user will only be added when 1 nose is detected.</string>
+    
     <string name="Help_twitterKey">Bleh Albert</string>
     <string name="Help_twitterSecret">Bleh Albert</string>
     <string name="Help_twitterTokenKey">Bleh Albert</string>

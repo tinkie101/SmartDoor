@@ -38,6 +38,7 @@ public class SettingsFragment extends Fragment
 	private LinearLayout faceSettings;
 	private LinearLayout serverSettings;
 	private LinearLayout voiceSettings;
+	private LinearLayout twitterSettings;
 	private View view;
 	
 	private SharedPreferences settings = null;
@@ -54,6 +55,7 @@ public class SettingsFragment extends Fragment
 		faceSettings = (LinearLayout) view.findViewById(R.id.FaceSettings);
 		serverSettings = (LinearLayout) view.findViewById(R.id.ServerSettings);
 		voiceSettings = (LinearLayout) view.findViewById(R.id.VoiceSettings);
+		twitterSettings = (LinearLayout) view.findViewById(R.id.TwitterSettings);
 		
 		Button trainSettingsButton = (Button) view.findViewById(R.id.trainingSetButton);
 		trainSettingsButton.setOnClickListener(new View.OnClickListener() 
@@ -78,8 +80,7 @@ public class SettingsFragment extends Fragment
 		{
             public void onClick(View v) 
             {
-            	MainActivity m = (MainActivity) getActivity();
-            	m.switchToTwitterSetup();
+            	twitterSettings();
             }
         });
 		
@@ -708,5 +709,16 @@ public class SettingsFragment extends Fragment
 		if(((EditText) view.findViewById(R.id.voice_calibration_ET)).getText().toString().equals(""))
 			return false;
 		return true;
+	}
+	
+	//--------------------------------------------------------------------------------------twitterSettings
+	private void twitterSettings()
+	{
+		twitterSettings.setVisibility(View.VISIBLE);
+		chooseSettingsLayout.setVisibility(View.GONE);
+		
+		//getPreferences and display current settings
+		//String key = settings.getString("face_TrainPhotoNum", "");
+		//((EditText) view.findViewById(R.id.TrainPhotoNumET)).setText(trainPhotoNum);
 	}
 }
