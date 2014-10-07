@@ -52,7 +52,7 @@
     <string name="Help_serverIPort">Bleh. Albert.</string>
     
     <string name="Help_facePhotoNumTrain">Number of photos that will be automatically taken per person and will be trained on. More photos will increase accuracy of recognition, less photos will be faster.</string>
-    <string name="Help_facePhotoNumRecog">Number of photo's in a row which should be the same person for the system to authenticate the user. This is to prevent nose data. Higher value will be more accurate, lower value will be faster.</string>
+    <string name="Help_facePhotoNumRecog">Number of photos in a row which should be the same person for the system to authenticate the user. This is to prevent nose data. Higher value will be more accurate, lower value will be faster.</string>
     <string name="Help_faceThreshold">Threshold value for the facial regocnition algorithm. A higher value will make the threshold less stricked and allow more people in. Too low value will lock everyone out. This value is also dependent on the resolution of the camera.</string>
     <string name="Help_faceImageScale">The amount to scale the reolution of the image down for face, nose and eyes detection. Higher value will increase speed but lower accuracy.</string>
     <string name="Help_faceResolution">List of all the possible resolutions supported by the fron facing camera. A higher value will have higher accuracy and larger file size of images stored. A lower value will improve performance.</string>

@@ -14,10 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import at.fhooe.mcm.smc.math.mfcc.FeatureVector;
 import at.fhooe.mcm.smc.math.vq.Codebook;
@@ -42,41 +39,27 @@ public class IdentifyVoiceFragment extends VoiceFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		LinearLayout layout = new LinearLayout(activity);
-		layout.setOrientation(LinearLayout.VERTICAL);
+
+		View view = inflater.inflate(R.layout.identify_voice, container, false);
 
 		User user = activity.getUser();
-		
-		float density = getResources().getDisplayMetrics().density;
-		int DPS = 150;
-		int Pixels = (int) (DPS * density);
 
-		LayoutParams params = new LayoutParams(Pixels, Pixels);
-		params.setMargins(1, 1, 1, 1);
-
-		txtTempUser = new TextView(activity);
+		txtTempUser = (TextView) view.findViewById(R.id.txtTempUser);
 		txtTempUser.setText(user.getUsername());
-		txtTempUser.setTextSize(Pixels/20);
 
 		// get user image
 		File path = activity.getDir("data", 0);
 
 		Bitmap image = BitmapFactory.decodeFile(path + "/photos/" + user.getID() + "-0.png");
 
-		ImageView imgUser = new ImageView(activity);
+		ImageView imgUser = (ImageView) view.findViewById(R.id.imgTempUser);
 		imgUser.setImageBitmap(image);
-		imgUser.setLayoutParams(params);
-
+		//TODO
 		//listView = new ListView(activity);
+		soundLevelDialog.setMessage("Say: \"The quick brown fox jumps over the lazy dog\"");
 
-		layout.addView(txtTempUser);
-		layout.addView(imgUser);
-		//layout.addView(listView);
-
-		return layout;
+		return view;
 	}
-
-	// TODO soundLevelDialog.setMessage("Say: \"The quick brown fox jumps over the lazy dog\"");
 
 	@Override
 	public void onStart()
