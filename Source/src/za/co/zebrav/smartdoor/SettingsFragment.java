@@ -35,7 +35,7 @@ import at.fhhgb.auth.voice.VoiceAuthenticator;
 public class SettingsFragment extends Fragment
 {
 	private ScrollView chooseSettingsLayout;
-	private TableLayout trainSettings;
+	private LinearLayout faceSettings;
 	private LinearLayout serverSettings;
 	private LinearLayout voiceSettings;
 	private View view;
@@ -51,7 +51,7 @@ public class SettingsFragment extends Fragment
 		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
 		
 		chooseSettingsLayout = (ScrollView)view.findViewById(R.id.chooseSettings);
-		trainSettings = (TableLayout) view.findViewById(R.id.trainSettings);
+		faceSettings = (LinearLayout) view.findViewById(R.id.FaceSettings);
 		serverSettings = (LinearLayout) view.findViewById(R.id.ServerSettings);
 		voiceSettings = (LinearLayout) view.findViewById(R.id.VoiceSettings);
 		
@@ -122,7 +122,7 @@ public class SettingsFragment extends Fragment
 	//-------------------------------------------------------------------------------------train settings
 	private void trainSettings()
 	{
-		trainSettings.setVisibility(View.VISIBLE);
+		faceSettings.setVisibility(View.VISIBLE);
 		chooseSettingsLayout.setVisibility(View.GONE);
 		
 		//getPreferences and display current settings
@@ -176,6 +176,170 @@ public class SettingsFragment extends Fragment
 			((CheckBox) view.findViewById(R.id.faceDetectNose)).setChecked(false);
 		
 		//configure buttons
+		Button face_photoNumTrainHelpButton = (Button) view.findViewById(R.id.face_photoNumTrainHelpButton);
+		face_photoNumTrainHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_facePhotoNumTrain");
+            }
+        });
+		
+		Button face_photoNumTrainHelpVoiceButton = (Button) view.findViewById(R.id.face_photoNumTrainHelpVoiceButton);
+		face_photoNumTrainHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_facePhotoNumTrain");
+            }
+        });
+		
+		Button face_photoNumRecogHelpButton = (Button) view.findViewById(R.id.face_photoNumRecogHelpButton);
+		face_photoNumRecogHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_facePhotoNumRecog");
+            }
+        });
+		
+		Button face_photoNumRecogHelpVoiceButton = (Button) view.findViewById(R.id.face_photoNumRecogHelpVoiceButton);
+		face_photoNumRecogHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_facePhotoNumRecog");
+            }
+        });
+		
+		Button face_recThresholdHelpButton = (Button) view.findViewById(R.id.face_recThresholdHelpButton);
+		face_recThresholdHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_faceThreshold");
+            }
+        });
+		
+		Button face_recThresholdHelpVoiceButton = (Button) view.findViewById(R.id.face_recThresholdHelpVoiceButton);
+		face_recThresholdHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_faceThreshold");
+            }
+        });
+		
+		Button face_imgScaleHelpButton = (Button) view.findViewById(R.id.face_imgScaleHelpButton);
+		face_imgScaleHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_faceImageScale");
+            }
+        });
+		
+		Button face_imgScaleHelpVoiceButton = (Button) view.findViewById(R.id.face_imgScaleHelpVoiceButton);
+		face_imgScaleHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_faceImageScale");
+            }
+        });
+		
+		Button face_recAlgorithmHelpButton = (Button) view.findViewById(R.id.face_recAlgorithmHelpButton);
+		face_recAlgorithmHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_faceAlgorithm");
+            }
+        });
+		
+		Button face_recAlgorithmHelpVoiceButton = (Button) view.findViewById(R.id.face_recAlgorithmHelpVoiceButton);
+		face_recAlgorithmHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_faceAlgorithm");
+            }
+        });
+		
+		Button face_resolutionHelpButton = (Button) view.findViewById(R.id.face_resolutionHelpButton);
+		face_resolutionHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_faceResolution");
+            }
+        });
+		
+		Button face_resolutionHelpVoiceButton = (Button) view.findViewById(R.id.face_resolutionHelpVoiceButton);
+		face_resolutionHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_faceResolution");
+            }
+        });
+		
+		Button face_groupRectangleHelpButton = (Button) view.findViewById(R.id.face_groupRectangleHelpButton);
+		face_groupRectangleHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_faceGroupRectangle");
+            }
+        });
+		
+		Button face_groupRectangleHelpVoiceButton = (Button) view.findViewById(R.id.face_groupRectangleHelpVoiceButton);
+		face_groupRectangleHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_faceGroupRectangle");
+            }
+        });
+		
+		Button face_eyeDetectionHelpButton = (Button) view.findViewById(R.id.face_eyeDetectionHelpButton);
+		face_eyeDetectionHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_faceDetectEyes");
+            }
+        });
+		
+		Button face_eyeDetectionHelpVoiceButton = (Button) view.findViewById(R.id.face_eyeDetectionHelpVoiceButton);
+		face_eyeDetectionHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_faceDetectEyes");
+            }
+        });
+		
+		Button face_noseDetectionHelpButton = (Button) view.findViewById(R.id.face_noseDetectionHelpButton);
+		face_noseDetectionHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_faceDetectNose");
+            }
+        });
+		
+		Button face_noseDetectionHelpVoiceButton = (Button) view.findViewById(R.id.face_noseDetectionHelpVoiceButton);
+		face_noseDetectionHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_faceDetectNose");
+            }
+        });
+		
+		
+		
 		Button saveTrain = (Button) view.findViewById(R.id.saveTrainButton);
 		saveTrain.setOnClickListener(new View.OnClickListener() 
 		{
@@ -452,6 +616,24 @@ public class SettingsFragment extends Fragment
 			help = getResources().getString((R.string.Help_serverIPAddress));
 		else if(settingType.equals("Help_serverIPort"))
 			help = getResources().getString(R.string.Help_serverIPort);
+		else if(settingType.equals("Help_facePhotoNumTrain"))
+			help = getResources().getString(R.string.Help_facePhotoNumTrain);
+		else if(settingType.equals("Help_facePhotoNumRecog"))
+			help = getResources().getString(R.string.Help_facePhotoNumRecog);
+		else if(settingType.equals("Help_faceThreshold"))
+			help = getResources().getString(R.string.Help_faceThreshold);
+		else if(settingType.equals("Help_faceImageScale"))
+			help = getResources().getString(R.string.Help_faceImageScale);
+		else if(settingType.equals("Help_faceResolution"))
+			help = getResources().getString(R.string.Help_faceResolution);
+		else if(settingType.equals("Help_faceAlgorithm"))
+			help = getResources().getString(R.string.Help_faceAlgorithm);
+		else if(settingType.equals("Help_faceGroupRectangle"))
+			help = getResources().getString(R.string.Help_faceGroupRectangle);
+		else if(settingType.equals("Help_faceDetectEyes"))
+			help = getResources().getString(R.string.Help_faceDetectEyes);
+		else if(settingType.equals("Help_faceDetectNose"))
+			help = getResources().getString(R.string.Help_faceDetectNose);
 		
 		MainActivity m = (MainActivity) getActivity();
 		m.speakOut(help);
@@ -466,6 +648,30 @@ public class SettingsFragment extends Fragment
 			help = getResources().getString((R.string.Help_serverIPAddress));
 		else if(settingType.equals("Help_serverIPort"))
 			help = getResources().getString(R.string.Help_serverIPort);
+		else if(settingType.equals("Help_facePhotoNumTrain"))
+			help = getResources().getString(R.string.Help_facePhotoNumTrain);
+		else if(settingType.equals("Help_facePhotoNumRecog"))
+			help = getResources().getString(R.string.Help_facePhotoNumRecog);
+		else if(settingType.equals("Help_faceThreshold"))
+			help = getResources().getString(R.string.Help_faceThreshold);
+		else if(settingType.equals("Help_faceImageScale"))
+			help = getResources().getString(R.string.Help_faceImageScale);
+		else if(settingType.equals("Help_faceResolution"))
+			help = getResources().getString(R.string.Help_faceResolution);
+		else if(settingType.equals("Help_faceAlgorithm"))
+			help = getResources().getString(R.string.Help_faceAlgorithm);
+		else if(settingType.equals("Help_faceGroupRectangle"))
+			help = getResources().getString(R.string.Help_faceGroupRectangle);
+		else if(settingType.equals("Help_faceDetectEyes"))
+			help = getResources().getString(R.string.Help_faceDetectEyes);
+		else if(settingType.equals("Help_faceDetectNose"))
+			help = getResources().getString(R.string.Help_faceDetectNose);
+		
+		
+		
+		
+		
+		
 		
 		//AlertDialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
