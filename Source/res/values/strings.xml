@@ -46,10 +46,10 @@
     </string-array>
     
     <!-- Settings Help Strings-->
-    <string name="Help_voiceCalibration">Bleh. Albert.</string>
+    <string name="Help_voiceCalibration">Records sound for a set period of time and then calculates the average volume for that period. The mic\'s auto start threshold is then set accordingly. A lower value means less sound is needed for the mic to start recording. </string>
     
-    <string name="Help_serverIPAddress">Bleh. Albert.</string>
-    <string name="Help_serverIPort">Bleh. Albert.</string>
+    <string name="Help_serverIPAddress">The IP address of the server that will handle the "Open Door" command</string>
+    <string name="Help_serverIPort">The Port that the server listening on for commands</string>
     
 	<string name="Help_faceAlgorithm">Bleh Eduan</string>
     <string name="Help_facePhotoNumTrain">Number of photos that will be automatically taken per person and will be trained on. More photos will increase accuracy of recognition, less photos will be faster.</string>
@@ -60,10 +60,11 @@
     <string name="Help_faceGroupRectangle">The threshold used for the group rectangle algorithm. A higher value will group more rectangles. A value of 0 will group no rectangles.</string>
     <string name="Help_faceDetectEyes">Disables or Enables eye detection. When enabled a user will only be added when 2 eyes are detected.</string>
     <string name="Help_faceDetectNose">Disables or Enables nose detection. When enabled a user will only be added when 1 nose is detected.</string>
-    <string name="Help_twitterKey">Bleh Albert</string>
-    <string name="Help_twitterSecret">Bleh Albert</string>
-    <string name="Help_twitterTokenKey">Bleh Albert</string>
-    <string name="Help_twitterTokenString">Bleh Albert</string>
+   
+    <string name="Help_twitterKey">The Consumer Key that can be retrieved from dev.twitter once you set up the application</string>
+    <string name="Help_twitterSecret">The Consumer Secret that can be retrieved from dev.twitter once you set up the application</string>
+    <string name="Help_twitterTokenKey">The Access Token that can be retrieved from dev.twitter once you set up the application</string>
+    <string name="Help_twitterTokenString">The Access Token Secret that can be retrieved from dev.twitter once you set up the application</string>
     
     <string name="settingsFileName">SmartDoor_settings</string>
     
