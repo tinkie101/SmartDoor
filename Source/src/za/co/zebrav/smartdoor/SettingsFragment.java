@@ -274,6 +274,42 @@ public class SettingsFragment extends Fragment
 		((EditText) view.findViewById(R.id.Port_ET)).setText(port);
 		
 		//configure buttons
+		Button serverIP_HelpButton = (Button) view.findViewById(R.id.server_IPAddressHelpButton);
+		serverIP_HelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_serverIPAddress");
+            }
+        });
+		
+		Button serverIP_VoiceHelpButton = (Button) view.findViewById(R.id.server_IPAddressHelpVoiceButton);
+		serverIP_VoiceHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_serverIPAddress");
+            }
+        });
+		
+		Button serverPort_HelpButton = (Button) view.findViewById(R.id.server_PortHelpButton);
+		serverPort_HelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	displayHelp("Help_serverIPort");
+            }
+        });
+		
+		Button serverPort_VoiceHelpButton = (Button) view.findViewById(R.id.server_IPortHelpVoiceButton);
+		serverPort_VoiceHelpButton.setOnClickListener(new View.OnClickListener() 
+		{
+            public void onClick(View v) 
+            {
+            	voiceHelp("Help_serverIPort");
+            }
+        });
+		
 		Button saveServerSettings = (Button) view.findViewById(R.id.saveServerSettingsButton);
 		saveServerSettings.setOnClickListener(new View.OnClickListener() 
 		{
@@ -369,12 +405,12 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button IP_HelpButton = (Button) view.findViewById(R.id.voice_CalibrationHelpButton);
-		IP_HelpButton.setOnClickListener(new View.OnClickListener() 
+		Button voiceCal_HelpButton = (Button) view.findViewById(R.id.voice_CalibrationHelpButton);
+		voiceCal_HelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
             {
-            	displayHelp("IPSetting");
+            	displayHelp("Help_voiceCalibration");
             }
         });
 		
@@ -410,8 +446,12 @@ public class SettingsFragment extends Fragment
 	private void voiceHelp(String settingType)
 	{
 		String help = "";
-		if(settingType.equals("IPSetting"))
+		if(settingType.equals("Help_voiceCalibration"))
 			help = getResources().getString((R.string.Help_voiceCalibration));
+		else if(settingType.equals("Help_serverIPAddress"))
+			help = getResources().getString((R.string.Help_serverIPAddress));
+		else if(settingType.equals("Help_serverIPort"))
+			help = getResources().getString(R.string.Help_serverIPort);
 		
 		MainActivity m = (MainActivity) getActivity();
 		m.speakOut(help);
@@ -420,9 +460,14 @@ public class SettingsFragment extends Fragment
 	private void displayHelp(String settingType)
 	{
 		String help = "";
-		if(settingType.equals("IPSetting"))
+		if(settingType.equals("Help_voiceCalibration"))
 			help = getResources().getString((R.string.Help_voiceCalibration));
+		else if(settingType.equals("Help_serverIPAddress"))
+			help = getResources().getString((R.string.Help_serverIPAddress));
+		else if(settingType.equals("Help_serverIPort"))
+			help = getResources().getString(R.string.Help_serverIPort);
 		
+		//AlertDialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setMessage(help)
 		       .setCancelable(false)
@@ -430,7 +475,6 @@ public class SettingsFragment extends Fragment
 		       {
 		           public void onClick(DialogInterface dialog, int id) 
 		           {
-		                //do things
 		           }
 		       });
 		AlertDialog alert = builder.create();
