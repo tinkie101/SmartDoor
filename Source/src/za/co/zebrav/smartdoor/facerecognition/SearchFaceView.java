@@ -7,8 +7,10 @@ import org.bytedeco.javacpp.opencv_core.CvMemStorage;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_objdetect;
 
+import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.MainActivity;
 import za.co.zebrav.smartdoor.R;
+import EDU.purdue.cs.bloat.decorate.Main;
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Canvas;
@@ -48,16 +50,6 @@ class SearchFaceView extends FaceView
 	}
 
 	private int tempdetected = -1;
-
-	private void setBrightness(float bright)
-	{
-		WindowManager.LayoutParams layout = activity.getWindow().getAttributes();
-		layout.screenBrightness = bright;
-		activity.getWindow().setAttributes(layout);
-		currentBrightness = bright;
-	}
-
-	float currentBrightness = 1.0f;
 	long lastBright;
 
 	@Override
@@ -65,17 +57,10 @@ class SearchFaceView extends FaceView
 	{
 		if (faceRunnable.getTotalDetected() > 0)
 		{
+			((MainActivity) activity).setBrightness(1.0f);
+			((MainActivity) activity).getBrightnessTimer().cancel();
+			((MainActivity) activity).getBrightnessTimer().start();
 
-			if (currentBrightness != 1.0f)
-			{
-				setBrightness(1.0f);
-				return;
-			}
-			lastBright = System.currentTimeMillis();
-		}
-		else if(((System.currentTimeMillis() - lastBright) > 30000) && currentBrightness != 0.0f)
-		{
-			setBrightness(0.0f);
 		}
 		if (faceRunnable.getTotalDetected() == 1 && personRecognizer.canPredict())
 		{

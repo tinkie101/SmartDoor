@@ -43,6 +43,12 @@ public class MainActivity extends AbstractActivity
 	private Fragment twitterFragment;
 	private PersonRecognizer personRecognizer;
 	private CountDownTimer logoutTimer;
+	private CountDownTimer brightnessTimer;
+
+	public CountDownTimer getBrightnessTimer()
+	{
+		return brightnessTimer;
+	}
 
 	public PersonRecognizer getPersonRecognizer()
 	{
@@ -87,6 +93,20 @@ public class MainActivity extends AbstractActivity
 				
 			}
 		};
+		brightnessTimer = new CountDownTimer(30000, 10000)
+		{
+			public void onFinish()
+			{
+				setBrightness(0.0f);
+			}
+
+			@Override
+			public void onTick(long millisUntilFinished)
+			{
+				Log.d(TAG, "Time to dimm:" + millisUntilFinished);
+				
+			}
+		}.start();
 		switchToCamera();
 	}
 
@@ -94,6 +114,9 @@ public class MainActivity extends AbstractActivity
 	public void onUserInteraction()
 	{
 		super.onUserInteraction();
+		setBrightness(1.0f);
+		brightnessTimer.cancel();
+		brightnessTimer.start();
 		if (loggedIn)
 		{
 			logoutTimer.cancel();

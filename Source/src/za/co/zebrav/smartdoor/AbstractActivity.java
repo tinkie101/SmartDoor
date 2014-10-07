@@ -20,6 +20,11 @@ public abstract class AbstractActivity extends Activity
 	protected SpeechToTextAdapter speechToText;
 	protected UserCommands userCommands;
 	protected View view;
+	private float currentBrightness = 1.0f;
+	public float getCurrentBrightness()
+	{
+		return currentBrightness;
+	}
 
 	public void startListeningForCommands(String[] possibleCommands)
 	{
@@ -54,6 +59,15 @@ public abstract class AbstractActivity extends Activity
 		fragmentManager = getFragmentManager();
 		textToSpeech = new TTS(this);
 		speechToText = new SpeechToTextAdapter(this);
+	}
+	
+	public void setBrightness(float bright)
+	{
+		if(currentBrightness == bright) return;
+		WindowManager.LayoutParams layout = getWindow().getAttributes();
+		layout.screenBrightness = bright;
+		getWindow().setAttributes(layout);
+		currentBrightness = bright;
 	}
 
 	@Override
