@@ -102,7 +102,7 @@ public class MainActivity extends AbstractActivity
 		{
 			public void onFinish()
 			{
-				setBrightness(0.0f);
+				setBrightness(0.1f);
 			}
 
 			@Override
@@ -351,6 +351,7 @@ public class MainActivity extends AbstractActivity
 	protected void onPause()
 	{
 		super.onPause();
+		brightnessTimer.cancel();
 		if(loggedIn)
 			logoutTimer.cancel();
 	}
@@ -363,6 +364,10 @@ public class MainActivity extends AbstractActivity
 		{
 			logoutTimer.start();
 			Log.d(TAG, "Started logout timer onStart");
+		}
+		else
+		{
+			brightnessTimer.start();
 		}
 	}
 	// -------------------------------------------------------------------------------------Menu

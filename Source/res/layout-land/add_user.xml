@@ -18,7 +18,8 @@
             android:background="@drawable/blue_tab"
             android:onClick="goBack"
             android:text="Cancel"
-            android:textSize="20sp" />
+            android:textSize="20sp" 
+       		android:textColor="#fff"/>
 
         <Button
             android:id="@+id/stepOne"

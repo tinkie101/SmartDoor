@@ -70,7 +70,8 @@
                 android:background="@drawable/button1"
                 android:padding="10dp"
                 android:text="@string/ManualLogin_b1"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+        		android:textColor="#fff" />
 
         </LinearLayout>
     </RelativeLayout>

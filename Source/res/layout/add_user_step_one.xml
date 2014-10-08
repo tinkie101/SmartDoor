@@ -124,7 +124,8 @@
 		             android:layout_marginTop="5dp"
 		             android:background="@drawable/button1"
 		             android:text="@string/add_user_done"
-		             android:textSize="25sp" />
+		             android:textSize="25sp" 
+        			 android:textColor="#fff"/>
 		       
 		    </LinearLayout>
 		</RelativeLayout>

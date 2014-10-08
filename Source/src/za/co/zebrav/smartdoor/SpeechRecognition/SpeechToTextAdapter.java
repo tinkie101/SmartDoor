@@ -139,7 +139,7 @@ public class SpeechToTextAdapter
 		@Override
 		public void onBufferReceived(byte[] buffer)
 		{
-			Log.d(LOG_TAG, "onBufferReceived");
+			//Log.d(LOG_TAG, "onBufferReceived");
 		}
 
 		/**
@@ -312,7 +312,7 @@ public class SpeechToTextAdapter
 			else
 				Log.d(LOG_TAG, "soundLevel is Null");
 
-			Log.d(LOG_TAG, "onRmsChanged " + level);
+			//Log.d(LOG_TAG, "onRmsChanged " + level);
 		}
 
 	}
