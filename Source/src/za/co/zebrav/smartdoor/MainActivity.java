@@ -263,7 +263,7 @@ public class MainActivity extends AbstractActivity
 
 	public void logout()
 	{
-		Log.d(TAG, "Logout called.");
+		Log.d(TAG, "Logout called here.");
 		loggedIn = false;
 		logoutTimer.cancel();
 		brightnessTimer.start();
@@ -280,6 +280,7 @@ public class MainActivity extends AbstractActivity
 
 	public void switchToLoggedInFrag()
 	{
+		Log.d(TAG,"switchToLoggedIn");
 		Button button = (Button) findViewById(R.id.switchLoginButton);
 		button.setVisibility(View.GONE);
 		loggedInFragment = new LoggedInFragment();
@@ -289,6 +290,7 @@ public class MainActivity extends AbstractActivity
 		fragmentTransaction.commit();
 		this.loggedIn = true;
 		logoutTimer.start();
+		Log.d(TAG, "Started logout timer switchtologgedinfrag");
 		brightnessTimer.cancel();
 	}
 
@@ -345,7 +347,24 @@ public class MainActivity extends AbstractActivity
 	{
 		((TwitterFragment) twitterFragment).tryTwitter();
 	}
-
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		if(loggedIn)
+			logoutTimer.cancel();
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		if(loggedIn)
+		{
+			logoutTimer.start();
+			Log.d(TAG, "Started logout timer onStart");
+		}
+	}
 	// -------------------------------------------------------------------------------------Menu
 	@Override
 	protected void onPostResume()
