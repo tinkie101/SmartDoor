@@ -1,7 +1,13 @@
 package za.co.zebrav.smartdoor;
 
+import java.io.File;
+
+import za.co.zebrav.smartdoor.database.User;
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +16,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class LoggedInFragment extends Fragment
 {
@@ -29,6 +37,32 @@ public class LoggedInFragment extends Fragment
 
 		mainActivity.speakOut("Welcome, " + mainActivity.getUser().getFirstnames() + " "
 							+ mainActivity.getUser().getSurname());
+
+		// get user image
+		File path = mainActivity.getDir("data", 0);
+		User user = mainActivity.getUser();
+
+		Bitmap image = BitmapFactory.decodeFile(path + "/photos/" + user.getID() + "-0.png");
+
+		ImageView imgUser = (ImageView) view.findViewById(R.id.imgLogedInImage);
+
+		if (imgUser != null)
+			imgUser.setImageBitmap(image);
+
+		TextView txtName = (TextView) view.findViewById(R.id.txtLogedinName);
+
+		if (txtName != null)
+			txtName.setText("Name: " + user.getFirstnames());
+
+		TextView txtSurname = (TextView) view.findViewById(R.id.txtLogedinSurname);
+
+		if (txtSurname != null)
+			txtSurname.setText("Surname: " + user.getSurname());
+
+		TextView txtUserName = (TextView) view.findViewById(R.id.txtLogedinUsername);
+
+		if (txtUserName != null)
+			txtUserName.setText("Username: " + user.getUsername());
 
 		if (mainActivity.getUser().getAdminRights())
 			commandOptions = getResources().getStringArray(R.array.commandOptions);

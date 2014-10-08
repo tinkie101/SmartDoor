@@ -9,7 +9,6 @@ package za.co.zebrav.smartdoor;
 import java.util.List;
 
 import za.co.zebrav.smartdoor.R.id;
-import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import za.co.zebrav.smartdoor.facerecognition.PersonRecognizer;
 import za.co.zebrav.smartdoor.facerecognition.SearchCameraFragment;
