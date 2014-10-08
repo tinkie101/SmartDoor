@@ -20,6 +20,7 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 	private TextView txtCounter;
 	private TrainTask trainTask;
 	private int trainCounter;
+	private boolean isTraining;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -33,16 +34,17 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 	{
 		Log.d(LOG_TAG, "onCreateView");
 		View view = inflater.inflate(R.layout.add_voice, container, false);
-		
+
 		btnTrain = (Button) view.findViewById(R.id.btnTrain);
 		btnTrain.setOnClickListener(this);
 
 		btnDone = (Button) view.findViewById(R.id.btnDone);
 		btnDone.setOnClickListener(this);
-		
+
 		txtCounter = (TextView) view.findViewById(R.id.txtCounter);
 
 		trainCounter = 0;
+		isTraining = false;
 		return view;
 	}
 
@@ -50,7 +52,12 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 	public void onStart()
 	{
 		super.onStart();
-		trainVoice();
+
+		if (!isTraining)
+			trainVoice();
+		else
+			processingDialog.show();
+
 		txtCounter.setText("Voice Trained Counter: " + trainCounter);
 	}
 
@@ -58,9 +65,6 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 	public void onPause()
 	{
 		super.onPause();
-
-		if (trainTask != null)
-			trainTask.cancel(true);
 	}
 
 	/**
@@ -77,10 +81,10 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 		trainTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 
-	private class TrainTask extends AsyncTask<Void, Void, Void>
+	private class TrainTask extends AsyncTask<Void, Void, Boolean>
 	{
 		@Override
-		protected Void doInBackground(Void... params)
+		protected Boolean doInBackground(Void... params)
 		{
 			Log.i(LOG_TAG, "Training new Voice");
 			Log.d(LOG_TAG, "Mic threshold: " + voiceAuthenticator.getMicThreshold());
@@ -89,19 +93,33 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 
 			if (!voiceAuthenticator.train())
 			{
-				Toast.makeText(activity, "Error Training voice", Toast.LENGTH_LONG).show();
 				Log.d(LOG_TAG, "Error with training voice, check if activeFile is set");
+				return false;
 			}
-			return null;
+			else
+			{
+				trainCounter++;
+				return true;
+			}
 		}
 
 		@Override
-		protected void onPostExecute(Void result)
+		protected void onPostExecute(Boolean result)
 		{
 			processingDialog.dismiss();
 			btnDone.setEnabled(true);
-			trainCounter++;
-			txtCounter.setText("Voice Trained Counter: " + trainCounter);
+
+			if (result)
+			{
+				txtCounter.setText("Voice Trained Counter: " + trainCounter);
+				Toast.makeText(activity, "Voice Successfully Trained", Toast.LENGTH_LONG).show();
+			}
+			else
+			{
+				Toast.makeText(activity, "Error Training voice", Toast.LENGTH_LONG).show();
+			}
+
+			isTraining = false;
 			Log.i(LOG_TAG, "Done Training Voice");
 		}
 	}
@@ -109,17 +127,22 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 	private void trainVoice()
 	{
 		Log.i(LOG_TAG, "Training Voice");
+		isTraining = true;
 		startRecording();
 	}
 
 	@Override
 	public void onClick(View v)
 	{
-		if(v.equals(btnTrain))
+		if (v.equals(btnTrain))
 			trainVoice();
-		else if(v.equals(btnDone))
+		else if (v.equals(btnDone))
 		{
-			if (activity.getUser() != null)
+			if (isTraining)
+			{
+				Toast.makeText(activity, "Aplication is Busy Training", Toast.LENGTH_LONG).show();
+			}
+			else if (activity.getUser() != null)
 			{
 				activity.getUser().setCodeBook(voiceAuthenticator.getCodeBook());
 				((AddUserActivity) activity).doneStepThreeAddUser();

@@ -351,6 +351,12 @@ public class VoiceAuthenticator
 			
 			double[] samples = readSamplesFromBuffer();
 			
+			if(samples.length < 1)
+			{
+				Log.d(LOG_TAG, "Nothing Recored");
+				return false;
+			}
+			
 			/*if(samples.length == samples2.length)
 			{
 				Log.d(LOG_TAG, "They are the SAME!!!");
