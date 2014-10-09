@@ -46,7 +46,6 @@ public class AddUserStepOne extends Fragment
 		Button btnDone = (Button) view.findViewById(R.id.stepOneDoneButton);
 		btnDone.setOnClickListener(new OnClickListener()
 		{
-			
 			@Override
 			public void onClick(View v)
 			{
@@ -56,7 +55,6 @@ public class AddUserStepOne extends Fragment
 										getPK(), null));
 					((AddUserActivity) activity).switchFragToStep2();
 				}
-				
 			}
 		});
 		

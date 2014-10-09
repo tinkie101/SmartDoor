@@ -73,7 +73,8 @@ public abstract class AbstractActivity extends Activity
 	protected void onStart()
 	{
 		super.onStart();
-		activityDatabase.open();
+		if(!activityDatabase.isOpen())
+			activityDatabase.open();
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
@@ -82,10 +83,22 @@ public abstract class AbstractActivity extends Activity
 	{
 		super.onPause();
 
-		activityDatabase.close();
+		if(activityDatabase.isOpen())
+			activityDatabase.close();
 		
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+
+		if(!activityDatabase.isOpen())
+			activityDatabase.open();
+	}
+			
+	
 
 	@Override
 	protected void onDestroy()

@@ -105,13 +105,17 @@
         	<Button
         	    android:id="@+id/voice_CalibrationHelpButton"
 			    android:layout_width="match_parent"
+			    android:background="@drawable/button2"
 			    android:layout_height="wrap_content"
+			    android:textColor="#449DEF"
 			    android:text="Help" />
         
         	<Button
         	    android:id="@+id/voice_CalibrationHelpVoiceButton"
 			    android:layout_width="match_parent"
+			    android:background="@drawable/button2"
 			    android:layout_height="wrap_content"
+			    android:textColor="#449DEF"
 			    android:text="Voice Help" />
    		</LinearLayout>
    		<LinearLayout 
@@ -128,6 +132,7 @@
         	    android:id="@+id/voice_autoCalibrateButton"
             	android:layout_width="match_parent"
             	android:layout_height="wrap_content"
+            	android:background="@drawable/button2"
             	android:text="Auto Calibrate" />
    		</LinearLayout>
    		<View
