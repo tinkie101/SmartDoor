@@ -1,10 +1,10 @@
 package za.co.zebrav.smartdoor;
 
+import za.co.zebrav.voice.VoiceAuthenticator;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
-import at.fhhgb.auth.voice.VoiceAuthenticator;
 
 public class VoiceFragment extends Fragment
 {

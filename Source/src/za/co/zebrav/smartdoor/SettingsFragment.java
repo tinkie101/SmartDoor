@@ -3,6 +3,7 @@ package za.co.zebrav.smartdoor;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import za.co.zebrav.voice.VoiceAuthenticator;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -17,20 +18,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-import at.fhhgb.auth.voice.VoiceAuthenticator;
 
 public class SettingsFragment extends Fragment
 {
