@@ -144,7 +144,7 @@ public final class R {
         public static final int keyET=0x7f0900a6;
         public static final int keyTV=0x7f0900a5;
         public static final int layoutToReplace=0x7f090010;
-        public static final int layoutToReplaceFromMain=0x7f090007;
+        public static final int layoutToReplaceFromMain=0x7f090008;
         public static final int list=0x7f0900b2;
         public static final int progressBar1=0x7f09000a;
         public static final int recognizerThresholdET=0x7f090071;
@@ -171,7 +171,7 @@ public final class R {
         public static final int stepThree=0x7f09000f;
         public static final int stepTwo=0x7f09000e;
         public static final int surnamesTV=0x7f090047;
-        public static final int switchLoginButton=0x7f090008;
+        public static final int switchLoginButton=0x7f090007;
         public static final int switcher=0x7f090021;
         public static final int textView1=0x7f090023;
         public static final int textViewState=0x7f090027;

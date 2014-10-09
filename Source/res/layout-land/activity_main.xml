@@ -25,23 +25,25 @@
              android:orientation="vertical"
              android:layout_weight="15" >
              
-                <RelativeLayout
-		            android:id="@+id/layoutToReplaceFromMain"
-		            android:layout_width="fill_parent"
-		            android:layout_height="fill_parent"
-		            android:layout_weight="1"
-		            android:layout_marginBottom="5dp"
-		            android:background="#5FFF" >
-	        	</RelativeLayout>
-	        	
                 <Button
 		           	android:id="@+id/switchLoginButton"
 		           	android:layout_width="match_parent"
 		           	android:layout_height="wrap_content"
-		           	android:background="@drawable/button1"
+		           	android:background="@drawable/button2"
 		           	android:text="Switch Login"
-		           	android:textColor="#fff"
+		           	android:textColor="#449DEF"
 		           	android:onClick="switchLogin" />
+                
+	        	<RelativeLayout 
+	        	    android:id="@+id/layoutToReplaceFromMain"
+	        	    android:layout_width="match_parent"
+	        	    android:layout_marginTop="5dp"
+		            android:layout_height="match_parent"
+		            android:background="#5FFF">
+	        	    
+	        	</RelativeLayout>
+	        	
+                
              </LinearLayout>
              
              <RelativeLayout
@@ -62,57 +64,6 @@
              android:layout_height="wrap_content" />
         
     </LinearLayout>
-	<!--LinearLayout
-        android:id="@+id/content_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background"
-        android:baselineAligned="false"
-        android:orientation="vertical">
-        
-	    <Button
-           	android:id="@+id/switchLoginButton"
-           	android:layout_width="match_parent"
-           	android:layout_height="wrap_content"
-           	android:background="@drawable/button1"
-           	android:text="Switch Login"
-           	android:layout_marginBottom="17dp"
-           	android:textColor="#fff"
-           	android:onClick="switchLogin" />
-	    
-	     <LinearLayout
-	         android:id="@+id/buttonLinear"
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent"
-             android:orientation="horizontal"
-             android:layout_weight="1" >
-             
-	         <RelativeLayout
-            android:id="@+id/layoutToReplaceFromMain"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="10"
-            android:background="#5FFF" >
-        	</RelativeLayout>
-        
-	         <RelativeLayout
-            android:id="@+id/twitterFragment"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="17dp"
-            android:layout_weight="15"
-            android:background="#5FFF" >
-        	</RelativeLayout>
-	         
-         </LinearLayout>
-         
-         <ProgressBar
-             android:id="@+id/progressBar1"
-             style="?android:attr/progressBarStyleHorizontal"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content" />
-
-    </LinearLayout-->
 
     <!-- The navigation drawer (MENU) -->
     <ListView
