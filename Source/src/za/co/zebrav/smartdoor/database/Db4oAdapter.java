@@ -5,26 +5,33 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 
+import com.db4o.Db4o;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.config.EmbeddedConfiguration;
 
-public class Db4oAdapter implements DatabaseAdaptee
+public class Db4oAdapter implements DatabaseAdapter
 {
 	private static final String LOG_TAG = "Db4oAdapter";
 	private ObjectContainer database = null;
 	protected Context context = null;
 	private String DATABASE_NAME = "smartdoor_users.db4o";
 	private boolean isDbOpen = false;
-
-	// ------------------------------------------------------------------------CONSTRUCTOR
-	public Db4oAdapter(Context context)
+	
+	private static Db4oAdapter instance;
+	
+	private Db4oAdapter(Context context)
 	{
 		this.context = context;
 	}
-
-	// ------------------------------------------------------------------------open
+	
+	public static Db4oAdapter getInstance(Context context)
+	{
+		if(instance == null)
+			instance = new Db4oAdapter(context);
+		return instance;
+	}
 	public void open()
 	{
 		try
@@ -54,19 +61,16 @@ public class Db4oAdapter implements DatabaseAdaptee
 		return ctx.getDir("data", 0) + "/" + DATABASE_NAME;
 	}
 
-	// ------------------------------------------------------------------------commit
 	protected void commit()
 	{
 		database.commit();
 	}
 
-	// ------------------------------------------------------------------------rollBack
 	public void rollBack()
 	{
 		database.rollback();
 	}
 
-	// ------------------------------------------------------------------------close
 	public void close()
 	{
 		if (this.database != null)
@@ -77,19 +81,16 @@ public class Db4oAdapter implements DatabaseAdaptee
 		}
 	}
 
-	// ------------------------------------------------------------------------close
 	public boolean isOpen()
 	{
 		return isDbOpen;
 	}
 
-	// ------------------------------------------------------------------------getDatabase
 	public ObjectContainer getDatabase()
 	{
 		return this.database;
 	}
 
-	// ------------------------------------------------------------------------LOAD
 	@Override
 	public List<Object> load(Object object)
 	{
@@ -97,7 +98,6 @@ public class Db4oAdapter implements DatabaseAdaptee
 		return result;
 	}
 
-	// ------------------------------------------------------------------------SAVE
 	@Override
 	public void save(Object object)
 	{
@@ -105,7 +105,6 @@ public class Db4oAdapter implements DatabaseAdaptee
 		commit();
 	}
 
-	// ------------------------------------------------------------------------exists
 	/**
 	 * @param username
 	 *            to check if user already exists with this username
@@ -121,7 +120,6 @@ public class Db4oAdapter implements DatabaseAdaptee
 		return exists;
 	}
 
-	// --------------------------------------------------------------------------DELETE
 	public boolean delete(Object object)
 	{
 		boolean found = false;

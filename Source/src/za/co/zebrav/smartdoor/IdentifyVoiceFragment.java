@@ -105,11 +105,11 @@ public class IdentifyVoiceFragment extends VoiceFragment
 		else
 		{
 			ArrayList<String> result = new ArrayList<String>();
-			ArrayList<Double> resultDist = new ArrayList<Double>();
+			ArrayList<Float> resultDist = new ArrayList<Float>();
 
 			for (Object o : tempList)
 			{
-				Double tempAvgDist = 0.0;
+				float tempAvgDist = 0.0f;
 
 				User user = (User) o;
 				ArrayList<Codebook> cb = user.getCodeBook();
@@ -118,22 +118,14 @@ public class IdentifyVoiceFragment extends VoiceFragment
 				{
 					voiceAuthenticator.setCodeBook(cb);
 
-					ArrayList<Double> tempResult = voiceAuthenticator.identify(featureVector);
+					tempAvgDist = voiceAuthenticator.getAverageFeatureDistance(featureVector);
 
-					if (tempResult == null)
+					if (tempAvgDist == -1f)
 					{
-						Log.d(LOG_TAG, "Error with identify! Check if ActiveFile is set");
+						Log.d(LOG_TAG, "Error with calculating feature vector distance for user!");
 						continue;
 					}
-
-					// caluclate user's average
-					for (int l = 0; l < tempResult.size(); l++)
-					{
-						Log.i(LOG_TAG, l + "= " + tempResult.get(l));
-						tempAvgDist += tempResult.get(l);
-					}
-
-					tempAvgDist = tempAvgDist / (double) tempResult.size();
+					
 					Log.d(LOG_TAG, "user average distance = " + tempAvgDist);
 
 					// Insert new user into sorted list
@@ -178,7 +170,7 @@ public class IdentifyVoiceFragment extends VoiceFragment
 		@Override
 		protected ArrayList<String> doInBackground(Void... params)
 		{
-			voiceAuthenticator.startRecording();
+			voiceAuthenticator.doRecording();
 			soundLevelDialog.dismiss();
 			return calculateDistances(voiceAuthenticator.getCurrentFeatureVector());
 		}
@@ -193,9 +185,6 @@ public class IdentifyVoiceFragment extends VoiceFragment
 
 			//ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, result);
 			//listView.setAdapter(adapter);
-
-			// TODO read in from buffer
-			voiceAuthenticator.deleteActiveFile();
 
 			processingDialog.dismiss();
 

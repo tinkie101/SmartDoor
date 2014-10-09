@@ -88,7 +88,7 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 		{
 			Log.i(LOG_TAG, "Training new Voice");
 			Log.d(LOG_TAG, "Mic threshold: " + voiceAuthenticator.getMicThreshold());
-			voiceAuthenticator.startRecording();
+			voiceAuthenticator.doRecording();
 			soundLevelDialog.dismiss();
 
 			if (!voiceAuthenticator.train())
