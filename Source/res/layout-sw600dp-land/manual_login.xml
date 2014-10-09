@@ -40,7 +40,7 @@
 	                android:layout_width="562dp"
 	                android:layout_height="wrap_content"
 	                android:inputType="text"
-	                android:hint="username"
+	                android:hint="Username"
 	                android:textColor="#FFF"
 	                android:textSize="25sp" />
 	
@@ -59,7 +59,7 @@
 	                android:layout_height="wrap_content"
 	                android:inputType="textPassword"
 	                android:textColor="#FFF"
-	                android:hint="password"
+	                android:hint="Password"
 	                android:textSize="25sp" />
 	
 	            <Button

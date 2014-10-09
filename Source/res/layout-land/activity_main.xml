@@ -32,6 +32,7 @@
 		           	android:background="@drawable/button2"
 		           	android:text="Switch Login"
 		           	android:textColor="#449DEF"
+		           	android:textSize="20sp"
 		           	android:onClick="switchLogin" />
                 
 	        	<RelativeLayout 

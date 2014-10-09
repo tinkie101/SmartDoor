@@ -20,7 +20,7 @@
                android:id="@+id/ManualLogin_et1"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:hint="username"
+               android:hint="Username"
                android:inputType="text"
                android:textSize="15sp" />
            
@@ -42,7 +42,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:inputType="textPassword"
-          android:hint="password"
+          android:hint="Password"
           android:textSize="15sp" />
       </LinearLayout>
 
