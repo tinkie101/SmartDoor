@@ -41,6 +41,7 @@ public class UserCommands
 			else if(command.equals("logout"))
 			{
 				logout();
+				return;
 			}
 			else
 			{
