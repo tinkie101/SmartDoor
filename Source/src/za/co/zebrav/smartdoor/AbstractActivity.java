@@ -54,7 +54,7 @@ public abstract class AbstractActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		activityDatabase = new Db4oAdapter(this);
+		activityDatabase = Db4oAdapter.getInstance(this);
 		fragmentManager = getFragmentManager();
 		textToSpeech = new TTS(this);
 		speechToText = new SpeechToTextAdapter(this);

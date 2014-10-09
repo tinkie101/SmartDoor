@@ -2,7 +2,7 @@ package za.co.zebrav.smartdoor.database;
 
 import java.util.List;
 
-public interface DatabaseAdaptee 
+public interface DatabaseAdapter 
 {
 	/**
 	 * This loads all objects that look like given object
