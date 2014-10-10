@@ -24,6 +24,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -42,7 +43,9 @@ public class MainActivity extends AbstractActivity
 	private Fragment twitterFragment;
 	private PersonRecognizer personRecognizer;
 	private CountDownTimer logoutTimer;
-	public CountDownTimer getLogoutTimer() 
+	private float currentBrightness = 0.0f;
+
+	public CountDownTimer getLogoutTimer()
 	{
 		return logoutTimer;
 	}
@@ -59,6 +62,34 @@ public class MainActivity extends AbstractActivity
 		return personRecognizer;
 	}
 
+	public void setBrightness(float bright)
+	{
+		Log.d(TAG, "current bright:" + currentBrightness + " new bright: " + bright);
+		if (currentBrightness == bright)
+			return;
+		if (bright == 1.0f)
+		{
+			if(personRecognizer.canPredict())
+			{
+				speakOut("Hello. Starting to recognise faces.");
+			}
+			else
+			{
+				Log.d(TAG, "here2");
+				speakOut("Hello. Not enough users in database to recognise on. Please log in as an admin user and add more users.");
+			}
+		}
+		WindowManager.LayoutParams layout = getWindow().getAttributes();
+		layout.screenBrightness = bright;
+		getWindow().setAttributes(layout);
+		currentBrightness = bright;
+	}
+
+	public float getCurrentBrightness()
+	{
+		return currentBrightness;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -82,7 +113,7 @@ public class MainActivity extends AbstractActivity
 
 		identifyVoiceFragment = new IdentifyVoiceFragment();
 		searchCameraFragment = new SearchCameraFragment();
-		logoutTimer = new CountDownTimer(30000, 10000)
+		logoutTimer = new CountDownTimer(60000, 10000)
 		{
 			public void onFinish()
 			{
@@ -94,7 +125,7 @@ public class MainActivity extends AbstractActivity
 			public void onTick(long millisUntilFinished)
 			{
 				Log.d(TAG, "Time to logout:" + millisUntilFinished);
-				
+
 			}
 		};
 		brightnessTimer = new CountDownTimer(30000, 10000)
@@ -108,7 +139,7 @@ public class MainActivity extends AbstractActivity
 			public void onTick(long millisUntilFinished)
 			{
 				Log.d(TAG, "Time to dimm:" + millisUntilFinished);
-				
+
 			}
 		}.start();
 		switchToCamera();
@@ -231,6 +262,7 @@ public class MainActivity extends AbstractActivity
 			this.currentFragment = "advanced";
 			this.switchToCamera();
 		}
+		setBrightness(1.0f);
 	}
 
 	/**
@@ -279,7 +311,7 @@ public class MainActivity extends AbstractActivity
 
 	public void switchToLoggedInFrag()
 	{
-		Log.d(TAG,"switchToLoggedIn");
+		Log.d(TAG, "switchToLoggedIn");
 		Button button = (Button) findViewById(R.id.switchLoginButton);
 		button.setVisibility(View.GONE);
 		loggedInFragment = new LoggedInFragment();
@@ -346,20 +378,21 @@ public class MainActivity extends AbstractActivity
 	{
 		((TwitterFragment) twitterFragment).tryTwitter();
 	}
+
 	@Override
 	protected void onPause()
 	{
 		super.onPause();
 		brightnessTimer.cancel();
-		if(loggedIn)
+		if (loggedIn)
 			logoutTimer.cancel();
 	}
-	
+
 	@Override
 	protected void onStart()
 	{
 		super.onStart();
-		if(loggedIn)
+		if (loggedIn)
 		{
 			logoutTimer.start();
 			Log.d(TAG, "Started logout timer onStart");
@@ -369,6 +402,7 @@ public class MainActivity extends AbstractActivity
 			brightnessTimer.start();
 		}
 	}
+
 	// -------------------------------------------------------------------------------------Menu
 	@Override
 	protected void onPostResume()

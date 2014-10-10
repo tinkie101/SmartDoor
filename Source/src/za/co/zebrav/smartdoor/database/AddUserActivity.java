@@ -62,7 +62,7 @@ public class AddUserActivity extends AbstractActivity
 	 */
 	public void switchFragToStep2()
 	{
-		Log.d(LOG_TAG, "Switch to step 2");
+		speakOut("Detecting a face. Please stand still in the middel of the front camera's view.");
 		//alter tabs
 		enableStep2Button();
 		disableStep1Button();
@@ -74,10 +74,10 @@ public class AddUserActivity extends AbstractActivity
 	}
 	
 	/**
-	 * switch current frameLayout to represent the layout of step 3 - Twitter
+	 * switch current frameLayout to represent the layout of step 3 - Voice
 	 */
 	public void switchFragToStep3()
-	{		
+	{	
 		enableStep3Button();
 		disableStep2Button();
 		
@@ -98,6 +98,7 @@ public class AddUserActivity extends AbstractActivity
 	public void doneStepThreeAddUser()
 	{
 		saveUser();
+		speakOut("Successfully added user. Another user can be added or click cancel to cancel adding another user.");
 		Toast.makeText(this.getApplicationContext(), "Saved new user successfully", Toast.LENGTH_SHORT).show();
 		switchFragToStep1();
 	}
