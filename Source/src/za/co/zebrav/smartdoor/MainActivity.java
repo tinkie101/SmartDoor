@@ -110,7 +110,7 @@ public class MainActivity extends AbstractActivity
 		alert = new AlertDialog.Builder(this);
 
 		identifyVoiceFragment = new IdentifyVoiceFragment();
-		searchCameraFragment = new SearchCameraFragment();
+		searchCameraFragment = new SearchCameraFragment(-1);
 		logoutTimer = new CountDownTimer(60000, 10000)
 		{
 			public void onFinish()
@@ -276,7 +276,7 @@ public class MainActivity extends AbstractActivity
 
 		if (currentFragment.equals("manual"))
 		{
-			searchCameraFragment = new SearchCameraFragment();
+			searchCameraFragment = new SearchCameraFragment(-1);
 			fragmentTransaction.replace(R.id.layoutToReplaceFromMain, searchCameraFragment);
 			currentFragment = "advanced";
 		}
@@ -297,7 +297,7 @@ public class MainActivity extends AbstractActivity
 		logoutTimer.cancel();
 		brightnessTimer.start();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		searchCameraFragment = new SearchCameraFragment();
+		searchCameraFragment = new SearchCameraFragment(-1);
 		fragmentTransaction.replace(R.id.layoutToReplaceFromMain, searchCameraFragment);
 		currentFragment = "advanced";
 		fragmentTransaction.commit();
@@ -336,7 +336,7 @@ public class MainActivity extends AbstractActivity
 
 	public void switchToCamera()
 	{
-		searchCameraFragment = new SearchCameraFragment();
+		searchCameraFragment = new SearchCameraFragment(-1);
 
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.layoutToReplaceFromMain, searchCameraFragment);

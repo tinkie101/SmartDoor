@@ -5,7 +5,7 @@ import java.util.List;
 
 import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.R;
-
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
@@ -19,7 +19,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback
 	SurfaceHolder mHolder;
 	Camera mCamera;
 	Camera.PreviewCallback previewCallback;
-	AbstractActivity context;
+	Context context;
 	private static final String TAG = "Preview";
 
 	public void setCamera(Camera camera)
@@ -30,7 +30,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback
 	Preview(Context context, Camera.PreviewCallback previewCallback)
 	{
 		super(context);
-		this.context = (AbstractActivity) context;
+		this.context = context;
 		this.previewCallback = previewCallback;
 
 		// Install a SurfaceHolder.Callback so we get notified when the

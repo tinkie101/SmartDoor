@@ -67,7 +67,7 @@ public class AddUserActivity extends AbstractActivity
 		enableStep2Button();
 		disableStep1Button();
 		
-		AddCameraFragment f = new AddCameraFragment();
+		AddCameraFragment f = new AddCameraFragment(getUser().getID());
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.layoutToReplace, f);
 		fragmentTransaction.commit();

@@ -43,15 +43,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TextToSpeechActivity" />
         <activity
-            android:name=".SpeechToTextActivity"
-            android:label="@string/title_activity_speech_to_text" >
-        </activity>
-        <activity
-            android:name=".ManualLogin"
-            android:screenOrientation="landscape" >
-        </activity>
+            android:name=".TestFragmentActivity"
+            android:exported="false" />
         <activity
             android:name=".database.AddUserActivity"
             android:screenOrientation="landscape" >
@@ -59,20 +53,6 @@
         <activity
             android:name=".database.ViewUserActivity"
             android:screenOrientation="landscape" >
-        </activity>
-        <activity
-            android:name="za.co.zebrav.facerecognition.FdActivity"
-            android:screenOrientation="landscape" >
-        </activity>
-         <activity
-            android:name=".LoggedIn"
-            android:screenOrientation="landscape" >
-        </activity>
-        <activity
-            android:name=".TwitterSetup"
-            android:screenOrientation="landscape" >
-        </activity>
-        <activity android:name="za.co.zebrav.facerecognition.ImageGallery" >
         </activity>
     </application>
 

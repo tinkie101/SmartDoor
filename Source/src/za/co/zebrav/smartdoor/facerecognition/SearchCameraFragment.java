@@ -1,16 +1,21 @@
 package za.co.zebrav.smartdoor.facerecognition;
 
 import java.io.IOException;
-
 import za.co.zebrav.smartdoor.MainActivity;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+@SuppressLint("ValidFragment") 
 public class SearchCameraFragment extends CameraFragment
 {
+	public SearchCameraFragment(int ID)
+	{
+		super(ID);
+	}
 	private static final String TAG = "SearchCameraFragment";
 
 	@Override

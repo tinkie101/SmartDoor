@@ -1,22 +1,25 @@
 package za.co.zebrav.smartdoor.facerecognition;
 
 import java.io.IOException;
-
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+@SuppressLint("ValidFragment") 
 public class AddCameraFragment extends CameraFragment
 {
-	private int uID = -1;
 	private static final String TAG = "AddCameraFragment";
+	public AddCameraFragment(int ID)
+	{
+		super(ID);
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		try
 		{
@@ -39,7 +42,7 @@ public class AddCameraFragment extends CameraFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		uID = activity.getUser().getID();
+		super.onCreateView(inflater, container, savedInstanceState);
 		faceView.setuID(uID);
 		return layout;
 	}
