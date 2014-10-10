@@ -26,6 +26,7 @@ public class IdentifyVoiceFragment extends VoiceFragment
 
 	private IdentifyTask identifyTask;
 	private int loopCounter;
+	private final int maxNumAttempts = 3;
 	private final int NUM_COMPARISONS = 5;
 	private TextView txtTempUser;
 
@@ -67,7 +68,8 @@ public class IdentifyVoiceFragment extends VoiceFragment
 	public void onStart()
 	{
 		super.onStart();
-		loopCounter = 3;
+
+		loopCounter = maxNumAttempts;
 		identifySpeaker();
 	}
 
@@ -220,6 +222,13 @@ public class IdentifyVoiceFragment extends VoiceFragment
 		@Override
 		protected ArrayList<String> doInBackground(Void... params)
 		{
+			boolean wait = activity.isTalking();
+
+			while (wait)
+			{
+				wait = activity.isTalking();
+			}
+
 			voiceAuthenticator.startRecording();
 			soundLevelDialog.dismiss();
 			return calculateDistances(voiceAuthenticator.getCurrentFeatureVector());
@@ -277,6 +286,12 @@ public class IdentifyVoiceFragment extends VoiceFragment
 	private void identifySpeaker()
 	{
 		Log.d(LOG_TAG, "Identifying Voice");
+		if (loopCounter == maxNumAttempts)
+			activity.speakOut("After this voice stoped speaking, clearly reed the phrase out loud.");
+		else if (loopCounter > 0)
+			activity.speakOut("Could not recognize voice, please try again.");
+		else
+			activity.speakOut("Could not recognize voice.");
 		startRecording();
 	}
 }

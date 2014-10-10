@@ -86,6 +86,13 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 		@Override
 		protected Boolean doInBackground(Void... params)
 		{
+			boolean wait = activity.isTalking();
+
+			while (wait)
+			{
+				wait = activity.isTalking();
+			}
+
 			Log.i(LOG_TAG, "Training new Voice");
 			Log.d(LOG_TAG, "Mic threshold: " + voiceAuthenticator.getMicThreshold());
 			voiceAuthenticator.startRecording();
@@ -128,6 +135,7 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 	{
 		Log.i(LOG_TAG, "Training Voice");
 		isTraining = true;
+		activity.speakOut("After this voice stoped speaking, clearly reed the phrase out loud.");
 		startRecording();
 	}
 

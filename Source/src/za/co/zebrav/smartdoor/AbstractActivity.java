@@ -59,7 +59,7 @@ public abstract class AbstractActivity extends Activity
 	protected void onStart()
 	{
 		super.onStart();
-		if(!activityDatabase.isOpen())
+		if (!activityDatabase.isOpen())
 			activityDatabase.open();
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
@@ -69,22 +69,20 @@ public abstract class AbstractActivity extends Activity
 	{
 		super.onPause();
 
-		if(activityDatabase.isOpen())
+		if (activityDatabase.isOpen())
 			activityDatabase.close();
-		
+
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
-	
+
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
 
-		if(!activityDatabase.isOpen())
+		if (!activityDatabase.isOpen())
 			activityDatabase.open();
 	}
-			
-	
 
 	@Override
 	protected void onDestroy()
@@ -107,6 +105,11 @@ public abstract class AbstractActivity extends Activity
 	public void speakOut(String text)
 	{
 		textToSpeech.talk(text);
+	}
+
+	public boolean isTalking()
+	{
+		return textToSpeech.isTalking();
 	}
 
 	public void saveUser()
