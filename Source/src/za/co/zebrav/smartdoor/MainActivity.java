@@ -64,7 +64,6 @@ public class MainActivity extends AbstractActivity
 
 	public void setBrightness(float bright)
 	{
-		Log.d(TAG, "current bright:" + currentBrightness + " new bright: " + bright);
 		if (currentBrightness == bright)
 			return;
 		if (bright == 1.0f)
@@ -75,7 +74,6 @@ public class MainActivity extends AbstractActivity
 			}
 			else
 			{
-				Log.d(TAG, "here2");
 				speakOut("Hello. Not enough users in database to recognise on. Please log in as an admin user and add more users.");
 			}
 		}
