@@ -2,6 +2,7 @@
 <RelativeLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
+	android:background="@drawable/background"
 	android:layout_height="match_parent" >
 	
     <!-- ______________________________________________________________setting type buttons -->
@@ -110,6 +111,7 @@
         	    android:id="@+id/voice_calibration_TV"
 	    	    android:layout_width="wrap_content"
 	    	    android:layout_height="wrap_content"
+	    	    
 	    	    android:text="Voice calibration:" />
         	
         	<Button
@@ -178,8 +180,8 @@
            		android:layout_width="match_parent"
 	           	android:layout_height="wrap_content"
 	           	android:layout_weight="1"
-	           	android:background="@drawable/button1"
-	           	android:textColor="#fff"
+	           	android:background="@drawable/button2"
+	           	android:textColor="#449DEF"
 	           	android:text="Save" />
         
         	<Button
@@ -187,8 +189,8 @@
 	        	android:layout_width="match_parent"
 	        	android:layout_height="wrap_content"
 	        	android:layout_weight="1"
-	        	android:textColor="#fff"
-	        	android:background="@drawable/button1"
+	        	android:textColor="#449DEF"
+	        	android:background="@drawable/button2"
 	        	android:text="Back" />
        	</LinearLayout>
        	<View
@@ -205,29 +207,35 @@
 				android:layout_height="wrap_content"
 				android:orientation="vertical">
    				<!-- IP address -->
-   				<LinearLayout 
+   				<RelativeLayout
    		    		android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal">
+					android:layout_height="wrap_content">
         	
    		    		<TextView
                 		android:id="@+id/IP_TV"
                 		android:layout_width="wrap_content"
                 		android:layout_height="wrap_content"
-                		android:text="IP adress:" />
-   		    
-   		    		<Button
-        	    		android:id="@+id/server_IPAddressHelpButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Help" />
-        
-        			<Button
+                		android:layout_centerVertical="true"
+                		android:text="IP adress:"
+                		android:layout_alignParentLeft="true"
+                		android:layout_marginLeft="5dp" />
+   		    		
+        			<ImageButton 
         	    		android:id="@+id/server_IPAddressHelpVoiceButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Voice Help" />
-       			</LinearLayout>
+			    		android:layout_width="wrap_content"
+        				android:layout_height="wrap_content"
+        				android:layout_alignParentRight="true"
+        				android:src="@drawable/speaker_icon"
+        				android:background="#00000000"/>
+        			
+        			<ImageButton 
+   		    		    android:id="@+id/server_IPAddressHelpButton"
+    		            android:layout_width="wrap_content"
+        				android:layout_height="wrap_content"
+        				android:src="@drawable/help_icon"
+        				android:layout_toLeftOf="@id/server_IPAddressHelpVoiceButton"
+        				android:background="#00000000"/>
+       			</RelativeLayout>
        			<LinearLayout 
    	    			android:layout_width="wrap_content"
    	    			android:layout_height="wrap_content"
@@ -251,24 +259,37 @@
    		    		android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:orientation="horizontal">
+        			
+   				    <RelativeLayout 
+   				        android:layout_width="wrap_content"
+						android:layout_height="wrap_content">
         		
-   		    		<TextView
-                		android:id="@+id/Port_TV"
-                		android:layout_width="wrap_content"
-                		android:layout_height="wrap_content"
-                		android:text="IPort:" />
-   		    
-   		    		<Button
-        	    		android:id="@+id/server_PortHelpButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Help" />
-        
-        			<Button
-	        	    	android:id="@+id/server_IPortHelpVoiceButton"
-				    	android:layout_width="match_parent"
-				    	android:layout_height="wrap_content"
-				    	android:text="Voice Help" />
+	   		    		<TextView
+	                		android:id="@+id/Port_TV"
+	                		android:layout_width="wrap_content"
+	                		android:layout_height="wrap_content"
+	                		android:text="Port:"
+	                		android:layout_centerVertical="true"
+	                		android:layout_alignParentLeft="true"
+                			android:layout_marginLeft="5dp" />
+	   		    
+	        			<ImageButton
+		        	    	android:id="@+id/server_IPortHelpVoiceButton"
+					    	android:layout_width="wrap_content"
+					    	android:layout_height="wrap_content"
+					    	android:src="@drawable/speaker_icon"
+					    	android:layout_alignParentRight="true"
+        					android:background="#00000000"/>
+	        			
+	        			<ImageButton
+	        	    		android:id="@+id/server_PortHelpButton"
+				    		android:layout_width="wrap_content"
+				    		android:layout_height="wrap_content"
+				    		android:src="@drawable/help_icon"
+				    		android:layout_toLeftOf="@id/server_IPortHelpVoiceButton"
+        					android:background="#00000000" />
+	        			
+        			</RelativeLayout>
        			</LinearLayout>
        			<LinearLayout 
    	    			android:layout_width="wrap_content"
@@ -281,6 +302,11 @@
             	    	android:inputType="number" >
             		</EditText>
        			</LinearLayout>
+       			<View
+   	    			android:layout_width="fill_parent"
+        			android:layout_height="2dp"
+        			android:background="#449DEF"
+        			android:layout_margin="5dp"/>
        		</LinearLayout>
        	</ScrollView>
 	</LinearLayout>

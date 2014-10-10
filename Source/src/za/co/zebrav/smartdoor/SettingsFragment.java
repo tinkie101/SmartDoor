@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -434,7 +435,7 @@ public class SettingsFragment extends Fragment
 		((EditText) view.findViewById(R.id.Port_ET)).setText(port);
 		
 		//configure buttons
-		Button serverIP_HelpButton = (Button) view.findViewById(R.id.server_IPAddressHelpButton);
+		ImageButton serverIP_HelpButton = (ImageButton) view.findViewById(R.id.server_IPAddressHelpButton);
 		serverIP_HelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -443,7 +444,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button serverIP_VoiceHelpButton = (Button) view.findViewById(R.id.server_IPAddressHelpVoiceButton);
+		ImageButton serverIP_VoiceHelpButton = (ImageButton) view.findViewById(R.id.server_IPAddressHelpVoiceButton);
 		serverIP_VoiceHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -452,7 +453,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button serverPort_HelpButton = (Button) view.findViewById(R.id.server_PortHelpButton);
+		ImageButton serverPort_HelpButton = (ImageButton) view.findViewById(R.id.server_PortHelpButton);
 		serverPort_HelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -461,7 +462,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button serverPort_VoiceHelpButton = (Button) view.findViewById(R.id.server_IPortHelpVoiceButton);
+		ImageButton serverPort_VoiceHelpButton = (ImageButton) view.findViewById(R.id.server_IPortHelpVoiceButton);
 		serverPort_VoiceHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
