@@ -273,6 +273,7 @@ public class MainActivity extends AbstractActivity
 	public void switchLogin(View v)
 	{
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		speakOut("Switching.");
 
 		if (currentFragment.equals("manual"))
 		{
