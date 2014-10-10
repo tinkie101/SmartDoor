@@ -54,29 +54,29 @@ public class PersonRecognizer
 	 */
 	public PersonRecognizer(Context context, int photosPerPerson, int algorithm, int threshold)
 	{
-		this.photosPerPerson = photosPerPerson;
-		switch (algorithm)
-		{
-			case 1:
-				faceRecognizer = createLBPHFaceRecognizer();
-				Log.d(TAG, "Created LBPHFaceRecognizer");
-				break;
-			case 2:
-				faceRecognizer = createFisherFaceRecognizer();
-				Log.d(TAG, "Created FisherFaceRecognizer");
-				break;
-			case 3:
-				faceRecognizer = createEigenFaceRecognizer();
-				Log.d(TAG, "Created EigenFaceRecognizer");
-				break;
-			default:
-				faceRecognizer = createLBPHFaceRecognizer();
-				Log.d(TAG, "Created LBPHFaceRecognizer");
-				break;
-		}
-		Log.d(TAG,"Threshold:" + threshold);
-		faceRecognizer.set("threshold", threshold);
-		isTrained = initialiseRecogniserFromDatabase(context);
+//		this.photosPerPerson = photosPerPerson;
+//		switch (algorithm)
+//		{
+//			case 1:
+//				faceRecognizer = createLBPHFaceRecognizer();
+//				Log.d(TAG, "Created LBPHFaceRecognizer");
+//				break;
+//			case 2:
+//				faceRecognizer = createFisherFaceRecognizer();
+//				Log.d(TAG, "Created FisherFaceRecognizer");
+//				break;
+//			case 3:
+//				faceRecognizer = createEigenFaceRecognizer();
+//				Log.d(TAG, "Created EigenFaceRecognizer");
+//				break;
+//			default:
+//				faceRecognizer = createLBPHFaceRecognizer();
+//				Log.d(TAG, "Created LBPHFaceRecognizer");
+//				break;
+//		}
+//		Log.d(TAG,"Threshold:" + threshold);
+//		faceRecognizer.set("threshold", threshold);
+//		isTrained = initialiseRecogniserFromDatabase(context);
 	}
 
 	/**

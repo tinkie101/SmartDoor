@@ -148,12 +148,15 @@ public class MainActivity extends AbstractActivity
 	{
 		super.onUserInteraction();
 		setBrightness(1.0f);
-		brightnessTimer.cancel();
-		brightnessTimer.start();
 		if (loggedIn)
 		{
 			logoutTimer.cancel();
 			logoutTimer.start();
+		}
+		else
+		{
+			brightnessTimer.cancel();
+			brightnessTimer.start();
 		}
 	}
 
