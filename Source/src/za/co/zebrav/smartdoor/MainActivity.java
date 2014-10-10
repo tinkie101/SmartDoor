@@ -38,12 +38,15 @@ public class MainActivity extends AbstractActivity
 	private ManualLoginFragment manualFrag;
 	private String currentFragment = "advanced";
 	private AlertDialog.Builder alert;
-	private LoggedInFragment loggedInFragment;
 	private boolean loggedIn = false;
 	private Fragment twitterFragment;
 	private PersonRecognizer personRecognizer;
 	private CountDownTimer logoutTimer;
 	private float currentBrightness = 0.0f;
+	private IdentifyVoiceFragment identifyVoiceFragment;
+	private SearchCameraFragment searchCameraFragment;
+	private SettingsFragment settingsFragment;
+	private LoggedInFragment loggedInFragment;
 
 	public CountDownTimer getLogoutTimer()
 	{
@@ -68,7 +71,7 @@ public class MainActivity extends AbstractActivity
 			return;
 		if (bright == 1.0f)
 		{
-			if(personRecognizer.canPredict())
+			if (personRecognizer.canPredict())
 			{
 				speakOut("Hello. Starting to recognise faces.");
 			}
@@ -87,7 +90,7 @@ public class MainActivity extends AbstractActivity
 	{
 		return currentBrightness;
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -261,6 +264,7 @@ public class MainActivity extends AbstractActivity
 		{
 			// user = null;
 			this.currentFragment = "advanced";
+			searchCameraFragment = new SearchCameraFragment(-1);
 			this.switchToCamera();
 		}
 		setBrightness(1.0f);
@@ -316,8 +320,10 @@ public class MainActivity extends AbstractActivity
 		Log.d(TAG, "switchToLoggedIn");
 		Button button = (Button) findViewById(R.id.switchLoginButton);
 		button.setVisibility(View.GONE);
-		loggedInFragment = new LoggedInFragment();
-
+		if(loggedInFragment == null)
+		{
+			loggedInFragment = new LoggedInFragment();
+		}
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.layoutToReplaceFromMain, loggedInFragment);
 		fragmentTransaction.commit();
@@ -335,13 +341,12 @@ public class MainActivity extends AbstractActivity
 		alert.setTitle("Alert").setMessage(message).setNeutralButton("OK", null).show();
 	}
 
-	IdentifyVoiceFragment identifyVoiceFragment;
-	SearchCameraFragment searchCameraFragment;
-
 	public void switchToCamera()
 	{
-		searchCameraFragment = new SearchCameraFragment(-1);
-
+		if (searchCameraFragment == null)
+		{
+			searchCameraFragment = new SearchCameraFragment(-1);
+		}
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.layoutToReplaceFromMain, searchCameraFragment);
 		fragmentTransaction.commit();
@@ -360,10 +365,12 @@ public class MainActivity extends AbstractActivity
 
 	public void switchToSettingsFragment()
 	{
-		SettingsFragment t = new SettingsFragment();
-
+		if(settingsFragment == null)
+		{
+			settingsFragment = new SettingsFragment();
+		}
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.replace(R.id.layoutToReplaceFromMain, t);
+		fragmentTransaction.replace(R.id.layoutToReplaceFromMain, settingsFragment);
 		fragmentTransaction.commit();
 	}
 
