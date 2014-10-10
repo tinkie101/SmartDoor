@@ -35,6 +35,7 @@
 	        	android:layout_height="wrap_content"
 	        	android:background="#012D50"
 	        	android:padding="5dp"
+	        	android:layout_marginRight="5dp"
 	        	android:layout_weight="1">
                 
 			    <ImageView
@@ -42,7 +43,6 @@
 			        android:layout_width="300dp"
 			        android:layout_height="200dp"
 			        android:layout_centerInParent="true"
-			        android:layout_marginRight="5dp"
 			        android:src="@drawable/root_admin"/>
 		    </RelativeLayout>
 	     

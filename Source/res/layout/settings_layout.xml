@@ -19,32 +19,32 @@
 	            android:id="@+id/ServerSetButton"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:background="@drawable/button2"
-	            android:textColor="#449DEF"
+	            android:background="@drawable/button1"
+	            android:textColor="#fff"
 	            android:text="Server" />
 	
 	        <Button
 	            android:id="@+id/trainingSetButton"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:background="@drawable/button2"
-	            android:textColor="#449DEF"
+	            android:background="@drawable/button1"
+	            android:textColor="#fff"
 	            android:text="Face" />
 	
 	        <Button
 	            android:id="@+id/twitterSetButton"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:background="@drawable/button2"
-	            android:textColor="#449DEF"
+	            android:background="@drawable/button1"
+	            android:textColor="#fff"
 	            android:text="Twitter" />
 	        
 	         <Button
 	            android:id="@+id/voiceSetButton"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:background="@drawable/button2"
-	            android:textColor="#449DEF"
+	            android:background="@drawable/button1"
+	            android:textColor="#fff"
 	            android:text="Voice" />
 	        
 	         <Button
