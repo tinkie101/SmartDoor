@@ -16,20 +16,25 @@ import at.fhooe.mcm.sms.Constants;
 public class VoiceAuthenticator
 {
 	private static final String LOG_TAG = "VoiceAuthenticator";
-
 	private static final int calibrate_time = 5000;
-	private static final int sampleRate = 44100;
 
-	private VoiceRecorder recorder;
+	private VoiceRecorder voiceRecorder;
+
 	private ArrayList<Codebook> codeBook;
 
+	private boolean isRecording;
 	ProgressDialog dialog;
+
+	public ArrayList<Codebook> getCodeBook()
+	{
+		return new ArrayList<Codebook>(codeBook);
+	}
 
 	public VoiceAuthenticator(Dialog dialog)
 	{
 		this.dialog = (ProgressDialog) dialog;
 
-		recorder = new VoiceRecorder(sampleRate, this.dialog);
+		voiceRecorder = new VoiceRecorder(this.dialog);
 		codeBook = new ArrayList<Codebook>();
 	}
 
@@ -37,13 +42,8 @@ public class VoiceAuthenticator
 	{
 		this.dialog = null;
 
-		recorder = new VoiceRecorder(sampleRate, this.dialog);
+		voiceRecorder = new VoiceRecorder(this.dialog);
 		codeBook = new ArrayList<Codebook>();
-	}
-
-	public ArrayList<Codebook> getCodeBook()
-	{
-		return new ArrayList<Codebook>(codeBook);
 	}
 
 	public void setCodeBook(ArrayList<Codebook> cb)
@@ -53,19 +53,41 @@ public class VoiceAuthenticator
 
 	public boolean isRecording()
 	{
-		return recorder.isRecording();
+		return isRecording;
 	}
 
-
-	public void doRecording()
+	public void startRecording()
 	{
 		Log.d(LOG_TAG, "Started recording.");
-		recorder.startRecorder();
+		isRecording = true;
+
+		voiceRecorder.prepare();
+		voiceRecorder.startRecorder();
+		stopRecording();
 	}
-	
+
+	public void stopRecording()
+	{
+		Log.d(LOG_TAG, "Stop Recording");
+		if (voiceRecorder != null && isRecording)
+		{
+			voiceRecorder.release();
+			voiceRecorder.reset();
+
+			isRecording = false;
+		}
+	}
+
 	public void cancelRecording()
 	{
-		recorder.cancelRecorder();
+		Log.d(LOG_TAG, "Cancel Recording");
+		if (voiceRecorder != null && isRecording)
+		{
+			voiceRecorder.stopRecorder();
+			voiceRecorder.release();
+			voiceRecorder.reset();
+			isRecording = false;
+		}
 	}
 
 	private FeatureVector createFeatureVector(double[][] mfcc)
@@ -118,11 +140,10 @@ public class VoiceAuthenticator
 
 	private double[] readSamplesFromBuffer()
 	{
-		// TODO check if recorder is in correct state
-		int sampleSize = recorder.getFrameSize();
+		int sampleSize = voiceRecorder.getFrameSize();
 		Log.d(LOG_TAG, "sampleBufferSize: " + sampleSize);
 
-		int sampleCount = recorder.getPayloadSize() / sampleSize;
+		int sampleCount = voiceRecorder.getPayloadSize() / sampleSize;
 		Log.d(LOG_TAG, "sampleBufferCount: " + sampleCount);
 
 		int windowCount = (int) Math.floor(sampleCount / Constants.WINDOWSIZE);
@@ -133,11 +154,10 @@ public class VoiceAuthenticator
 
 		for (int i = 0; i < samples.length; i++)
 		{
-			currentPos = recorder.readFromBuffer(buffer, currentPos, sampleSize);
+			currentPos = voiceRecorder.readFromBuffer(buffer, currentPos, sampleSize);
 			samples[i] = createSample(buffer);
 		}
 
-		Log.i(LOG_TAG, samples.length + " samples loaded into memory");
 		return samples;
 	}
 
@@ -176,8 +196,8 @@ public class VoiceAuthenticator
 	public FeatureVector getCurrentFeatureVector()
 	{
 		FeatureVector result = null;
-		// TODO check if vector exists
 
+		Log.i(LOG_TAG, "Starting to read samples from buffer");
 		double[] samples = readSamplesFromBuffer();
 
 		Log.i(LOG_TAG, "Starting to calculate MFCC");
@@ -189,34 +209,35 @@ public class VoiceAuthenticator
 		return result;
 	}
 
-	public float getAverageFeatureDistance(FeatureVector featureVector)
+	public float identifySpeaker(FeatureVector featureVector)
 	{
 		float result = -1f;
-		if (featureVector != null)
+		if (featureVector != null && codeBook.size() > 0)
 		{
-			result = 0;
-			Log.i(LOG_TAG, "Calculating average feature vector distance");
+			Log.i(LOG_TAG, "Identifying Speaker");
+			result = 0f;
+
 			for (int i = 0; i < codeBook.size(); i++)
 			{
 				double averageDistortion = ClusterUtil.calculateAverageDistortion(featureVector, codeBook.get(i));
-				
+
 				result += averageDistortion;
+
+				Log.i(LOG_TAG, "Calculated avg distortion for user = " + averageDistortion);
 			}
 
-			result = result / (float)codeBook.size();
+			result = result / codeBook.size();
 		}
 		else
 		{
-			Log.i(LOG_TAG, "Invalid FeatureVector!");
+			Log.d(LOG_TAG, "Invalid FeatureVector!");
 		}
-
 		return result;
 	}
 
 	public boolean train()
 	{
-		// TODO check valid recording
-
+		Log.i(LOG_TAG, "Starting to samples from buffer");
 		double[] samples = readSamplesFromBuffer();
 
 		if (samples.length < 1)
@@ -247,43 +268,32 @@ public class VoiceAuthenticator
 
 	public void setMicThreshold(int threshold)
 	{
-		if (recorder != null)
+		if (threshold > 0)
 		{
-			if (threshold > 0)
-			{
-				recorder.setStartThreshold(threshold);
-			}
-			else
-			{
-				threshold = 1;
-			}
+			voiceRecorder.setStartThreshold(threshold);
 		}
 		else
 		{
-			Log.i(LOG_TAG, "Invalid recorder for auto mic threshold");
+			threshold = 1;
 		}
 	}
 
 	public int getMicThreshold()
 	{
-		if (recorder != null)
-		{
-			return recorder.getStartThreshold();
-		}
-		else
-		{
-			Log.i(LOG_TAG, "Invalid recorder for auto mic threshold");
-			return -1;
-		}
+		return voiceRecorder.getStartThreshold();
 	}
 
 	public int autoCalibrateActivation()
 	{
 		Log.i(LOG_TAG, "Calibrating mic...");
+		voiceRecorder.prepare();
 
-		int result = recorder.getAverageSoundLevel(calibrate_time);
+		int result = voiceRecorder.getAverageSoundLevel(calibrate_time);
 
-		// increase for voice
+		voiceRecorder.release();
+		voiceRecorder.reset();
+
+		// increase
 		if (result < 100)
 		{
 			result += 50;
@@ -302,7 +312,7 @@ public class VoiceAuthenticator
 		}
 
 		Log.i(LOG_TAG, "Average sound level: " + result);
-		recorder.setStartThreshold(result);
+		voiceRecorder.setStartThreshold(result);
 
 		return result;
 	}

@@ -18,7 +18,7 @@ public final class Constants {
 	public static final String OUTPUTDIR = File.separator + "sdcard"
 			+ File.separator + SD_SUBDIRNAME;
 
-	public static final int CLUSTER_MAX_ITERATIONS = 10;
+	public static final int CLUSTER_MAX_ITERATIONS = 15;//10
 	public static final int CLUSTER_COUNT = 64;//64
 
 	public static final int LONG_SAMPLE_DURATION = 15 * 1000;

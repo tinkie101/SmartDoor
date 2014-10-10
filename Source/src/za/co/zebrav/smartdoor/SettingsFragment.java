@@ -1,7 +1,6 @@
 package za.co.zebrav.smartdoor;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import za.co.zebrav.voice.VoiceAuthenticator;
 import android.app.AlertDialog;
@@ -13,6 +12,7 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.Size;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -523,7 +523,7 @@ public class SettingsFragment extends Fragment
 		voiceSettings.setVisibility(View.VISIBLE);
 		chooseSettingsLayout.setVisibility(View.GONE);
 		
-		final EditText autoCalibrateET = (EditText) view.findViewById(R.id.voice_calibration_ET);
+		autoCalibrateET = (EditText) view.findViewById(R.id.voice_calibration_ET);
 		String voice_calibration = settings.getString("voice_Calibration", "");
 		autoCalibrateET.setText(voice_calibration);
 		
@@ -533,35 +533,14 @@ public class SettingsFragment extends Fragment
 		{
             public void onClick(View v) 
             {
-            	final ProgressDialog progress = new ProgressDialog(getActivity());
+            	progress = new ProgressDialog(getActivity(), ProgressDialog.STYLE_HORIZONTAL);
             	progress.setMessage("Wait for auto calibration.");
-        	    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        	    progress.setIndeterminate(true);
+        	    progress.setCancelable(false);
         	    
         	    progress.show();
-            	final AtomicInteger value= new AtomicInteger(-1);
-            	boolean valueSet = false;
             	
-        	    
-        	    Thread mThread = new Thread() 
-        	    {
-        	        @Override
-        	        public void run() 
-        	        {
-        	        	VoiceAuthenticator voiceAuthenticator = new VoiceAuthenticator();
-                    	value.compareAndSet(-1, voiceAuthenticator.autoCalibrateActivation());
-                    	progress.dismiss();
-        	        }
-    	        };
-    	        mThread.start();
-    	        while(!valueSet)
-    	        {
-    	        	if(value.get() != -1)
-    	        	{
-    	        		valueSet = true;
-    	        		autoCalibrateET.setText(value.get()+"");
-    	        	}
-    	        }
+        	    RunThread thread = new RunThread();
+        	    thread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
 		
@@ -600,6 +579,27 @@ public class SettingsFragment extends Fragment
             	done();
             }
         });
+		
+	}
+	private ProgressDialog progress;
+	private EditText autoCalibrateET;
+	private class RunThread extends AsyncTask<Void, Void, Integer>
+	{
+
+		@Override
+		protected Integer doInBackground(Void... params)
+		{
+			VoiceAuthenticator voiceAuthenticator = new VoiceAuthenticator();
+        	Integer result = voiceAuthenticator.autoCalibrateActivation();
+        	progress.dismiss();
+			return result;
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result)
+		{
+    		autoCalibrateET.setText(result.toString());
+		}
 		
 	}
 	

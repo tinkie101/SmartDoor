@@ -5,11 +5,27 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder.AudioSource;
 import android.util.Log;
+import at.fhooe.mcm.smc.wav.WaveRecorder;
+import at.fhooe.mcm.sms.Constants;
 
 public class VoiceRecorder
 {
 	/** Tag for logging. */
 	private static final String LOG_TAG = "VoiceRecorder";
+
+	public enum State
+	{
+		/** . */
+		INITIALIZING,
+		/** . */
+		READY,
+		/** . */
+		RECORDING,
+		/** . */
+		ERROR,
+		/** . */
+		STOPPED
+	};
 
 	/** Recorder used for uncompressed recording. */
 	private AudioRecord aRecorder = null;
@@ -31,8 +47,12 @@ public class VoiceRecorder
 
 	private int sampleSize;
 	private byte[] finalBuffer;
-	private boolean listening;
 	private int payloadSize;
+	private int sampleRate;
+	private int bufferSize;
+	private byte[] readBuffer;
+
+	private State state;
 
 	private final int bitsPerSample = 16;
 	private final int micChannel = AudioFormat.CHANNEL_IN_MONO;
@@ -58,17 +78,17 @@ public class VoiceRecorder
 		return recording;
 	}
 
-	public VoiceRecorder(int sampleRate, ProgressDialog dialog)
+	public VoiceRecorder(ProgressDialog dialog)
 	{
 		this.dialog = dialog;
 		try
 		{
 			recording = false;
-			listening = false;
+
+			sampleRate = Constants.SAMPLERATE;
 
 			framePeriod = sampleRate * TIMER_INTERVAL / 1000;
-
-			int bufferSize = framePeriod * 2 * bitsPerSample * numChannels / 8;
+			bufferSize = framePeriod * 2 * bitsPerSample * numChannels / 8;
 
 			sampleSize = (numChannels * bitsPerSample / 8);
 
@@ -90,6 +110,8 @@ public class VoiceRecorder
 			}
 
 			aRecorder.setPositionNotificationPeriod(framePeriod);
+
+			state = State.INITIALIZING;
 		}
 		catch (Exception e)
 		{
@@ -104,104 +126,176 @@ public class VoiceRecorder
 		}
 	}
 
+	public void prepare()
+	{
+		try
+		{
+			if (state == State.INITIALIZING)
+			{
+				if (aRecorder.getState() == AudioRecord.STATE_INITIALIZED)
+				{
+					int blockAlign = (numChannels * bitsPerSample / 8);
+					sampleSize = blockAlign;
+
+					readBuffer = new byte[framePeriod * bitsPerSample / 8 * numChannels];
+					finalBuffer = new byte[0];
+					state = State.READY;
+
+					payloadSize = 0;
+				}
+				else
+				{
+					Log.e(LOG_TAG, "prepare() method called on uninitialized recorder");
+					state = State.ERROR;
+				}
+			}
+			else
+			{
+				Log.e(LOG_TAG, "prepare() method called on illegal state");
+				release();
+				state = State.ERROR;
+			}
+		}
+		catch (Exception e)
+		{
+			if (e.getMessage() != null)
+			{
+				Log.e(LOG_TAG, e.getMessage(), e);
+			}
+			else
+			{
+				Log.e(LOG_TAG, "Unknown error occured in prepare()");
+			}
+			state = State.ERROR;
+		}
+	}
+
+	public void release()
+	{
+		if (state == State.RECORDING)
+		{
+			stopRecorder();
+		}
+
+		if (aRecorder != null)
+		{
+			aRecorder.release();
+		}
+	}
+
+	public void reset()
+	{
+		try
+		{
+			if (state != State.ERROR)
+			{
+				release();
+				aRecorder = new AudioRecord(audioSource, sampleRate, numChannels + 1, audioFormat, bufferSize);
+				aRecorder.setPositionNotificationPeriod(framePeriod);
+				state = State.INITIALIZING;
+			}
+		}
+		catch (Exception e)
+		{
+			Log.e(WaveRecorder.class.getName(), e.getMessage());
+			state = State.ERROR;
+		}
+	}
+
 	public void startRecorder()
 	{
-		byte[] buffer = new byte[framePeriod * bitsPerSample / 8 * numChannels];
-		finalBuffer = new byte[0];
-		payloadSize = 0;
-
-		aRecorder.startRecording();
-		listening = true;
-		Log.i(LOG_TAG, "Listening for sound to record");
-
-		float tempFloatBuffer[] = new float[3];
-		int countReads = 0;
-		long startTime = -1;
-		long lastTime = -1;
-
-		while (listening)
+		if (state == State.READY)
 		{
-			int numberOfReadBytes = aRecorder.read(buffer, 0, buffer.length); // Fill buffer
-			
-			float totalAbsValue = 0.0f;
-			short sample = 0;
+			aRecorder.startRecording();
+			Log.i(LOG_TAG, "Listening for sound to record");
+			state = State.RECORDING;
 
-			// Analyze Sound.
-			for (int i = 0; i < buffer.length; i += 2)
+			float tempFloatBuffer[] = new float[3];
+			int countReads = 0;
+			long startTime = -1;
+			long lastTime = -1;
+
+			while (state == State.RECORDING)
 			{
-				sample = (short) ((buffer[i]) | buffer[i + 1] << 8);
-				totalAbsValue += Math.abs(sample) / (numberOfReadBytes / 2);
+				int numberOfReadBytes = aRecorder.read(readBuffer, 0, readBuffer.length); // Fill buffer
+
+				float totalAbsValue = 0.0f;
+				short sample = 0;
+
+				// Analyze Sound.
+				for (int i = 0; i < readBuffer.length; i += 2)
+				{
+					sample = (short) ((readBuffer[i]) | readBuffer[i + 1] << 8);
+					totalAbsValue += Math.abs(sample) / (numberOfReadBytes / 2);
+				}
+
+				// Analyze temp buffer.
+				tempFloatBuffer[countReads % 3] = totalAbsValue;
+				float temp = 0.0f;
+				for (int i = 0; i < 3; ++i)
+					temp += tempFloatBuffer[i];
+
+				updateProgressDialog(temp);
+
+				Log.d(LOG_TAG, temp + "");
+
+				if (temp > StartThreshold)
+				{
+					lastTime = System.currentTimeMillis();
+					
+					if(!recording)
+					{
+						startTime = lastTime;
+						recording = true;
+					}
+				}
+
+				if (recording)
+				{
+					Log.i(LOG_TAG, "Recording Voice");
+					int oldLength = finalBuffer.length;
+					int newLength = oldLength + readBuffer.length;
+					byte[] tempFinalBuffer = new byte[newLength];
+
+					for (int b = 0; b < oldLength; b++)
+					{
+						tempFinalBuffer[b] = finalBuffer[b];
+					}
+
+					int pos = oldLength;
+					for (int b = 0; b < readBuffer.length; b++)
+					{
+						tempFinalBuffer[pos] = readBuffer[b];
+						pos++;
+					}
+
+					finalBuffer = tempFinalBuffer;
+					payloadSize += readBuffer.length;
+
+					long currentTime = System.currentTimeMillis();
+
+					if (currentTime - lastTime > StopThreshold || currentTime - startTime > maxRecordTime)
+					{
+						stopRecorder();
+					}
+				}
+				countReads++;
 			}
-			
-			// Analyze temp buffer.
-			tempFloatBuffer[countReads % 3] = totalAbsValue;
-			float temp = 0.0f;
-			for (int i = 0; i < 3; ++i)
-				temp += tempFloatBuffer[i];
-
-			updateProgressDialog(temp);	
-			
-
-			Log.d(LOG_TAG, temp +"");
-			
-			if (temp > StartThreshold)
-			{
-				lastTime = System.currentTimeMillis();
-
-				if (!recording)
-				{
-					recording = true;
-					startTime = System.currentTimeMillis();
-				}
-			}
-
-			if (recording)
-			{
-				Log.i(LOG_TAG, "Recording Voice");
-				int oldLength = finalBuffer.length;
-				int newLength = oldLength + buffer.length;
-				byte[] tempFinalBuffer = new byte[newLength];
-
-				for (int b = 0; b < oldLength; b++)
-				{
-					tempFinalBuffer[b] = finalBuffer[b];
-				}
-
-				int pos = oldLength;
-				for (int b = 0; b < buffer.length; b++)
-				{
-					tempFinalBuffer[pos] = buffer[b];
-					pos++;
-				}
-
-				finalBuffer = tempFinalBuffer;
-				payloadSize += buffer.length;
-
-				long currentTime = System.currentTimeMillis();
-
-				if (currentTime - lastTime > StopThreshold || currentTime - startTime > maxRecordTime)
-				{
-					listening = false;
-				}
-			}
-			countReads++;
 		}
-		//TODO stop recording
-		stopRecorder();
+		else
+		{
+			Log.e(LOG_TAG, "start() called on illegal state");
+			state = State.ERROR;
+		}
 	}
 
-	public void cancelRecorder()
-	{
-		listening = false;
-	}
-	
 	/**
 	 * Stops the recording, and sets the state to STOPPED. In case of further usage, a reset is
 	 * needed. Also finalizes the wave file in case of uncompressed recording.
 	 */
-	private void stopRecorder()
+	public void stopRecorder()
 	{
-		if (recording)
+		if (state == State.RECORDING)
 		{
 			aRecorder.stop();
 			recording = false;
@@ -212,11 +306,14 @@ public class VoiceRecorder
 			}
 
 			Log.i(LOG_TAG, "Stopped recording with payloadSize=" + payloadSize);
+			state = State.STOPPED;
 		}
 		else
 		{
-			Log.i(LOG_TAG, "Error, trying to stop recorder that wasn't recording");
+			Log.e(LOG_TAG, "stop() called on illegal state");
+			state = State.ERROR;
 		}
+
 	}
 
 	public int getAverageSoundLevel(double numMiliseconds)

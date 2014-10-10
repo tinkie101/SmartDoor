@@ -27,7 +27,8 @@ public class IdentifyVoiceFragment extends VoiceFragment
 	private int loopCounter;
 
 	private TextView txtTempUser;
-	//private ListView listView;
+
+	// private ListView listView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -54,8 +55,8 @@ public class IdentifyVoiceFragment extends VoiceFragment
 
 		ImageView imgUser = (ImageView) view.findViewById(R.id.imgTempUser);
 		imgUser.setImageBitmap(image);
-		//TODO
-		//listView = new ListView(activity);
+		// TODO
+		// listView = new ListView(activity);
 		soundLevelDialog.setMessage("Say: \"The quick brown fox jumps over the lazy dog\"");
 
 		return view;
@@ -107,25 +108,24 @@ public class IdentifyVoiceFragment extends VoiceFragment
 			ArrayList<String> result = new ArrayList<String>();
 			ArrayList<Float> resultDist = new ArrayList<Float>();
 
-			for (Object o : tempList)
+			for (Object userObject : tempList)
 			{
 				float tempAvgDist = 0.0f;
 
-				User user = (User) o;
+				User user = (User) userObject;
 				ArrayList<Codebook> cb = user.getCodeBook();
 
 				if (cb != null)
 				{
 					voiceAuthenticator.setCodeBook(cb);
 
-					tempAvgDist = voiceAuthenticator.getAverageFeatureDistance(featureVector);
+					tempAvgDist = voiceAuthenticator.identifySpeaker(featureVector);
 
 					if (tempAvgDist == -1f)
 					{
 						Log.d(LOG_TAG, "Error with calculating feature vector distance for user!");
 						continue;
 					}
-					
 					Log.d(LOG_TAG, "user average distance = " + tempAvgDist);
 
 					// Insert new user into sorted list
@@ -170,7 +170,7 @@ public class IdentifyVoiceFragment extends VoiceFragment
 		@Override
 		protected ArrayList<String> doInBackground(Void... params)
 		{
-			voiceAuthenticator.doRecording();
+			voiceAuthenticator.startRecording();
 			soundLevelDialog.dismiss();
 			return calculateDistances(voiceAuthenticator.getCurrentFeatureVector());
 		}
@@ -183,8 +183,9 @@ public class IdentifyVoiceFragment extends VoiceFragment
 				Log.i(LOG_TAG, string);
 			}
 
-			//ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, result);
-			//listView.setAdapter(adapter);
+			// ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1,
+			// result);
+			// listView.setAdapter(adapter);
 
 			processingDialog.dismiss();
 
