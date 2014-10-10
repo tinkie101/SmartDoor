@@ -19,30 +19,40 @@
 	            android:id="@+id/ServerSetButton"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
+	            android:background="@drawable/button2"
+	            android:textColor="#449DEF"
 	            android:text="Server" />
 	
 	        <Button
 	            android:id="@+id/trainingSetButton"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
+	            android:background="@drawable/button2"
+	            android:textColor="#449DEF"
 	            android:text="Face" />
 	
 	        <Button
 	            android:id="@+id/twitterSetButton"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
+	            android:background="@drawable/button2"
+	            android:textColor="#449DEF"
 	            android:text="Twitter" />
 	        
 	         <Button
 	            android:id="@+id/voiceSetButton"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
+	            android:background="@drawable/button2"
+	            android:textColor="#449DEF"
 	            android:text="Voice" />
 	        
 	         <Button
 	            android:id="@+id/cancelButton1"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
+	            android:background="@drawable/button2"
+	            android:textColor="#449DEF"
 	            android:text="Cancel" />
 	    </LinearLayout>
     </ScrollView>

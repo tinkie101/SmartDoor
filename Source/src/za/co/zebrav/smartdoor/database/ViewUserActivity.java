@@ -7,6 +7,9 @@ import java.util.Locale;
 
 import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.R;
+import za.co.zebrav.smartdoor.TTS;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,7 +24,9 @@ public class ViewUserActivity extends AbstractActivity
 	protected EditText searchText;
 	protected ListView userList;
 	protected ArrayList<User> users = new ArrayList<User>();
+	private AlertDialog.Builder alert;
 
+	protected TTS textToSpeech;
 	ListViewAdapter adapter;
 
 	@Override
@@ -29,6 +34,9 @@ public class ViewUserActivity extends AbstractActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.view_user);
+		
+		alert = new AlertDialog.Builder(this);
+		textToSpeech = new TTS(this);
 	}
 
 	@Override
@@ -92,28 +100,59 @@ public class ViewUserActivity extends AbstractActivity
 
 	public void deleteAllUsers(View v)
 	{
-		activityDatabase.delete(new User(null, null, null, null, null, 0, null));
-
-		File path = getDir("data", 0);
-		File dir = new File(path + "/photos/");
-		if (dir.exists())
+		speakOut("Delete ALL Users? Are you sure?");
+		alert.setTitle("Are you sure you want to delete ALL users?");
+		alert.setNegativeButton("Cancel", null);
+		alert.setPositiveButton("Delete", new DialogInterface.OnClickListener()
 		{
-			String[] children = dir.list();
-			for (int i = 0; i < children.length; i++)
+			@Override
+			public void onClick(DialogInterface dialog, int which)
 			{
-				File file = new File(path + "/photos/" + children[i]);
-				Log.d(TAG, "file name:" + file.toString());
-				if (file.exists())
-				{
-					file.delete();
-					Log.d(TAG, "file found");
-				}
-			}
-			// The directory is now empty so delete it
-			dir.delete();
-		}
+				activityDatabase.delete(new User(null, null, null, null, null, 0, null));
 
-		adapter.clearDisplay();
+				File path = getDir("data", 0);
+				File dir = new File(path + "/photos/");
+				if (dir.exists())
+				{
+					String[] children = dir.list();
+					for (int i = 0; i < children.length; i++)
+					{
+						File file = new File(path + "/photos/" + children[i]);
+						Log.d(TAG, "file name:" + file.toString());
+						if (file.exists())
+						{
+							file.delete();
+							Log.d(TAG, "file found");
+						}
+					}
+					// The directory is now empty so delete it
+					dir.delete();
+				}
+
+				adapter.clearDisplay();
+			}
+		});
+
+		alert.show();
+		//
+		
+	}
+	
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+
+		textToSpeech.destroy();
+	}
+	
+	/**
+	 * @param text
+	 *            , The text to be spoken out loud by the device
+	 */
+	public void speakOut(String text)
+	{
+		textToSpeech.talk(text);
 	}
 
 }
