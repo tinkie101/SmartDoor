@@ -40,6 +40,7 @@ public final class R {
         public static final int icon=0x7f020010;
         public static final int lightbulb=0x7f020011;
         public static final int manual_login_semi_background=0x7f020012;
+        public static final int root_admin=0x7f020013;
     }
     public static final class id {
         public static final int CustomCameraView_activity_java_surface_view=0x7f090026;

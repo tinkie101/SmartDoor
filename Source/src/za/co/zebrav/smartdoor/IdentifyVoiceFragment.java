@@ -3,6 +3,7 @@ package za.co.zebrav.smartdoor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
@@ -25,7 +26,7 @@ public class IdentifyVoiceFragment extends VoiceFragment
 
 	private IdentifyTask identifyTask;
 	private int loopCounter;
-
+	private final int NUM_COMPARISONS = 5;
 	private TextView txtTempUser;
 
 	// private ListView listView;
@@ -98,9 +99,11 @@ public class IdentifyVoiceFragment extends VoiceFragment
 		Db4oAdapter db = activity.getDatabase();
 		List<Object> tempList = db.load(new User(null, null, null, null, null, 0, null));
 
-		if (tempList.size() < 1)
+		User compareUser = activity.getUser();
+
+		if (tempList.size() < 1 || compareUser == null)
 		{
-			Log.d(LOG_TAG, "No valid users in database");
+			Log.d(LOG_TAG, "Invalid users to compare");
 			return null;
 		}
 		else
@@ -108,13 +111,60 @@ public class IdentifyVoiceFragment extends VoiceFragment
 			ArrayList<String> result = new ArrayList<String>();
 			ArrayList<Float> resultDist = new ArrayList<Float>();
 
-			for (Object userObject : tempList)
+			ArrayList<User> users = new ArrayList<User>();
+			ArrayList<Integer> selectedUsers = new ArrayList<Integer>();
+
+			int size = tempList.size();
+
+			// Only compare some users in the db to save process time
+			if (size > NUM_COMPARISONS)
 			{
+				Random randomizer = new Random();
+
+				for (int i = 0; i < NUM_COMPARISONS; i++)
+				{
+					int random = randomizer.nextInt(size);
+
+					boolean selected = false;
+
+					User tempUser = (User) tempList.get(random);
+					int tempID = tempUser.getID();
+
+					while (!selected)
+					{
+						if (!selectedUsers.contains(tempID) && tempID != compareUser.getID())
+						{
+							selected = true;
+							break;
+						}
+						else
+						{
+
+							random = randomizer.nextInt(size);
+							tempUser = (User) tempList.get(random);
+							tempID = tempUser.getID();
+						}
+					}
+
+					users.add(tempUser);
+					selectedUsers.add(tempUser.getID());
+				}
+				users.add(compareUser);
+			}
+			else
+			{
+				for (Object userObject : tempList)
+				{
+					users.add((User) userObject);
+				}
+			}
+
+			for (User tempUser : users)
+			{
+
+				ArrayList<Codebook> cb = tempUser.getCodeBook();
+
 				float tempAvgDist = 0.0f;
-
-				User user = (User) userObject;
-				ArrayList<Codebook> cb = user.getCodeBook();
-
 				if (cb != null)
 				{
 					voiceAuthenticator.setCodeBook(cb);
@@ -126,7 +176,7 @@ public class IdentifyVoiceFragment extends VoiceFragment
 						Log.d(LOG_TAG, "Error with calculating feature vector distance for user!");
 						continue;
 					}
-					Log.d(LOG_TAG, "user average distance = " + tempAvgDist);
+					Log.i(LOG_TAG, "user average distance = " + tempAvgDist);
 
 					// Insert new user into sorted list
 					boolean inserted = false;
@@ -135,7 +185,7 @@ public class IdentifyVoiceFragment extends VoiceFragment
 						if (resultDist.get(l) > tempAvgDist)
 						{
 							resultDist.add(l, tempAvgDist);
-							Integer id = user.getID();
+							Integer id = tempUser.getID();
 							result.add(l, id.toString());
 							inserted = true;
 							break;
@@ -145,7 +195,7 @@ public class IdentifyVoiceFragment extends VoiceFragment
 					if (!inserted)
 					{
 						resultDist.add(tempAvgDist);
-						Integer id = user.getID();
+						Integer id = tempUser.getID();
 						result.add(id.toString());
 					}
 				}
