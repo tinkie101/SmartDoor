@@ -27,26 +27,44 @@ public class LoggedInFragment extends Fragment
 	private ArrayAdapter<String> adapter;
 	private String[] commandOptions;
 	private AbstractActivity mainActivity;
+	private View view;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.logged_in, container, false);
+		view = inflater.inflate(R.layout.logged_in, container, false);
 
 		mainActivity = (AbstractActivity) getActivity();
 
 		mainActivity.speakOut("Welcome, " + mainActivity.getUser().getFirstnames() + " "
 							+ mainActivity.getUser().getSurname());
 
+		currentUserVisible();
+		
+
+		if (mainActivity.getUser().getAdminRights())
+			commandOptions = getResources().getStringArray(R.array.commandOptions);
+		else
+			commandOptions = getResources().getStringArray(R.array.basicCommandOptions);
+		list = (ListView) view.findViewById(R.id.commandList);
+		adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.command_list_item, commandOptions);
+		list.setAdapter(adapter);
+
+		setOnclickListener();
+		return view;
+	}
+	
+	private void currentUserVisible()
+	{
 		// get user image
 		File path = mainActivity.getDir("data", 0);
 		User user = mainActivity.getUser();
-
+				
 		Bitmap image = BitmapFactory.decodeFile(path + "/photos/" + user.getID() + "-0.png");
 
 		ImageView imgUser = (ImageView) view.findViewById(R.id.imgLogedInImage);
 
-		if (imgUser != null)
+		if (image != null)
 			imgUser.setImageBitmap(image);
 
 		TextView txtName = (TextView) view.findViewById(R.id.txtLogedinName);
@@ -63,17 +81,6 @@ public class LoggedInFragment extends Fragment
 
 		if (txtUserName != null)
 			txtUserName.setText("Username: " + user.getUsername());
-
-		if (mainActivity.getUser().getAdminRights())
-			commandOptions = getResources().getStringArray(R.array.commandOptions);
-		else
-			commandOptions = getResources().getStringArray(R.array.basicCommandOptions);
-		list = (ListView) view.findViewById(R.id.commandList);
-		adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.command_list_item, commandOptions);
-		list.setAdapter(adapter);
-
-		setOnclickListener();
-		return view;
 	}
 
 	@Override
