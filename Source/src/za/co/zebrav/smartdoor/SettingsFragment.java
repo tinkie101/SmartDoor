@@ -1,7 +1,9 @@
 package za.co.zebrav.smartdoor;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import za.co.zebrav.smartdoor.database.User;
 import za.co.zebrav.voice.VoiceAuthenticator;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -28,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import at.fhooe.mcm.smc.math.vq.Codebook;
 
 public class SettingsFragment extends Fragment
 {
@@ -157,8 +160,8 @@ public class SettingsFragment extends Fragment
 			data[i] = temp;
 		}
         final Spinner resolutionSpinner = (Spinner) view.findViewById(R.id.face_resolutionSP);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_spinner_item, data);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),R.layout.spinner_textview, data);
+        adapter.setDropDownViewResource(R.layout.spinner_textview);
         resolutionSpinner.setAdapter(adapter);
         int resIndex = Integer.parseInt(settings.getString("face_resolution", "0"));
 		resolutionSpinner.setSelection(resIndex);
@@ -386,10 +389,20 @@ public class SettingsFragment extends Fragment
 		    editor.commit();
 		    
 		    int resolutionIndex = ((Spinner) view.findViewById(R.id.face_resolutionSP)).getSelectedItemPosition();
-		    editor.putString("face_resolution", resolutionIndex+"");
-		    editor.commit();
+		    int currentSetting = Integer.parseInt(settings.getString("face_resolution", "0"));
+		    if(resolutionIndex != currentSetting)
+		    {
+		    	if(isEmptyDB())
+		    	{
+		    		editor.putString("face_resolution", resolutionIndex+"");
+				    editor.commit();
+		    	}
+		    	else
+		    		Toast.makeText(getActivity(), "DB must be empty to make change to resolution", Toast.LENGTH_SHORT).show();
+		    }
 		    
 		    
+		    	
 		    if(((CheckBox) view.findViewById(R.id.faceDetectEyes)).isChecked())
 		    	editor.putString("face_detectEyes", "true");
 		    else
@@ -407,6 +420,16 @@ public class SettingsFragment extends Fragment
 		}
 		else
 			Toast.makeText(getActivity(), "Empty field", Toast.LENGTH_SHORT).show();
+	}
+	
+	private boolean isEmptyDB()
+	{
+		MainActivity m = (MainActivity)getActivity();
+		List a = m.activityDatabase.load(new User(null, null, null, null, null, 0, null));
+		if(a.size() == 0)
+			return true;
+		else
+			return false;
 	}
 	
 	private boolean trainNoneEmpty()
