@@ -1,5 +1,7 @@
 package za.co.zebrav.smartdoor.test;
 
+import org.junit.Test;
+
 import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.TestFragmentActivity;
 import za.co.zebrav.smartdoor.facerecognition.AddCameraFragment;
@@ -23,6 +25,7 @@ public class CameraFragmentTest extends ActivityInstrumentationTestCase2<TestFra
 		mActivity = getActivity();
 	}
 
+	@Test
 	private Fragment startFragment(Fragment fragment)
 	{
 		FragmentTransaction transaction = mActivity.getFragmentManager().beginTransaction();
@@ -33,6 +36,7 @@ public class CameraFragmentTest extends ActivityInstrumentationTestCase2<TestFra
 		return frag;
 	}
 
+	@Test
 	public void testAddCameraFragment()
 	{
 		assertNotNull(mActivity);
@@ -43,7 +47,7 @@ public class CameraFragmentTest extends ActivityInstrumentationTestCase2<TestFra
 		assertNotNull(fragment);
 		
 		Fragment frag = startFragment(fragment);
-		assertNotNull(fragment);
+		assertNotNull(frag);
 	}
 	
 	public void testSearchCameraFragment()
@@ -56,6 +60,6 @@ public class CameraFragmentTest extends ActivityInstrumentationTestCase2<TestFra
 		assertNotNull(fragment);
 		
 		Fragment frag = startFragment(fragment);
-		assertNotNull(fragment);
+		assertNotNull(frag);
 	}
 }

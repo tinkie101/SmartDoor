@@ -10,13 +10,8 @@ import org.bytedeco.javacpp.opencv_core.CvMemStorage;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.Rect;
 import org.bytedeco.javacpp.opencv_core.Size;
-import org.bytedeco.javacpp.opencv_objdetect;
 import org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
 import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
-
-import za.co.zebrav.smartdoor.R;
-
-import android.content.SharedPreferences;
 import android.util.Log;
 
 /**
@@ -49,6 +44,12 @@ public abstract class ClassifierRunnable implements Runnable
 	public Rect getObjects()
 	{
 		return objects;
+	}
+	
+	public void setObjects(Rect obj)
+	{
+		this.objects = obj;
+		this.totalDetected = obj.limit();
 	}
 
 	CvMemStorage storage;
@@ -109,7 +110,7 @@ public abstract class ClassifierRunnable implements Runnable
 			totalDetected = objects.limit();
 	}
 
-	protected void rectangleGroup()
+	public void rectangleGroup()
 	{
 		int size = objects.limit();
 		Rect tempRect = new Rect(objects.limit() * 2);
