@@ -388,6 +388,7 @@ public class SettingsFragment extends Fragment
 		    	editor.putString("face_faceRecognizerAlgorithm", "3");
 		    editor.commit();
 		    
+		    
 		    int resolutionIndex = ((Spinner) view.findViewById(R.id.face_resolutionSP)).getSelectedItemPosition();
 		    int currentSetting = Integer.parseInt(settings.getString("face_resolution", "0"));
 		    if(resolutionIndex != currentSetting)
