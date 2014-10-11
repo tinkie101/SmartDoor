@@ -114,20 +114,20 @@ class AddFaceView extends FaceView
 	{
 		faceRunnable.setGrayImage(grayImage);
 		faceThread.run();
-		try
-		{
-			faceThread.join();
-		}
-		catch (InterruptedException e1)
-		{
-			e1.printStackTrace();
-		}
+//		try
+//		{
+//			faceThread.join();
+//		}
+//		catch (InterruptedException e1)
+//		{
+//			e1.printStackTrace();
+//		}
 	}
 
 	private void runNoseAndEyes(Mat grayImage)
 	{
-		try
-		{
+//		try
+//		{
 			if (noseRunnable != null)
 			{
 				noseRunnable.setGrayImage(grayImage);
@@ -138,15 +138,15 @@ class AddFaceView extends FaceView
 				eyesRunnable.setGrayImage(grayImage);
 				eyesThread.run();
 			}
-			if (noseRunnable != null)
-				noseThread.join();
-			if (eyesRunnable != null)
-				eyesThread.join();
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
+//			if (noseRunnable != null)
+//				noseThread.join();
+//			if (eyesRunnable != null)
+//				eyesThread.join();
+//		}
+//		catch (InterruptedException e)
+//		{
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override

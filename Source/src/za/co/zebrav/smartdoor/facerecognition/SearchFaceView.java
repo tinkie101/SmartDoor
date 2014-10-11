@@ -91,14 +91,14 @@ class SearchFaceView extends FaceView
 	{
 		faceRunnable.setGrayImage(grayImage);
 		faceThread.run();
-		try
-		{
-			faceThread.join();
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
+//		try
+//		{
+//			faceThread.join();
+//		}
+//		catch (InterruptedException e)
+//		{
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override

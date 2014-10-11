@@ -151,7 +151,7 @@ public class SettingsFragment extends Fragment
 		//get device available resolutions
 		Camera c = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
 		Parameters parameters = c.getParameters();
-		List<Size> sizes = parameters.getSupportedPictureSizes();
+		List<Size> sizes = parameters.getSupportedPreviewSizes();
 		c.release();
 		String[] data = new String[sizes.size()];
 		for(int i = 0; i < sizes.size(); i++)
