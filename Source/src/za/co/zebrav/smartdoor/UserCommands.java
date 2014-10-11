@@ -18,23 +18,23 @@ public class UserCommands
 		public void executeCommand(String command)
 		{
 			System.out.println(command);
-			if(command.equals("open door"))
+			if(command.equals("open door") || command.equals("please open the door"))
 			{
 				openDoor();
 			}
-			else if(command.equals("add user"))
+			else if(command.equals("add user") || command.equals("manage users"))
 			{
 				addUser();
 			}
-			else if(command.equals("Manage user"))
+			else if(command.equals("manage user") || command.equals("manage users"))
 			{
 				searchUser();
 			}
-			else if(command.equals("search user"))
+			else if(command.equals("search user") || command.equals("manage users"))
 			{
 				searchUser();
 			}
-			else if(command.equals("remove user"))
+			else if(command.equals("remove user") || command.equals("remove users"))
 			{
 				searchUser();
 			}
