@@ -550,7 +550,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button voiceCal_HelpButton = (Button) view.findViewById(R.id.voice_CalibrationHelpButton);
+		ImageButton voiceCal_HelpButton = (ImageButton) view.findViewById(R.id.voice_CalibrationHelpButton);
 		voiceCal_HelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -559,12 +559,12 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button IP_VoiceHelpButton = (Button) view.findViewById(R.id.voice_CalibrationHelpVoiceButton);
+		ImageButton IP_VoiceHelpButton = (ImageButton) view.findViewById(R.id.voice_CalibrationHelpVoiceButton);
 		IP_VoiceHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
             {
-            	voiceHelp("IPSetting");
+            	voiceHelp("Help_voiceCalibration");
             }
         });
 		

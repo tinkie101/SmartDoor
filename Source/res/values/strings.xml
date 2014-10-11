@@ -61,7 +61,6 @@
     <string name="Help_faceDetectEyes">Disables or Enables eye detection. When enabled a user will only be added when 2 eyes are detected.</string>
     <string name="Help_faceDetectNose">Disables or Enables nose detection. When enabled a user will only be added when 1 nose is detected.</string>
     
-   
     <string name="Help_twitterKey">The Consumer Key that can be retrieved from dev.twitter once you set up the application</string>
     <string name="Help_twitterSecret">The Consumer Secret that can be retrieved from dev.twitter once you set up the application</string>
     <string name="Help_twitterTokenKey">The Access Token that can be retrieved from dev.twitter once you set up the application</string>

@@ -83,8 +83,8 @@
            	android:layout_width="match_parent"
            	android:layout_height="wrap_content"
            	android:layout_weight="1"
-           	android:background="@drawable/button1"
-           	android:textColor="#fff"
+           	android:background="@drawable/button2"
+           	android:textColor="#449DEF"
            	android:text="Save" />
         
         <Button
@@ -92,8 +92,8 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	        android:textColor="#fff"
-	        android:background="@drawable/button1"
+	        android:textColor="#449DEF"
+	        android:background="@drawable/button2"
 	        android:text="Back" />
    		</LinearLayout>
    		<View
@@ -103,33 +103,67 @@
         	android:layout_margin="5dp"/>
    	
    		<!-- Voice Calibration -->
-   		<LinearLayout 
-   		    android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal">
+   		<!-- RelativeLayout 
+   				        android:layout_width="wrap_content"
+						android:layout_height="wrap_content">
+        		
+	   		    		<TextView
+	                		android:id="@+id/Port_TV"
+	                		android:layout_width="wrap_content"
+	                		android:layout_height="wrap_content"
+	                		android:text="Port:"
+	                		android:layout_centerVertical="true"
+	                		android:layout_alignParentLeft="true"
+                			android:layout_marginLeft="5dp" />
+	   		    
+	        			<ImageButton
+		        	    	android:id="@+id/server_IPortHelpVoiceButton"
+					    	android:layout_width="wrap_content"
+					    	android:layout_height="wrap_content"
+					    	android:src="@drawable/speaker_icon"
+					    	android:layout_alignParentRight="true"
+        					android:background="#00000000"/>
+	        			
+	        			<ImageButton
+	        	    		android:id="@+id/server_PortHelpButton"
+				    		android:layout_width="wrap_content"
+				    		android:layout_height="wrap_content"
+				    		android:src="@drawable/help_icon"
+				    		android:layout_toLeftOf="@+id/server_IPortHelpVoiceButton"
+        					android:background="#00000000" />
+	        			
+        			</RelativeLayout-->
+		<RelativeLayout 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+        
         	<TextView
         	    android:id="@+id/voice_calibration_TV"
-	    	    android:layout_width="wrap_content"
-	    	    android:layout_height="wrap_content"
-	    	    
-	    	    android:text="Voice calibration:" />
+               	android:layout_width="wrap_content"
+               	android:layout_height="wrap_content"
+               	android:text="Voice calibration:"
+               	android:layout_centerVertical="true"
+               	android:layout_alignParentLeft="true"
+              	android:layout_marginLeft="5dp" />
         	
-        	<Button
-        	    android:id="@+id/voice_CalibrationHelpButton"
-			    android:layout_width="match_parent"
-			    android:background="@drawable/button2"
-			    android:layout_height="wrap_content"
-			    android:textColor="#449DEF"
-			    android:text="Help" />
-        
-        	<Button
+        	<ImageButton
         	    android:id="@+id/voice_CalibrationHelpVoiceButton"
-			    android:layout_width="match_parent"
-			    android:background="@drawable/button2"
+			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:textColor="#449DEF"
-			    android:text="Voice Help" />
-   		</LinearLayout>
+			    android:src="@drawable/speaker_icon"
+			    android:layout_alignParentRight="true"
+      			android:background="#00000000"/>
+       			
+       		<ImageButton
+       		    android:id="@+id/voice_CalibrationHelpButton"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:src="@drawable/help_icon"
+		    	android:layout_toLeftOf="@+id/voice_CalibrationHelpVoiceButton"
+      			android:background="#00000000" />
+       			
+      			</RelativeLayout>
+   		
    		<LinearLayout 
    	    	android:layout_width="wrap_content"
    	    	android:layout_height="wrap_content"
@@ -144,7 +178,10 @@
         	    android:id="@+id/voice_autoCalibrateButton"
             	android:layout_width="match_parent"
             	android:layout_height="wrap_content"
-            	android:background="@drawable/button2"
+            	android:background="@drawable/button1"
+            	android:textColor="#fff"
+            	android:paddingLeft="5dp"
+            	android:paddingRight="5dp"
             	android:text="Auto Calibrate" />
    		</LinearLayout>
    		<View
