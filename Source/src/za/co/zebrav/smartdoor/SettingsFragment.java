@@ -748,7 +748,7 @@ public class SettingsFragment extends Fragment
 		((EditText) view.findViewById(R.id.twitter_TokenSecretET)).setText(tokenSecret);
 		
 		//configure buttons
-		Button twitterKey_HelpButton = (Button) view.findViewById(R.id.twitter_keyHelpButton);
+		ImageButton twitterKey_HelpButton = (ImageButton) view.findViewById(R.id.twitter_keyHelpButton);
 		twitterKey_HelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -757,7 +757,7 @@ public class SettingsFragment extends Fragment
             }
         });
 				
-		Button twitter_keyHelpVoiceButton = (Button) view.findViewById(R.id.twitter_keyHelpVoiceButton);
+		ImageButton twitter_keyHelpVoiceButton = (ImageButton) view.findViewById(R.id.twitter_keyHelpVoiceButton);
 		twitter_keyHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -766,7 +766,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button twitter_SecretHelpButton = (Button) view.findViewById(R.id.twitter_SecretHelpButton);
+		ImageButton twitter_SecretHelpButton = (ImageButton) view.findViewById(R.id.twitter_SecretHelpButton);
 		twitter_SecretHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -775,7 +775,7 @@ public class SettingsFragment extends Fragment
             }
         });
 				
-		Button twitter_SecretHelpVoiceButton = (Button) view.findViewById(R.id.twitter_SecretHelpVoiceButton);
+		ImageButton twitter_SecretHelpVoiceButton = (ImageButton) view.findViewById(R.id.twitter_SecretHelpVoiceButton);
 		twitter_SecretHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -784,7 +784,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button twitter_TokenKeyHelpButton = (Button) view.findViewById(R.id.twitter_TokenKeyHelpButton);
+		ImageButton twitter_TokenKeyHelpButton = (ImageButton) view.findViewById(R.id.twitter_TokenKeyHelpButton);
 		twitter_TokenKeyHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -793,7 +793,7 @@ public class SettingsFragment extends Fragment
             }
         });
 				
-		Button twitter_TokenKeyHelpVoiceButton = (Button) view.findViewById(R.id.twitter_TokenKeyHelpVoiceButton);
+		ImageButton twitter_TokenKeyHelpVoiceButton = (ImageButton) view.findViewById(R.id.twitter_TokenKeyHelpVoiceButton);
 		twitter_TokenKeyHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -802,7 +802,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button twitter_TokenSecretHelpButton = (Button) view.findViewById(R.id.twitter_TokenSecretHelpButton);
+		ImageButton twitter_TokenSecretHelpButton = (ImageButton) view.findViewById(R.id.twitter_TokenSecretHelpButton);
 		twitter_TokenSecretHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -811,7 +811,7 @@ public class SettingsFragment extends Fragment
             }
         });
 				
-		Button twitter_TokenSecretHelpVoiceButton = (Button) view.findViewById(R.id.twitter_TokenSecretHelpVoiceButton);
+		ImageButton twitter_TokenSecretHelpVoiceButton = (ImageButton) view.findViewById(R.id.twitter_TokenSecretHelpVoiceButton);
 		twitter_TokenSecretHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
