@@ -34,8 +34,7 @@
     <string-array name="commandOptions">
         <item>Open door</item>
         <item>Add user</item>
-        <item>Remove user</item>
-        <item>Search user</item>
+        <item>Manage user</item>
         <item>Settings</item>
         <item>Logout</item>
     </string-array>

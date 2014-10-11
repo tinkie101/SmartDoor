@@ -26,6 +26,10 @@ public class UserCommands
 			{
 				addUser();
 			}
+			else if(command.equals("Manage user"))
+			{
+				searchUser();
+			}
 			else if(command.equals("search user"))
 			{
 				searchUser();
