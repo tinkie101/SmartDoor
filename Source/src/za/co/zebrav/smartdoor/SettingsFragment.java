@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -63,8 +64,9 @@ public class SettingsFragment extends Fragment
         });
 		
 		Button serverSettigsButton = (Button) view.findViewById(R.id.ServerSetButton);
-		serverSettigsButton.setOnClickListener(new View.OnClickListener() 
+		serverSettigsButton.setOnClickListener(new OnClickListener() 
 		{
+			@Override
             public void onClick(View v) 
             {
             	serverSettings();
@@ -74,6 +76,7 @@ public class SettingsFragment extends Fragment
 		Button twitterSetButton = (Button)view.findViewById(R.id.twitterSetButton);
 		twitterSetButton.setOnClickListener(new View.OnClickListener() 
 		{
+			@Override
             public void onClick(View v) 
             {
             	twitterSettings();
@@ -173,7 +176,7 @@ public class SettingsFragment extends Fragment
 			((CheckBox) view.findViewById(R.id.faceDetectNose)).setChecked(false);
 		
 		//configure buttons
-		Button face_photoNumTrainHelpButton = (Button) view.findViewById(R.id.face_photoNumTrainHelpButton);
+		ImageButton face_photoNumTrainHelpButton = (ImageButton) view.findViewById(R.id.face_photoNumTrainHelpButton);
 		face_photoNumTrainHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -182,7 +185,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_photoNumTrainHelpVoiceButton = (Button) view.findViewById(R.id.face_photoNumTrainHelpVoiceButton);
+		ImageButton face_photoNumTrainHelpVoiceButton = (ImageButton) view.findViewById(R.id.face_photoNumTrainHelpVoiceButton);
 		face_photoNumTrainHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -191,7 +194,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_photoNumRecogHelpButton = (Button) view.findViewById(R.id.face_photoNumRecogHelpButton);
+		ImageButton face_photoNumRecogHelpButton = (ImageButton) view.findViewById(R.id.face_photoNumRecogHelpButton);
 		face_photoNumRecogHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -200,7 +203,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_photoNumRecogHelpVoiceButton = (Button) view.findViewById(R.id.face_photoNumRecogHelpVoiceButton);
+		ImageButton face_photoNumRecogHelpVoiceButton = (ImageButton) view.findViewById(R.id.face_photoNumRecogHelpVoiceButton);
 		face_photoNumRecogHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -209,7 +212,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_recThresholdHelpButton = (Button) view.findViewById(R.id.face_recThresholdHelpButton);
+		ImageButton face_recThresholdHelpButton = (ImageButton) view.findViewById(R.id.face_recThresholdHelpButton);
 		face_recThresholdHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -218,7 +221,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_recThresholdHelpVoiceButton = (Button) view.findViewById(R.id.face_recThresholdHelpVoiceButton);
+		ImageButton face_recThresholdHelpVoiceButton = (ImageButton) view.findViewById(R.id.face_recThresholdHelpVoiceButton);
 		face_recThresholdHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -227,7 +230,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_imgScaleHelpButton = (Button) view.findViewById(R.id.face_imgScaleHelpButton);
+		ImageButton face_imgScaleHelpButton = (ImageButton) view.findViewById(R.id.face_imgScaleHelpButton);
 		face_imgScaleHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -236,7 +239,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_imgScaleHelpVoiceButton = (Button) view.findViewById(R.id.face_imgScaleHelpVoiceButton);
+		ImageButton face_imgScaleHelpVoiceButton = (ImageButton) view.findViewById(R.id.face_imgScaleHelpVoiceButton);
 		face_imgScaleHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -245,7 +248,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_recAlgorithmHelpButton = (Button) view.findViewById(R.id.face_recAlgorithmHelpButton);
+		ImageButton face_recAlgorithmHelpButton = (ImageButton) view.findViewById(R.id.face_recAlgorithmHelpButton);
 		face_recAlgorithmHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -254,7 +257,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_recAlgorithmHelpVoiceButton = (Button) view.findViewById(R.id.face_recAlgorithmHelpVoiceButton);
+		ImageButton face_recAlgorithmHelpVoiceButton = (ImageButton) view.findViewById(R.id.face_recAlgorithmHelpVoiceButton);
 		face_recAlgorithmHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -263,7 +266,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_resolutionHelpButton = (Button) view.findViewById(R.id.face_resolutionHelpButton);
+		ImageButton face_resolutionHelpButton = (ImageButton) view.findViewById(R.id.face_resolutionHelpButton);
 		face_resolutionHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -272,7 +275,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_resolutionHelpVoiceButton = (Button) view.findViewById(R.id.face_resolutionHelpVoiceButton);
+		ImageButton face_resolutionHelpVoiceButton = (ImageButton) view.findViewById(R.id.face_resolutionHelpVoiceButton);
 		face_resolutionHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -281,7 +284,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_groupRectangleHelpButton = (Button) view.findViewById(R.id.face_groupRectangleHelpButton);
+		ImageButton face_groupRectangleHelpButton = (ImageButton) view.findViewById(R.id.face_groupRectangleHelpButton);
 		face_groupRectangleHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -290,7 +293,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_groupRectangleHelpVoiceButton = (Button) view.findViewById(R.id.face_groupRectangleHelpVoiceButton);
+		ImageButton face_groupRectangleHelpVoiceButton = (ImageButton) view.findViewById(R.id.face_groupRectangleHelpVoiceButton);
 		face_groupRectangleHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -299,7 +302,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_eyeDetectionHelpButton = (Button) view.findViewById(R.id.face_eyeDetectionHelpButton);
+		ImageButton face_eyeDetectionHelpButton = (ImageButton) view.findViewById(R.id.face_eyeDetectionHelpButton);
 		face_eyeDetectionHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -308,7 +311,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_eyeDetectionHelpVoiceButton = (Button) view.findViewById(R.id.face_eyeDetectionHelpVoiceButton);
+		ImageButton face_eyeDetectionHelpVoiceButton = (ImageButton) view.findViewById(R.id.face_eyeDetectionHelpVoiceButton);
 		face_eyeDetectionHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -317,7 +320,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_noseDetectionHelpButton = (Button) view.findViewById(R.id.face_noseDetectionHelpButton);
+		ImageButton face_noseDetectionHelpButton = (ImageButton) view.findViewById(R.id.face_noseDetectionHelpButton);
 		face_noseDetectionHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -326,7 +329,7 @@ public class SettingsFragment extends Fragment
             }
         });
 		
-		Button face_noseDetectionHelpVoiceButton = (Button) view.findViewById(R.id.face_noseDetectionHelpVoiceButton);
+		ImageButton face_noseDetectionHelpVoiceButton = (ImageButton) view.findViewById(R.id.face_noseDetectionHelpVoiceButton);
 		face_noseDetectionHelpVoiceButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
@@ -438,6 +441,7 @@ public class SettingsFragment extends Fragment
 		ImageButton serverIP_HelpButton = (ImageButton) view.findViewById(R.id.server_IPAddressHelpButton);
 		serverIP_HelpButton.setOnClickListener(new View.OnClickListener() 
 		{
+			@Override
             public void onClick(View v) 
             {
             	displayHelp("Help_serverIPAddress");
@@ -447,6 +451,7 @@ public class SettingsFragment extends Fragment
 		ImageButton serverIP_VoiceHelpButton = (ImageButton) view.findViewById(R.id.server_IPAddressHelpVoiceButton);
 		serverIP_VoiceHelpButton.setOnClickListener(new View.OnClickListener() 
 		{
+			@Override
             public void onClick(View v) 
             {
             	voiceHelp("Help_serverIPAddress");

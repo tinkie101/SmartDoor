@@ -54,7 +54,7 @@
 	            android:layout_height="wrap_content"
 	            android:background="@drawable/button2"
 	            android:textColor="#449DEF"
-	            android:text="Cancel" />
+	            android:text="Back" />
 	    </LinearLayout>
     </ScrollView>
 	    
@@ -233,7 +233,7 @@
     		            android:layout_width="wrap_content"
         				android:layout_height="wrap_content"
         				android:src="@drawable/help_icon"
-        				android:layout_toLeftOf="@id/server_IPAddressHelpVoiceButton"
+        				android:layout_toLeftOf="@+id/server_IPAddressHelpVoiceButton"
         				android:background="#00000000"/>
        			</RelativeLayout>
        			<LinearLayout 
@@ -286,7 +286,7 @@
 				    		android:layout_width="wrap_content"
 				    		android:layout_height="wrap_content"
 				    		android:src="@drawable/help_icon"
-				    		android:layout_toLeftOf="@id/server_IPortHelpVoiceButton"
+				    		android:layout_toLeftOf="@+id/server_IPortHelpVoiceButton"
         					android:background="#00000000" />
 	        			
         			</RelativeLayout>
@@ -336,17 +336,17 @@
            		android:layout_width="match_parent"
 	           	android:layout_height="wrap_content"
 	           	android:layout_weight="1"
-	           	android:background="@drawable/button1"
-	           	android:textColor="#fff"
+	           	android:background="@drawable/button2"
+	           	android:textColor="#449DEF"
 	           	android:text="Save" />
         
         	<Button
         	    android:id="@+id/cancelButton2"
 	        	android:layout_width="match_parent"
 	        	android:layout_height="wrap_content"
-	        	android:layout_weight="1"
-	        	android:textColor="#fff"
-	        	android:background="@drawable/button1"
+	        	android:background="@drawable/button2"
+	           	android:textColor="#449DEF"
+	           	android:layout_weight="1"
 	        	android:text="Back" />
        	</LinearLayout>
        	<View
@@ -363,29 +363,35 @@
 				android:layout_height="wrap_content"
 				android:orientation="vertical">
    				<!-- ________________________________Photo num (Train) -->
-   				<LinearLayout 
-   		    		android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal">
+   				<RelativeLayout 
+   				        android:layout_width="wrap_content"
+						android:layout_height="wrap_content">
         			
    				    <TextView
-	                android:id="@+id/TrainPhotoNumTV"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="Photo num (Train):" />
+   				        android:id="@+id/TrainPhotoNumTV"
+	                	android:layout_width="wrap_content"
+	                	android:layout_height="wrap_content"
+	                	android:text="Photo num (Train):"
+	                	android:layout_centerVertical="true"
+               			android:layout_alignParentLeft="true"
+              			android:layout_marginLeft="5dp" />
    				    
-   				    <Button
-        	    		android:id="@+id/face_photoNumTrainHelpButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Help" />
-        
-        			<Button
+        			<ImageButton
 	        	    	android:id="@+id/face_photoNumTrainHelpVoiceButton"
-				    	android:layout_width="match_parent"
+				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
-				    	android:text="Voice Help" />
-       			</LinearLayout>
+				    	android:src="@drawable/speaker_icon"
+				    	android:layout_alignParentRight="true"
+       					android:background="#00000000" />
+        			<ImageButton
+        	    		android:id="@+id/face_photoNumTrainHelpButton"
+			    		android:layout_width="wrap_content"
+			    		android:layout_height="wrap_content"
+			    		android:src="@drawable/help_icon"
+			    		android:layout_toLeftOf="@+id/face_photoNumTrainHelpVoiceButton"
+       					android:background="#00000000"
+			    		 />
+       			</RelativeLayout>
        			<LinearLayout 
    	    			android:layout_width="wrap_content"
    	    			android:layout_height="wrap_content"
@@ -406,29 +412,35 @@
         			android:layout_margin="5dp"/>
        	
        			<!-- ________________________________Photo num (Recog) -->
-   				<LinearLayout 
-   		    		android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal">
+   				<RelativeLayout 
+		        	android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
         			
    				   <TextView
 	                android:id="@+id/RecogPhotoNumTV"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:text="Photo num (Recog):" />
+	                android:text="Photo num (Recog):" 
+	                android:layout_centerVertical="true"
+               		android:layout_alignParentLeft="true"
+           			android:layout_marginLeft="5dp"/>
    				    
-   				    <Button
-        	    		android:id="@+id/face_photoNumRecogHelpButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Help" />
-        
-        			<Button
+        			<ImageButton
 	        	    	android:id="@+id/face_photoNumRecogHelpVoiceButton"
-				    	android:layout_width="match_parent"
+				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
-				    	android:text="Voice Help" />
-       			</LinearLayout>
+				    	android:src="@drawable/speaker_icon"
+				    	android:layout_alignParentRight="true"
+       					android:background="#00000000" />
+        			
+        			<ImageButton
+        	    		android:id="@+id/face_photoNumRecogHelpButton"
+			    		android:layout_width="wrap_content"
+			    		android:layout_height="wrap_content"
+			    		android:src="@drawable/help_icon"
+			    		android:layout_toLeftOf="@+id/face_photoNumRecogHelpVoiceButton"
+       					android:background="#00000000" />
+       			</RelativeLayout>
        			<LinearLayout 
    	    			android:layout_width="wrap_content"
    	    			android:layout_height="wrap_content"
@@ -448,29 +460,35 @@
         			android:layout_margin="5dp"/>
        			
        			<!-- ________________________________recognizer Threshold -->
-   				<LinearLayout 
-   		    		android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal">
+   				<RelativeLayout 
+			        android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
         			
    				   <TextView
 	                android:id="@+id/recognizerThresholdTV"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:text="Threshold:" />
+	                android:text="Threshold:"
+	                android:layout_centerVertical="true"
+               		android:layout_alignParentLeft="true"
+           			android:layout_marginLeft="5dp" />
    				    
-   				    <Button
-        	    		android:id="@+id/face_recThresholdHelpButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Help" />
-        
-        			<Button
+   				   <ImageButton
 	        	    	android:id="@+id/face_recThresholdHelpVoiceButton"
-				    	android:layout_width="match_parent"
+				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
-				    	android:text="Voice Help" />
-       			</LinearLayout>
+				    	android:src="@drawable/speaker_icon"
+				    	android:layout_alignParentRight="true"
+       					android:background="#00000000" />
+   				   
+   				    <ImageButton
+        	    		android:id="@+id/face_recThresholdHelpButton"
+			    		android:layout_width="wrap_content"
+			    		android:layout_height="wrap_content"
+			    		android:src="@drawable/help_icon"
+			    		android:layout_toLeftOf="@+id/face_recThresholdHelpVoiceButton"
+       					android:background="#00000000" />
+       			</RelativeLayout>
        			<LinearLayout 
    	    			android:layout_width="wrap_content"
    	    			android:layout_height="wrap_content"
@@ -490,29 +508,35 @@
         			android:layout_margin="5dp"/>
        			
        			<!-- ________________________________Image Scale -->
-   				<LinearLayout 
-   		    		android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal">
+   				<RelativeLayout 
+			        android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
         			
    				   <TextView
 	                android:id="@+id/ImageScaleTV"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:text="Image scale:" />
+	                android:text="Image scale:"
+	                android:layout_centerVertical="true"
+               		android:layout_alignParentLeft="true"
+           			android:layout_marginLeft="5dp"/>
    				    
-   				    <Button
-        	    		android:id="@+id/face_imgScaleHelpButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Help" />
-        
-        			<Button
+   				   <ImageButton
 	        	    	android:id="@+id/face_imgScaleHelpVoiceButton"
-				    	android:layout_width="match_parent"
+				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
-				    	android:text="Voice Help" />
-       			</LinearLayout>
+				    	android:src="@drawable/speaker_icon"
+				    	android:layout_alignParentRight="true"
+       					android:background="#00000000" />
+   				   
+   				    <ImageButton
+        	    		android:id="@+id/face_imgScaleHelpButton"
+			    		android:layout_width="wrap_content"
+			    		android:layout_height="wrap_content"
+			    		android:src="@drawable/help_icon"
+			    		android:layout_toLeftOf="@+id/face_imgScaleHelpVoiceButton"
+       					android:background="#00000000" />
+       			</RelativeLayout>
        			<LinearLayout 
    	    			android:layout_width="wrap_content"
    	    			android:layout_height="wrap_content"
@@ -531,29 +555,35 @@
         			android:layout_margin="5dp"/>
        			
        			<!-- ________________________________Face Recognizer Algorithm -->
-   				<LinearLayout 
-   		    		android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal">
+   				<RelativeLayout 
+   				        android:layout_width="wrap_content"
+						android:layout_height="wrap_content">
         			
    				   <TextView
 	                android:id="@+id/faceRecognizerAlgorithmTV"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:text="Algorithm:" />
+	                android:text="Algorithm:"
+	                android:layout_centerVertical="true"
+               		android:layout_alignParentLeft="true"
+           			android:layout_marginLeft="5dp" />
    				    
-   				    <Button
-        	    		android:id="@+id/face_recAlgorithmHelpButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Help" />
-        
-        			<Button
+   				   <ImageButton
 	        	    	android:id="@+id/face_recAlgorithmHelpVoiceButton"
-				    	android:layout_width="match_parent"
+				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
-				    	android:text="Voice Help" />
-       			</LinearLayout>
+				    	android:src="@drawable/speaker_icon"
+				    	android:layout_alignParentRight="true"
+       					android:background="#00000000" />
+   				   
+   				    <ImageButton
+        	    		android:id="@+id/face_recAlgorithmHelpButton"
+			    		android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+			    		android:src="@drawable/help_icon"
+			    		android:layout_toLeftOf="@+id/face_recAlgorithmHelpVoiceButton"
+       					android:background="#00000000"/>
+       			</RelativeLayout>
        			<LinearLayout 
    	    			android:layout_width="wrap_content"
    	    			android:layout_height="wrap_content"
@@ -572,29 +602,36 @@
         			android:layout_margin="5dp"/>
        			
        			<!-- ________________________________Resolution -->
-   				<LinearLayout 
-   		    		android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal">
+   				<RelativeLayout 
+			        android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
         			
    				   <TextView
 	                android:id="@+id/face_resolutionTV"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:text="Resolution:" />
+	                android:text="Resolution:"
+	                android:layout_centerVertical="true"
+               		android:layout_alignParentLeft="true"
+           			android:layout_marginLeft="5dp" />
    				    
-   				    <Button
-        	    		android:id="@+id/face_resolutionHelpButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Help" />
-        
-        			<Button
+   				   <ImageButton
 	        	    	android:id="@+id/face_resolutionHelpVoiceButton"
-				    	android:layout_width="match_parent"
+				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
-				    	android:text="Voice Help" />
-       			</LinearLayout>
+				    	android:src="@drawable/speaker_icon"
+				    	android:layout_alignParentRight="true"
+       					android:background="#00000000" />
+   				   
+   				    <ImageButton
+        	    		android:id="@+id/face_resolutionHelpButton"
+			    		android:layout_width="wrap_content"
+			    		android:layout_height="wrap_content"
+			    		android:src="@drawable/help_icon"
+			    		android:layout_toLeftOf="@+id/face_resolutionHelpVoiceButton"
+       					android:background="#00000000" />
+        			
+       			</RelativeLayout>
        			<LinearLayout 
    	    			android:layout_width="wrap_content"
    	    			android:layout_height="wrap_content"
@@ -613,29 +650,36 @@
         			android:layout_margin="5dp"/>
        			
        			<!-- ________________________________Group Rectangle -->
-   				<LinearLayout 
-   		    		android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal">
+       			<RelativeLayout 
+   				        android:layout_width="wrap_content"
+						android:layout_height="wrap_content">
         			
-   				   <TextView
-	                android:id="@+id/GroupRectangleTV"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="Group rectangle threshold:" />
+   				    <TextView
+   				        android:id="@+id/GroupRectangleTV"
+	                	android:layout_width="wrap_content"
+	                	android:layout_height="wrap_content"
+	                	android:text="Group rectangle threshold:"
+	                	android:layout_centerVertical="true"
+               			android:layout_alignParentLeft="true"
+              			android:layout_marginLeft="5dp" />
    				    
-   				    <Button
-        	    		android:id="@+id/face_groupRectangleHelpButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Help" />
-        
-        			<Button
+        			<ImageButton
 	        	    	android:id="@+id/face_groupRectangleHelpVoiceButton"
-				    	android:layout_width="match_parent"
+				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
-				    	android:text="Voice Help" />
-       			</LinearLayout>
+				    	android:src="@drawable/speaker_icon"
+				    	android:layout_alignParentRight="true"
+       					android:background="#00000000" />
+        			<ImageButton
+        	    		android:id="@+id/face_groupRectangleHelpButton"
+			    		android:layout_width="wrap_content"
+			    		android:layout_height="wrap_content"
+			    		android:src="@drawable/help_icon"
+			    		android:layout_toLeftOf="@+id/face_groupRectangleHelpVoiceButton"
+       					android:background="#00000000"
+			    		 />
+       			</RelativeLayout>
+        			
        			<LinearLayout 
    	    			android:layout_width="wrap_content"
    	    			android:layout_height="wrap_content"
@@ -655,23 +699,26 @@
         			android:layout_margin="5dp"/>
        			
        			<!-- ________________________________Eye Detection -->
-   				<LinearLayout 
-   		    		android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal">
+   				<RelativeLayout 
+			        android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
    				    
-   				    <Button
-        	    		android:id="@+id/face_eyeDetectionHelpButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Help" />
-        
-        			<Button
+   				    <ImageButton
 	        	    	android:id="@+id/face_eyeDetectionHelpVoiceButton"
-				    	android:layout_width="match_parent"
+				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
-				    	android:text="Voice Help" />
-       			</LinearLayout>
+				    	android:src="@drawable/speaker_icon"
+					    android:layout_alignParentRight="true"
+        				android:background="#00000000" />
+   				    
+   				    <ImageButton
+        	    		android:id="@+id/face_eyeDetectionHelpButton"
+			    		android:layout_width="wrap_content"
+			    		android:layout_height="wrap_content"
+			    		android:src="@drawable/help_icon"
+			    		android:layout_toLeftOf="@+id/face_eyeDetectionHelpVoiceButton"
+       					android:background="#00000000" />
+       			</RelativeLayout>
        			<LinearLayout 
    	    			android:layout_width="wrap_content"
    	    			android:layout_height="wrap_content"
@@ -690,23 +737,56 @@
         			android:layout_margin="5dp"/>
        			
        			<!-- ________________________________Nose Detection -->
-   				<LinearLayout 
-   		    		android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal">
+       			<!-- RelativeLayout 
+   				        android:layout_width="wrap_content"
+						android:layout_height="wrap_content">
+        		
+	   		    		<TextView
+	                		android:id="@+id/Port_TV"
+	                		android:layout_width="wrap_content"
+	                		android:layout_height="wrap_content"
+	                		android:text="Port:"
+	                		android:layout_centerVertical="true"
+	                		android:layout_alignParentLeft="true"
+                			android:layout_marginLeft="5dp" />
+	   		    
+	        			<ImageButton
+		        	    	android:id="@+id/server_IPortHelpVoiceButton"
+					    	android:layout_width="wrap_content"
+					    	android:layout_height="wrap_content"
+					    	android:src="@drawable/speaker_icon"
+					    	android:layout_alignParentRight="true"
+        					android:background="#00000000"/>
+	        			
+	        			<ImageButton
+	        	    		android:id="@+id/server_PortHelpButton"
+				    		android:layout_width="wrap_content"
+				    		android:layout_height="wrap_content"
+				    		android:src="@drawable/help_icon"
+				    		android:layout_toLeftOf="@+id/server_IPortHelpVoiceButton"
+        					android:background="#00000000" />
+	        			
+        			</RelativeLayout-->
+       			<RelativeLayout 
+			        android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
    				    
-   				    <Button
-        	    		android:id="@+id/face_noseDetectionHelpButton"
-			    		android:layout_width="match_parent"
-			    		android:layout_height="wrap_content"
-			    		android:text="Help" />
-        
-        			<Button
+   				    <ImageButton
 	        	    	android:id="@+id/face_noseDetectionHelpVoiceButton"
-				    	android:layout_width="match_parent"
+				    	android:layout_width="wrap_content"
 				    	android:layout_height="wrap_content"
-				    	android:text="Voice Help" />
-       			</LinearLayout>
+				    	android:src="@drawable/speaker_icon"
+					    android:layout_alignParentRight="true"
+        				android:background="#00000000" />
+   				    
+   				    <ImageButton
+        	    		android:id="@+id/face_noseDetectionHelpButton"
+			    		android:layout_width="wrap_content"
+			    		android:layout_height="wrap_content"
+			    		android:src="@drawable/help_icon"
+			    		android:layout_toLeftOf="@+id/face_noseDetectionHelpVoiceButton"
+       					android:background="#00000000" />
+       			</RelativeLayout>
        			<LinearLayout 
    	    			android:layout_width="wrap_content"
    	    			android:layout_height="wrap_content"
