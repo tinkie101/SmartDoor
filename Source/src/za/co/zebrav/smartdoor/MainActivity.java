@@ -8,6 +8,9 @@ package za.co.zebrav.smartdoor;
 
 import java.util.List;
 
+import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacpp.opencv_nonfree;
+
 import za.co.zebrav.smartdoor.R.id;
 import za.co.zebrav.smartdoor.database.User;
 import za.co.zebrav.smartdoor.facerecognition.PersonRecognizer;
@@ -77,7 +80,7 @@ public class MainActivity extends AbstractActivity
 			}
 			else
 			{
-				speakOut("Hello. Not enough users in database to recognise on. Please log in as an admin user and add more users.");
+				speakOut("Hello. Not enough users in database to recognise on.");
 			}
 		}
 		WindowManager.LayoutParams layout = getWindow().getAttributes();
@@ -259,6 +262,9 @@ public class MainActivity extends AbstractActivity
 							"face_faceRecognizerAlgorithm", "1"));
 		int threshold = Integer.parseInt(getSharedPreferences(settingsFile, 0).getString("face_recognizerThreshold",
 							"0"));
+		
+		//preload for workaround of known bug
+		Loader.load(opencv_nonfree.class);
 		personRecognizer = new PersonRecognizer(this, photosPerPerson, algorithm, threshold);
 		if (!loggedIn)
 		{
