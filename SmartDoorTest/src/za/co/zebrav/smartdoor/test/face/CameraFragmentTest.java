@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor.test;
+package za.co.zebrav.smartdoor.test.face;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor.test;
+package za.co.zebrav.smartdoor.test.face;
 
 import static org.bytedeco.javacpp.opencv_highgui.CV_LOAD_IMAGE_GRAYSCALE;
 import org.bytedeco.javacpp.opencv_core.Rect;
