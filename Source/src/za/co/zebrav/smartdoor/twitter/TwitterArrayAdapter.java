@@ -18,12 +18,10 @@ import android.widget.TextView;
 /**
  * 
  * @author tinkie101
- * 
  */
 public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 {
-
-	private static final String LOG_TAG_TWITTER_ARRAY_ADAPTER = "TwitterArrayAdapter";
+	private static final String LOG_TAG = "TwitterArrayAdapter";
 	private Context context;
 	private List<twitter4j.Status> objects;
 	private int resource;
@@ -135,7 +133,7 @@ public class TwitterArrayAdapter extends ArrayAdapter<twitter4j.Status>
 	 */
 	public void clearData()
 	{
-		Log.d(LOG_TAG_TWITTER_ARRAY_ADAPTER, "Cleared Data");
+		Log.d(LOG_TAG, "Cleared Data");
 		objects.clear();
 		drawableProfileImage.clear();
 		userID.clear();

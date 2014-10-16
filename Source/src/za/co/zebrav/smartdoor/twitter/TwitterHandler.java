@@ -56,8 +56,7 @@ public class TwitterHandler
 		this.fragmentContext = fragmentContext;
 		this.adapter = adapter;
 		this.view = view;
-
-		// TODO: Get this from somewhere else
+		
 		String API_KEY = key;
 		String API_SECRET = secret;
 		String ACCESS_TOKEN = tokenKey;
@@ -73,7 +72,6 @@ public class TwitterHandler
 		sinceUserTimelineID = -1;
 		sinceMentionsTimelineID = -1;
 		
-
 		adapter.updateProfileArraLists(drawableProfileImage, userID);
 	}
 
@@ -130,7 +128,6 @@ public class TwitterHandler
 		{
 			// Log, and let the user know that there isn't any network
 			// connections.
-			// Can change this to whatever notification works best
 			Toast.makeText(fragmentContext, "No network connection available.", Toast.LENGTH_LONG).show();
 			Log.i(LOG_TAG_TWITTER_HANDLER, "No network connection available.");
 		}
@@ -142,11 +139,6 @@ public class TwitterHandler
 			asynchTwitter.cancel(true);
 	}
 	
-	
-	/**
-	 * @author tinkie101
-	 * 
-	 */
 	public class AsynchTwitter extends AsyncTask<Void, Void, List<twitter4j.Status>>
 	{
 		private static final String LOG_TAG_ASYNCH_TWITTER = "AsynchTwitter";
