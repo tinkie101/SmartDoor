@@ -264,7 +264,14 @@ public class MainActivity extends AbstractActivity
 							"0"));
 		
 		//preload for workaround of known bug
-		Loader.load(opencv_nonfree.class);
+//		try
+//		{
+//			Loader.load(opencv_nonfree.class);
+//		}
+//		catch(Exception e)
+//		{
+//			Log.d(TAG, e.toString());
+//		}
 		personRecognizer = new PersonRecognizer(this, photosPerPerson, algorithm, threshold);
 		if (!loggedIn)
 		{

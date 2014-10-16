@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import at.fhooe.mcm.smc.math.mfcc.FeatureVector;
 
 public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 {
@@ -21,6 +22,7 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 	private TrainTask trainTask;
 	private int trainCounter;
 	private boolean isTraining;
+	private FeatureVector featureVector;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -98,7 +100,9 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 			voiceAuthenticator.startRecording();
 			soundLevelDialog.dismiss();
 
-			if (!voiceAuthenticator.train())
+			featureVector = voiceAuthenticator.train(featureVector);
+
+			if (featureVector == null)
 			{
 				Log.d(LOG_TAG, "Error with training voice, check if activeFile is set");
 				return false;
@@ -120,6 +124,11 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 			{
 				txtCounter.setText("Voice Trained Counter: " + trainCounter);
 				Toast.makeText(activity, "Voice Successfully Trained", Toast.LENGTH_LONG).show();
+				if(trainCounter >= 3)
+				{
+					btnTrain.setEnabled(false);
+					btnTrain.setVisibility(Button.INVISIBLE);
+				}
 			}
 			else
 			{
@@ -128,6 +137,30 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 
 			isTraining = false;
 			Log.i(LOG_TAG, "Done Training Voice");
+		}
+	}
+
+	private class FinishTrainingTask extends AsyncTask<Void, Void, Boolean>
+	{
+		@Override
+		protected Boolean doInBackground(Void... params)
+		{
+			return voiceAuthenticator.finishTraining(featureVector);
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result)
+		{
+			processingDialog.dismiss();
+			if (result)
+			{
+				activity.getUser().setCodeBook(voiceAuthenticator.getCodeBook());
+				((AddUserActivity) activity).doneStepThreeAddUser();
+			}
+			else
+			{
+				Toast.makeText(activity, "Error finishing the training", Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 
@@ -152,8 +185,8 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 			}
 			else if (activity.getUser() != null)
 			{
-				activity.getUser().setCodeBook(voiceAuthenticator.getCodeBook());
-				((AddUserActivity) activity).doneStepThreeAddUser();
+				processingDialog.show();
+				new FinishTrainingTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			}
 			else
 			{

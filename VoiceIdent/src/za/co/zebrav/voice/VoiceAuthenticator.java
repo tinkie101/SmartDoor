@@ -33,7 +33,6 @@ public class VoiceAuthenticator
 	public VoiceAuthenticator(Dialog dialog)
 	{
 		this.dialog = (ProgressDialog) dialog;
-
 		voiceRecorder = new VoiceRecorder(this.dialog);
 		codeBook = new ArrayList<Codebook>();
 	}
@@ -102,6 +101,17 @@ public class VoiceAuthenticator
 		}
 		Log.d(LOG_TAG, "Added all MFCC vectors to pointlist");
 		return pl;
+	}
+
+	private FeatureVector mergeFeatureVector(FeatureVector featureVector, double[][] mfcc)
+	{
+		int vectorCount = mfcc.length;
+		for (int i = 0; i < vectorCount; i++)
+		{
+			featureVector.add(mfcc[i]);
+		}
+		Log.d(LOG_TAG, "Added all MFCC vectors to pointlist");
+		return featureVector;
 	}
 
 	private short createSample(byte[] buffer)
@@ -195,8 +205,6 @@ public class VoiceAuthenticator
 
 	public FeatureVector getCurrentFeatureVector()
 	{
-		FeatureVector result = null;
-
 		Log.i(LOG_TAG, "Starting to read samples from buffer");
 		double[] samples = readSamplesFromBuffer();
 
@@ -204,7 +212,7 @@ public class VoiceAuthenticator
 		double[][] mfcc = calculateMfcc(samples);
 
 		Log.i(LOG_TAG, "Creating Feature Vector");
-		result = createFeatureVector(mfcc);
+		FeatureVector result = createFeatureVector(mfcc);
 
 		return result;
 	}
@@ -235,7 +243,7 @@ public class VoiceAuthenticator
 		return result;
 	}
 
-	public boolean train()
+	public FeatureVector train(FeatureVector featureVector)
 	{
 		Log.i(LOG_TAG, "Starting to samples from buffer");
 		double[] samples = readSamplesFromBuffer();
@@ -243,27 +251,46 @@ public class VoiceAuthenticator
 		if (samples.length < 1)
 		{
 			Log.d(LOG_TAG, "Nothing Recored");
-			return false;
+			return null;
 		}
 
 		Log.i(LOG_TAG, "Starting to calculate MFCC");
 		double[][] mfcc = calculateMfcc(samples);
 
 		Log.i(LOG_TAG, "Creating Feature Vector");
-		FeatureVector pl = createFeatureVector(mfcc);
 
-		Log.i(LOG_TAG, "Do Clustering");
-		KMeans kmeans = doClustering(pl);
+		if (featureVector == null)
+		{
+			featureVector = createFeatureVector(mfcc);
+		}
+		else
+		{
+			featureVector = mergeFeatureVector(featureVector, mfcc);
+		}
 
-		Log.i(LOG_TAG, "Create CodeBook");
-		Codebook cb = createCodebook(kmeans);
+		return featureVector;
+	}
 
-		Log.i(LOG_TAG, "Insert Feature");
-		insertFeature(cb);
+	public boolean finishTraining(FeatureVector featureVector)
+	{
+		if (featureVector != null)
+		{
+			Log.i(LOG_TAG, "Do Clustering");
+			KMeans kmeans = doClustering(featureVector);
 
-		Log.i(LOG_TAG, "Finished Traning.");
+			Log.i(LOG_TAG, "Create CodeBook");
+			Codebook cb = createCodebook(kmeans);
 
-		return true;
+			Log.i(LOG_TAG, "Insert Feature");
+			insertFeature(cb);
+
+			Log.i(LOG_TAG, "Finished Traning.");
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public void setMicThreshold(int threshold)

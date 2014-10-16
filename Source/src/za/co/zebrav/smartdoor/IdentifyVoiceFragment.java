@@ -289,9 +289,14 @@ public class IdentifyVoiceFragment extends VoiceFragment
 		if (loopCounter == maxNumAttempts)
 			activity.speakOut("After this voice stoped speaking, clearly reed the phrase out loud.");
 		else if (loopCounter > 0)
+		{
 			activity.speakOut("Could not recognize voice, please try again.");
+			soundLevelDialog.setMessage("Say: \"My voice is my password, and it should log me in\"");
+		}
 		else
+		{
 			activity.speakOut("Could not recognize voice.");
+		}
 		startRecording();
 	}
 }

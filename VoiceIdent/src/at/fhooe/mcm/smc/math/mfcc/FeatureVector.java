@@ -7,7 +7,8 @@ import java.util.List;
 import at.fhooe.mcm.smc.math.matrix.Matrix;
 
 /** Represents a vector of features, in this case MFCCs. */
-public class FeatureVector implements Serializable {
+public class FeatureVector implements Serializable
+{
 	/**
 	 * 
 	 */
@@ -16,12 +17,12 @@ public class FeatureVector implements Serializable {
 	private int numberElements;
 	private List<Matrix> data;
 
-
 	/**
 	 * Creates a new point list with default capacity and a dimension.
 	 * 
 	 */
-	public FeatureVector(int dimension) {
+	public FeatureVector(int dimension)
+	{
 		this(dimension, 16384);
 	}
 
@@ -31,11 +32,19 @@ public class FeatureVector implements Serializable {
 	 * @param dimension
 	 *            int dimension of the vector space; must be at least one
 	 */
-	public FeatureVector(int dimension, int capacity) {
+	public FeatureVector(int dimension, int capacity)
+	{
 		if (dimension < 1 || capacity < 1)
-			throw new IllegalArgumentException(
-					"capacity and dimension must be >= 1");
+			throw new IllegalArgumentException("capacity and dimension must be >= 1");
 		this.data = new ArrayList<Matrix>(capacity);
+		this.dimension = dimension;
+	}
+
+	public void increaseDimension(int dimension)
+	{
+		if (dimension < 1)
+			throw new IllegalArgumentException("dimension must be >= 1");
+
 		this.dimension = dimension;
 	}
 
@@ -43,10 +52,10 @@ public class FeatureVector implements Serializable {
 	 * Adds a new point.
 	 * 
 	 */
-	public void add(double[] point) {
+	public void add(double[] point)
+	{
 		if (point == null || point.length != dimension)
-			throw new IllegalArgumentException(
-					"data point must not be a null value and dimension must agree");
+			throw new IllegalArgumentException("data point must not be a null value and dimension must agree");
 
 		Matrix x = new Matrix(point, dimension);
 
@@ -56,15 +65,18 @@ public class FeatureVector implements Serializable {
 
 	}
 
-	public int getDimension() {
+	public int getDimension()
+	{
 		return dimension;
 	}
 
-	public int size() {
+	public int size()
+	{
 		return numberElements;
 	}
 
-	public Matrix get(int i) {
+	public Matrix get(int i)
+	{
 		return data.get(i);
 	}
 }

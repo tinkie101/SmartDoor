@@ -1,6 +1,5 @@
 package za.co.zebrav.smartdoor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import za.co.zebrav.smartdoor.database.User;
@@ -30,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
-import at.fhooe.mcm.smc.math.vq.Codebook;
 
 public class SettingsFragment extends Fragment
 {
@@ -43,6 +41,7 @@ public class SettingsFragment extends Fragment
 	
 	private SharedPreferences settings = null;
 	private static String PREFS_NAME;
+	private String[] commandOptions;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
@@ -57,12 +56,12 @@ public class SettingsFragment extends Fragment
 		voiceSettings = (LinearLayout) view.findViewById(R.id.VoiceSettings);
 		twitterSettings = (LinearLayout) view.findViewById(R.id.TwitterSettings);
 		
-		Button trainSettingsButton = (Button) view.findViewById(R.id.trainingSetButton);
-		trainSettingsButton.setOnClickListener(new View.OnClickListener() 
+		Button faceSettingsButton = (Button) view.findViewById(R.id.trainingSetButton);
+		faceSettingsButton.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
             {
-            	trainSettings();
+            	faceSettings();
             }
         });
 		
@@ -112,8 +111,18 @@ public class SettingsFragment extends Fragment
 				done();
             }
         });
+		//TODO
+		//commandOptions = new String[]{"Face","Voice","Server","Twitter","Back"};
 		
 		return view;
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		//TODO
+		//((MainActivity) getActivity()).startListeningForCommands(commandOptions);
 	}
 	
 	private void done()
@@ -123,7 +132,7 @@ public class SettingsFragment extends Fragment
 	}
 	
 	//-------------------------------------------------------------------------------------train settings
-	private void trainSettings()
+	private void faceSettings()
 	{
 		faceSettings.setVisibility(View.VISIBLE);
 		chooseSettingsLayout.setVisibility(View.GONE);
