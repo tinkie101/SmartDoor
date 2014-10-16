@@ -6,12 +6,14 @@
 //This is the main activity for the Smart Door Application.
 package za.co.zebrav.smartdoor;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_nonfree;
 
 import za.co.zebrav.smartdoor.R.id;
+import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import za.co.zebrav.smartdoor.facerecognition.PersonRecognizer;
 import za.co.zebrav.smartdoor.facerecognition.SearchCameraFragment;
@@ -117,7 +119,7 @@ public class MainActivity extends AbstractActivity
 
 		identifyVoiceFragment = new IdentifyVoiceFragment();
 		searchCameraFragment = new SearchCameraFragment(-1);
-		logoutTimer = new CountDownTimer(60000, 10000)
+		logoutTimer = new CountDownTimer(90000, 10000)
 		{
 			public void onFinish()
 			{
@@ -132,7 +134,7 @@ public class MainActivity extends AbstractActivity
 
 			}
 		};
-		brightnessTimer = new CountDownTimer(30000, 10000)
+		brightnessTimer = new CountDownTimer(60000, 10000)
 		{
 			public void onFinish()
 			{
@@ -272,7 +274,8 @@ public class MainActivity extends AbstractActivity
 //		{
 //			Log.d(TAG, e.toString());
 //		}
-		personRecognizer = new PersonRecognizer(this, photosPerPerson, algorithm, threshold);
+		LinkedList<Integer> idList = getIDList();
+		personRecognizer = new PersonRecognizer(photosPerPerson, algorithm, threshold,idList,getDir("data", 0));
 		if (!loggedIn)
 		{
 			// user = null;
@@ -281,6 +284,19 @@ public class MainActivity extends AbstractActivity
 			this.switchToCamera();
 		}
 		setBrightness(1.0f);
+	}
+	
+	private LinkedList<Integer> getIDList()
+	{
+		List<Object> tempList = activityDatabase.load(new User(null, null, null, null, null, 0, null));
+		LinkedList<Integer> result = new LinkedList<Integer>();
+		for(Object o : tempList)
+		{
+			User u = (User)o;
+			int i = u.getID();
+			result.add(i);
+		}
+		return result;
 	}
 
 	/**
