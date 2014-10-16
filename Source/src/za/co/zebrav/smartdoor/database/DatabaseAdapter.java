@@ -11,7 +11,7 @@ public interface DatabaseAdapter
 	 */
 	public List<Object> load(Object object);
 	
-	public void save(Object object);
+	public boolean save(Object object);
 	
 	public boolean exists(Object object);
 	
