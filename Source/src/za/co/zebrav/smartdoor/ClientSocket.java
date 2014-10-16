@@ -24,13 +24,13 @@ public class ClientSocket extends AsyncTask<String, Void, String>
 
 	private PrintWriter out;
 	private BufferedReader inFromServer;
-	
+
 	public ClientSocket(Activity act)
 	{
 		String PREFS_NAME = act.getResources().getString((R.string.settingsFileName));
 		SharedPreferences settings = act.getSharedPreferences(PREFS_NAME, 0);
 		SERVERPORT = Integer.parseInt(settings.getString("server_Port", "0"));
-		if(SERVERPORT == 0)//not set, use defaults
+		if (SERVERPORT == 0)// not set, use defaults
 		{
 			SERVERPORT = Integer.parseInt(act.getResources().getString((R.string.server_Port)));
 			SERVER_IP = act.getResources().getString((R.string.server_IP));
@@ -111,15 +111,11 @@ public class ClientSocket extends AsyncTask<String, Void, String>
 			}
 			catch (UnknownHostException e)
 			{
-
 				e.printStackTrace();
-
 			}
 			catch (IOException e)
 			{
-
 				e.printStackTrace();
-
 			}
 			return null;
 		}

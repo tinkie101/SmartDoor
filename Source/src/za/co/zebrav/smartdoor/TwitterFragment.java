@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,14 +94,6 @@ public class TwitterFragment extends Fragment
 		
 	}
 	
-	
-	/**
-	 * Here the 
-	 * @param key
-	 * @param secret
-	 * @param tokenKey
-	 * @param tokenSecret
-	 */
 	public void startTwitterFeed(String key, String secret, String tokenKey, String tokenSecret)
 	{
 		feedSet = true;
