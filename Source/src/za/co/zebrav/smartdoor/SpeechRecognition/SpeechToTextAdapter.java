@@ -192,10 +192,11 @@ public class SpeechToTextAdapter
 					break;
 
 				case 4:
-					// Toast.makeText(context, "Server sends error status", Toast.LENGTH_LONG).show();
+					Toast.makeText(context, "Voice Commands is Not Available", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Server sends error status");
-					// soundLevel.setVisibility(ProgressBar.GONE);
+					stopListening();
 					break;
+					// soundLevel.setVisibility(ProgressBar.GONE);
 
 				case 5:
 					// Toast.makeText(context, "Other client side errors", Toast.LENGTH_LONG).show();
@@ -204,7 +205,7 @@ public class SpeechToTextAdapter
 					break;
 
 				case 6:
-					// Toast.makeText(context, "Speech Listner Timed Out", Toast.LENGTH_LONG).show();
+					// Toast.makeText(context, "Speech Listener Timed Out", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Speech Listner Timed Out");
 					// soundLevel.setVisibility(ProgressBar.GONE);
 					break;
@@ -216,13 +217,15 @@ public class SpeechToTextAdapter
 					break;
 
 				case 8:
-					// Toast.makeText(context, "Recognition service is busy", Toast.LENGTH_LONG).show();
+					Toast.makeText(context, "Voice Commands is Not Available", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Recognition service is busy");
+					stopListening();
 					break;
 
 				case 9:
-					// Toast.makeText(context, "Insufficient permissions", Toast.LENGTH_LONG).show();
+					Toast.makeText(context, "Voice Commands is Not Available", Toast.LENGTH_LONG).show();
 					Log.d(LOG_TAG, "Insufficient permissions");
+					stopListening();
 					// soundLevel.setVisibility(ProgressBar.GONE);
 					break;
 
