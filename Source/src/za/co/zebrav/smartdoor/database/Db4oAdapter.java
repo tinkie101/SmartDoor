@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 
-import com.db4o.Db4o;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
@@ -21,56 +20,104 @@ public class Db4oAdapter implements DatabaseAdapter
 	
 	private static Db4oAdapter instance;
 	
+	/**
+	 * Db4oAdapter is used to open, use and close a db4o database.
+	 * @precondition Context parameter must not be Null
+	 * @precondition This constructor must be called from getInstance 
+	 * @postcondtion This object will be ready for use.
+	 * @param context, Context of Activity that calls this the get instance function.
+	 */
 	private Db4oAdapter(Context context)
 	{
+		//postCondition 1:
+		if(context == null)
+			Log.d(LOG_TAG, "Db4oAdapter constructor parameter should be, but is null.");
 		this.context = context;
 	}
 	
+	/**
+	 * This class follows the singleton pattern.  To access the only Db4oAdapter in the system
+	 * one should call the getInstance function.
+	 * @precondition inputed parameter should not be null.
+	 * @param context
+	 * @return instance, the only Db4o object
+	 */
 	public static Db4oAdapter getInstance(Context context)
 	{
 		if(instance == null)
 			instance = new Db4oAdapter(context);
 		return instance;
 	}
+	
+	/**
+	 * Configurates and opens the database.
+	 * @precondition DB should not be open already.
+	 * @postcondition DB is open
+	 */
 	public void open()
 	{
+		if(isOpen())
+			Log.d(LOG_TAG, "Database is open already.");
 		try
 		{
 			if (database == null || database.ext().isClosed())
 			{
 				database = Db4oEmbedded.openFile(config(), db4oDBFullPath(context));
 				isDbOpen = true;
-				Log.d(LOG_TAG, "Opened Database");
 			}
 		}
 		catch (Exception ie)
 		{
-			Log.d(LOG_TAG, "Exceptio");
-			Log.e(Db4oAdapter.class.getName(), ie.getMessage());
 		}
 	}
 
+	/**
+	 * Needed to open a connection to the db
+	 * @return configuration
+	 */
 	private EmbeddedConfiguration config()
 	{
 		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
 		return configuration;
 	}
 
+	/**
+	 * Uses the activity path to find the path to the database file location
+	 * @precondition parameter context must not be zero
+	 * @param Activity context
+	 * @return Path to database file is returned
+	 */
 	private String db4oDBFullPath(Context ctx)
 	{
+		//precondition 1
+		if(ctx == null)
+			Log.d(LOG_TAG, "Opened Database");
 		return ctx.getDir("data", 0) + "/" + DATABASE_NAME;
 	}
 
+	/**
+	 * Commited changes to database
+	 * @precondition Database must be open.
+	 */
 	protected void commit()
 	{
 		database.commit();
 	}
 
+	/**
+	 * Rollsback on last operation
+	 * @precondition Database must be open
+	 */
 	public void rollBack()
 	{
 		database.rollback();
 	}
 
+	/**
+	 * Closes the database
+	 * @precondition Database musn't be currently open
+	 * @postcondition Database closed
+	 */
 	public void close()
 	{
 		if (this.database != null)
@@ -81,37 +128,71 @@ public class Db4oAdapter implements DatabaseAdapter
 		}
 	}
 
+	/**
+	 * Checkes if the database is currently open.
+	 * @return true if database is open
+	 * @return false if database is closed
+	 */
 	public boolean isOpen()
 	{
 		return isDbOpen;
 	}
 
-	public ObjectContainer getDatabase()
+	/**
+	 * Fetches and returns the database
+	 * @return ObjectContainer, the database
+	 */
+	private ObjectContainer getDatabase()
 	{
 		return this.database;
 	}
 
+	/**
+	 * Loads all objects in database that fits the parameter prototype's critiria.
+	 * @precondition Database must be open
+	 * @param Object, a prototype of the type of objects to be returned
+	 * @return List, returns all Objects in database of the same type and constructor parameters as the parameter
+	 */
 	@Override
 	public List<Object> load(Object object)
 	{
+		//precondition
+		if(!isOpen())
+			Log.d(LOG_TAG, "Database isn't open. Must be open to call load function.");
 		List<Object> result = getDatabase().queryByExample(object);
 		return result;
 	}
 
+	/**
+	 * Saves the object sent as parameter in the DB
+	 * @param Object
+	 * @precondition Database must be open
+	 * @postcondition Object saved
+	 */
 	@Override
 	public void save(Object object)
 	{
+		//precondition
+			if(!isOpen())
+				Log.d(LOG_TAG, "Database isn't open. Must be open to call save function.");
+		
 		getDatabase().store(object);
 		commit();
 	}
 
 	/**
-	 * @param username
-	 *            to check if user already exists with this username
-	 * @return true if user exists, false if it does not
+	 *Checks if the Objects sent as parameter already exists in the database
+	 *@precondition Database must be open
+	 *@param Object, the object to check if it is already in db
+	 *@return True, if object from parameter already exists in db
+	 *@return Fasle, if the object from parameter is not present in the db.
 	 */
 	public boolean exists(Object object)
 	{
+		//precondition
+			if(!isOpen())
+				Log.d(LOG_TAG, "Database isn't open. Must be open to call exists function.");
+		
 		boolean exists = false;
 		ObjectSet<Object> result = getDatabase().queryByExample(object);
 
@@ -120,8 +201,19 @@ public class Db4oAdapter implements DatabaseAdapter
 		return exists;
 	}
 
+	/**
+	 * Deletes all objects in database of the Object type sent in.
+	 * @param Any Object type
+	 * @precondition database must be open.
+	 * @return true if at least some objects were deleted
+	 * @return false if no objects were deleted.
+	 */
 	public boolean delete(Object object)
 	{
+		//precondition
+		if(!isOpen())
+			Log.d(LOG_TAG, "Database isn't open. Must be open to call delete function.");
+		
 		boolean found = false;
 
 		// get user from database
@@ -140,8 +232,18 @@ public class Db4oAdapter implements DatabaseAdapter
 		}
 	}
 
+	/**
+	 * Deletes only one of the objects of that criteria
+	 * @param object
+	 * @return true, if object deleted
+	 * @return false if not deleted.
+	 * @precondition Database must be open
+	 */
 	public boolean deleteThisOne(User object)
 	{
+		//precondition
+		if(!isOpen())
+			Log.d(LOG_TAG, "Database isn't open. Must be open to call delete one object function.");
 		// get user from database
 		ObjectSet result = getDatabase().queryByExample(new User(null, null, null, null, null, object.getID(), null));
 
@@ -162,8 +264,19 @@ public class Db4oAdapter implements DatabaseAdapter
 		}
 	}
 
-	public boolean update(Object oldO, Object newO)
+	/**
+	 * Database replaces all objects that resemble parameter 1 and replace it with parameter 2
+	 * @precondition database must be open
+	 * @postcondition all objects that resemble parameter 1 is replaced with one of parameter 2
+	 * @param Object oldO, Objects that resemble this will be deleted from the database
+	 * @param Object newO, Object to replace previously deleted objects
+	 */
+	public boolean replace(Object oldO, Object newO)
 	{
+		//precondition
+		if(!isOpen())
+			Log.d(LOG_TAG, "Database isn't open. Must be open to call update function.");
+		
 		delete(oldO);
 
 		save(newO);

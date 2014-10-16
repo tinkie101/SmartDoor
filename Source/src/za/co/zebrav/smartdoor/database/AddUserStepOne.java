@@ -83,7 +83,7 @@ public class AddUserStepOne extends Fragment
 			lastPK = (LastPK) results.get(0);
 			newPK = lastPK.getPK() + 1;
 			LastPK temp = new LastPK(newPK);
-			db.update(lastPK, temp);
+			db.replace(lastPK, temp);
 		}
 		return newPK;
 	}

@@ -17,5 +17,5 @@ public interface DatabaseAdapter
 	
 	public boolean delete(Object object);
 	
-	public boolean update(Object oldO, Object newO);
+	public boolean replace(Object oldO, Object newO);
 }
