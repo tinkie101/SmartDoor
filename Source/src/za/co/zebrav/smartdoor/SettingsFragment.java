@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -129,9 +130,9 @@ public class SettingsFragment extends Fragment
 	
 	private void done()
 	{
-		//to drop keyboard
-		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+		      Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
 		
 		MainActivity m = (MainActivity) getActivity();
 		m.switchToLoggedInFrag();
