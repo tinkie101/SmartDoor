@@ -1,65 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background" >
-	
-	<LinearLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-		    android:orientation="vertical" >
-		            
-	       <LinearLayout
-	           android:layout_width="match_parent"
-	           android:layout_height="wrap_content"
-	           android:orientation="horizontal" >
-	      
-	           <TextView
-	          android:id="@+id/ManualLogin_tv1"
-	          android:layout_width="wrap_content"
-	          android:layout_height="wrap_content"
-	          android:text="@string/ManualLogin_tv1"
-	          android:textSize="15sp" />
-	
-	           <EditText
-	               android:id="@+id/ManualLogin_et1"
-	               android:layout_width="match_parent"
-	               android:layout_height="wrap_content"
-	               android:hint="Username"
-	               android:inputType="text"
-	               android:textSize="15sp" />
-	           
-	      </LinearLayout>
-	
-	      <LinearLayout
-	      android:layout_width="match_parent"
-	      android:layout_height="wrap_content"
-	      android:orientation="horizontal" >
-	      <TextView
-	          android:id="@+id/ManualLogin_tv2"
-	          android:layout_width="wrap_content"
-	          android:layout_height="wrap_content"
-	          android:text="@string/ManualLogin_tv2"
-	          android:textSize="15sp" />
-	
-	      <EditText
-	          android:id="@+id/ManualLogin_et2"
-	          android:layout_width="match_parent"
-	          android:layout_height="wrap_content"
-	          android:inputType="textPassword"
-	          android:hint="Password"
-	          android:textSize="15sp" />
-	      </LinearLayout>
-	
-	       <Button
-	           android:id="@+id/ManualLogin_button1"
-	           android:layout_width="match_parent"
-	           android:layout_height="wrap_content"
-	           android:background="@drawable/button1"
-	           android:onClick="pressedLoginButton"
-	           android:text="@string/ManualLogin_b1"
-	           android:textColor="#fff"
-	           android:textSize="15sp" />
-	
-	</LinearLayout>
-</ScrollView>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+	    android:background="@drawable/background" >
+	            
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal" >
+      
+           <TextView
+          android:id="@+id/ManualLogin_tv1"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/ManualLogin_tv1"
+          android:textSize="15sp" />
+
+           <EditText
+               android:id="@+id/ManualLogin_et1"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:hint="Username"
+               android:inputType="text"
+               android:textSize="15sp" />
+           
+      </LinearLayout>
+
+      <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal" >
+      <TextView
+          android:id="@+id/ManualLogin_tv2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/ManualLogin_tv2"
+          android:textSize="15sp" />
+
+      <EditText
+          android:id="@+id/ManualLogin_et2"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="textPassword"
+          android:hint="Password"
+          android:textSize="15sp" />
+      </LinearLayout>
+
+       <Button
+           android:id="@+id/ManualLogin_button1"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@drawable/button1"
+           android:onClick="pressedLoginButton"
+           android:text="@string/ManualLogin_b1"
+           android:textColor="#fff"
+           android:textSize="15sp" />
+
+</LinearLayout>
