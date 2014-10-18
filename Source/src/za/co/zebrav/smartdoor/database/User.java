@@ -19,7 +19,8 @@ public class User implements Serializable
 	public User(String firstnames, String surname, String username, String password, Boolean adminRights, int pk, ArrayList<Codebook> cb)
 	{
 		this.username = username;
-		this.password = password;
+		if(password != null)
+		this.password = "" +password.hashCode();
 		this.firstnames = firstnames;
 		this.surname = surname;
 		this.adminRights = adminRights;
@@ -79,7 +80,8 @@ public class User implements Serializable
 	//------------------------------------------------------------------------setPassword
 	public void setPassword(String password)
 	{
-		this.password = password;
+		if(password != null)
+			this.password = "" +password.hashCode();
 	}
 
 	//------------------------------------------------------------------------getFirstnames

@@ -10,7 +10,6 @@ import static org.bytedeco.javacpp.opencv_highgui.imread;
 import java.io.File;
 import java.nio.IntBuffer;
 import java.util.LinkedList;
-
 import org.bytedeco.javacpp.opencv_contrib.FaceRecognizer;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.MatVector;
@@ -58,6 +57,8 @@ public class PersonRecognizer
 	 */
 	public PersonRecognizer(int photosPerPerson, int algorithm, int threshold, LinkedList<Integer> IDList, File dataDir)
 	{
+		//preload for workaround of known bug
+		//Loader.load(opencv_nonfree.class);
 		this.photosPerPerson = photosPerPerson;
 		switch (algorithm)
 		{

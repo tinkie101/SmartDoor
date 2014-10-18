@@ -34,17 +34,7 @@ public class GlobalApplication extends Application
 		int threshold = Integer.parseInt(getSharedPreferences(settingsFile, 0).getString("face_recognizerThreshold",
 							"0"));
 		
-		//preload for workaround of known bug
-//		try
-//		{
-//			Loader.load(opencv_nonfree.class);
-//		}
-//		catch(Exception e)
-//		{
-//			Log.d(TAG, e.toString());
-//		}
-		//processingDialog.show();
-		LinkedList<Integer> idList = getIDList(db);
+				LinkedList<Integer> idList = getIDList(db);
 		personRecognizer = new PersonRecognizer(photosPerPerson, algorithm, threshold,idList,getDir("data", 0));
 		//processingDialog.dismiss();
 	}
