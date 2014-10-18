@@ -138,6 +138,18 @@ public class SettingsFragment extends Fragment
 		m.switchToLoggedInFrag();
 	}
 	
+	private int getIndexInString(String[] array, String text)
+	{
+		int i = -1;
+		for(int j = 0; j < array.length; j++)
+		{
+			i++;
+			if(text.equals(array[j]))
+				return i;
+		}
+		return i;
+	}
+	
 	//-------------------------------------------------------------------------------------train settings
 	private void faceSettings()
 	{
@@ -146,10 +158,13 @@ public class SettingsFragment extends Fragment
 		
 		//getPreferences and display current settings
 		String trainPhotoNum = settings.getString("face_TrainPhotoNum", "");
-		((EditText) view.findViewById(R.id.TrainPhotoNumET)).setText(trainPhotoNum);
+		String[] numPhotos = getResources().getStringArray(R.array.NumPhotos);
+		int index = getIndexInString(numPhotos, trainPhotoNum);
+		((Spinner) view.findViewById(R.id.TrainPhotoNumSP)).setSelection(index);
 		
 		String recogPhotoNum = settings.getString("face_RecogPhotoNum", "");
-		((EditText) view.findViewById(R.id.RecogPhotoNumET)).setText(recogPhotoNum);
+		index = getIndexInString(numPhotos, recogPhotoNum);
+		((Spinner) view.findViewById(R.id.RecogPhotoNumSP)).setSelection(index);
 		
 		String saveTrainThres = settings.getString("face_recognizerThreshold", "");
 		((EditText) view.findViewById(R.id.recognizerThresholdET)).setText(saveTrainThres);
@@ -375,11 +390,11 @@ public class SettingsFragment extends Fragment
 		{
 			SharedPreferences.Editor editor = settings.edit();
 			
-			String trainPhotosNum = ((EditText) view.findViewById(R.id.TrainPhotoNumET)).getText().toString();
+			String trainPhotosNum = ((Spinner) view.findViewById(R.id.TrainPhotoNumSP)).getSelectedItem().toString();
 		    editor.putString("face_TrainPhotoNum", trainPhotosNum);
 		    editor.commit();
 		    
-		    String recogPhotosNum = ((EditText) view.findViewById(R.id.RecogPhotoNumET)).getText().toString();
+		    String recogPhotosNum = ((Spinner) view.findViewById(R.id.RecogPhotoNumSP)).getSelectedItem().toString();
 		    editor.putString("face_RecogPhotoNum", recogPhotosNum);
 		    editor.commit();
 		    
@@ -451,9 +466,9 @@ public class SettingsFragment extends Fragment
 	
 	private boolean trainNoneEmpty()
 	{
-		if(((EditText) view.findViewById(R.id.TrainPhotoNumET)).getText().toString().equals(""))
+		if(((Spinner) view.findViewById(R.id.TrainPhotoNumSP)).getSelectedItem().toString().equals(""))
 			return false;
-		else if(((EditText) view.findViewById(R.id.RecogPhotoNumET)).getText().toString().equals(""))
+		else if(((Spinner) view.findViewById(R.id.RecogPhotoNumSP)).getSelectedItem().toString().equals(""))
 			return false;
 		else if(((EditText) view.findViewById(R.id.recognizerThresholdET)).getText().toString().equals(""))
 			return false;
