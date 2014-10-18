@@ -79,8 +79,6 @@ public class AddUserActivity extends AbstractActivity
 	 */
 	public void switchFragToStep3()
 	{	
-		GlobalApplication application = (GlobalApplication)getApplication();
-		application.trainPersonRecogniser(activityDatabase);
 		enableStep3Button();
 		disableStep2Button();
 		
@@ -101,6 +99,8 @@ public class AddUserActivity extends AbstractActivity
 	public void doneStepThreeAddUser()
 	{
 		saveUser();
+		GlobalApplication application = (GlobalApplication)getApplication();
+		application.trainPersonRecogniser(activityDatabase);
 		speakOut("Successfully added user.");
 		Toast.makeText(this.getApplicationContext(), "Saved new user successfully", Toast.LENGTH_SHORT).show();
 		switchFragToStep1();

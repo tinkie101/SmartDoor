@@ -14,6 +14,7 @@ import org.bytedeco.javacpp.opencv_contrib.FaceRecognizer;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.MatVector;
 
+import android.nfc.Tag;
 import android.util.Log;
 
 public class PersonRecognizer
@@ -57,6 +58,7 @@ public class PersonRecognizer
 	 */
 	public PersonRecognizer(int photosPerPerson, int algorithm, int threshold, LinkedList<Integer> IDList, File dataDir)
 	{
+		Log.d(LOG_TAG, "List length:" + IDList.size());
 		//preload for workaround of known bug
 		//Loader.load(opencv_nonfree.class);
 		this.photosPerPerson = photosPerPerson;
