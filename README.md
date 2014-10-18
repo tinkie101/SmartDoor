@@ -1,7 +1,7 @@
 SmartDoor
 =========
-<h1>Project Overview</h1>
-Android application that uses User facial regocnition and voice identification to authenticate users. The project contains the following:
+<h2>Project Overview</h2>
+Android application that uses facial regocnition and voice identification to authenticate users. The project contains the following: <br>
 Face,Eyes and Nose Detection <br>
 Facial Recognition <br>
 Voice Identification <br>
@@ -11,19 +11,18 @@ Speech-to-text <br>
 Twitter <br>
 Raspberry Pi python server <br>
 
-<h1>Libraries Used</h1>
+<h2>Libraries Used</h2>
 JavaCV <br>
 DB4o <br>
 Twitter4j <br>
 Android User Auth <br>
 
-COS 301 Main Project 2014 ZEBRA-V
-<h1>Project Contributors</h1>
+<h2>Project Contributors</h2>
 Eduan Bekkker<br>
 Albert Volschenk<br>
 Zühnja Riekert<br>
 
-<h1>SDK</h1>
+<h2>SDK</h2>
 <h3>Recommended SDK</h3>
 
 At the time of development Eclipse was the default SDK for Android by Google thus the whole project was developed in Eclipse. Other options like NetBeans and Android Studio do exist, but this guide will be focussing on Eclipse.
@@ -40,7 +39,7 @@ Follow the installation guide for the your specific system here: https://develop
 Within Eclipse go to Window - Android SDK Manager and install the latest SDK tools and SDK Platform. Additionally to be able to compile the unit tests API 15 is required since it is the oldest compatible version. After installation is complete restarting Eclipse is recommended.
 
 
-<h1>GIT</h1>
+<h2>GIT</h2>
 
 <h3>EGIT</h3>
 
@@ -63,7 +62,7 @@ In the project explorer right click on a Github project and go to Team - Pull.
 
 In the project explorer right click on a Github project and go to Team - Commit.
 
-<h1>Test Device</h1>
+<h2>Test Device</h2>
 
 To be able to deploy the application a target device is needed. Unit tests also need to be executed in Dalvik or ART(Android run time) thus it also requires a device.
 
@@ -77,7 +76,7 @@ Android device
 An Android device can be connected via USB. The drivers for this device needs to be installed. On a Ubuntu Linux system no driver installation is needed. A guide can be found here http://developer.android.com/tools/device.html
 
 
-<h1>Compiling and Running</h1>
+<h2>Compiling and Running</h2>
 
 <h3>Running the project</h3>
 
@@ -95,7 +94,7 @@ A popup might come up to select target device to run on. Select the appropriate 
 
 All default settings can easily be changed by editing the strings.xml file which can be found in the res - values folder. The application needs to be completely reinstalled on a device for this to take affect.
 
-<h1>Twitter setup</h1>
+<h2>Twitter setup</h2>
 
 For the application to be able to link a twitter account some setup on Twitter’s side will be needed. This will be a small guide on where to get the key, secret, token and token secret.
 
@@ -106,7 +105,7 @@ Fill in the details. (you can use http://www.example.com for your required websi
 Go to keys and Access Tokens tab
 Create a new access token. On this page you will find the key, secret, token and token secret.
 
-<h1>Device setup</h1>
+<h2>Device setup</h2>
 
 For the application to perform optimally some setup is required.
 
