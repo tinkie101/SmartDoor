@@ -1,7 +1,27 @@
 SmartDoor
 =========
+<h1>Project Overview</h1>
+Android application that uses User facial regocnition and voice identification to authenticate users. The project contains the following:
+Face,Eyes and Nose Detection <br>
+Facial Recognition <br>
+Voice Identification <br>
+Object oriented database <br>
+Text-to-speech <br>
+Speech-to-text <br>
+Twitter <br>
+Raspberry Pi python server <br>
+
+<h1>Libraries Used</h1>
+JavaCV <br>
+DB4o <br>
+Twitter4j <br>
+Android User Auth <br>
 
 COS 301 Main Project 2014 ZEBRA-V
+<h1>Project Contributors</h1>
+Eduan Bekkker<br>
+Albert Volschenk<br>
+Zühnja Riekert<br>
 
 <h1>SDK</h1>
 <h3>Recommended SDK</h3>
@@ -91,18 +111,18 @@ Create a new access token. On this page you will find the key, secret, token and
 For the application to perform optimally some setup is required.
 
 <h3>Text-to-speech</h3>
-It is recommended to download the offline package for text-to-speech. This is a quick general guide. This might differ for specific Android devices with skins like Samsung, Sony and HTC.
-Go to device settings settings.
-Go to Language & Input - Text-to-speech.
-Select “Google Text-to-speech Engine” as default and click the settings button next to it.
-Select the language “English (United Kingdom)”.
+It is recommended to download the offline package for text-to-speech. This is a quick general guide. This might differ for specific Android devices with skins like Samsung, Sony and HTC. <br>
+Go to device settings settings. <br>
+Go to Language & Input - Text-to-speech. <br>
+Select “Google Text-to-speech Engine” as default and click the settings button next to it. <br>
+Select the language “English (United Kingdom)”. <br>
 Click Install voice data. Select “English (United Kingdom)” and select a prefered voice. High quality is recommended.
 
 <h3>Speech-to-text</h3>
-It is recommended to download the offline package for text-to-speech. This is a quick general guide. This might differ for specific Android devices with skins like Samsung, Sony and HTC.
-Go to device settings settings.
-Go to Language & Input - Voice Search. 
-Select “English (UK)” as the language.
-The following is only available on Android version 4.3 and newer:
-	Go to Offline speech recognition.
-	In the all tab select “English (UK)”
+It is recommended to download the offline package for speech-to-text. This is a quick general guide. This might differ for specific Android devices with skins like Samsung, Sony and HTC. <br>
+Go to device settings settings. <br>
+Go to Language & Input - Voice Search.  <br>
+Select “English (UK)” as the language.<br>
+The following is only available on Android version 4.3 and newer: <br>
+	Go to Offline speech recognition. <br>
+	In the all tab select “English (UK)” <br>
