@@ -7,6 +7,7 @@ import za.co.zebrav.voice.VoiceAuthenticator;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.hardware.Camera;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -127,6 +129,10 @@ public class SettingsFragment extends Fragment
 	
 	private void done()
 	{
+		//to drop keyboard
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+		
 		MainActivity m = (MainActivity) getActivity();
 		m.switchToLoggedInFrag();
 	}
