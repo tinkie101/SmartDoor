@@ -3,6 +3,7 @@ package za.co.zebrav.smartdoor.database;
 
 import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.AddVoiceFragment;
+import za.co.zebrav.smartdoor.GlobalApplication;
 import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.facerecognition.AddCameraFragment;
 import android.app.AlertDialog;
@@ -78,6 +79,8 @@ public class AddUserActivity extends AbstractActivity
 	 */
 	public void switchFragToStep3()
 	{	
+		GlobalApplication application = (GlobalApplication)getApplication();
+		application.trainPersonRecogniser(activityDatabase);
 		enableStep3Button();
 		disableStep2Button();
 		

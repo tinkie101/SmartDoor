@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import za.co.zebrav.smartdoor.AbstractActivity;
+import za.co.zebrav.smartdoor.GlobalApplication;
 import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.TTS;
 import android.app.AlertDialog;
@@ -134,8 +135,6 @@ public class ViewUserActivity extends AbstractActivity
 		});
 
 		alert.show();
-		//
-		
 	}
 	
 	@Override
@@ -144,6 +143,14 @@ public class ViewUserActivity extends AbstractActivity
 		super.onDestroy();
 
 		textToSpeech.destroy();
+	}
+	
+	@Override
+	protected void onPause() 
+	{
+		GlobalApplication application = (GlobalApplication)getApplication();
+		application.trainPersonRecogniser(activityDatabase);
+		super.onPause();
 	}
 	
 	/**

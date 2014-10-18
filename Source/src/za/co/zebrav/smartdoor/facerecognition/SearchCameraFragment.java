@@ -1,6 +1,8 @@
 package za.co.zebrav.smartdoor.facerecognition;
 
 import java.io.IOException;
+
+import za.co.zebrav.smartdoor.GlobalApplication;
 import za.co.zebrav.smartdoor.MainActivity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -41,7 +43,8 @@ public class SearchCameraFragment extends CameraFragment
 	public void onResume()
 	{
 		super.onResume();
-		faceView.setPersonRecognizer(((MainActivity)activity).getPersonRecognizer());
+		GlobalApplication application = (GlobalApplication)activity.getApplication();
+		faceView.setPersonRecognizer(application.personRecognizer);
 	}
 	/**
 	 * Sets the whole preview to a CameraPreview

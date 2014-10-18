@@ -6,16 +6,10 @@
 //This is the main activity for the Smart Door Application.
 package za.co.zebrav.smartdoor;
 
-import java.util.LinkedList;
 import java.util.List;
 
-import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.opencv_nonfree;
-
 import za.co.zebrav.smartdoor.R.id;
-import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
-import za.co.zebrav.smartdoor.facerecognition.PersonRecognizer;
 import za.co.zebrav.smartdoor.facerecognition.SearchCameraFragment;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -45,7 +39,6 @@ public class MainActivity extends AbstractActivity
 	private AlertDialog.Builder alert;
 	private boolean loggedIn = false;
 	private Fragment twitterFragment;
-	private PersonRecognizer personRecognizer;
 	private CountDownTimer logoutTimer;
 	private float currentBrightness = 0.0f;
 	private IdentifyVoiceFragment identifyVoiceFragment;
@@ -57,17 +50,12 @@ public class MainActivity extends AbstractActivity
 	{
 		return logoutTimer;
 	}
-
+	
 	private CountDownTimer brightnessTimer;
 
 	public CountDownTimer getBrightnessTimer()
 	{
 		return brightnessTimer;
-	}
-
-	public PersonRecognizer getPersonRecognizer()
-	{
-		return personRecognizer;
 	}
 
 	public void setBrightness(float bright)
@@ -76,7 +64,8 @@ public class MainActivity extends AbstractActivity
 			return;
 		if (bright == 1.0f)
 		{
-			if (personRecognizer.canPredict())
+			GlobalApplication application = (GlobalApplication)getApplication();
+			if (application.personRecognizer.canPredict())
 			{
 				speakOut("Hello. Starting to recognise faces.");
 			}
@@ -257,25 +246,11 @@ public class MainActivity extends AbstractActivity
 	{
 		super.onResume();
 		back_pressed = System.currentTimeMillis();
-		String settingsFile = getResources().getString(R.string.settingsFileName);
-		int photosPerPerson = Integer.parseInt(getSharedPreferences(settingsFile, 0).getString("face_TrainPhotoNum",
-							"5"));
-		int algorithm = Integer.parseInt(getSharedPreferences(settingsFile, 0).getString(
-							"face_faceRecognizerAlgorithm", "1"));
-		int threshold = Integer.parseInt(getSharedPreferences(settingsFile, 0).getString("face_recognizerThreshold",
-							"0"));
-		
-		//preload for workaround of known bug
-//		try
-//		{
-//			Loader.load(opencv_nonfree.class);
-//		}
-//		catch(Exception e)
-//		{
-//			Log.d(TAG, e.toString());
-//		}
-		LinkedList<Integer> idList = getIDList();
-		personRecognizer = new PersonRecognizer(photosPerPerson, algorithm, threshold,idList,getDir("data", 0));
+		GlobalApplication application = (GlobalApplication)getApplication();
+		if(application.personRecognizer == null)
+		{
+			application.trainPersonRecogniser(activityDatabase);
+		}
 		if (!loggedIn)
 		{
 			// user = null;
@@ -284,19 +259,6 @@ public class MainActivity extends AbstractActivity
 			this.switchToCamera();
 		}
 		setBrightness(1.0f);
-	}
-	
-	private LinkedList<Integer> getIDList()
-	{
-		List<Object> tempList = activityDatabase.load(new User(null, null, null, null, null, 0, null));
-		LinkedList<Integer> result = new LinkedList<Integer>();
-		for(Object o : tempList)
-		{
-			User u = (User)o;
-			int i = u.getID();
-			result.add(i);
-		}
-		return result;
 	}
 
 	/**

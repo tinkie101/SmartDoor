@@ -4,6 +4,7 @@ import za.co.zebrav.smartdoor.SpeechRecognition.SpeechToTextAdapter;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,18 @@ public abstract class AbstractActivity extends Activity
 	protected SpeechToTextAdapter speechToText;
 	protected UserCommands userCommands;
 	protected View view;
+	protected ProgressDialog processingDialog;
+	protected MainActivity mainActivity;
+	
+	public MainActivity getMainActivity() 
+	{
+		return mainActivity;
+	}
+
+	public void setMainActivity(MainActivity mainActivity) 
+	{
+		this.mainActivity = mainActivity;
+	}
 
 	public void startListeningForCommands(String[] possibleCommands)
 	{
@@ -53,6 +66,9 @@ public abstract class AbstractActivity extends Activity
 		fragmentManager = getFragmentManager();
 		textToSpeech = new TTS(this);
 		speechToText = new SpeechToTextAdapter(this);
+		this.processingDialog = new ProgressDialog(this, ProgressDialog.STYLE_HORIZONTAL);
+		this.processingDialog.setMessage("Training faces.");
+		this.processingDialog.setCancelable(false);
 	}
 
 	@Override
