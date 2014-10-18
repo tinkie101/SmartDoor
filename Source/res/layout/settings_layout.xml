@@ -171,7 +171,8 @@
         	<EditText
             	android:id="@+id/voice_calibration_ET"
 	        	android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content" >
+	        	android:layout_height="wrap_content" 
+	        	android:minWidth="80sp">
 	        	<requestFocus />
 	    	</EditText>
         	<Button
@@ -280,7 +281,8 @@
         			<EditText
                 		android:id="@+id/IP_ET"
                 		android:layout_width="wrap_content"
-                		android:layout_height="wrap_content" >
+                		android:layout_height="wrap_content"
+                		android:minWidth="80sp" >
                 		<requestFocus />
             		</EditText>
        			</LinearLayout>
@@ -336,7 +338,8 @@
             	    	android:id="@+id/Port_ET"
             	    	android:layout_width="wrap_content"
             	    	android:layout_height="wrap_content"
-            	    	android:inputType="number" >
+            	    	android:inputType="number" 
+            	    	android:minWidth="80sp">
             		</EditText>
        			</LinearLayout>
        			<View
@@ -437,7 +440,8 @@
 	                android:id="@+id/TrainPhotoNumET"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:inputType="number" >
+	                android:inputType="number" 
+	                android:minWidth="80sp">
 	               	 	<requestFocus />
 	            	</EditText>
        			</LinearLayout>
@@ -486,7 +490,8 @@
 	                	android:id="@+id/RecogPhotoNumET"
 	                	android:layout_width="wrap_content"
 	                	android:layout_height="wrap_content"
-	                	android:inputType="number" >
+	                	android:inputType="number" 
+	                	android:minWidth="80sp">
 	           		</EditText>
        			</LinearLayout>
        	
@@ -534,7 +539,8 @@
 	               		android:id="@+id/recognizerThresholdET"
 	                	android:layout_width="match_parent"
 	                	android:layout_height="wrap_content"
-	                	android:inputType="number|numberDecimal" >
+	                	android:inputType="number|numberDecimal"
+	                	android:minWidth="80sp" >
 	            	</EditText>
        			</LinearLayout>
        	
@@ -725,7 +731,8 @@
 		                android:id="@+id/GroupRectangleET"
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
-		                android:inputType="numberDecimal" >
+		                android:inputType="numberDecimal"
+		                android:minWidth="80sp" >
 		            </EditText>
        			</LinearLayout>
        	
@@ -918,7 +925,8 @@
         			<EditText
 	               		android:id="@+id/twitter_KeyET"
 	                	android:layout_width="wrap_content"
-	                	android:layout_height="wrap_content" >
+	                	android:layout_height="wrap_content"
+	                	android:minWidth="80sp" >
 	            	</EditText>
        			</LinearLayout>
        			<View
@@ -966,7 +974,8 @@
         			<EditText
 	               		android:id="@+id/twitter_SecretET"
 	                	android:layout_width="wrap_content"
-	                	android:layout_height="wrap_content" >
+	                	android:layout_height="wrap_content"
+	                	android:minWidth="80sp" >
 	            	</EditText>
        			</LinearLayout>
    				
@@ -1015,7 +1024,8 @@
         			<EditText
 	               		android:id="@+id/twitter_TokenKeyET"
 	                	android:layout_width="wrap_content"
-	                	android:layout_height="wrap_content" >
+	                	android:layout_height="wrap_content"
+	                	android:minWidth="80sp" >
 	            	</EditText>
        			</LinearLayout>
    				
@@ -1094,7 +1104,8 @@
         			<EditText
 	               		android:id="@+id/twitter_TokenSecretET"
 	                	android:layout_width="match_parent"
-	                	android:layout_height="wrap_content" >
+	                	android:layout_height="wrap_content"
+	                	android:minWidth="80sp" >
 	            	</EditText>
        			</LinearLayout>
    				
