@@ -10,7 +10,7 @@ public class User implements Serializable
 {
 	private int id = -1;
 	private String username = "";//user names must be unique
-	private String password = "";
+	private String password = null;
 	private String firstnames = "";
 	private String surname = "";
 	private ArrayList<Codebook> codeBook;

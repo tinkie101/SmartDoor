@@ -101,7 +101,7 @@ public class AddUserActivity extends AbstractActivity
 	public void doneStepThreeAddUser()
 	{
 		saveUser();
-		speakOut("Successfully added user. Another user can be added or click cancel to cancel adding another user.");
+		speakOut("Successfully added user.");
 		Toast.makeText(this.getApplicationContext(), "Saved new user successfully", Toast.LENGTH_SHORT).show();
 		switchFragToStep1();
 	}

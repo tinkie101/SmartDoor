@@ -131,11 +131,12 @@ public abstract class AbstractActivity extends Activity
 
 	public void saveUser()
 	{
+		Log.d(LOG_TAG, "Save user called");
 		if (activityDatabase == null)
-			Log.d(LOG_TAG, "activity database is bull");
+			Log.d(LOG_TAG, "activity database is null");
 
 		if (activityUser == null)
-			Log.d(LOG_TAG, "activityUser is bull");
+			Log.d(LOG_TAG, "activityUser is null");
 
 		activityDatabase.save(activityUser);
 		activityUser = null;
