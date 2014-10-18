@@ -3,6 +3,7 @@ package za.co.zebrav.smartdoor;
 import za.co.zebrav.voice.VoiceAuthenticator;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -26,8 +27,6 @@ public class VoiceFragment extends Fragment
 		this.soundLevelDialog = new ProgressDialog(activity, ProgressDialog.STYLE_HORIZONTAL);
 		this.soundLevelDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		this.soundLevelDialog.setTitle("Listening...");
-		this.soundLevelDialog.setMessage("Say: \"My voice is my password, and it should log me in\"");
-		this.soundLevelDialog.setCancelable(false);
 
 		this.processingDialog = new ProgressDialog(activity, ProgressDialog.STYLE_HORIZONTAL);
 		this.processingDialog.setMessage("Processing");
@@ -46,6 +45,21 @@ public class VoiceFragment extends Fragment
 		{
 			Log.d(LOG_TAG, "Error, Mic threshold not set!");
 		}
+	}
+	
+	public ProgressDialog getSoundLevelDialog()
+	{
+		return soundLevelDialog;
+	}
+	
+	public ProgressDialog getProcessinglDialog()
+	{
+		return processingDialog;
+	}
+	
+	public VoiceAuthenticator getVoiceAuthenticator()
+	{
+		return voiceAuthenticator;
 	}
 
 	@Override

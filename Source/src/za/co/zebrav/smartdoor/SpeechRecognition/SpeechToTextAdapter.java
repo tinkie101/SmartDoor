@@ -41,10 +41,14 @@ public class SpeechToTextAdapter
 		}
 	}
 	
+	public SpeechRecognizer getSpeechRecogniser()
+	{
+		return speechRecogniser;
+	}
 
 	public void destroy()
 	{
-		speechRecogniser.destroy();		
+		speechRecogniser.destroy();
 	}
 
 	public boolean isAvailable()
@@ -100,7 +104,6 @@ public class SpeechToTextAdapter
 			Log.d(LOG_TAG, "Speech Recognition not Available on this Device!");
 		}
 	}
-	
 
 	private String getCommand(ArrayList<String> data)
 	{
@@ -139,7 +142,7 @@ public class SpeechToTextAdapter
 		@Override
 		public void onBufferReceived(byte[] buffer)
 		{
-			//Log.d(LOG_TAG, "onBufferReceived");
+			// Log.d(LOG_TAG, "onBufferReceived");
 		}
 
 		/**
@@ -196,7 +199,7 @@ public class SpeechToTextAdapter
 					Log.d(LOG_TAG, "Server sends error status");
 					stopListening();
 					break;
-					// soundLevel.setVisibility(ProgressBar.GONE);
+				// soundLevel.setVisibility(ProgressBar.GONE);
 
 				case 5:
 					// Toast.makeText(context, "Other client side errors", Toast.LENGTH_LONG).show();
@@ -288,13 +291,11 @@ public class SpeechToTextAdapter
 				context.getUserCommands().executeCommand(command);
 				Toast.makeText(context, command, Toast.LENGTH_LONG).show();
 			}
-			else
-			{
-				Log.d(LOG_TAG, data.get(0));
+			Log.d(LOG_TAG, data.get(0));
 
-				if (!stopListening)
-					listenToSpeech(possibleCommands);
-			}
+			if (!stopListening)
+				listenToSpeech(possibleCommands);
+
 		}
 
 		/**
@@ -304,18 +305,18 @@ public class SpeechToTextAdapter
 		public void onRmsChanged(float rmsdB)
 		{
 			int level = 0;
-			
-			if(rmsdB < -1)
+
+			if (rmsdB < -1)
 				level = -10;
 			else
-				level = (int)rmsdB;
-			
-			if(soundLevel != null)
-			soundLevel.incrementProgressBy(level);
+				level = (int) rmsdB;
+
+			if (soundLevel != null)
+				soundLevel.incrementProgressBy(level);
 			else
 				Log.d(LOG_TAG, "soundLevel is Null");
 
-			//Log.d(LOG_TAG, "onRmsChanged " + level);
+			// Log.d(LOG_TAG, "onRmsChanged " + level);
 		}
 
 	}

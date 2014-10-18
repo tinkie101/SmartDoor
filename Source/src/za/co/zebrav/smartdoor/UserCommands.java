@@ -3,6 +3,7 @@ package za.co.zebrav.smartdoor;
 import za.co.zebrav.smartdoor.database.AddUserActivity;
 import za.co.zebrav.smartdoor.database.ViewUserActivity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,7 +21,7 @@ public class UserCommands
 			System.out.println(command);
 			if(command.equals("open door") || command.equals("please open the door"))
 			{
-				openDoor();
+				openDoor(command);
 			}
 			else if(command.equals("add user") || command.equals("manage users"))
 			{
@@ -57,19 +58,16 @@ public class UserCommands
 		}
 	
 		//----------------------------------------------------------------------------Execution of commands
-		private void openDoor()
-		{
-			mainContext.speakOut("Opening the Door");
-			
+		private void openDoor(String command)
+		{			
 			ClientSocket clientSocket = new ClientSocket(mainContext);
-			clientSocket.execute("Open Door");
+			clientSocket.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, command);
 			Toast.makeText(mainContext, "Openning the door", Toast.LENGTH_SHORT).show();
 		}
 		
 		private void logout()
 		{
 			mainContext.speakOut("Logging out");
-			Log.d("herre", "here");
 			mainContext.logout();
 		}
 		
@@ -83,7 +81,7 @@ public class UserCommands
 		
 		private void searchUser()
 		{
-			mainContext.speakOut("Going to search user");
+			mainContext.speakOut("Going to manage users");
 			
 			Intent intent = new Intent(mainContext,ViewUserActivity.class);
 			mainContext.startActivity(intent);

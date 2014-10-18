@@ -7,6 +7,8 @@ import java.util.Random;
 
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -60,6 +62,19 @@ public class IdentifyVoiceFragment extends VoiceFragment
 		// TODO
 		// listView = new ListView(activity);
 		soundLevelDialog.setMessage("Say: \"The quick brown fox jumps over the lazy dog\"");
+		soundLevelDialog.setCancelable(true);		
+		soundLevelDialog.setOnCancelListener(new OnCancelListener()
+		{
+			
+			@Override
+			public void onCancel(DialogInterface dialog)
+			{
+				activity.speakOut("Voice Identification Cancelled");
+				
+				activity.setActiveUser(null);
+				((MainActivity) activity).switchToCamera();
+			}
+		});
 
 		return view;
 	}
