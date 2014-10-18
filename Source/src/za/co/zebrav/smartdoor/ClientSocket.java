@@ -1,16 +1,16 @@
 package za.co.zebrav.smartdoor;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.SocketTimeoutException;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class ClientSocket extends AsyncTask<String, Void, String>
 {
@@ -18,15 +18,16 @@ public class ClientSocket extends AsyncTask<String, Void, String>
 
 	private Socket socket;
 
-	// TODO
 	private static int SERVERPORT;
 	private static String SERVER_IP;
 
 	private PrintWriter out;
 	private BufferedReader inFromServer;
+	private Activity act;
 
 	public ClientSocket(Activity act)
 	{
+		this.act = act;
 		String PREFS_NAME = act.getResources().getString((R.string.settingsFileName));
 		SharedPreferences settings = act.getSharedPreferences(PREFS_NAME, 0);
 		SERVERPORT = Integer.parseInt(settings.getString("server_Port", "0"));
@@ -39,86 +40,108 @@ public class ClientSocket extends AsyncTask<String, Void, String>
 			SERVER_IP = settings.getString("server_IP", "0");
 	}
 
-	public void sendCommand(String command)
+	public int getServerPort()
 	{
+		return SERVERPORT;
+	}
+
+	public String getServerIP()
+	{
+		return SERVER_IP;
+	}
+
+	public boolean sendCommand(String command)
+	{
+		boolean result = false;
 		if (socket != null && out != null && inFromServer != null)
 		{
 			try
 			{
-				System.out.println("start");
 				// send
 				out.println(command);
-
-				new Recieve().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
+				result = true;
 			}
 			catch (Exception e)
 			{
-
 				e.printStackTrace();
-
 			}
 		}
 		else
 		{
-			System.out.println(LOG_TAG + "\tSocket not Set!");
+			Log.d(LOG_TAG, "Socket not Set!");
 		}
-
+		return result;
 	}
 
 	@Override
 	protected String doInBackground(String... arg)
 	{
+		String result = null;
 		try
 		{
 			InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
 			socket = new Socket(serverAddr, SERVERPORT);
-			System.out.println(LOG_TAG + "\t" + "Socket set");
+			socket.setSoTimeout(5000);
+			Log.d(LOG_TAG, "Socket set");
 
 			out = new PrintWriter(socket.getOutputStream(), true);
 			inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			System.out.println("done");
+
+			// Send to server
+			String command = null;
+			if(arg.length > 0)
+				command = arg[0];
+			else
+				Log.d(LOG_TAG, "no command given");
+			
+			if (command != null && sendCommand(command))
+			{
+				try
+				{
+					// Get response
+					result = inFromServer.readLine();
+				}
+				catch (SocketTimeoutException e)
+				{
+					Log.d(LOG_TAG, "Server Timed out");
+				}
+
+				Log.d(LOG_TAG, "done");
+			}
 		}
-		catch (UnknownHostException e1)
+		catch (Exception e)
 		{
-			e1.printStackTrace();
+			Log.d(LOG_TAG, e.toString());
 		}
-		catch (IOException e1)
-		{
-			e1.printStackTrace();
-		}
-		return arg[0];
+		return result;
 	}
 
 	@Override
 	protected void onPostExecute(String result)
 	{
-		sendCommand(result);
-	}
-
-	private class Recieve extends AsyncTask<Void, Void, Void>
-	{
-
-		@Override
-		protected Void doInBackground(Void... params)
+		if (result != null)
 		{
-			try
+			Log.d(LOG_TAG, result);
+			Log.d(LOG_TAG, "end");
+			
+			if(act instanceof MainActivity)
 			{
-				// recieve
-				String response = inFromServer.readLine();
-				System.out.println(LOG_TAG + "\t" + response);
-				System.out.println("end");
+				((MainActivity) act).postOpenDoor();
 			}
-			catch (UnknownHostException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			return null;
+		}
+		else
+		{
+			Log.d(LOG_TAG, "Error, No Response");
+			((MainActivity) act).postDoorNotOpened();
 		}
 
+		try
+		{
+			socket.close();
+		}
+		catch (Exception e)
+		{
+			Log.d(LOG_TAG, e.toString());
+		}
 	}
 }

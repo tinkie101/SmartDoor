@@ -22,10 +22,10 @@
     </string-array>
     
     <!--Twitter defaults-->
-    <string name="twitter_Key">qcGzp08qWLEZom1x7dxCG5qu0</string>
-    <string name="twitter_Secret">ly810vDH1S16Ttw0mpk4ZBYQvLEF9gEO16KSqy9lBqhwRf5XRo</string>
-    <string name="twitter_TokenKey">239453626-73H379K274Qfm9KaPfq8C3hKPhq3jqGk04gQXkIw</string>
-    <string name="twitter_TokenSecret">7ozxcBnoAA4WEocKeUSrFI9iOO9hVqNYwS2xFOeB0osUl</string>
+    <string name="twitter_Key">ooNTrnLHJL6q2s5Ewbejs1NT9</string>
+    <string name="twitter_Secret">mADXV5REbV5kdI8eoo4cStLuUEBG65Vc1kHNzkLYmrvVgd2j8z</string>
+    <string name="twitter_TokenKey">2595989491-aP0O2BMIiETnXqKxEweZ4cdwFb0kO88rnuwPzNB</string>
+    <string name="twitter_TokenSecret">LfxgqxQwaBiNYYtmNcSsMysqhJE4IE4TJomV9hkoe5gzj</string>
     
     <!--Server defaults-->
     <string name="server_IP">10.0.0.101</string>

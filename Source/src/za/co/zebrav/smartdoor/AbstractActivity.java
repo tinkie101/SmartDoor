@@ -91,6 +91,7 @@ public abstract class AbstractActivity extends Activity
 
 		textToSpeech.destroy();
 		speechToText.destroy();
+		Log.d(LOG_TAG, "destroy)");
 	}
 
 	public void setActiveUser(User user)

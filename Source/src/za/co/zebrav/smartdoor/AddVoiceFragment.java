@@ -47,6 +47,22 @@ public class AddVoiceFragment extends VoiceFragment implements OnClickListener
 
 		trainCounter = 0;
 		isTraining = false;
+		
+		soundLevelDialog.setMessage("Say: \"My voice is my password, and it should log me in\"");
+		//TODO
+		soundLevelDialog.setCancelable(false);		
+//		this.soundLevelDialog.setOnCancelListener(new OnCancelListener()
+//		{
+//			
+//			@Override
+//			public void onCancel(DialogInterface dialog)
+//			{
+//				activity.speakOut("Voice Training attempt cancelled");
+//				
+//				
+//			}
+//		});
+		
 		return view;
 	}
 

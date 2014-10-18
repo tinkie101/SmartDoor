@@ -9,11 +9,7 @@ package za.co.zebrav.smartdoor;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.opencv_nonfree;
-
 import za.co.zebrav.smartdoor.R.id;
-import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import za.co.zebrav.smartdoor.facerecognition.PersonRecognizer;
 import za.co.zebrav.smartdoor.facerecognition.SearchCameraFragment;
@@ -37,7 +33,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AbstractActivity
 {
-	private static final String TAG = "MainActivity";
+	private static final String LOG_TAG = "MainActivity";
+	private static final int DOUBLE_BACK_EXIT_TIME = 2500;
 	private long back_pressed;
 	private CustomMenu sliderMenu;
 	private ManualLoginFragment manualFrag;
@@ -100,7 +97,7 @@ public class MainActivity extends AbstractActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		Log.d(TAG, "onCreate");
+		Log.d(LOG_TAG, "onCreate");
 		setContentView(R.layout.activity_main);
 
 		loadDefaultSettings();
@@ -130,7 +127,7 @@ public class MainActivity extends AbstractActivity
 			@Override
 			public void onTick(long millisUntilFinished)
 			{
-				Log.d(TAG, "Time to logout:" + millisUntilFinished);
+				Log.d(LOG_TAG, "Time to logout:" + millisUntilFinished);
 
 			}
 		};
@@ -144,7 +141,7 @@ public class MainActivity extends AbstractActivity
 			@Override
 			public void onTick(long millisUntilFinished)
 			{
-				Log.d(TAG, "Time to dimm:" + millisUntilFinished);
+				Log.d(LOG_TAG, "Time to dimm:" + millisUntilFinished);
 
 			}
 		}.start();
@@ -171,11 +168,24 @@ public class MainActivity extends AbstractActivity
 	@Override
 	public void onBackPressed()
 	{
-		if (back_pressed + 2000 > System.currentTimeMillis())
+		if (back_pressed + DOUBLE_BACK_EXIT_TIME > System.currentTimeMillis())
 			super.onBackPressed();
 		else
 			Toast.makeText(getBaseContext(), "Press again to exit", Toast.LENGTH_SHORT).show();
 		back_pressed = System.currentTimeMillis();
+	}
+	
+	protected void postOpenDoor()
+	{
+		Log.d(LOG_TAG, "Post open door");
+		speakOut("Door Opened");
+		logout();
+	}
+	
+	protected void postDoorNotOpened()
+	{
+		Log.d(LOG_TAG, "Post could not open door");
+		speakOut("Could not Open the door");
 	}
 
 	private void loadDefaultSettings()
@@ -265,7 +275,7 @@ public class MainActivity extends AbstractActivity
 		int threshold = Integer.parseInt(getSharedPreferences(settingsFile, 0).getString("face_recognizerThreshold",
 							"0"));
 		
-		//preload for workaround of known bug
+		//TODO preload for workaround of known bug
 //		try
 //		{
 //			Loader.load(opencv_nonfree.class);
@@ -329,7 +339,7 @@ public class MainActivity extends AbstractActivity
 
 	public void logout()
 	{
-		Log.d(TAG, "Logout called here.");
+		Log.d(LOG_TAG, "Logout called here.");
 		loggedIn = false;
 		logoutTimer.cancel();
 		brightnessTimer.start();
@@ -346,7 +356,7 @@ public class MainActivity extends AbstractActivity
 
 	public void switchToLoggedInFrag()
 	{
-		Log.d(TAG, "switchToLoggedIn");
+		Log.d(LOG_TAG, "switchToLoggedIn");
 		Button button = (Button) findViewById(R.id.switchLoginButton);
 		button.setVisibility(View.GONE);
 		if(loggedInFragment == null)
@@ -358,7 +368,7 @@ public class MainActivity extends AbstractActivity
 		fragmentTransaction.commit();
 		this.loggedIn = true;
 		logoutTimer.start();
-		Log.d(TAG, "Started logout timer switchtologgedinfrag");
+		Log.d(LOG_TAG, "Started logout timer switchtologgedinfrag");
 		brightnessTimer.cancel();
 	}
 
@@ -424,6 +434,7 @@ public class MainActivity extends AbstractActivity
 		brightnessTimer.cancel();
 		if (loggedIn)
 			logoutTimer.cancel();
+		Log.d(LOG_TAG, "onPuase");
 	}
 
 	@Override
@@ -433,7 +444,7 @@ public class MainActivity extends AbstractActivity
 		if (loggedIn)
 		{
 			logoutTimer.start();
-			Log.d(TAG, "Started logout timer onStart");
+			Log.d(LOG_TAG, "Started logout timer onStart");
 		}
 		else
 		{
