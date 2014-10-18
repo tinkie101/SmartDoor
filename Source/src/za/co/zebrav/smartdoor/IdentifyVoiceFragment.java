@@ -300,6 +300,8 @@ public class IdentifyVoiceFragment extends VoiceFragment
 
 	private void identifySpeaker()
 	{
+		((MainActivity)activity).getBrightnessTimer().cancel();
+		((MainActivity)activity).getBrightnessTimer().start();
 		Log.d(LOG_TAG, "Identifying Voice");
 		if (loopCounter == maxNumAttempts)
 			activity.speakOut("After this voice stoped speaking, clearly reed the phrase out loud.");

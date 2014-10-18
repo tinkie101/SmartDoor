@@ -17,7 +17,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Camera;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 
 public abstract class FaceView extends View implements Camera.PreviewCallback
