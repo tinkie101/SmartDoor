@@ -114,6 +114,7 @@ public class ClientSocket extends AsyncTask<String, Void, String>
 		catch (Exception e)
 		{
 			Log.d(LOG_TAG, e.toString());
+			result = null;
 		}
 		return result;
 	}
