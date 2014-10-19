@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
-import za.co.zebrav.smartdoor.TestFragmentActivity;
+import za.co.zebrav.smartdoor.main.TestFragmentActivity;
 import za.co.zebrav.smartdoor.facerecognition.ClassifierRunnable;
 import za.co.zebrav.smartdoor.facerecognition.EyesClassifierRunnable;
 import za.co.zebrav.smartdoor.facerecognition.FaceClassifierRunnable;

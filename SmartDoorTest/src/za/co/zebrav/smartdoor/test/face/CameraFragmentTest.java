@@ -3,7 +3,7 @@ package za.co.zebrav.smartdoor.test.face;
 import org.junit.Test;
 
 import za.co.zebrav.smartdoor.R;
-import za.co.zebrav.smartdoor.TestFragmentActivity;
+import za.co.zebrav.smartdoor.main.TestFragmentActivity;
 import za.co.zebrav.smartdoor.facerecognition.AddCameraFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;

@@ -1,7 +1,7 @@
 package za.co.zebrav.smartdoor.test;
 
 import org.junit.Test;
-import za.co.zebrav.smartdoor.TestFragmentActivity;
+import za.co.zebrav.smartdoor.main.TestFragmentActivity;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.test.ActivityInstrumentationTestCase2;
