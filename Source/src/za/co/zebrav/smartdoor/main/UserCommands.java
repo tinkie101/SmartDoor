@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor;
+package za.co.zebrav.smartdoor.main;
 
 import za.co.zebrav.smartdoor.database.AddUserActivity;
 import za.co.zebrav.smartdoor.database.ViewUserActivity;

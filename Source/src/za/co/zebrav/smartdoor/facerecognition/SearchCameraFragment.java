@@ -2,8 +2,8 @@ package za.co.zebrav.smartdoor.facerecognition;
 
 import java.io.IOException;
 
-import za.co.zebrav.smartdoor.GlobalApplication;
-import za.co.zebrav.smartdoor.MainActivity;
+import za.co.zebrav.smartdoor.main.GlobalApplication;
+import za.co.zebrav.smartdoor.main.MainActivity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;

@@ -2,8 +2,8 @@ package za.co.zebrav.smartdoor.database;
 
 import java.util.List;
 
-import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.R;
+import za.co.zebrav.smartdoor.main.AbstractActivity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;

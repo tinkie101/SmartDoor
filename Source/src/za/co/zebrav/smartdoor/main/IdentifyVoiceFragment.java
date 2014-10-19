@@ -1,10 +1,11 @@
-package za.co.zebrav.smartdoor;
+package za.co.zebrav.smartdoor.main;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
 import android.content.DialogInterface;

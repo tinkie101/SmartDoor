@@ -1,7 +1,8 @@
-package za.co.zebrav.smartdoor;
+package za.co.zebrav.smartdoor.main;
 
 import java.util.ArrayList;
 
+import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.twitter.TwitterArrayAdapter;
 import za.co.zebrav.smartdoor.twitter.TwitterHandler;
 import android.app.Fragment;

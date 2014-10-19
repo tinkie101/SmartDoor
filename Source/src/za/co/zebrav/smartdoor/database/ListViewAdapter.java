@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.R;
+import za.co.zebrav.smartdoor.main.AbstractActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;

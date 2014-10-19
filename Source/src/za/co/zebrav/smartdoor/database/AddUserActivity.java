@@ -1,11 +1,11 @@
 package za.co.zebrav.smartdoor.database;
 
 
-import za.co.zebrav.smartdoor.AbstractActivity;
-import za.co.zebrav.smartdoor.AddVoiceFragment;
-import za.co.zebrav.smartdoor.GlobalApplication;
 import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.facerecognition.AddCameraFragment;
+import za.co.zebrav.smartdoor.main.AbstractActivity;
+import za.co.zebrav.smartdoor.main.AddVoiceFragment;
+import za.co.zebrav.smartdoor.main.GlobalApplication;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.os.Bundle;

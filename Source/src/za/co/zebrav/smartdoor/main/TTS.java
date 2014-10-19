@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor;
+package za.co.zebrav.smartdoor.main;
 
 import java.util.HashMap;
 import java.util.Locale;

@@ -1,7 +1,8 @@
-package za.co.zebrav.smartdoor;
+package za.co.zebrav.smartdoor.main;
 
 import java.io.File;
 
+import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.database.User;
 
 import android.app.Fragment;

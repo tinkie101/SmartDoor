@@ -2,8 +2,8 @@ package za.co.zebrav.smartdoor.SpeechRecognition;
 
 import java.util.ArrayList;
 
-import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.R;
+import za.co.zebrav.smartdoor.main.AbstractActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognitionListener;

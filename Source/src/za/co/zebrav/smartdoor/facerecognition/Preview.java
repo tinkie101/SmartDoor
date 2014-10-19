@@ -3,8 +3,8 @@ package za.co.zebrav.smartdoor.facerecognition;
 import java.io.IOException;
 import java.util.List;
 
-import za.co.zebrav.smartdoor.AbstractActivity;
 import za.co.zebrav.smartdoor.R;
+import za.co.zebrav.smartdoor.main.AbstractActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.ImageFormat;

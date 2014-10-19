@@ -1,4 +1,4 @@
-package za.co.zebrav.smartdoor;
+package za.co.zebrav.smartdoor.main;
 
 import android.os.Bundle;
 import za.co.zebrav.smartdoor.R;

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import za.co.zebrav.smartdoor.AbstractActivity;
-import za.co.zebrav.smartdoor.GlobalApplication;
 import za.co.zebrav.smartdoor.R;
-import za.co.zebrav.smartdoor.TTS;
+import za.co.zebrav.smartdoor.main.AbstractActivity;
+import za.co.zebrav.smartdoor.main.GlobalApplication;
+import za.co.zebrav.smartdoor.main.TTS;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;

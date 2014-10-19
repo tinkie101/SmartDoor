@@ -7,9 +7,9 @@ import org.bytedeco.javacpp.opencv_core.CvMemStorage;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_objdetect;
 
-import za.co.zebrav.smartdoor.AbstractActivity;
-import za.co.zebrav.smartdoor.MainActivity;
 import za.co.zebrav.smartdoor.R;
+import za.co.zebrav.smartdoor.main.AbstractActivity;
+import za.co.zebrav.smartdoor.main.MainActivity;
 import EDU.purdue.cs.bloat.decorate.Main;
 import android.app.Activity;
 import android.app.Fragment;

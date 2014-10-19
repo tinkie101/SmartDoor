@@ -1,5 +1,6 @@
-package za.co.zebrav.smartdoor;
+package za.co.zebrav.smartdoor.main;
 
+import za.co.zebrav.smartdoor.R;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;

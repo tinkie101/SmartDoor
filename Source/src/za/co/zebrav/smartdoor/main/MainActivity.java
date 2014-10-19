@@ -4,7 +4,7 @@
 //Albert Volschenk - 12054519
 
 //This is the main activity for the Smart Door Application.
-package za.co.zebrav.smartdoor;
+package za.co.zebrav.smartdoor.main;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +12,7 @@ import java.util.List;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_nonfree;
 
+import za.co.zebrav.smartdoor.R;
 import za.co.zebrav.smartdoor.R.id;
 import za.co.zebrav.smartdoor.database.Db4oAdapter;
 import za.co.zebrav.smartdoor.database.User;
